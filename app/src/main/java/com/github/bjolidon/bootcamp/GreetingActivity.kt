@@ -11,7 +11,7 @@ class GreetingActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_greeting)
 
-        val newMessage = intent.getStringExtra("name")
+        val newMessage = intent.getStringExtra("name2")
         val greetingMessage: TextView = findViewById(R.id.greetingMessage)
         greetingMessage.text = "Hello $newMessage!"
     }
