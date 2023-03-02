@@ -2,6 +2,7 @@ package com.github.bjolidon.bootcamp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -40,9 +41,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        // Add a marker in satellite and move the camera to epfl
+        val satellite = LatLng(46.520544, 6.567825)
+        mMap.addMarker(MarkerOptions().position(satellite).title("Marker in Satellite"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(46.520536, 6.568318)))
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15f))
+        mMap.setOnMarkerClickListener {
+            Toast.makeText(
+                this, satellite.toString(),
+                Toast.LENGTH_LONG
+            ).show()
+            false
+        }
     }
 }
