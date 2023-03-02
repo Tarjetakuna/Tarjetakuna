@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("name2", plainText.text.toString())
             startActivity(intent)
         }
+        // comment test
     }
 
 }
