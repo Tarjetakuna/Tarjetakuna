@@ -24,7 +24,7 @@ class GreetingActivityTest {
     @Test
     fun testGreetingActivity() {
         val intent = Intent(getApplicationContext(), GreetingActivity::class.java)
-        intent.putExtra("name", "testName")
+        intent.putExtra("name2", "testName")
         val activity = ActivityScenario.launch<GreetingActivity>(intent)
         onView(withId(R.id.greetingMessage)).check(matches(withText("Hello testName!")))
         activity.close()

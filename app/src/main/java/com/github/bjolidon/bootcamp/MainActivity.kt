@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 
         button.setOnClickListener{
             val intent = Intent(this, GreetingActivity::class.java)
-            intent.putExtra("name", plainText.text.toString())
+            intent.putExtra("name2", plainText.text.toString())
             startActivity(intent)
         }
     }

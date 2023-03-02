@@ -28,7 +28,7 @@ class MainActivityTest {
         closeSoftKeyboard()
         onView(withId(R.id.mainGoButton)).perform(click())
         Intents.intended(hasComponent(GreetingActivity::class.java.name))
-        Intents.intended(hasExtra("name", "Test"))
+        Intents.intended(hasExtra("name2", "Test"))
         Intents.release()
     }
 }
