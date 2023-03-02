@@ -3,11 +3,9 @@ package com.github.bjolidon.bootcamp
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.*
 import kotlinx.coroutines.Dispatchers
@@ -23,9 +21,11 @@ import retrofit2.http.GET
 
 class BoredActivity : AppCompatActivity() {
 
-    lateinit var boredTextView: TextView
-    lateinit var db: BoredActivityDatabase
-    lateinit var boredActivityDao: BoredActivityDao
+    private lateinit var boredTextView: TextView
+    private lateinit var db: BoredActivityDatabase
+    private lateinit var boredActivityDao: BoredActivityDao
+
+    private var url = "https://www.boredapi.com/api/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +61,7 @@ class BoredActivity : AppCompatActivity() {
 
         // building request to API to get bored information
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://www.boredapi.com/api/")
+            .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val boredApi = retrofit.create(BoredApi::class.java)
@@ -133,6 +133,14 @@ class BoredActivity : AppCompatActivity() {
     private suspend fun getBoredInformationDB() {
         // get data from db
         val boredActivities = boredActivityDao.getAll()
+
+        // check if there is data in db
+        if (boredActivities.isEmpty()) {
+            boredTextView.text = getString(R.string.txt_error_msg, "no data in db")
+            return
+        }
+
+        // get random activity
         val boredActivity = boredActivities.random()
 
         // display response
@@ -171,6 +179,9 @@ class BoredActivity : AppCompatActivity() {
         }
     }
 
+    fun setUrl(url: String) {
+        this.url = url
+    }
 }
 
 // Webapi: https://www.boredapi.com/ dataclass and api interface
