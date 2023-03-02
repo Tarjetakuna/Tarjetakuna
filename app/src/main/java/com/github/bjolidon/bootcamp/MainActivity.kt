@@ -19,7 +19,12 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("name2", plainText.text.toString())
             startActivity(intent)
         }
-        // comment test
+
+        val googleMapsButton: Button = findViewById(R.id.googleMapsButton)
+        googleMapsButton.setOnClickListener{
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }
