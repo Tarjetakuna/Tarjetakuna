@@ -4,39 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <EditText
-        android:id="@+id/mainName"
-        android:layout_width="161dp"
-        android:layout_height="67dp"
-        android:ems="10"
-        android:hint="@string/enter_your_name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".BoredActivity">
 
     <Button
-        android:id="@+id/mainGoButton"
+        android:id="@+id/so_bored_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bt_enter"
+        android:text="@string/bt_so_bored"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainName"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1" />
 
     <Button
-        android:id="@+id/mainGoButton2"
+        android:id="@+id/not_bored_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bt_bored"
+        android:text="@string/bt_not_bored"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mainGoButton"
-        app:layout_constraintVertical_bias="0.133" />
+        app:layout_constraintTop_toBottomOf="@+id/bored_txtview"
+        app:layout_constraintVertical_bias="0.279" />
+
+    <TextView
+        android:id="@+id/bored_txtview"
+        android:layout_width="335dp"
+        android:layout_height="450dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/txt_click_to_get_bored"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/so_bored_btn"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
