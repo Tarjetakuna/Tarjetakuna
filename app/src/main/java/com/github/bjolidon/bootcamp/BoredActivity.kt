@@ -19,13 +19,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 
-class BoredActivity : AppCompatActivity() {
+open class BoredActivity : AppCompatActivity() {
 
     private lateinit var boredTextView: TextView
     private lateinit var db: BoredActivityDatabase
     private lateinit var boredActivityDao: BoredActivityDao
 
-    private var url = "https://www.boredapi.com/api/"
+    protected open var url = "https://www.boredapi.com/api/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -177,10 +177,6 @@ class BoredActivity : AppCompatActivity() {
             actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
             else -> false
         }
-    }
-
-    fun setUrl(url: String) {
-        this.url = url
     }
 }
 
