@@ -25,6 +25,7 @@ class MainActivityTest {
     fun dummyTest() {
         onView(withId(R.id.mainGoButton)).perform(click())
     }
+
 //    @Test
 //    fun testMainActivity() {
 //        Intents.init()
