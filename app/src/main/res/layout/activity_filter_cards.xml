@@ -11,10 +11,9 @@
         android:layout_width="364dp"
         android:layout_height="656dp"
         android:layout_marginStart="23dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="37dp"
         android:layout_marginEnd="23dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -39,6 +38,5 @@
                     app:drawableRightCompat="@android:drawable/arrow_down_float" />
             </TableRow>
         </TableLayout>
-
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
