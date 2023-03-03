@@ -15,10 +15,13 @@ class MainActivity : AppCompatActivity() {
         val plainText: EditText = findViewById(R.id.mainName)
 
         button.setOnClickListener{
-            val intent = Intent(this, GreetingActivity::class.java)
-            intent.putExtra("name2", plainText.text.toString())
-            startActivity(intent)
+//            val intent = Intent(this, GreetingActivity::class.java)
+//            intent.putExtra("name2", plainText.text.toString())
+            val intent2 = Intent(this, FilterCardsActivity::class.java)
+            startActivity(intent2)
+//            startActivity(intent)
         }
+
     }
 
 }
