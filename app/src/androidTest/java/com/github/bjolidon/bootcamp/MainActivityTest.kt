@@ -17,8 +17,8 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
-    @get:Rule
-    public val activityRule = ActivityScenarioRule(MainActivity::class.java)
+//    @get:Rule
+//    public val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
 //    @Test
 //    fun testMainActivity() {
