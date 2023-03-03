@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".GreetingActivity" />
+        <activity android:name=".AuthenticationActivity" />
     </application>
 
 </manifest>

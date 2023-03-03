@@ -16,34 +16,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-    }
 
-    operator fun get(v: View?) {
-        var email = (findViewById<View>(R.id.email) as TextView)
-        //.text.toString()
-        val phone = (findViewById<View>(R.id.phonenumber) as TextView).text.toString()
-
-        val future = CompletableFuture<String>()
-        val db: DatabaseReference = Firebase.database.reference
-
-        db.child(phone).get().addOnSuccessListener {
-            if (it.value == null) future.completeExceptionally(NoSuchFieldException())
-            else future.complete(it.value as String)
-        }.addOnFailureListener {
-            future.completeExceptionally(it)
-        }
-
-        future.thenAccept {
-            email.text = it
+        val button = findViewById<Button>(R.id.connectionButton)
+        button.setOnClickListener {
+            val intent = Intent(this, AuthenticationActivity::class.java)
+            intent.putExtra("signIn", true)
+            startActivity(intent)
         }
     }
-
-    fun set(v: View?) {
-        val email = (findViewById<View>(R.id.email) as TextView).text.toString()
-        val phone = (findViewById<View>(R.id.phonenumber) as TextView).text.toString()
-
-        val db: DatabaseReference = Firebase.database.reference
-        db.child(phone).setValue(email)
-    }
-
 }
