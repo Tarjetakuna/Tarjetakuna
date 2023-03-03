@@ -1,16 +1,15 @@
 package com.github.bjolidon.bootcamp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-
+import androidx.appcompat.app.AppCompatActivity
+import com.github.bjolidon.bootcamp.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.github.bjolidon.bootcamp.databinding.ActivityMapsBinding
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -43,8 +42,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker in satellite and move the camera to epfl
         val satellite = LatLng(46.520544, 6.567825)
-        mMap.addMarker(MarkerOptions().position(satellite).title("Marker in Satellite"))
+        val satelliteMarker: MarkerOptions = MarkerOptions().position(satellite).title("Marker in Satellite")
+        mMap.addMarker(satelliteMarker)
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(46.520536, 6.568318)))
+
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15f))
         mMap.setOnMarkerClickListener {
             Toast.makeText(

@@ -31,4 +31,12 @@ class MainActivityTest {
         Intents.intended(hasExtra("name2", "Test"))
         Intents.release()
     }
+
+    @Test
+    fun testGoogleMapsButtonWorks() {
+        Intents.init()
+        onView(withId(R.id.googleMapsButton)).perform(click())
+        Intents.intended(hasComponent(MapsActivity::class.java.name))
+        Intents.release()
+    }
 }
