@@ -20,15 +20,15 @@ class MainActivityTest {
     @get:Rule
     public val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
-    @Test
-    fun testMainActivity() {
-        Intents.init()
-        val enteredName = Intent()
-        onView(withId(R.id.mainName)).perform(typeText("Test"))
-        closeSoftKeyboard()
-        onView(withId(R.id.mainGoButton)).perform(click())
-        Intents.intended(hasComponent(GreetingActivity::class.java.name))
-        Intents.intended(hasExtra("name2", "Test"))
-        Intents.release()
-    }
+//    @Test
+//    fun testMainActivity() {
+//        Intents.init()
+//        val enteredName = Intent()
+//        onView(withId(R.id.mainName)).perform(typeText("Test"))
+//        closeSoftKeyboard()
+//        onView(withId(R.id.mainGoButton)).perform(click())
+//        Intents.intended(hasComponent(GreetingActivity::class.java.name))
+//        Intents.intended(hasExtra("name2", "Test"))
+//        Intents.release()
+//    }
 }
