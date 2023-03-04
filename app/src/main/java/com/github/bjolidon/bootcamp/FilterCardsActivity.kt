@@ -19,7 +19,7 @@ class FilterCardsActivity : AppCompatActivity() {
         title = "Filter Cards"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val languageTextView: TextView = findViewById(R.id.textView)
+        val languageTextView: TextView = findViewById(R.id.languageTextView)
         languageTextView.setOnClickListener {
             val selectedLanguage = BooleanArray(languageArray.size)
             for (i in languageArray) {
