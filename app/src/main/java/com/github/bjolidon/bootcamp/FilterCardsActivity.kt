@@ -25,23 +25,29 @@ class FilterCardsActivity : AppCompatActivity() {
 //    }
 
     lateinit var selectedLanguage: BooleanArray
-    var langList: ArrayList<Int> = ArrayList()
-    var langArray = arrayOf("Java", "C++", "Kotlfsdfsdafsafdsfasdfafdafdsfdsafdsafdsafdsafin", "C", "Python", "Javascript")
+//    var langList: ArrayList<Int> = ArrayList()
+    var languageArray = arrayOf("Java", "C++", "Kotlin", "C", "Python", "Javascript")
 
-    var valuesMap: Map<String, Int> = emptyMap<String, Int>()
+    var valuesMap: Map<String, ArrayList<String>> = emptyMap<String, ArrayList<String>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter_cards)
 
         // assign variable
-        val textView: TextView = findViewById(R.id.textView)
+        val languageTextView: TextView = findViewById(R.id.textView)
 
         // initialize selected language array
-        selectedLanguage = BooleanArray(langArray.size)
-        textView.setOnClickListener {
+        languageTextView.setOnClickListener {
             // show multi choice dialog
-            showMultiChoiceDialog(textView, "Select Language")
+            val selectedLanguage = BooleanArray(languageArray.size)
+            for (i in languageArray) {
+                if (valuesMap.containsKey("Language") && valuesMap["Language"]!!.contains(i)) {
+                    selectedLanguage[languageArray.indexOf(i)] = true
+                }
+            }
+            showMultiChoiceDialog(languageTextView, "Language", selectedLanguage,
+                languageArray)
         }
     }
     /*
@@ -49,46 +55,48 @@ class FilterCardsActivity : AppCompatActivity() {
      * found on https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
      */
 
-    private fun showMultiChoiceDialog(textView: TextView, title: String) {
-        // Initialize alert dialog
+    private fun showMultiChoiceDialog(textView: TextView, title: String,
+                                      selectedLanguage: BooleanArray, itemsArray: Array<String>) {
+
+        val filtersList: ArrayList<Int> = ArrayList()
+        // add already selected items in the filtersList
+        for (index in selectedLanguage.indices) {
+            if (selectedLanguage[index]) {
+                filtersList.add(index)
+            }
+        }
         val builder: AlertDialog.Builder =
             AlertDialog.Builder(this@FilterCardsActivity)
 
-        // set title
         builder.setTitle(title)
-
-        // set dialog non cancelable
         builder.setCancelable(false)
-        builder.setMultiChoiceItems(langArray, selectedLanguage
-        ) { _, i, b ->
-            // check condition
-            if (b) {
-                // when checkbox selected
-                // Add position  in lang list
-                langList.add(i)
-                // Sort array list
-                langList.sort()
+
+        builder.setMultiChoiceItems(itemsArray, selectedLanguage
+        ) { _, index, boolean ->
+            if (boolean) {
+                filtersList.add(index)
+                filtersList.sort()
             } else {
-                // when checkbox unselected
-                // Remove position from langList
-                langList.remove(Integer.valueOf(i))
+                filtersList.remove(Integer.valueOf(index))
             }
         }
         builder.setPositiveButton("OK"
-        ) { _, _ -> // Initialize string builder
+        ) { _, _ ->
+            // create list to add them in valuesMap
+            val selectedItems: ArrayList<String> = ArrayList()
             val stringBuilder = StringBuilder()
-            // use for loop
-            for (j in 0 until langList.size) {
-                // concat array value
-                stringBuilder.append(langArray[langList[j]])
-                // check condition
-                if (j != langList.size - 1) {
-                    // When j value  not equal
-                    // to lang list size - 1
-                    // add comma
+
+            for (index in 0 until filtersList.size) {
+                stringBuilder.append(itemsArray[filtersList[index]])
+                selectedItems.add(itemsArray[filtersList[index]])
+
+                if (index != (filtersList.size - 1)) {
                     stringBuilder.append(", ")
                 }
             }
+
+            valuesMap = valuesMap.plus(Pair(title, selectedItems))
+
             // set text on textView and set ellipses so that it does not exceed the box
             textView.maxWidth = textView.measuredWidth
             textView.maxLines = 1
@@ -96,23 +104,13 @@ class FilterCardsActivity : AppCompatActivity() {
             textView.movementMethod = ScrollingMovementMethod()
             textView.text = stringBuilder.toString()
         }
-        builder.setNegativeButton("Cancel"
-        ) { dialogInterface, _ -> // dismiss dialog
-            dialogInterface.dismiss()
-        }
+
         builder.setNeutralButton("Clear All"
         ) { _, _ ->
-            // use for loop
-            for (j in selectedLanguage.indices) {
-                // remove all selection
-                selectedLanguage[j] = false
-                // clear language list
-                langList.clear()
-                // clear text view value
-                textView.text = ""
-            }
+            filtersList.clear()
+            textView.text = title
+            valuesMap = valuesMap.minus(title)
         }
-        // show dialog
         builder.show()
     }
 
