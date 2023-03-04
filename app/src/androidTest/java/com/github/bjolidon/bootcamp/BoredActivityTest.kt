@@ -68,14 +68,17 @@ class BoredActivityTest {
             Log.d("testBoredActivity_startActivity_onClick", "txt1 :" + it.findViewById<TextView>(R.id.bored_txtview).text)
         }
         onView(withId(R.id.so_bored_btn)).perform(click())
-        onView(withId(R.id.bored_txtview)).check(matches(withText(R.string.txt_getting_bored)))
-        activity.onActivity {
-            Log.d("testBoredActivity_startActivity_onClick", "txt2 :" + it.findViewById<TextView>(R.id.bored_txtview).text)
-        }
+//        onView(withId(R.id.bored_txtview)).check(matches(withText(R.string.txt_getting_bored)))
+//        activity.onActivity {
+//            Log.d("testBoredActivity_startActivity_onClick", "txt2 :" + it.findViewById<TextView>(R.id.bored_txtview).text)
+//        }
 
-        // TODO : fails as response never comes from mock server
-        Thread.sleep(6000)
-//        onView(withId(R.id.bored_txtview)).check(matches(withSubstring("Learn Morse code")))
+//        while(activity.state != ActivityScenario.State.DESTROYED) {
+//            Thread.sleep(100)
+//        }
+
+        val fakeSuccessValue = "you can do : Learn Morse code\nwith 1 people\nprice 0.0 out of [0, 1] zero being free\naccessibility : 0.0 out of [0.0-1.0] zero being the most accessible\ntype : education\nlink : https://en.wikipedia.org/wiki/Morse_code\nkey : 3646173"
+        onView(withId(R.id.bored_txtview)).check(matches(withText(fakeSuccessValue)))
         activity.onActivity {
             Log.d("testBoredActivity_startActivity_onClick", "txt3 :" + it.findViewById<TextView>(R.id.bored_txtview).text)
         }
