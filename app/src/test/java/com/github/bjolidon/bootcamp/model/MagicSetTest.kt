@@ -9,28 +9,34 @@ import org.junit.Test
 import org.junit.Assert.*
 
 class MagicSetTest {
+
+    private val validCode = "MT15"
+    private val validName = "Magic 2015"
+
     @Test
     fun blankCodeIsInvalid() {
         assertThrows(IllegalArgumentException::class.java) {
-            MagicSet("", "Magic 2015")
+            MagicSet("", validName)
         }
         assertThrows(IllegalArgumentException::class.java) {
-            MagicSet(" ", "Magic 2015")
+            MagicSet(" ", validName)
         }
     }
 
     @Test
     fun blankNameIsInvalid() {
         assertThrows(IllegalArgumentException::class.java) {
-            MagicSet("MT15", "")
+            MagicSet(validCode, "")
         }
         assertThrows(IllegalArgumentException::class.java) {
-            MagicSet("MT15", " ")
+            MagicSet(validCode, " ")
         }
     }
 
     @Test
     fun validSet() {
-        MagicSet("MT15", "Magic 2015")
+        val set = MagicSet(validCode, validName)
+        assertEquals(validCode, set.code)
+        assertEquals(validName, set.name)
     }
 }
