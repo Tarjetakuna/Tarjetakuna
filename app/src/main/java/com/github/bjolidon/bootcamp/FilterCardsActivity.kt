@@ -10,7 +10,7 @@ import java.util.*
 
 class FilterCardsActivity : AppCompatActivity() {
 
-    var languageArray = arrayOf("Java", "C++", "Kotlin", "C", "Python", "Javascript")
+    val languageArray = arrayOf("Java", "C++", "Kotlin", "C", "Python", "Javascript")
     var valuesMap: Map<String, ArrayList<String>> = emptyMap<String, ArrayList<String>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +48,6 @@ class FilterCardsActivity : AppCompatActivity() {
         }
         val builder: AlertDialog.Builder =
             AlertDialog.Builder(this@FilterCardsActivity)
-
         builder.setTitle(title)
         builder.setCancelable(false)
 
