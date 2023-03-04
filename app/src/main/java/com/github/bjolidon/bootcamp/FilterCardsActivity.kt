@@ -9,44 +9,25 @@ import java.util.*
 
 
 class FilterCardsActivity : AppCompatActivity() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_filter_cards)
-//        title = "Filter Cards"
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//
-//        val languageSpinner: Spinner = findViewById(R.id.filter_language_spinner)
-//        val items = arrayOf("English", "Spanish", "French", "German", "Italian", "Portuguese", "Russian", "Japanese", "Chinese")
-//        languageSpinner.setAdapter(ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items))
-//
-//        val nameSpinner: Spinner = findViewById(R.id.filter_name_spinner)
-//        val items2 = arrayOf("Mur de gel", "Pourrissement cérébral")
-//        nameSpinner.setAdapter(ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items2))
-//    }
 
-    lateinit var selectedLanguage: BooleanArray
-//    var langList: ArrayList<Int> = ArrayList()
     var languageArray = arrayOf("Java", "C++", "Kotlin", "C", "Python", "Javascript")
-
     var valuesMap: Map<String, ArrayList<String>> = emptyMap<String, ArrayList<String>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter_cards)
+        title = "Filter Cards"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // assign variable
         val languageTextView: TextView = findViewById(R.id.textView)
-
-        // initialize selected language array
         languageTextView.setOnClickListener {
-            // show multi choice dialog
             val selectedLanguage = BooleanArray(languageArray.size)
             for (i in languageArray) {
-                if (valuesMap.containsKey("Language") && valuesMap["Language"]!!.contains(i)) {
+                if (valuesMap.containsKey(getString(R.string.language)) && valuesMap[getString(R.string.language)]!!.contains(i)) {
                     selectedLanguage[languageArray.indexOf(i)] = true
                 }
             }
-            showMultiChoiceDialog(languageTextView, "Language", selectedLanguage,
+            showMultiChoiceDialog(languageTextView, getString(R.string.language), selectedLanguage,
                 languageArray)
         }
     }

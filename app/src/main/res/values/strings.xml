@@ -4,6 +4,7 @@
     <string name="hello">Hello</string>
     <string name="enter_your_name">Enter your name:</string>
     <string name="filter_option_title">Filter options</string>
-    <string name="language">language</string>
+    <string name="language">Language</string>
     <string name="card_name">card name</string>
+    <string name="select_language">Select Language</string>
 </resources>
