@@ -1,7 +1,11 @@
 package com.github.bjolidon.bootcamp
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig
@@ -32,16 +36,23 @@ class AuthenticationActivity: AppCompatActivity() {
         val providers = arrayListOf(
             IdpConfig.GoogleBuilder().build()
         )
-
-        // Create and launch sign-in intent
-        val signInIntent = AuthUI.getInstance()
-            .createSignInIntentBuilder()
-            .setAvailableProviders(providers)
-            .build()
-        signInLauncher.launch(signInIntent)
+        // Check if the device is connected to the internet
+        if(isNetworkAvailable(this.baseContext)) {
+            // Create and launch sign-in intent
+            val signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .build()
+            signInLauncher.launch(signInIntent)
+        } else {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("errorCode", "networkNotAvailable")
+            startActivity(intent)
+        }
     }
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
+        val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
             // Successfully signed in
             val username = FirebaseAuth.getInstance().currentUser?.email
@@ -49,8 +60,14 @@ class AuthenticationActivity: AppCompatActivity() {
             intent.putExtra("name", username)
             startActivity(intent)
         } else {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            if (response == null) {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("errorCode", "authenticationFailed")
+                startActivity(intent)
+            }
         }
     }
 
@@ -61,5 +78,22 @@ class AuthenticationActivity: AppCompatActivity() {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
+    }
+
+    // Check if the device is connected to the internet
+    private fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val nw = connectivityManager.activeNetwork ?: return false
+        val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
+        return when {
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            //for other device that are able to connect with Ethernet
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            //for check internet over Bluetooth
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+            else -> false
+        }
     }
 }

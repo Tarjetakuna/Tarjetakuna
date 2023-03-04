@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Bootcamp</string>
-    <string name="button">Button</string>
     <string name="hello">Hello</string>
-    <string name="enter_your_name">Enter your name:</string>
     <string name="se_connecter">Se connecter</string>
     <string name="testforauth">TestForAuth</string>
     <string name="sign_out">sign out</string>
+    <string name="device_is_not_connected_to_internet">Device is not connected to internet</string>
+    <string name="authentication_failed_please_try_again">Authentication failed, please try again</string>
 </resources>
