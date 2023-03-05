@@ -17,7 +17,6 @@ class FilterCardsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter_cards)
         title = "Filter Cards"
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val languageTextView: TextView = findViewById(R.id.languageTextView)
         languageTextView.setOnClickListener {
