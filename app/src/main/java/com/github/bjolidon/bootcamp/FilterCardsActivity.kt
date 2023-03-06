@@ -2,14 +2,16 @@ package com.github.bjolidon.bootcamp
 
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.widget.AdapterView.INVALID_POSITION
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.github.bjolidon.bootcamp.model.Filter
 import com.github.bjolidon.bootcamp.model.MagicCard
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
-import java.util.*
+import kotlin.collections.ArrayList
 
 
 /*
@@ -32,8 +34,12 @@ import java.util.*
 class FilterCardsActivity : AppCompatActivity() {
 
     private val languageArray = arrayOf("Java", "C++", "Kotlin", "C", "Python", "Javascript")
-    var valuesMap: Map<String, ArrayList<String>> = emptyMap<String, ArrayList<String>>()
+    private val namesArray = arrayOf("Meandering Towershell", "Angel of Mercy", "Angel of Serenity", "Angel of Sanctions", "Angel of the Dire Hour")
+
+    private var valuesMap: Map<String, ArrayList<String>> = emptyMap<String, ArrayList<String>>()
     private lateinit var cards: ArrayList<MagicCard>
+    lateinit var filteredCards: ArrayList<MagicCard>
+    lateinit var filter: Filter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +47,7 @@ class FilterCardsActivity : AppCompatActivity() {
         title = "Filter Cards"
         // take the cards from the intent so that we can process them
         cards = getCardsFromIntent()
+        filteredCards = ArrayList()
 
         val languageTextView: TextView = findViewById(R.id.languageTextView)
         languageTextView.setOnClickListener {
@@ -52,6 +59,19 @@ class FilterCardsActivity : AppCompatActivity() {
             }
             showMultiChoiceDialog(languageTextView, getString(R.string.language), selectedLanguage,
                 languageArray)
+        }
+
+        val nameTextView: TextView = findViewById(R.id.cardNameTextView)
+        nameTextView.setOnClickListener {
+            var selectedName = -1
+            for (i in namesArray.indices) {
+                if (valuesMap.containsKey(getString(R.string.card_name))
+                    && valuesMap[getString(R.string.card_name)]!!.contains(namesArray[i])) {
+                    selectedName = i
+                }
+            }
+            showSingleChoiceDialog(nameTextView, getString(R.string.card_name), selectedName,
+                namesArray)
         }
     }
     /*
@@ -116,6 +136,56 @@ class FilterCardsActivity : AppCompatActivity() {
         }
         builder.show()
     }
+
+    /*
+     * Method to show single choice dialog
+     */
+    private fun showSingleChoiceDialog(textView: TextView, title: String,
+                                       selectedChoice: Int, options: Array<String>) {
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@FilterCardsActivity)
+        builder.setTitle(title)
+        builder.setCancelable(false)
+
+        builder.setSingleChoiceItems(options, selectedChoice) { _, _ -> }
+
+        builder.setPositiveButton("OK"
+        ) { dialog, _ ->
+            val selectedItemPosition = (dialog as AlertDialog).listView.checkedItemPosition
+            if (selectedItemPosition != INVALID_POSITION) {
+                valuesMap = valuesMap.plus(Pair(title, arrayListOf(options[selectedItemPosition])))
+            }
+
+            // set text on textView and set ellipses so that it does not exceed the box
+            textView.maxWidth = textView.measuredWidth
+            textView.maxLines = 1
+            textView.setHorizontallyScrolling(true)
+            textView.movementMethod = ScrollingMovementMethod()
+            textView.text = options[selectedItemPosition]
+        }
+
+        builder.setNeutralButton("Clear All"
+        ) { _, _ ->
+            textView.text = title
+            valuesMap = valuesMap.minus(title)
+        }
+        builder.show()
+    }
+
+    private fun convertToFilter() {
+        for (i in valuesMap.keys) {
+            when (i) {
+                getString(R.string.card_name) -> {
+                    filter = Filter(valuesMap[i]!![0])
+                }
+            }
+        }
+
+    }
+
+    /*
+     * Method to get the cards from the intent
+     */
     private fun getCardsFromIntent(): ArrayList<MagicCard> {
         val gson = Gson();
         val cardsJson = intent.getStringExtra("cards")

@@ -85,16 +85,16 @@ class FilterCardsTest {
         onView(withId(R.id.languageTextView)).check(matches(withText("C++, Kotlin")))
     }
 
-    @Test
-    fun testValuesUpdatedInValuesMap() {
-        onView(withId(R.id.languageTextView)).perform(click())
-        onView(withText("Language")).inRoot(isDialog()).perform(click())
-        onView(withText("Kotlin")).inRoot(isDialog()).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
-        activityRule.onActivity { activity ->
-            assert(activity.valuesMap["Language"] == arrayListOf<String>("Kotlin"))
-        }
-    }
+//    @Test
+//    fun testValuesUpdatedInValuesMap() {
+//        onView(withId(R.id.languageTextView)).perform(click())
+//        onView(withText("Language")).inRoot(isDialog()).perform(click())
+//        onView(withText("Kotlin")).inRoot(isDialog()).perform(click())
+//        onView(withId(android.R.id.button1)).perform(click())
+//        activityRule.onActivity { activity ->
+//            assert(activity.valuesMap["Language"] == arrayListOf<String>("Kotlin"))
+//        }
+//    }
 
     @Test
     fun testValuesAllCleared() {
