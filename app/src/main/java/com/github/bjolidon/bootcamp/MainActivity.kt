@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 //            val intent = Intent(this, GreetingActivity::class.java)
 //            intent.putExtra("name2", plainText.text.toString())
             val intent2 = Intent(this, FilterCardsActivity::class.java)
+            intent2.putExtra("cards", "[]")
             startActivity(intent2)
 //            startActivity(intent)
         }

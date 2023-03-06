@@ -5,18 +5,42 @@ import android.text.method.ScrollingMovementMethod
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.github.bjolidon.bootcamp.model.MagicCard
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 import java.util.*
 
 
+/*
+    * Activity to filter cards.
+    * Get the list of cards to be filtered from the intent as a string gson
+    * e.g
+    * {"convertedManaCost": 7,
+       "imageUrl": "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
+       "layout": "Normal",
+       "manaCost": "{5}{W}{W}",
+       "name": "Test Card",
+       "number": 56,
+       "set": {
+       "code": "MT15",
+       "name": "Magic 2015"
+        },
+        "text": "Test Type"
+      }
+ */
 class FilterCardsActivity : AppCompatActivity() {
 
-    val languageArray = arrayOf("Java", "C++", "Kotlin", "C", "Python", "Javascript")
+    private val languageArray = arrayOf("Java", "C++", "Kotlin", "C", "Python", "Javascript")
     var valuesMap: Map<String, ArrayList<String>> = emptyMap<String, ArrayList<String>>()
+    private lateinit var cards: ArrayList<MagicCard>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter_cards)
         title = "Filter Cards"
+        // take the cards from the intent so that we can process them
+        cards = getCardsFromIntent()
 
         val languageTextView: TextView = findViewById(R.id.languageTextView)
         languageTextView.setOnClickListener {
@@ -91,6 +115,12 @@ class FilterCardsActivity : AppCompatActivity() {
             valuesMap = valuesMap.minus(title)
         }
         builder.show()
+    }
+    private fun getCardsFromIntent(): ArrayList<MagicCard> {
+        val gson = Gson();
+        val cardsJson = intent.getStringExtra("cards")
+        val type: Type = object : TypeToken<List<MagicCard?>?>() {}.type
+        return gson.fromJson(cardsJson, type)
     }
 
 }
