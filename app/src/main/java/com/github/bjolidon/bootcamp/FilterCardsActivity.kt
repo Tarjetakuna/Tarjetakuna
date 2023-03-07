@@ -3,11 +3,14 @@ package com.github.bjolidon.bootcamp
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.widget.AdapterView.INVALID_POSITION
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.github.bjolidon.bootcamp.model.Filter
 import com.github.bjolidon.bootcamp.model.MagicCard
+import com.github.bjolidon.bootcamp.model.MagicLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
@@ -33,10 +36,10 @@ import kotlin.collections.ArrayList
  */
 class FilterCardsActivity : AppCompatActivity() {
 
-    private val languageArray = arrayOf("Java", "C++", "Kotlin", "C", "Python", "Javascript")
+    private val layoutArray: Array<String> = MagicLayout.values().map { it.toString() }.toTypedArray()
     private val namesArray = arrayOf("Meandering Towershell", "Angel of Mercy", "Angel of Serenity", "Angel of Sanctions", "Angel of the Dire Hour")
 
-    private var valuesMap: Map<String, ArrayList<String>> = emptyMap<String, ArrayList<String>>()
+    private var valuesMap: Map<String, ArrayList<String>> = emptyMap()
     private lateinit var cards: ArrayList<MagicCard>
     lateinit var filteredCards: ArrayList<MagicCard>
     lateinit var filter: Filter
@@ -49,16 +52,16 @@ class FilterCardsActivity : AppCompatActivity() {
         cards = getCardsFromIntent()
         filteredCards = ArrayList()
 
-        val languageTextView: TextView = findViewById(R.id.languageTextView)
-        languageTextView.setOnClickListener {
-            val selectedLanguage = BooleanArray(languageArray.size)
-            for (i in languageArray) {
-                if (valuesMap.containsKey(getString(R.string.language)) && valuesMap[getString(R.string.language)]!!.contains(i)) {
-                    selectedLanguage[languageArray.indexOf(i)] = true
+        val layoutTextView: TextView = findViewById(R.id.layoutTextView)
+        layoutTextView.setOnClickListener {
+            val selectedLayout = BooleanArray(layoutArray.size)
+            for (i in layoutArray) {
+                if (valuesMap.containsKey(getString(R.string.layout_name)) && valuesMap[getString(R.string.layout_name)]!!.contains(i)) {
+                    selectedLayout[layoutArray.indexOf(i)] = true
                 }
             }
-            showMultiChoiceDialog(languageTextView, getString(R.string.language), selectedLanguage,
-                languageArray)
+            showMultiChoiceDialog(layoutTextView, getString(R.string.layout_name), selectedLayout,
+                layoutArray)
         }
 
         val nameTextView: TextView = findViewById(R.id.cardNameTextView)
@@ -72,6 +75,12 @@ class FilterCardsActivity : AppCompatActivity() {
             }
             showSingleChoiceDialog(nameTextView, getString(R.string.card_name), selectedName,
                 namesArray)
+        }
+
+        val applyFilterButton: Button = findViewById(R.id.filterButton)
+        applyFilterButton.setOnClickListener {
+            filter = convertToFilter()
+            Toast.makeText(this, "Filter applied", Toast.LENGTH_SHORT).show()
         }
     }
     /*
@@ -117,8 +126,9 @@ class FilterCardsActivity : AppCompatActivity() {
                     stringBuilder.append(", ")
                 }
             }
-
-            valuesMap = valuesMap.plus(Pair(title, selectedItems))
+            if (selectedItems.isNotEmpty()) {
+                valuesMap = valuesMap.plus(Pair(title, selectedItems))
+            }
 
             // set text on textView and set ellipses so that it does not exceed the box
             textView.maxWidth = textView.measuredWidth
@@ -154,14 +164,13 @@ class FilterCardsActivity : AppCompatActivity() {
             val selectedItemPosition = (dialog as AlertDialog).listView.checkedItemPosition
             if (selectedItemPosition != INVALID_POSITION) {
                 valuesMap = valuesMap.plus(Pair(title, arrayListOf(options[selectedItemPosition])))
+                // set text on textView and set ellipses so that it does not exceed the box
+                textView.maxWidth = textView.measuredWidth
+                textView.maxLines = 1
+                textView.setHorizontallyScrolling(true)
+                textView.movementMethod = ScrollingMovementMethod()
+                textView.text = options[selectedItemPosition]
             }
-
-            // set text on textView and set ellipses so that it does not exceed the box
-            textView.maxWidth = textView.measuredWidth
-            textView.maxLines = 1
-            textView.setHorizontallyScrolling(true)
-            textView.movementMethod = ScrollingMovementMethod()
-            textView.text = options[selectedItemPosition]
         }
 
         builder.setNeutralButton("Clear All"
@@ -172,22 +181,30 @@ class FilterCardsActivity : AppCompatActivity() {
         builder.show()
     }
 
-    private fun convertToFilter() {
+    private fun convertToFilter(): Filter {
+        var name = ""
+        val layout: ArrayList<MagicLayout> = emptyArray<MagicLayout>().toCollection(ArrayList())
         for (i in valuesMap.keys) {
             when (i) {
                 getString(R.string.card_name) -> {
-                    filter = Filter(valuesMap[i]!![0])
+                    name = valuesMap[i]!![0]
+                }
+
+                getString(R.string.layout_name) -> {
+                    for (j in valuesMap[i]!!) {
+                        layout.add(MagicLayout.valueOf(j))
+                    }
                 }
             }
         }
-
+        return Filter(name, layout)
     }
 
     /*
      * Method to get the cards from the intent
      */
     private fun getCardsFromIntent(): ArrayList<MagicCard> {
-        val gson = Gson();
+        val gson = Gson()
         val cardsJson = intent.getStringExtra("cards")
         val type: Type = object : TypeToken<List<MagicCard?>?>() {}.type
         return gson.fromJson(cardsJson, type)
