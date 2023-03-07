@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.github.bjolidon.bootcamp"
-        minSdk 24
+        minSdk 28
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -36,6 +36,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 ext {
@@ -54,7 +57,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
-
 
     // java to kotlin serialization
     implementation 'com.google.code.gson:gson:2.9.0'
@@ -87,6 +89,12 @@ dependencies {
     implementation("androidx.room:room-paging:$room_version")
 
     // end of room database dependencies
+
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
+//    implementation 'com.google.android.ads:mediation-test-suite:2.0.0' // add advertising library...
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
