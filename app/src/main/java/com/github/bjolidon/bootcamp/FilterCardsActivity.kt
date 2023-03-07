@@ -53,35 +53,14 @@ class FilterCardsActivity : AppCompatActivity() {
         cards = getCardsFromIntent()
         filteredCards = ArrayList()
 
-<<<<<<< HEAD
         val manaCostTextView: TextView = findViewById(R.id.manaCostTextView)
         addListenerToMultiChoice(manaCostTextView, getString(R.string.card_mana_cost), manaCostArray)
 
         val layoutTextView: TextView = findViewById(R.id.layoutTextView)
         addListenerToMultiChoice(layoutTextView, getString(R.string.layout_name), layoutArray)
-=======
-        val layoutTextView: TextView = findViewById(R.id.layoutTextView)
-        layoutTextView.setOnClickListener {
-            val selectedLayout = BooleanArray(layoutArray.size)
-            for (i in layoutArray) {
-                if (valuesMap.containsKey(getString(R.string.layout_name)) && valuesMap[getString(R.string.layout_name)]!!.contains(i)) {
-                    selectedLayout[layoutArray.indexOf(i)] = true
-                }
-            }
-            showMultiChoiceDialog(layoutTextView, getString(R.string.layout_name), selectedLayout,
-                layoutArray)
-        }
->>>>>>> c8ae97a (choices changed + test modified + convert to filter class done)
 
         val nameTextView: TextView = findViewById(R.id.cardNameTextView)
         addListenerToSingleChoice(nameTextView, getString(R.string.card_name), namesArray)
-
-
-        val applyFilterButton: Button = findViewById(R.id.filterButton)
-        applyFilterButton.setOnClickListener {
-            filter = convertToFilter()
-            Toast.makeText(this, "Filter applied", Toast.LENGTH_SHORT).show()
-        }
 
         val applyFilterButton: Button = findViewById(R.id.filterButton)
         applyFilterButton.setOnClickListener {
@@ -164,15 +143,7 @@ class FilterCardsActivity : AppCompatActivity() {
             if (selectedItemPosition != INVALID_POSITION) {
                 valuesMap = valuesMap.plus(Pair(title, arrayListOf(options[selectedItemPosition])))
                 // set text on textView and set ellipses so that it does not exceed the box
-<<<<<<< HEAD
                 displayTextOnTextView(textView, options[selectedItemPosition])
-=======
-                textView.maxWidth = textView.measuredWidth
-                textView.maxLines = 1
-                textView.setHorizontallyScrolling(true)
-                textView.movementMethod = ScrollingMovementMethod()
-                textView.text = options[selectedItemPosition]
->>>>>>> c8ae97a (choices changed + test modified + convert to filter class done)
             }
         }
 
@@ -184,12 +155,9 @@ class FilterCardsActivity : AppCompatActivity() {
         builder.show()
     }
 
-<<<<<<< HEAD
     /*
      * Convert the map of selected values to a filter object
      */
-=======
->>>>>>> c8ae97a (choices changed + test modified + convert to filter class done)
     private fun convertToFilter(): Filter {
         var name = ""
         val layout: ArrayList<MagicLayout> = emptyArray<MagicLayout>().toCollection(ArrayList())
