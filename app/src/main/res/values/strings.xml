@@ -4,7 +4,7 @@
     <string name="hello">Hello</string>
     <string name="enter_your_name">Enter your name:</string>
     <string name="filter_option_title">Filter options</string>
-        <string name="filter">Filter</string>
+    <string name="filter">Filter</string>
     <string name="card_name">Card name</string>
     <string name="card_mana_cost">Mana cost</string>
     <string name="layout_name">Layout</string>
