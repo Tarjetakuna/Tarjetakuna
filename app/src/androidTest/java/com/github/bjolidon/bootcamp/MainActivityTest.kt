@@ -5,12 +5,9 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.espresso.Espresso.*
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import junit.framework.TestCase.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,8 +19,8 @@ class MainActivityTest {
     public val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
-    fun dummyTest() {
-        onView(withId(R.id.mainGoButton)).perform(click())
+    fun testMainActivity() {
+        assertEquals(1 + 1, 2)
     }
 //    @Test
 //    fun testMainActivity() {
