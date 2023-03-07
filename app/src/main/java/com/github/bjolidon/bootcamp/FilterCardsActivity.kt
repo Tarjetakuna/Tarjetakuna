@@ -26,8 +26,8 @@ class FilterCardsActivity : AppCompatActivity() {
                     selectedLanguage[languageArray.indexOf(i)] = true
                 }
             }
-            showMultiChoiceDialog(languageTextView, getString(R.string.language), selectedLanguage,
-                languageArray)
+            showMultiChoiceDialog(languageTextView, getString(R.string.language),
+                selectedLanguage, languageArray)
         }
     }
     /*
@@ -47,6 +47,7 @@ class FilterCardsActivity : AppCompatActivity() {
         }
         val builder: AlertDialog.Builder =
             AlertDialog.Builder(this@FilterCardsActivity)
+
         builder.setTitle(title)
         builder.setCancelable(false)
 
