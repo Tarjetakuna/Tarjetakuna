@@ -47,7 +47,6 @@ class FilterCardsActivity : AppCompatActivity() {
         }
         val builder: AlertDialog.Builder =
             AlertDialog.Builder(this@FilterCardsActivity)
-
         builder.setTitle(title)
         builder.setCancelable(false)
 
@@ -95,4 +94,3 @@ class FilterCardsActivity : AppCompatActivity() {
     }
 
 }
-
