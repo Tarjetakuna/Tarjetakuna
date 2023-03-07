@@ -6,19 +6,15 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
 import com.github.bjolidon.bootcamp.model.MagicCard
 import com.github.bjolidon.bootcamp.model.MagicLayout
 import com.github.bjolidon.bootcamp.model.MagicSet
 import com.google.gson.Gson
-import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -57,7 +53,7 @@ class FilterCardsTest {
     }
     @Test
     fun testContainsTextView() {
-        onView(withId(R.id.languageTextView)).check(matches(isDisplayed()))
+        onView(withId(R.id.layoutTextView)).check(matches(isDisplayed()))
     }
 
     @Test
@@ -68,75 +64,65 @@ class FilterCardsTest {
     }
 
     @Test
-    fun testClickOnLanguageShowsLanguageList() {
-        onView(withId(R.id.languageTextView)).perform(click())
-        onView(withText("Language")).inRoot(isDialog()).check(matches(isDisplayed()))
+    fun testClickOnLayoutShowsLayoutList() {
+        onView(withId(R.id.layoutTextView)).perform(click())
+        onView(withText("Layout")).inRoot(isDialog()).check(matches(isDisplayed()))
     }
 
     @Test
     fun testCanClickOnChoices() {
-        onView(withId(R.id.languageTextView)).perform(click())
-        onView(withText("Language")).inRoot(isDialog()).perform(click())
-        onView(withText("Kotlin")).inRoot(isDialog()).perform(click())
-        onView(withText("C++")).inRoot(isDialog()).perform(click())
+        onView(withId(R.id.layoutTextView)).perform(click())
+        onView(withText("Layout")).inRoot(isDialog()).perform(click())
+        onView(withText("Normal")).inRoot(isDialog()).perform(click())
+        onView(withText("Phenomenon")).inRoot(isDialog()).perform(click())
+        onView(withText("Token")).inRoot(isDialog()).perform(click())
         //button 1 = OK, button 3 = Cancel
         onView(withId(android.R.id.button1)).perform(click())
-        onView(withId(R.id.languageTextView)).check(matches(withText("C++, Kotlin")))
+        onView(withId(R.id.layoutTextView)).check(matches(withText("Normal, Token, Phenomenon")))
     }
-
-//    @Test
-//    fun testValuesUpdatedInValuesMap() {
-//        onView(withId(R.id.languageTextView)).perform(click())
-//        onView(withText("Language")).inRoot(isDialog()).perform(click())
-//        onView(withText("Kotlin")).inRoot(isDialog()).perform(click())
-//        onView(withId(android.R.id.button1)).perform(click())
-//        activityRule.onActivity { activity ->
-//            assert(activity.valuesMap["Language"] == arrayListOf<String>("Kotlin"))
-//        }
-//    }
 
     @Test
     fun testValuesAllCleared() {
-        onView(withId(R.id.languageTextView)).perform(click())
-        onView(withText("Language")).inRoot(isDialog()).perform(click())
-        onView(withText("Kotlin")).inRoot(isDialog()).perform(click())
-        onView(withText("Java")).inRoot(isDialog()).perform(click())
+        onView(withId(R.id.layoutTextView)).perform(click())
+        onView(withText("Layout")).inRoot(isDialog()).perform(click())
+        onView(withText("Normal")).inRoot(isDialog()).perform(click())
+        onView(withText("Phenomenon")).inRoot(isDialog()).perform(click())
         onView(withId(android.R.id.button1)).perform(click())
 
-        onView(withId(R.id.languageTextView)).check(matches(withText("Java, Kotlin")))
+        onView(withId(R.id.layoutTextView)).check(matches(withText("Normal, Phenomenon")))
 
-        onView(withId(R.id.languageTextView)).perform(click())
+        onView(withId(R.id.layoutTextView)).perform(click())
         onView(withId(android.R.id.button3)).perform(click())
-        onView(withId(R.id.languageTextView)).check(matches(withText("Language")))
+        onView(withId(R.id.layoutTextView)).check(matches(withText("Layout")))
     }
 
     @Test
     fun testCheckBoxUnchecked() {
-        onView(withId(R.id.languageTextView)).perform(click())
-        onView(withText("Language")).inRoot(isDialog()).perform(click())
-        onView(withText("Kotlin")).inRoot(isDialog()).perform(click())
-        onView(withText("Kotlin")).inRoot(isDialog()).perform(click())
-        onView(withText("Java")).inRoot(isDialog()).perform(click())
+        onView(withId(R.id.layoutTextView)).perform(click())
+        onView(withText("Layout")).inRoot(isDialog()).perform(click())
+        onView(withText("Normal")).inRoot(isDialog()).perform(click())
+        onView(withText("Normal")).inRoot(isDialog()).perform(click())
+        onView(withText("Leveler")).inRoot(isDialog()).perform(click())
         onView(withId(android.R.id.button1)).perform(click())
 
-        onView(withId(R.id.languageTextView)).check(matches(withText("Java")))
+        onView(withId(R.id.layoutTextView)).check(matches(withText("Leveler")))
     }
 
     @Test
     fun testCheckBoxStillCheckedAfterConfirmingAndReopening() {
-        onView(withId(R.id.languageTextView)).perform(click())
-        onView(withText("Language")).inRoot(isDialog()).perform(click())
-        onView(withText("Kotlin")).inRoot(isDialog()).perform(click())
-        onView(withText("Java")).inRoot(isDialog()).perform(click())
+        onView(withId(R.id.layoutTextView)).perform(click())
+        onView(withText("Layout")).inRoot(isDialog()).perform(click())
+        onView(withText("Normal")).inRoot(isDialog()).perform(click())
+        onView(withText("Leveler")).inRoot(isDialog()).perform(click())
         onView(withId(android.R.id.button1)).perform(click())
 
-        onView(withId(R.id.languageTextView)).check(matches(withText("Java, Kotlin")))
+        onView(withId(R.id.layoutTextView)).check(matches(withText("Normal, Leveler")))
 
-        onView(withId(R.id.languageTextView)).perform(click())
-        onView(withText("Language")).inRoot(isDialog()).perform(click())
-        onView(withText("Kotlin")).inRoot(isDialog()).perform(click())
+        onView(withId(R.id.layoutTextView)).perform(click())
+        onView(withText("Layout")).inRoot(isDialog()).perform(click())
+        onView(withText("Normal")).inRoot(isDialog()).perform(click())
         onView(withId(android.R.id.button1)).perform(click())
 
-        onView(withId(R.id.languageTextView)).check(matches(withText("Java")))
+        onView(withId(R.id.layoutTextView)).check(matches(withText("Leveler")))
     }
 }
