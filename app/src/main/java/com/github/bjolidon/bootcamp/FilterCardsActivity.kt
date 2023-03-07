@@ -94,3 +94,4 @@ class FilterCardsActivity : AppCompatActivity() {
     }
 
 }
+
