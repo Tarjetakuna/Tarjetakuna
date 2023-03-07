@@ -53,7 +53,6 @@ class FilterCardsActivity : AppCompatActivity() {
         cards = getCardsFromIntent()
         filteredCards = ArrayList()
 
-
         val manaCostTextView: TextView = findViewById(R.id.manaCostTextView)
         addListenerToMultiChoice(manaCostTextView, getString(R.string.card_mana_cost), manaCostArray)
 
