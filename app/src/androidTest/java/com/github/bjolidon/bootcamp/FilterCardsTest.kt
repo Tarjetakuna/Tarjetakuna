@@ -9,7 +9,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
+import com.github.bjolidon.bootcamp.model.Filter
 import com.github.bjolidon.bootcamp.model.MagicCard
 import com.github.bjolidon.bootcamp.model.MagicLayout
 import com.github.bjolidon.bootcamp.model.MagicSet
@@ -49,7 +49,7 @@ class FilterCardsTest {
         val arrayCardJson = gson.toJson(arrayCard)
         val intent = Intent(ApplicationProvider.getApplicationContext(), FilterCardsActivity::class.java)
         intent.putExtra("cards", arrayCardJson)
-        activityRule = ActivityScenario.launch<FilterCardsActivity>(intent)
+        activityRule = ActivityScenario.launch(intent)
     }
     @Test
     fun testContainsTextView() {
@@ -93,7 +93,7 @@ class FilterCardsTest {
 
         onView(withId(R.id.layoutTextView)).perform(click())
         onView(withId(android.R.id.button3)).perform(click())
-        onView(withId(R.id.layoutTextView)).check(matches(withText("Layout")))
+        onView(withId(R.id.layoutTextView)).check(matches(withText("")))
     }
 
     @Test
@@ -125,4 +125,100 @@ class FilterCardsTest {
 
         onView(withId(R.id.layoutTextView)).check(matches(withText("Leveler")))
     }
+
+    @Test
+    fun noChoiceSelectedMultipleChoiceWorks() {
+        onView(withId(R.id.layoutTextView)).perform(click())
+        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(R.id.layoutTextView)).check(matches(withText("")))
+    }
+
+    @Test
+    fun testSingleChoiceWorks() {
+        onView(withId(R.id.cardNameTextView)).perform(click())
+        onView(withText("Angel of Mercy")).inRoot(isDialog()).perform(click())
+        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(R.id.cardNameTextView)).check(matches(withText("Angel of Mercy")))
+    }
+
+    @Test
+    fun testNoSelectedChoiceWorks() {
+        onView(withId(R.id.cardNameTextView)).perform(click())
+        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(R.id.cardNameTextView)).check(matches(withText("")))
+    }
+    @Test
+    fun testOnlySingleChoicePossible() {
+        onView(withId(R.id.cardNameTextView)).perform(click())
+        onView(withText("Angel of Mercy")).inRoot(isDialog()).perform(click())
+        onView(withText("Angel of Serenity")).inRoot(isDialog()).perform(click())
+
+        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(R.id.cardNameTextView)).check(matches(withText("Angel of Serenity")))
+    }
+
+    @Test
+    fun testSingleChoiceCleared() {
+        onView(withId(R.id.cardNameTextView)).perform(click())
+        onView(withText("Angel of Mercy")).inRoot(isDialog()).perform(click())
+        onView(withId(android.R.id.button3)).perform(click())
+        onView(withId(R.id.cardNameTextView)).check(matches(withText("")))
+    }
+
+    @Test
+    fun testSingleChoiceStays() {
+        onView(withId(R.id.cardNameTextView)).perform(click())
+        onView(withText("Angel of Mercy")).inRoot(isDialog()).perform(click())
+        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(R.id.cardNameTextView)).check(matches(withText("Angel of Mercy")))
+
+        onView(withId(R.id.cardNameTextView)).perform(click())
+        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(R.id.cardNameTextView)).check(matches(withText("Angel of Mercy")))
+    }
+
+    @Test
+    fun testFilterButtonWithEmptyFilterWorks() {
+        onView(withId(R.id.filterButton)).perform(click())
+        activityRule.onActivity { activity ->
+            assert(activity.filter == Filter("", ArrayList()))
+        }
+    }
+
+    @Test
+    fun testFilterButtonWithEmptyName() {
+        onView(withId(R.id.layoutTextView)).perform(click())
+        onView(withText("Layout")).inRoot(isDialog()).perform(click())
+        onView(withText("Normal")).inRoot(isDialog()).perform(click())
+        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(R.id.filterButton)).perform(click())
+        activityRule.onActivity { activity ->
+            assert(activity.filter == Filter("", arrayListOf(MagicLayout.Normal)))
+        }
+    }
+    @Test
+    fun testFilterButtonWorks() {
+        onView(withId(R.id.cardNameTextView)).perform(click())
+        onView(withText("Angel of Mercy")).inRoot(isDialog()).perform(click())
+        onView(withId(android.R.id.button1)).perform(click())
+
+        onView(withId(R.id.layoutTextView)).perform(click())
+        onView(withText("Layout")).inRoot(isDialog()).perform(click())
+        onView(withText("Normal")).inRoot(isDialog()).perform(click())
+        onView(withText("Leveler")).inRoot(isDialog()).perform(click())
+        onView(withId(android.R.id.button1)).perform(click())
+
+        onView(withId(R.id.filterButton)).perform(click())
+        activityRule.onActivity { activity ->
+            assert(
+                activity.filter == Filter(
+                    "Angel of Mercy", arrayListOf(
+                        MagicLayout.Normal,
+                        MagicLayout.Leveler
+                    )
+                )
+            )
+        }
+    }
+
 }

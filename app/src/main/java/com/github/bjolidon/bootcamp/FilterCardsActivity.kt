@@ -38,6 +38,7 @@ class FilterCardsActivity : AppCompatActivity() {
 
     private val layoutArray: Array<String> = MagicLayout.values().map { it.toString() }.toTypedArray()
     private val namesArray = arrayOf("Meandering Towershell", "Angel of Mercy", "Angel of Serenity", "Angel of Sanctions", "Angel of the Dire Hour")
+    private val manaCostArray: Array<String> = (0..16).map { it.toString() }.toTypedArray()
 
     private var valuesMap: Map<String, ArrayList<String>> = emptyMap()
     private lateinit var cards: ArrayList<MagicCard>
@@ -52,30 +53,16 @@ class FilterCardsActivity : AppCompatActivity() {
         cards = getCardsFromIntent()
         filteredCards = ArrayList()
 
+
+        val manaCostTextView: TextView = findViewById(R.id.manaCostTextView)
+        addListenerToMultiChoice(manaCostTextView, getString(R.string.card_mana_cost), manaCostArray)
+
         val layoutTextView: TextView = findViewById(R.id.layoutTextView)
-        layoutTextView.setOnClickListener {
-            val selectedLayout = BooleanArray(layoutArray.size)
-            for (i in layoutArray) {
-                if (valuesMap.containsKey(getString(R.string.layout_name)) && valuesMap[getString(R.string.layout_name)]!!.contains(i)) {
-                    selectedLayout[layoutArray.indexOf(i)] = true
-                }
-            }
-            showMultiChoiceDialog(layoutTextView, getString(R.string.layout_name), selectedLayout,
-                layoutArray)
-        }
+        addListenerToMultiChoice(layoutTextView, getString(R.string.layout_name), layoutArray)
 
         val nameTextView: TextView = findViewById(R.id.cardNameTextView)
-        nameTextView.setOnClickListener {
-            var selectedName = -1
-            for (i in namesArray.indices) {
-                if (valuesMap.containsKey(getString(R.string.card_name))
-                    && valuesMap[getString(R.string.card_name)]!!.contains(namesArray[i])) {
-                    selectedName = i
-                }
-            }
-            showSingleChoiceDialog(nameTextView, getString(R.string.card_name), selectedName,
-                namesArray)
-        }
+        addListenerToSingleChoice(nameTextView, getString(R.string.card_name), namesArray)
+
 
         val applyFilterButton: Button = findViewById(R.id.filterButton)
         applyFilterButton.setOnClickListener {
@@ -84,26 +71,25 @@ class FilterCardsActivity : AppCompatActivity() {
         }
     }
     /*
-     * Method to show multi choice dialog
-     * found on https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
+     * Show multi choice dialog
+     * inspired from https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
      */
 
     private fun showMultiChoiceDialog(textView: TextView, title: String,
-                                      selectedLanguage: BooleanArray, itemsArray: Array<String>) {
+                                      selectedItems: BooleanArray, itemsArray: Array<String>) {
 
         val filtersList: ArrayList<Int> = ArrayList()
         // add already selected items in the filtersList
-        for (index in selectedLanguage.indices) {
-            if (selectedLanguage[index]) {
+        for (index in selectedItems.indices) {
+            if (selectedItems[index]) {
                 filtersList.add(index)
             }
         }
-        val builder: AlertDialog.Builder =
-            AlertDialog.Builder(this@FilterCardsActivity)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@FilterCardsActivity)
         builder.setTitle(title)
         builder.setCancelable(false)
 
-        builder.setMultiChoiceItems(itemsArray, selectedLanguage
+        builder.setMultiChoiceItems(itemsArray, selectedItems
         ) { _, index, boolean ->
             if (boolean) {
                 filtersList.add(index)
@@ -121,7 +107,6 @@ class FilterCardsActivity : AppCompatActivity() {
             for (index in 0 until filtersList.size) {
                 stringBuilder.append(itemsArray[filtersList[index]])
                 selectedItems.add(itemsArray[filtersList[index]])
-
                 if (index != (filtersList.size - 1)) {
                     stringBuilder.append(", ")
                 }
@@ -131,24 +116,20 @@ class FilterCardsActivity : AppCompatActivity() {
             }
 
             // set text on textView and set ellipses so that it does not exceed the box
-            textView.maxWidth = textView.measuredWidth
-            textView.maxLines = 1
-            textView.setHorizontallyScrolling(true)
-            textView.movementMethod = ScrollingMovementMethod()
-            textView.text = stringBuilder.toString()
+            displayTextOnTextView(textView, stringBuilder.toString())
         }
 
         builder.setNeutralButton("Clear All"
         ) { _, _ ->
             filtersList.clear()
-            textView.text = title
+            textView.text = ""
             valuesMap = valuesMap.minus(title)
         }
         builder.show()
     }
 
     /*
-     * Method to show single choice dialog
+     * Show single choice dialog
      */
     private fun showSingleChoiceDialog(textView: TextView, title: String,
                                        selectedChoice: Int, options: Array<String>) {
@@ -156,7 +137,6 @@ class FilterCardsActivity : AppCompatActivity() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@FilterCardsActivity)
         builder.setTitle(title)
         builder.setCancelable(false)
-
         builder.setSingleChoiceItems(options, selectedChoice) { _, _ -> }
 
         builder.setPositiveButton("OK"
@@ -165,22 +145,21 @@ class FilterCardsActivity : AppCompatActivity() {
             if (selectedItemPosition != INVALID_POSITION) {
                 valuesMap = valuesMap.plus(Pair(title, arrayListOf(options[selectedItemPosition])))
                 // set text on textView and set ellipses so that it does not exceed the box
-                textView.maxWidth = textView.measuredWidth
-                textView.maxLines = 1
-                textView.setHorizontallyScrolling(true)
-                textView.movementMethod = ScrollingMovementMethod()
-                textView.text = options[selectedItemPosition]
+                displayTextOnTextView(textView, options[selectedItemPosition])
             }
         }
 
         builder.setNeutralButton("Clear All"
         ) { _, _ ->
-            textView.text = title
+            textView.text = ""
             valuesMap = valuesMap.minus(title)
         }
         builder.show()
     }
 
+    /*
+     * Convert the map of selected values to a filter object
+     */
     private fun convertToFilter(): Filter {
         var name = ""
         val layout: ArrayList<MagicLayout> = emptyArray<MagicLayout>().toCollection(ArrayList())
@@ -201,7 +180,7 @@ class FilterCardsActivity : AppCompatActivity() {
     }
 
     /*
-     * Method to get the cards from the intent
+     * Get the cards from the intent
      */
     private fun getCardsFromIntent(): ArrayList<MagicCard> {
         val gson = Gson()
@@ -210,4 +189,46 @@ class FilterCardsActivity : AppCompatActivity() {
         return gson.fromJson(cardsJson, type)
     }
 
+    /*
+        * Set text on textView and set ellipses so that it does not exceed the box
+     */
+    private fun displayTextOnTextView(textView: TextView, message: String) {
+        textView.maxWidth = textView.measuredWidth
+        textView.maxLines = 1
+        textView.setHorizontallyScrolling(true)
+        textView.movementMethod = ScrollingMovementMethod()
+        textView.text = message
+    }
+
+    /*
+     * Add listener to the text view that needs to show multi choice dialog
+     */
+    private fun addListenerToMultiChoice(textView: TextView, title: String, itemsArray: Array<String>) {
+        textView.setOnClickListener {
+            val selectedLayout = BooleanArray(itemsArray.size)
+            for (i in itemsArray) {
+                if (valuesMap.containsKey(title) && valuesMap[title]!!.contains(i)) {
+                    selectedLayout[itemsArray.indexOf(i)] = true
+                }
+            }
+            showMultiChoiceDialog(textView, title, selectedLayout,
+                itemsArray)
+        }
+    }
+
+    /*
+     * Add listener to the text view that needs to show single choice dialog
+     */
+    private fun addListenerToSingleChoice(textView: TextView, title: String, itemsArray: Array<String>) {
+        textView.setOnClickListener {
+            var selectedName = -1
+            for (i in itemsArray.indices) {
+                if (valuesMap.containsKey(title) && valuesMap[title]!!.contains(itemsArray[i])) {
+                    selectedName = i
+                }
+            }
+            showSingleChoiceDialog(textView, title, selectedName, itemsArray)
+        }
+    }
 }
+
