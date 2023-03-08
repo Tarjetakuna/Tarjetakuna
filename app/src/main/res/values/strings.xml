@@ -6,7 +6,7 @@
     <string name="filter_option_title">Filter options</string>
     <string name="filter">Filter</string>
     <string name="card_name">Card name</string>
-    <string name="card_mana_cost">Mana cost</string>
+    <string name="cmc">Converted mana cost</string>
     <string name="layout_name">Layout</string>
     <string name="card_type">Card type</string>
     <string name="title_activity_drawer">Drawer</string>

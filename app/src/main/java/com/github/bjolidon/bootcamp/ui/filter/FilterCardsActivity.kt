@@ -1,14 +1,13 @@
-package com.github.bjolidon.bootcamp
+package com.github.bjolidon.bootcamp.ui.filter
 
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.widget.AdapterView.INVALID_POSITION
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.github.bjolidon.bootcamp.model.Filter
+import com.github.bjolidon.bootcamp.R
 import com.github.bjolidon.bootcamp.model.MagicCard
 import com.github.bjolidon.bootcamp.model.MagicLayout
 import com.google.gson.Gson
@@ -42,8 +41,8 @@ class FilterCardsActivity : AppCompatActivity() {
 
     private var valuesMap: Map<String, ArrayList<String>> = emptyMap()
     private lateinit var cards: ArrayList<MagicCard>
-    lateinit var filteredCards: ArrayList<MagicCard>
-    lateinit var filter: Filter
+    private lateinit var filteredCards: ArrayList<MagicCard>
+    private lateinit var filter: Filter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +52,9 @@ class FilterCardsActivity : AppCompatActivity() {
         cards = getCardsFromIntent()
         filteredCards = ArrayList()
 
-        val manaCostTextView: TextView = findViewById(R.id.manaCostTextView)
-        addListenerToMultiChoice(manaCostTextView, getString(R.string.card_mana_cost), manaCostArray)
+        // TODO change the UI for this filter to be either an keyboard entry or a sliding bar
+        val manaCostTextView: TextView = findViewById(R.id.cmcTextView)
+        addListenerToMultiChoice(manaCostTextView, getString(R.string.cmc), manaCostArray)
 
         val layoutTextView: TextView = findViewById(R.id.layoutTextView)
         addListenerToMultiChoice(layoutTextView, getString(R.string.layout_name), layoutArray)
@@ -65,7 +65,8 @@ class FilterCardsActivity : AppCompatActivity() {
         val applyFilterButton: Button = findViewById(R.id.filterButton)
         applyFilterButton.setOnClickListener {
             filter = convertToFilter()
-            Toast.makeText(this, "Filter applied", Toast.LENGTH_SHORT).show()
+            filterCards()
+            displayCardsFiltered()
         }
     }
     /*
@@ -157,10 +158,12 @@ class FilterCardsActivity : AppCompatActivity() {
 
     /*
      * Convert the map of selected values to a filter object
+     * TODO add some filters here when we know which one we really want
      */
     private fun convertToFilter(): Filter {
         var name = ""
         val layout: ArrayList<MagicLayout> = emptyArray<MagicLayout>().toCollection(ArrayList())
+        val convertedManaCost: ArrayList<Int> = emptyArray<Int>().toCollection(ArrayList())
         for (i in valuesMap.keys) {
             when (i) {
                 getString(R.string.card_name) -> {
@@ -172,9 +175,22 @@ class FilterCardsActivity : AppCompatActivity() {
                         layout.add(MagicLayout.valueOf(j))
                     }
                 }
+                getString(R.string.cmc) -> {
+                    for (j in valuesMap[i]!!) {
+                        convertedManaCost.add(j.toInt())
+                    }
+                }
             }
         }
-        return Filter(name, layout)
+        return Filter(name, layout, convertedManaCost)
+    }
+
+    private fun filterCards() {
+        for (card in cards) {
+            if (filter.doesContain(card)) {
+                filteredCards.add(card)
+            }
+        }
     }
 
     /*
@@ -227,6 +243,19 @@ class FilterCardsActivity : AppCompatActivity() {
             }
             showSingleChoiceDialog(textView, title, selectedName, itemsArray)
         }
+    }
+
+    /*
+     * Display the cards that have been filter in an alertDialog
+     * TODO change this method, it is here since the card display has not been implemented
+     */
+    private fun displayCardsFiltered() {
+        val builder = AlertDialog.Builder(this@FilterCardsActivity)
+        builder.setMessage(filteredCards.toString())
+        builder.setCancelable(false)
+        builder.setTitle("Cards have been filtered")
+        builder.setPositiveButton("OK") { _, _ -> }
+        builder.show()
     }
 }
 

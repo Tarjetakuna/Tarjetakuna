@@ -9,10 +9,11 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.bjolidon.bootcamp.model.Filter
+import com.github.bjolidon.bootcamp.ui.filter.Filter
 import com.github.bjolidon.bootcamp.model.MagicCard
 import com.github.bjolidon.bootcamp.model.MagicLayout
 import com.github.bjolidon.bootcamp.model.MagicSet
+import com.github.bjolidon.bootcamp.ui.filter.FilterCardsActivity
 import com.google.gson.Gson
 import org.junit.Before
 import org.junit.Test
@@ -21,30 +22,22 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class FilterCardsTest {
 
-//    @get:Rule
-//    val activityRule = ActivityScenarioRule(FilterCardsActivity::class.java)
-    private lateinit var activityRule: ActivityScenario<FilterCardsActivity>;
+    private lateinit var activityRule: ActivityScenario<FilterCardsActivity>
+    private val card1 = MagicCard("Angel of Mercy", "Flying",
+        MagicLayout.Normal, 7, "{5}{W}{W}",
+        MagicSet("MT15", "Magic 2015"), 56,
+        "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card")
 
-    private val validName = "Meandering Towershell"
-    private val validText = "Islandwalk"
-    private val validLayout = MagicLayout.Normal
-    private val validCMC = 5
-    private val validManaCost = "{3}{G}{G}"
-    private val validSet = MagicSet("MT15", "Magic 2015")
-    private val validNumber = 141
-    private val validImageUrl = "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=386602"
+    private val card2 = MagicCard("Meandering Towershell", "Islandwalk",
+        MagicLayout.DoubleFaced, 5, "{3}{G}{G}",
+        MagicSet("MT15", "Magic 2015"), 141,
+        "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=386602")
+
+    private val arrayCard = arrayListOf(card1, card2)
+
 
     @Before
     public fun setUp() {
-        val card: MagicCard = MagicCard("Test Card", "Test text",
-            MagicLayout.Normal, 7, "{5}{W}{W}",
-            MagicSet("MT15", "Magic 2015"), 56,
-            "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card")
-        val card2: MagicCard = MagicCard(validName, validText,
-            validLayout, validCMC, validManaCost,
-            validSet, validNumber, validImageUrl)
-
-        val arrayCard: ArrayList<MagicCard> = arrayListOf(card, card2)
         val gson = Gson()
         val arrayCardJson = gson.toJson(arrayCard)
         val intent = Intent(ApplicationProvider.getApplicationContext(), FilterCardsActivity::class.java)
@@ -180,21 +173,19 @@ class FilterCardsTest {
     @Test
     fun testFilterButtonWithEmptyFilterWorks() {
         onView(withId(R.id.filterButton)).perform(click())
-        activityRule.onActivity { activity ->
-            assert(activity.filter == Filter("", ArrayList()))
-        }
+        onView(withText(arrayCard.toString())).inRoot(isDialog()).check(matches(withText(arrayCard.toString())))
+
     }
 
     @Test
     fun testFilterButtonWithEmptyName() {
         onView(withId(R.id.layoutTextView)).perform(click())
         onView(withText("Layout")).inRoot(isDialog()).perform(click())
-        onView(withText("Normal")).inRoot(isDialog()).perform(click())
+        onView(withText("DoubleFaced")).inRoot(isDialog()).perform(click())
         onView(withId(android.R.id.button1)).perform(click())
         onView(withId(R.id.filterButton)).perform(click())
-        activityRule.onActivity { activity ->
-            assert(activity.filter == Filter("", arrayListOf(MagicLayout.Normal)))
-        }
+        onView(withText("[$card2]")).inRoot(isDialog()).check(matches(withText("[$card2]")))
+
     }
     @Test
     fun testFilterButtonWorks() {
@@ -209,15 +200,17 @@ class FilterCardsTest {
         onView(withId(android.R.id.button1)).perform(click())
 
         onView(withId(R.id.filterButton)).perform(click())
-        activityRule.onActivity { activity ->
-            assert(
-                activity.filter == Filter(
-                    "Angel of Mercy", arrayListOf(
-                        MagicLayout.Normal,
-                        MagicLayout.Leveler
-                    )
-                )
-            )
-        }
+        onView(withText("[$card1]")).inRoot(isDialog()).check(matches(withText("[$card1]")))
     }
+
+     @Test
+     fun testFilterOnlyWithCMC() {
+         onView(withId(R.id.cmcTextView)).perform(click())
+         onView(withText("5")).perform(click())
+         onView(withText("7")).perform(click())
+         onView(withId(android.R.id.button1)).perform(click())
+
+         onView(withId(R.id.filterButton)).perform(click())
+         onView(withText(arrayCard.toString())).inRoot(isDialog()).check(matches(withText(arrayCard.toString())))
+     }
 }
