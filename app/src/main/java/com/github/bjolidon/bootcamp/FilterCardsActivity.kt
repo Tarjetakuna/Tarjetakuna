@@ -74,12 +74,12 @@ class FilterCardsActivity : AppCompatActivity() {
      */
 
     private fun showMultiChoiceDialog(textView: TextView, title: String,
-                                      selectedItems: BooleanArray, itemsArray: Array<String>) {
+                                      selectedItemsBool: BooleanArray, itemsArray: Array<String>) {
 
         val filtersList: ArrayList<Int> = ArrayList()
         // add already selected items in the filtersList
-        for (index in selectedItems.indices) {
-            if (selectedItems[index]) {
+        for (index in selectedItemsBool.indices) {
+            if (selectedItemsBool[index]) {
                 filtersList.add(index)
             }
         }
@@ -87,7 +87,7 @@ class FilterCardsActivity : AppCompatActivity() {
         builder.setTitle(title)
         builder.setCancelable(false)
 
-        builder.setMultiChoiceItems(itemsArray, selectedItems
+        builder.setMultiChoiceItems(itemsArray, selectedItemsBool
         ) { _, index, boolean ->
             if (boolean) {
                 filtersList.add(index)
