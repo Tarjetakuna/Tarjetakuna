@@ -8,6 +8,7 @@ package com.github.bjolidon.bootcamp.model
 /**
  * Represents the rarity of a Magic card.
  */
+/* Commented out because it's not used yet in this project.
 enum class MagicRarity {
     Common,
     Uncommon,
@@ -16,3 +17,4 @@ enum class MagicRarity {
     Special,
     BasicLand
 }
+*/
