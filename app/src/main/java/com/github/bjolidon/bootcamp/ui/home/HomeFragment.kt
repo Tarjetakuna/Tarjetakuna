@@ -1,5 +1,6 @@
 package com.github.bjolidon.bootcamp.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.bjolidon.bootcamp.databinding.FragmentHomeBinding
+import com.github.bjolidon.bootcamp.ui.authentication.AuthenticationButtonActivity
 
 class HomeFragment : Fragment() {
 
@@ -35,12 +37,20 @@ private var _binding: FragmentHomeBinding? = null
 
     }
 
-      val plainText: EditText = binding.mainName2
-      val button: Button = binding.mainGoButton2
-      button.setOnClickListener {
-      }
+    //val plainText: EditText = binding.mainName2
+    val button: Button = binding.mainGoButton2
+    button.setOnClickListener {
+    }
+
+    val filterActivityButton: Button = binding.authenticationButton
+    filterActivityButton.setOnClickListener {
+      val intent = Intent(activity, AuthenticationButtonActivity::class.java)
+      startActivity(intent)
+    }
+
     return root
   }
+
 
 override fun onDestroyView() {
         super.onDestroyView()

@@ -1,0 +1,30 @@
+package com.github.bjolidon.bootcamp.ui.authentication
+
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Bundle
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.github.bjolidon.bootcamp.R
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
+class SignOutActivity: AppCompatActivity() {
+    @SuppressLint("SetTextI18n")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_sign_out)
+
+        val user = Firebase.auth.currentUser
+        val newMessage = user?.displayName
+        val greetingMessage: TextView = findViewById(R.id.greetingMessage)
+        greetingMessage.text = "Hello $newMessage!"
+
+        val signOutButton = findViewById<TextView>(R.id.signOutButton)
+        signOutButton.setOnClickListener {
+            val intent = Intent(this, AuthenticationActivity::class.java)
+            intent.putExtra("signIn", false)
+            startActivity(intent)
+        }
+    }
+}
