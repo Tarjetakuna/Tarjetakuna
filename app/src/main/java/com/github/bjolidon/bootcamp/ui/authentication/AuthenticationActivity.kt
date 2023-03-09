@@ -45,9 +45,7 @@ class AuthenticationActivity: AppCompatActivity() {
                 .build()
             signInLauncher.launch(signInIntent)
         } else {
-            val intent = Intent(this, AuthenticationButtonActivity::class.java)
-            intent.putExtra("errorCode", "networkNotAvailable")
-            startActivity(intent)
+            reportError("networkNotAvailable")
         }
     }
 
@@ -63,9 +61,7 @@ class AuthenticationActivity: AppCompatActivity() {
                 val intent = Intent(this, AuthenticationButtonActivity::class.java)
                 startActivity(intent)
             } else {
-                val intent = Intent(this, AuthenticationButtonActivity::class.java)
-                intent.putExtra("errorCode", "authenticationFailed")
-                startActivity(intent)
+                reportError("authenticationFailed")
             }
         }
     }
@@ -94,5 +90,11 @@ class AuthenticationActivity: AppCompatActivity() {
             actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
             else -> false
         }
+    }
+
+    private fun reportError(errorCode: String) {
+        val intent = Intent(this, AuthenticationButtonActivity::class.java)
+        intent.putExtra("errorCode", errorCode)
+        startActivity(intent)
     }
 }

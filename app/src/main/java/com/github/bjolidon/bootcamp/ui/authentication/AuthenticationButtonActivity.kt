@@ -19,11 +19,9 @@ class AuthenticationButtonActivity : AppCompatActivity() {
             val intent = Intent(this, SignOutActivity::class.java)
             startActivity(intent)
         } else {
-
             setContentView(R.layout.activity_authentication_button)
 
             val errorCode = intent.getStringExtra("errorCode")
-
             val connexionErrorMsg = findViewById<TextView>(R.id.connexionErrorMsg)
             val authFailedErrorMsg = findViewById<TextView>(R.id.authFailedErrorMsg)
             connexionErrorMsg.visibility = View.INVISIBLE
@@ -33,7 +31,6 @@ class AuthenticationButtonActivity : AppCompatActivity() {
             } else if (errorCode == "networkNotAvailable") {
                 connexionErrorMsg.visibility = View.VISIBLE
             }
-
             val button = findViewById<Button>(R.id.connectionButton)
             button.setOnClickListener {
                 val intent = Intent(this, AuthenticationActivity::class.java)
