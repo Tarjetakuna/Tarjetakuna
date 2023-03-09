@@ -77,11 +77,11 @@ class FilterCardsActivity : AppCompatActivity() {
     private fun showMultiChoiceDialog(textView: TextView, title: String,
                                       selectedItemsBool: BooleanArray, itemsArray: Array<String>) {
 
-        val filtersList: ArrayList<Int> = ArrayList()
-        // add already selected items in the filtersList
+        val selectedItemsPositions: ArrayList<Int> = ArrayList()
+        // add already selected items in the list of selected items
         for (index in selectedItemsBool.indices) {
             if (selectedItemsBool[index]) {
-                filtersList.add(index)
+                selectedItemsPositions.add(index)
             }
         }
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@FilterCardsActivity)
@@ -90,41 +90,53 @@ class FilterCardsActivity : AppCompatActivity() {
 
         builder.setMultiChoiceItems(itemsArray, selectedItemsBool
         ) { _, index, boolean ->
-            if (boolean) {
-                filtersList.add(index)
-                filtersList.sort()
-            } else {
-                filtersList.remove(Integer.valueOf(index))
-            }
+            multiChoiceOnChoicesClicked(index, boolean, selectedItemsPositions)
         }
+
         builder.setPositiveButton("OK"
         ) { _, _ ->
-            // create list to add them in valuesMap
-            val selectedItems: ArrayList<String> = ArrayList()
-            val stringBuilder = StringBuilder()
-
-            for (index in 0 until filtersList.size) {
-                stringBuilder.append(itemsArray[filtersList[index]])
-                selectedItems.add(itemsArray[filtersList[index]])
-                if (index != (filtersList.size - 1)) {
-                    stringBuilder.append(", ")
-                }
-            }
-            if (selectedItems.isNotEmpty()) {
-                valuesMap = valuesMap.plus(Pair(title, selectedItems))
-            }
-
-            // set text on textView and set ellipses so that it does not exceed the box
-            displayTextOnTextView(textView, stringBuilder.toString())
+            multiChoiceOKButtonClicked(textView, title, selectedItemsPositions, itemsArray)
         }
 
+        setClearAllButton(builder, textView, title)
+        builder.show()
+    }
+
+    private fun multiChoiceOnChoicesClicked(index: Int, boolean: Boolean, selectedItemsPositions: ArrayList<Int>) {
+        if (boolean) {
+            selectedItemsPositions.add(index)
+            selectedItemsPositions.sort()
+        } else {
+            selectedItemsPositions.remove(Integer.valueOf(index))
+        }
+    }
+    private fun multiChoiceOKButtonClicked(textView: TextView, title: String,
+                                           selectedItemsPositions: ArrayList<Int>, itemsArray: Array<String>) {
+        // create list to add them in valuesMap
+        val selectedItems: ArrayList<String> = ArrayList()
+        val stringBuilder = StringBuilder()
+
+        for (index in selectedItemsPositions.indices) {
+            stringBuilder.append(itemsArray[selectedItemsPositions[index]])
+            selectedItems.add(itemsArray[selectedItemsPositions[index]])
+            if (index != (selectedItemsPositions.size - 1)) {
+                stringBuilder.append(", ")
+            }
+        }
+        if (selectedItems.isNotEmpty()) {
+            valuesMap = valuesMap.plus(Pair(title, selectedItems))
+        }
+
+        // set text on textView and set ellipses so that it does not exceed the box
+        displayTextOnTextView(textView, stringBuilder.toString())
+    }
+
+    private fun setClearAllButton(builder: AlertDialog.Builder, textView: TextView, title: String) {
         builder.setNeutralButton("Clear All"
         ) { _, _ ->
-            filtersList.clear()
             textView.text = ""
             valuesMap = valuesMap.minus(title)
         }
-        builder.show()
     }
 
     /*
@@ -148,11 +160,7 @@ class FilterCardsActivity : AppCompatActivity() {
             }
         }
 
-        builder.setNeutralButton("Clear All"
-        ) { _, _ ->
-            textView.text = ""
-            valuesMap = valuesMap.minus(title)
-        }
+        setClearAllButton(builder, textView, title)
         builder.show()
     }
 
@@ -162,8 +170,8 @@ class FilterCardsActivity : AppCompatActivity() {
      */
     private fun convertToFilter(): Filter {
         var name = ""
-        val layout: ArrayList<MagicLayout> = emptyArray<MagicLayout>().toCollection(ArrayList())
-        val convertedManaCost: ArrayList<Int> = emptyArray<Int>().toCollection(ArrayList())
+        val layout: ArrayList<MagicLayout> = arrayListOf()
+        val convertedManaCost: ArrayList<Int> = arrayListOf()
         for (i in valuesMap.keys) {
             when (i) {
                 getString(R.string.card_name) -> {
@@ -186,6 +194,7 @@ class FilterCardsActivity : AppCompatActivity() {
     }
 
     private fun filterCards() {
+        filteredCards.clear()
         for (card in cards) {
             if (filter.doesContain(card)) {
                 filteredCards.add(card)
@@ -219,13 +228,13 @@ class FilterCardsActivity : AppCompatActivity() {
      */
     private fun addListenerToMultiChoice(textView: TextView, title: String, itemsArray: Array<String>) {
         textView.setOnClickListener {
-            val selectedLayout = BooleanArray(itemsArray.size)
+            val selectedItems = BooleanArray(itemsArray.size)
             for (i in itemsArray) {
                 if (valuesMap.containsKey(title) && valuesMap[title]!!.contains(i)) {
-                    selectedLayout[itemsArray.indexOf(i)] = true
+                    selectedItems[itemsArray.indexOf(i)] = true
                 }
             }
-            showMultiChoiceDialog(textView, title, selectedLayout,
+            showMultiChoiceDialog(textView, title, selectedItems,
                 itemsArray)
         }
     }
@@ -235,13 +244,13 @@ class FilterCardsActivity : AppCompatActivity() {
      */
     private fun addListenerToSingleChoice(textView: TextView, title: String, itemsArray: Array<String>) {
         textView.setOnClickListener {
-            var selectedName = -1
+            var selectedItem = -1
             for (i in itemsArray.indices) {
                 if (valuesMap.containsKey(title) && valuesMap[title]!!.contains(itemsArray[i])) {
-                    selectedName = i
+                    selectedItem = i
                 }
             }
-            showSingleChoiceDialog(textView, title, selectedName, itemsArray)
+            showSingleChoiceDialog(textView, title, selectedItem, itemsArray)
         }
     }
 
