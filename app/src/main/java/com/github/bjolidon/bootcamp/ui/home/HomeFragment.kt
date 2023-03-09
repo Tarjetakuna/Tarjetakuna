@@ -19,15 +19,19 @@ import com.google.gson.Gson
 
 class HomeFragment : Fragment() {
 
-  val cards: ArrayList<MagicCard> = arrayListOf(
+  private val magicSet = MagicSet("MT15", "Magic 2015")
+  private val cmc = 5
+  private val magicLayout = MagicLayout.Normal
+  private val link = "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid="
+  private val cards: ArrayList<MagicCard> = arrayListOf(
     MagicCard("Meandering Towershell", "Islandwalk",
-      MagicLayout.Normal, 5, "{3}{G}{G}",
-      MagicSet("MT15", "Magic 2015"), 141,
-      "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=386602"),
+      magicLayout, cmc, "{3}{G}{G}",
+      magicSet, 141,
+      "${link}386602"),
     MagicCard("Angel of Mercy", "Flying",
-      MagicLayout.Normal, 5, "{4}{W}",
-      MagicSet("MT15", "Magic 2015"), 1,
-      "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=82992")
+      magicLayout, cmc, "{4}{W}",
+      magicSet, 1,
+      "${link}82992")
   )
 
 private var _binding: FragmentHomeBinding? = null
