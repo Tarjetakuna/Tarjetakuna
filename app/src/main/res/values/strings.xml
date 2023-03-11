@@ -18,4 +18,7 @@
     <string name="scanner_button">Scan a card</string>
     <string name="scanner_description">Here you can scan a card by clicking on the button below.</string>
     <string name="scanner_content_description_image">Picture of a card</string>
+
+    <string name="operation_success">"Success"</string>
+    <string name="operation_failed">"The operation has failed. Please try again."</string>
 </resources>
