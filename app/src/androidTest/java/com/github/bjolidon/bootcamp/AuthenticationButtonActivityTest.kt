@@ -10,6 +10,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.bjolidon.bootcamp.ui.authentication.AuthenticationActivity
 import com.github.bjolidon.bootcamp.ui.authentication.AuthenticationButtonActivity
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,11 +22,25 @@ class AuthenticationButtonActivityTest {
         @get:Rule
         public val activityRule = ActivityScenarioRule(AuthenticationButtonActivity::class.java)
 
+        @Before
+        fun setUp() {
+            Intents.init()
+        }
+
+        @After
+        fun tearDown() {
+            Intents.release()
+        }
+
         @Test
         fun testAuthenticationButtonActivity() {
-            Intents.init()
             onView(withId(R.id.connectionButton)).perform(click())
             intended(hasComponent(AuthenticationActivity::class.java.name))
-            Intents.release()
+        }
+
+        @Test
+        fun testAuthenticationButtonActivityBackToHome() {
+            onView(withId(R.id.button_back_home)).perform(click())
+            intended(hasComponent(MainActivity::class.java.name))
         }
 }
