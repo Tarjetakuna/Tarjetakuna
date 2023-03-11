@@ -58,6 +58,7 @@ class FilterCardsTest {
     private val withIdCmcTextView = withId(R.id.cmcTextView)
     private val withIdFilterButton = withId(R.id.filterButton)
     private val withIdCardNameTextView = withId(R.id.cardNameTextView)
+
     @Before
     public fun setUp() {
         val gson = Gson()
@@ -163,6 +164,7 @@ class FilterCardsTest {
         onView(withIdButton1).perform(click())
         onView(withIdCardNameTextView).check(matches(withText("")))
     }
+
     @Test
     fun testOnlySingleChoicePossible() {
         onView(withIdCardNameTextView).perform(click())
@@ -210,6 +212,7 @@ class FilterCardsTest {
         onView(withText("[$card2]")).inRoot(isDialog()).check(matches(withText("[$card2]")))
 
     }
+
     @Test
     fun testFilterButtonWorks() {
         onView(withIdCardNameTextView).perform(click())
