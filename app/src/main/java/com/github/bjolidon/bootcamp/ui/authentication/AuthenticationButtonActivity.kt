@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.github.bjolidon.bootcamp.MainActivity
 import com.github.bjolidon.bootcamp.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -31,6 +32,12 @@ class AuthenticationButtonActivity : AppCompatActivity() {
             button.setOnClickListener {
                 val intent = Intent(this, AuthenticationActivity::class.java)
                 intent.putExtra("signIn", true)
+                startActivity(intent)
+            }
+
+            val backButton = findViewById<Button>(R.id.button_back_home)
+            backButton.setOnClickListener {
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
         }

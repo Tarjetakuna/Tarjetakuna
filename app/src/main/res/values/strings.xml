@@ -20,4 +20,5 @@
     <string name="menu_browser">Browse</string>
     <string name="menu_scanner">Scan</string>
     <string name="signIn">Sign in with Google</string>
+    <string name="go_back_to_home_page">Go back to home page</string>
 </resources>
