@@ -16,9 +16,9 @@ import java.lang.reflect.Type
 import kotlin.collections.ArrayList
 
 
-/*
+/**
     * Activity to filter cards.
-    * Get the list of cards to be filtered from the intent as a string gson
+    * Get the list of cards to be filtered from the intent as a json string
     * e.g
     * {"convertedManaCost": 7,
        "imageUrl": "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
@@ -27,8 +27,8 @@ import kotlin.collections.ArrayList
        "name": "Test Card",
        "number": 56,
        "set": {
-       "code": "MT15",
-       "name": "Magic 2015"
+           "code": "MT15",
+           "name": "Magic 2015"
         },
         "text": "Test Type"
       }
@@ -69,11 +69,11 @@ class FilterCardsActivity : AppCompatActivity() {
             displayCardsFiltered()
         }
     }
-    /*
+
+    /**
      * Show multi choice dialog
      * inspired from https://www.geeksforgeeks.org/how-to-implement-multiselect-dropdown-in-android/
      */
-
     private fun showMultiChoiceDialog(textView: TextView, title: String,
                                       selectedItemsBool: BooleanArray, itemsArray: Array<String>) {
 
@@ -102,6 +102,9 @@ class FilterCardsActivity : AppCompatActivity() {
         builder.show()
     }
 
+    /**
+     * Operations that happen when the choices are clicked
+     */
     private fun multiChoiceOnChoicesClicked(index: Int, boolean: Boolean, selectedItemsPositions: ArrayList<Int>) {
         if (boolean) {
             selectedItemsPositions.add(index)
@@ -110,6 +113,10 @@ class FilterCardsActivity : AppCompatActivity() {
             selectedItemsPositions.remove(Integer.valueOf(index))
         }
     }
+
+    /**
+     * Set the "OK" button so that it sets the text on the text view and adds the values to the valuesMap
+     */
     private fun multiChoiceOKButtonClicked(textView: TextView, title: String,
                                            selectedItemsPositions: ArrayList<Int>, itemsArray: Array<String>) {
         // create list to add them in valuesMap
@@ -131,6 +138,9 @@ class FilterCardsActivity : AppCompatActivity() {
         displayTextOnTextView(textView, stringBuilder.toString())
     }
 
+    /**
+     * Set the "Clear All" button so that it clears the text view and the valuesMap
+     */
     private fun setClearAllButton(builder: AlertDialog.Builder, textView: TextView, title: String) {
         builder.setNeutralButton("Clear All"
         ) { _, _ ->
@@ -139,7 +149,7 @@ class FilterCardsActivity : AppCompatActivity() {
         }
     }
 
-    /*
+    /**
      * Show single choice dialog
      */
     private fun showSingleChoiceDialog(textView: TextView, title: String,
@@ -164,7 +174,7 @@ class FilterCardsActivity : AppCompatActivity() {
         builder.show()
     }
 
-    /*
+    /**
      * Convert the map of selected values to a filter object
      * TODO add some filters here when we know which one we really want
      */
@@ -193,6 +203,9 @@ class FilterCardsActivity : AppCompatActivity() {
         return Filter(name, layout, convertedManaCost)
     }
 
+    /**
+     * Put the cards in the filtered cards array if they match the filter
+     */
     private fun filterCards() {
         filteredCards.clear()
         for (card in cards) {
@@ -202,7 +215,7 @@ class FilterCardsActivity : AppCompatActivity() {
         }
     }
 
-    /*
+    /**
      * Get the cards from the intent
      */
     private fun getCardsFromIntent(): ArrayList<MagicCard> {
@@ -212,8 +225,8 @@ class FilterCardsActivity : AppCompatActivity() {
         return gson.fromJson(cardsJson, type)
     }
 
-    /*
-        * Set text on textView and set ellipses so that it does not exceed the box
+    /**
+     * Set text on textView and set ellipses so that it does not exceed the box
      */
     private fun displayTextOnTextView(textView: TextView, message: String) {
         textView.maxWidth = textView.measuredWidth
@@ -223,7 +236,7 @@ class FilterCardsActivity : AppCompatActivity() {
         textView.text = message
     }
 
-    /*
+    /**
      * Add listener to the text view that needs to show multi choice dialog
      */
     private fun addListenerToMultiChoice(textView: TextView, title: String, itemsArray: Array<String>) {
@@ -239,7 +252,7 @@ class FilterCardsActivity : AppCompatActivity() {
         }
     }
 
-    /*
+    /**
      * Add listener to the text view that needs to show single choice dialog
      */
     private fun addListenerToSingleChoice(textView: TextView, title: String, itemsArray: Array<String>) {
@@ -254,7 +267,7 @@ class FilterCardsActivity : AppCompatActivity() {
         }
     }
 
-    /*
+    /**
      * Display the cards that have been filter in an alertDialog
      * TODO change this method, it is here since the card display has not been implemented
      */
@@ -267,4 +280,3 @@ class FilterCardsActivity : AppCompatActivity() {
         builder.show()
     }
 }
-

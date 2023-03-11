@@ -36,10 +36,6 @@ class MainActivityTest {
     public val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
-    fun testMainActivity() {
-        assertEquals(1 + 1, 2)
-    }
-    @Test
     fun testFilterButtonWorks() {
         Intents.init()
         onView(withId(R.id.filterActivityButton)).perform(click())

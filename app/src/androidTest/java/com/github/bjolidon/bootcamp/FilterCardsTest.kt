@@ -9,7 +9,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.bjolidon.bootcamp.ui.filter.Filter
 import com.github.bjolidon.bootcamp.model.MagicCard
 import com.github.bjolidon.bootcamp.model.MagicLayout
 import com.github.bjolidon.bootcamp.model.MagicSet
@@ -35,7 +34,30 @@ class FilterCardsTest {
 
     private val arrayCard = arrayListOf(card1, card2)
 
+    private val layout = "Layout"
+    private val normal = "Normal"
+    private val token = "Token"
+    private val phenomenon = "Phenomenon"
+    private val leveler = "Leveler"
+    private val angelOfMercy = "Angel of Mercy"
+    private val angelOfSerenity = "Angel of Serenity"
+    private val doubleFaced = "DoubleFaced"
 
+    private val withLayoutText = withText(layout)
+    private val withNormalText = withText(normal)
+    private val withPhenomenonText = withText(phenomenon)
+    private val withLevelerText = withText(leveler)
+    private val withAngelOfMercyText = withText(angelOfMercy)
+    private val withAngelOfSerenityText = withText(angelOfSerenity)
+    private val withDoubleFacedText = withText(doubleFaced)
+    private val withTokenText = withText(token)
+
+    private val withIdLayoutTextView = withId(R.id.layoutTextView)
+    private val withIdButton1 = withId(android.R.id.button1)
+    private val withIdButton3 = withId(android.R.id.button3)
+    private val withIdCmcTextView = withId(R.id.cmcTextView)
+    private val withIdFilterButton = withId(R.id.filterButton)
+    private val withIdCardNameTextView = withId(R.id.cardNameTextView)
     @Before
     public fun setUp() {
         val gson = Gson()
@@ -44,9 +66,10 @@ class FilterCardsTest {
         intent.putExtra("cards", arrayCardJson)
         activityRule = ActivityScenario.launch(intent)
     }
+
     @Test
     fun testContainsTextView() {
-        onView(withId(R.id.layoutTextView)).check(matches(isDisplayed()))
+        onView(withIdLayoutTextView).check(matches(isDisplayed()))
     }
 
     @Test
@@ -58,159 +81,159 @@ class FilterCardsTest {
 
     @Test
     fun testClickOnLayoutShowsLayoutList() {
-        onView(withId(R.id.layoutTextView)).perform(click())
-        onView(withText("Layout")).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withIdLayoutTextView).perform(click())
+        onView(withLayoutText).inRoot(isDialog()).check(matches(isDisplayed()))
     }
 
     @Test
     fun testCanClickOnChoices() {
-        onView(withId(R.id.layoutTextView)).perform(click())
-        onView(withText("Layout")).inRoot(isDialog()).perform(click())
-        onView(withText("Normal")).inRoot(isDialog()).perform(click())
-        onView(withText("Phenomenon")).inRoot(isDialog()).perform(click())
-        onView(withText("Token")).inRoot(isDialog()).perform(click())
+        onView(withIdLayoutTextView).perform(click())
+        onView(withLayoutText).inRoot(isDialog()).perform(click())
+        onView(withNormalText).inRoot(isDialog()).perform(click())
+        onView(withPhenomenonText).inRoot(isDialog()).perform(click())
+        onView(withTokenText).inRoot(isDialog()).perform(click())
         //button 1 = OK, button 3 = Cancel
-        onView(withId(android.R.id.button1)).perform(click())
-        onView(withId(R.id.layoutTextView)).check(matches(withText("Normal, Token, Phenomenon")))
+        onView(withIdButton1).perform(click())
+        onView(withIdLayoutTextView).check(matches(withText("$normal, $token, $phenomenon")))
     }
 
     @Test
     fun testValuesAllCleared() {
-        onView(withId(R.id.layoutTextView)).perform(click())
-        onView(withText("Layout")).inRoot(isDialog()).perform(click())
-        onView(withText("Normal")).inRoot(isDialog()).perform(click())
-        onView(withText("Phenomenon")).inRoot(isDialog()).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withIdLayoutTextView).perform(click())
+        onView(withLayoutText).inRoot(isDialog()).perform(click())
+        onView(withNormalText).inRoot(isDialog()).perform(click())
+        onView(withPhenomenonText).inRoot(isDialog()).perform(click())
+        onView(withIdButton1).perform(click())
 
-        onView(withId(R.id.layoutTextView)).check(matches(withText("Normal, Phenomenon")))
+        onView(withIdLayoutTextView).check(matches(withText("$normal, $phenomenon")))
 
-        onView(withId(R.id.layoutTextView)).perform(click())
-        onView(withId(android.R.id.button3)).perform(click())
-        onView(withId(R.id.layoutTextView)).check(matches(withText("")))
+        onView(withIdLayoutTextView).perform(click())
+        onView(withIdButton3).perform(click())
+        onView(withIdLayoutTextView).check(matches(withText("")))
     }
 
     @Test
     fun testCheckBoxUnchecked() {
-        onView(withId(R.id.layoutTextView)).perform(click())
-        onView(withText("Layout")).inRoot(isDialog()).perform(click())
-        onView(withText("Normal")).inRoot(isDialog()).perform(click())
-        onView(withText("Normal")).inRoot(isDialog()).perform(click())
-        onView(withText("Leveler")).inRoot(isDialog()).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withIdLayoutTextView).perform(click())
+        onView(withLayoutText).inRoot(isDialog()).perform(click())
+        onView(withNormalText).inRoot(isDialog()).perform(click())
+        onView(withNormalText).inRoot(isDialog()).perform(click())
+        onView(withLevelerText).inRoot(isDialog()).perform(click())
+        onView(withIdButton1).perform(click())
 
-        onView(withId(R.id.layoutTextView)).check(matches(withText("Leveler")))
+        onView(withIdLayoutTextView).check(matches(withLevelerText))
     }
 
     @Test
     fun testCheckBoxStillCheckedAfterConfirmingAndReopening() {
-        onView(withId(R.id.layoutTextView)).perform(click())
-        onView(withText("Layout")).inRoot(isDialog()).perform(click())
-        onView(withText("Normal")).inRoot(isDialog()).perform(click())
-        onView(withText("Leveler")).inRoot(isDialog()).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withIdLayoutTextView).perform(click())
+        onView(withLayoutText).inRoot(isDialog()).perform(click())
+        onView(withNormalText).inRoot(isDialog()).perform(click())
+        onView(withLevelerText).inRoot(isDialog()).perform(click())
+        onView(withIdButton1).perform(click())
 
-        onView(withId(R.id.layoutTextView)).check(matches(withText("Normal, Leveler")))
+        onView(withIdLayoutTextView).check(matches(withText("$normal, $leveler")))
 
-        onView(withId(R.id.layoutTextView)).perform(click())
-        onView(withText("Layout")).inRoot(isDialog()).perform(click())
-        onView(withText("Normal")).inRoot(isDialog()).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withIdLayoutTextView).perform(click())
+        onView(withLayoutText).inRoot(isDialog()).perform(click())
+        onView(withNormalText).inRoot(isDialog()).perform(click())
+        onView(withIdButton1).perform(click())
 
-        onView(withId(R.id.layoutTextView)).check(matches(withText("Leveler")))
+        onView(withIdLayoutTextView).check(matches(withLevelerText))
     }
 
     @Test
     fun noChoiceSelectedMultipleChoiceWorks() {
-        onView(withId(R.id.layoutTextView)).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
-        onView(withId(R.id.layoutTextView)).check(matches(withText("")))
+        onView(withIdLayoutTextView).perform(click())
+        onView(withIdButton1).perform(click())
+        onView(withIdLayoutTextView).check(matches(withText("")))
     }
 
     @Test
     fun testSingleChoiceWorks() {
-        onView(withId(R.id.cardNameTextView)).perform(click())
-        onView(withText("Angel of Mercy")).inRoot(isDialog()).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
-        onView(withId(R.id.cardNameTextView)).check(matches(withText("Angel of Mercy")))
+        onView(withIdCardNameTextView).perform(click())
+        onView(withAngelOfMercyText).inRoot(isDialog()).perform(click())
+        onView(withIdButton1).perform(click())
+        onView(withIdCardNameTextView).check(matches(withAngelOfMercyText))
     }
 
     @Test
     fun testNoSelectedChoiceWorks() {
-        onView(withId(R.id.cardNameTextView)).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
-        onView(withId(R.id.cardNameTextView)).check(matches(withText("")))
+        onView(withIdCardNameTextView).perform(click())
+        onView(withIdButton1).perform(click())
+        onView(withIdCardNameTextView).check(matches(withText("")))
     }
     @Test
     fun testOnlySingleChoicePossible() {
-        onView(withId(R.id.cardNameTextView)).perform(click())
-        onView(withText("Angel of Mercy")).inRoot(isDialog()).perform(click())
-        onView(withText("Angel of Serenity")).inRoot(isDialog()).perform(click())
+        onView(withIdCardNameTextView).perform(click())
+        onView(withAngelOfMercyText).inRoot(isDialog()).perform(click())
+        onView(withAngelOfSerenityText).inRoot(isDialog()).perform(click())
 
-        onView(withId(android.R.id.button1)).perform(click())
-        onView(withId(R.id.cardNameTextView)).check(matches(withText("Angel of Serenity")))
+        onView(withIdButton1).perform(click())
+        onView(withIdCardNameTextView).check(matches(withAngelOfSerenityText))
     }
 
     @Test
     fun testSingleChoiceCleared() {
-        onView(withId(R.id.cardNameTextView)).perform(click())
-        onView(withText("Angel of Mercy")).inRoot(isDialog()).perform(click())
-        onView(withId(android.R.id.button3)).perform(click())
-        onView(withId(R.id.cardNameTextView)).check(matches(withText("")))
+        onView(withIdCardNameTextView).perform(click())
+        onView(withAngelOfMercyText).inRoot(isDialog()).perform(click())
+        onView(withIdButton3).perform(click())
+        onView(withIdCardNameTextView).check(matches(withText("")))
     }
 
     @Test
     fun testSingleChoiceStays() {
-        onView(withId(R.id.cardNameTextView)).perform(click())
-        onView(withText("Angel of Mercy")).inRoot(isDialog()).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
-        onView(withId(R.id.cardNameTextView)).check(matches(withText("Angel of Mercy")))
+        onView(withIdCardNameTextView).perform(click())
+        onView(withAngelOfMercyText).inRoot(isDialog()).perform(click())
+        onView(withIdButton1).perform(click())
+        onView(withIdCardNameTextView).check(matches(withAngelOfMercyText))
 
-        onView(withId(R.id.cardNameTextView)).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
-        onView(withId(R.id.cardNameTextView)).check(matches(withText("Angel of Mercy")))
+        onView(withIdCardNameTextView).perform(click())
+        onView(withIdButton1).perform(click())
+        onView(withIdCardNameTextView).check(matches(withAngelOfMercyText))
     }
 
     @Test
     fun testFilterButtonWithEmptyFilterWorks() {
-        onView(withId(R.id.filterButton)).perform(click())
+        onView(withIdFilterButton).perform(click())
         onView(withText(arrayCard.toString())).inRoot(isDialog()).check(matches(withText(arrayCard.toString())))
 
     }
 
     @Test
     fun testFilterButtonWithEmptyName() {
-        onView(withId(R.id.layoutTextView)).perform(click())
-        onView(withText("Layout")).inRoot(isDialog()).perform(click())
-        onView(withText("DoubleFaced")).inRoot(isDialog()).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
-        onView(withId(R.id.filterButton)).perform(click())
+        onView(withIdLayoutTextView).perform(click())
+        onView(withLayoutText).inRoot(isDialog()).perform(click())
+        onView(withDoubleFacedText).inRoot(isDialog()).perform(click())
+        onView(withIdButton1).perform(click())
+        onView(withIdFilterButton).perform(click())
         onView(withText("[$card2]")).inRoot(isDialog()).check(matches(withText("[$card2]")))
 
     }
     @Test
     fun testFilterButtonWorks() {
-        onView(withId(R.id.cardNameTextView)).perform(click())
-        onView(withText("Angel of Mercy")).inRoot(isDialog()).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withIdCardNameTextView).perform(click())
+        onView(withAngelOfMercyText).inRoot(isDialog()).perform(click())
+        onView(withIdButton1).perform(click())
 
-        onView(withId(R.id.layoutTextView)).perform(click())
-        onView(withText("Layout")).inRoot(isDialog()).perform(click())
-        onView(withText("Normal")).inRoot(isDialog()).perform(click())
-        onView(withText("Leveler")).inRoot(isDialog()).perform(click())
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withIdLayoutTextView).perform(click())
+        onView(withLayoutText).inRoot(isDialog()).perform(click())
+        onView(withNormalText).inRoot(isDialog()).perform(click())
+        onView(withLevelerText).inRoot(isDialog()).perform(click())
+        onView(withIdButton1).perform(click())
 
-        onView(withId(R.id.filterButton)).perform(click())
+        onView(withIdFilterButton).perform(click())
         onView(withText("[$card1]")).inRoot(isDialog()).check(matches(withText("[$card1]")))
     }
 
      @Test
      fun testFilterOnlyWithCMC() {
-         onView(withId(R.id.cmcTextView)).perform(click())
+         onView(withIdCmcTextView).perform(click())
          onView(withText("5")).perform(click())
          onView(withText("7")).perform(click())
-         onView(withId(android.R.id.button1)).perform(click())
+         onView(withIdButton1).perform(click())
 
-         onView(withId(R.id.filterButton)).perform(click())
+         onView(withIdFilterButton).perform(click())
          onView(withText(arrayCard.toString())).inRoot(isDialog()).check(matches(withText(arrayCard.toString())))
      }
 }
