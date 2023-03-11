@@ -9,6 +9,9 @@ import com.github.bjolidon.bootcamp.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+/**
+ * This activity is used to display a button to sign out the user.
+ */
 class SignOutActivity: AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {

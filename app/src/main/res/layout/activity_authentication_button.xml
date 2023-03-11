@@ -11,7 +11,7 @@
         android:id="@+id/connectionButton"
         android:layout_width="176dp"
         android:layout_height="62dp"
-        android:text="@string/se_connecter"
+        android:text="@string/signIn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

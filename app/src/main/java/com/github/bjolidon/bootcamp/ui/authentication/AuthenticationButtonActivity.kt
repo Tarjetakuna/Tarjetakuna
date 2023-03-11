@@ -10,6 +10,10 @@ import com.github.bjolidon.bootcamp.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+/**
+ * This activity is used to display a button to sign in the user and report an error if the
+ * authentication failed or if the user is not connected to the internet.
+ */
 class AuthenticationButtonActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +36,10 @@ class AuthenticationButtonActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * This function is used to display an error message if the user is not connected to the internet
+     * or if the authentication failed.
+     */
     private fun setupErrorMsg() {
         val errorCode = intent.getStringExtra("errorCode")
         val connexionErrorMsg = findViewById<TextView>(R.id.connexionErrorMsg)
