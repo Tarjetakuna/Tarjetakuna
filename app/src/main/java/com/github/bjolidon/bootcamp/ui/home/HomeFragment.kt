@@ -16,6 +16,7 @@ import com.github.bjolidon.bootcamp.model.MagicCard
 import com.github.bjolidon.bootcamp.model.MagicLayout
 import com.github.bjolidon.bootcamp.model.MagicSet
 import com.google.gson.Gson
+import com.github.bjolidon.bootcamp.ui.authentication.AuthenticationButtonActivity
 
 class HomeFragment : Fragment() {
 
@@ -56,7 +57,7 @@ private var _binding: FragmentHomeBinding? = null
 
     }
 
-    val plainText: EditText = binding.mainName2
+    //val plainText: EditText = binding.mainName2
     val button: Button = binding.mainGoButton2
     button.setOnClickListener {
     }
@@ -69,10 +70,15 @@ private var _binding: FragmentHomeBinding? = null
       startActivity(intent)
     }
 
-
+    val authenticationButton: Button = binding.authenticationButton
+    authenticationButton.setOnClickListener {
+      val intent = Intent(activity, AuthenticationButtonActivity::class.java)
+      startActivity(intent)
+    }
 
     return root
   }
+
 
 override fun onDestroyView() {
         super.onDestroyView()

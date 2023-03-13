@@ -8,6 +8,8 @@ package com.github.bjolidon.bootcamp.model
 /**
  * Represents the color of a Magic card.
  */
+
+/* Commented out because it's not used yet in this project.
 enum class MagicColor {
     White,
     Blue,
@@ -16,3 +18,4 @@ enum class MagicColor {
     Green,
     Colorless
 }
+*/

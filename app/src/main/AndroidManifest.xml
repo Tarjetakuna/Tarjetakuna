@@ -26,6 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.authentication.AuthenticationButtonActivity"> </activity>
+        <activity android:name=".ui.authentication.AuthenticationActivity"> </activity>
+        <activity android:name=".ui.authentication.SignOutActivity"> </activity>
     </application>
 
 </manifest>
