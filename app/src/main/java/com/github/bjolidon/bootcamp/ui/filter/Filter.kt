@@ -10,7 +10,7 @@ class Filter(val name: String, val layout: ArrayList<MagicLayout>, val converted
 
     fun doesContain(other: MagicCard): Boolean {
         var isInFilter: Boolean = true
-        if (name != "") {
+        if (name.isNotBlank()) {
             isInFilter = isInFilter && (other.name == name)
         }
         if (layout.isNotEmpty()) {
