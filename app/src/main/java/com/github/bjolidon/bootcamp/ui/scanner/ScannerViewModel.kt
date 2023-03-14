@@ -12,13 +12,11 @@ class ScannerViewModel : ViewModel() {
     val textInformationId: LiveData<Int> = _textInformationId
 
     fun setTextInformation(activityResult: Int) {
-        when (activityResult) {
-            RESULT_OK -> {
-                _textInformationId.value = R.string.operation_success
-            }
-            else -> {
-                _textInformationId.value = R.string.operation_failed
-            }
+        if (activityResult == RESULT_OK) {
+            _textInformationId.value = R.string.operation_success
+        }
+        else  {
+            _textInformationId.value = R.string.operation_failed
         }
     }
 }
