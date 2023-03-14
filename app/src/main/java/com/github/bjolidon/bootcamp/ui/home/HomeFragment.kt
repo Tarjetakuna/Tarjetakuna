@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.github.bjolidon.bootcamp.MainActivity
+import com.github.bjolidon.bootcamp.R
 import com.github.bjolidon.bootcamp.ui.filter.FilterCardsActivity
 import com.github.bjolidon.bootcamp.databinding.FragmentHomeBinding
 import com.github.bjolidon.bootcamp.model.MagicCard
@@ -60,6 +61,10 @@ private var _binding: FragmentHomeBinding? = null
     //val plainText: EditText = binding.mainName2
     val button: Button = binding.mainGoButton2
     button.setOnClickListener {
+      // call changeFragment()
+      val mainActivity = requireActivity() as MainActivity
+      mainActivity.changeFragment(R.id.nav_browser)
+
     }
 
     val filterActivityButton: Button = binding.filterActivityButton

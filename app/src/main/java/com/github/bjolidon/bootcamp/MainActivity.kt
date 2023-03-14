@@ -1,6 +1,7 @@
 package com.github.bjolidon.bootcamp
 import android.os.Bundle
 import android.view.Menu
+import android.widget.ImageView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -10,7 +11,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.github.bjolidon.bootcamp.databinding.ActivityDrawerBinding
 
 class MainActivity : AppCompatActivity() {
@@ -39,13 +39,18 @@ private lateinit var binding: ActivityDrawerBinding
             R.id.nav_home, R.id.nav_browser, R.id.nav_scanner), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        val profileIcone = binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.profileIcone)
+        profileIcone.setOnClickListener {
+            changeFragment(R.id.nav_profile)
+            binding.drawerLayout.closeDrawer(binding.navView)
+        }
     }
 
     // Change fragment
-    fun changeFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragment_content_drawer, fragment)
-        transaction.commit()
+    fun changeFragment(fragment: Int) {
+        val navController = findNavController(R.id.nav_host_fragment_content_drawer)
+        navController.navigate(fragment)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
