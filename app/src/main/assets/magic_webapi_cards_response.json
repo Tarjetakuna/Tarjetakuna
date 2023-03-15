@@ -1,0 +1,671 @@
+{
+  "cards": [
+    {
+      "name": "Ancestor's Chosen",
+      "manaCost": "{5}{W}{W}",
+      "cmc": 7,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "type": "Creature — Human Cleric",
+      "types": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human",
+        "Cleric"
+      ],
+      "rarity": "Uncommon",
+      "set": "10E",
+      "setName": "Tenth Edition",
+      "text": "First strike (This creature deals combat damage before creatures without first strike.)\nWhen Ancestor's Chosen enters the battlefield, you gain 1 life for each card in your graveyard.",
+      "artist": "Pete Venters",
+      "number": "1",
+      "power": "4",
+      "toughness": "4",
+      "layout": "normal",
+      "multiverseid": "130550",
+      "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=130550&type=card",
+      "variations": [
+        "b7c19924-b4bf-56fc-aa73-f586e940bd42"
+      ],
+      "foreignNames": [
+        {
+          "name": "Ausgewählter der Ahnfrau",
+          "text": "Erstschlag (Diese Kreatur fügt Kampfschaden vor Kreaturen ohne Erstschlag zu.)\nWenn der Ausgewählte der Ahnfrau ins Spiel kommt, erhältst du 1 Lebenspunkt für jede Karte in deinem Friedhof dazu.",
+          "type": "Kreatur — Mensch, Kleriker",
+          "flavor": "„Es ist der Wille aller, und meine Hand, die ihn ausführt.\"",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=148411&type=card",
+          "language": "German",
+          "multiverseid": 148411
+        },
+        {
+          "name": "Elegido de la Antepasada",
+          "text": "Daña primero. (Esta criatura hace daño de combate antes que las criaturas sin la habilidad de dañar primero.)\nCuando el Elegido de la Antepasada entre en juego, ganas 1 vida por cada carta en tu cementerio.",
+          "type": "Criatura — Clérigo humano",
+          "flavor": "\"La voluntad de todos, realizada por mi mano.\"",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=150317&type=card",
+          "language": "Spanish",
+          "multiverseid": 150317
+        },
+        {
+          "name": "Élu de l'Ancêtre",
+          "text": "Initiative (Cette créature inflige des blessures de combat avant les créatures sans l'initiative.)\nQuand l'Élu de l'Ancêtre arrive en jeu, vous gagnez 1 point de vie pour chaque carte dans votre cimetière.",
+          "type": "Créature : humain et clerc",
+          "flavor": "« La volonté de tous passe par ma main. »",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149934&type=card",
+          "language": "French",
+          "multiverseid": 149934
+        },
+        {
+          "name": "Prescelto dell'Antenata",
+          "text": "Attacco improvviso (Questa creatura infligge danno da combattimento prima delle creature senza attacco improvviso.)\nQuando il Prescelto dell'Antenata entra in gioco, guadagni 1 punto vita per ogni carta nel tuo cimitero.",
+          "type": "Creatura — Chierico Umano",
+          "flavor": "\"La volontà di tutti, eseguita per mano mia.\"",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=148794&type=card",
+          "language": "Italian",
+          "multiverseid": 148794
+        },
+        {
+          "name": "祖神に選ばれし者",
+          "text": "先制攻撃 （このクリーチャーは先制攻撃を持たないクリーチャーよりも先に戦闘ダメージを与える。）\n祖神に選ばれし者が場に出たとき、あなたはあなたの墓地にあるカード１枚につき１点のライフを得る。",
+          "type": "クリーチャー — 人間・クレリック",
+          "flavor": "すべての意思を、この手で成そう。",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=148028&type=card",
+          "language": "Japanese",
+          "multiverseid": 148028
+        },
+        {
+          "name": "Eleito da Ancestral",
+          "text": "Iniciativa (Esta criatura causa dano de combate antes de criaturas sem a habilidade de iniciativa.)\nQuando Eleito da Ancestral entra em jogo, você ganha 1 ponto de vida para cada card em seu cemitério.",
+          "type": "Criatura — Humano Clérigo",
+          "flavor": "\"A vontade de todos pelas minhas mãos realizada.\"",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149551&type=card",
+          "language": "Portuguese (Brazil)",
+          "multiverseid": 149551
+        },
+        {
+          "name": "Избранник Прародителя",
+          "text": "Первый удар (Это существо наносит боевые повреждения раньше существ без Первого удара.)\nКогда Избранник Прародителя входит в игру, вы получаете 1 жизнь за каждую карту на вашем кладбище.",
+          "type": "Существо — Человек Священник",
+          "flavor": "\"Общая воля моей рукой вершится\".",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149168&type=card",
+          "language": "Russian",
+          "multiverseid": 149168
+        },
+        {
+          "name": "祖灵的爱民",
+          "text": "先攻（此生物会比不具先攻异能的生物提前造成战斗伤害。）\n当祖灵的爱民进场时，你坟墓场中每有一张牌，你便获得1点生命。",
+          "type": "生物～人类／僧侣",
+          "flavor": "「众生所愿，吾手所圆。」",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=147645&type=card",
+          "language": "Chinese Simplified",
+          "multiverseid": 147645
+        }
+      ],
+      "printings": [
+        "10E",
+        "JUD",
+        "UMA"
+      ],
+      "originalText": "First strike (This creature deals combat damage before creatures without first strike.)\nWhen Ancestor's Chosen comes into play, you gain 1 life for each card in your graveyard.",
+      "originalType": "Creature - Human Cleric",
+      "legalities": [
+        {
+          "format": "Commander",
+          "legality": "Legal"
+        },
+        {
+          "format": "Duel",
+          "legality": "Legal"
+        },
+        {
+          "format": "Legacy",
+          "legality": "Legal"
+        },
+        {
+          "format": "Modern",
+          "legality": "Legal"
+        },
+        {
+          "format": "Paupercommander",
+          "legality": "Restricted"
+        },
+        {
+          "format": "Penny",
+          "legality": "Legal"
+        },
+        {
+          "format": "Predh",
+          "legality": "Legal"
+        },
+        {
+          "format": "Premodern",
+          "legality": "Legal"
+        },
+        {
+          "format": "Vintage",
+          "legality": "Legal"
+        }
+      ],
+      "id": "5f8287b1-5bb6-5f4c-ad17-316a40d5bb0c"
+    },
+    {
+      "name": "Ancestor's Chosen",
+      "manaCost": "{5}{W}{W}",
+      "cmc": 7,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "type": "Creature — Human Cleric",
+      "types": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human",
+        "Cleric"
+      ],
+      "rarity": "Uncommon",
+      "set": "10E",
+      "setName": "Tenth Edition",
+      "text": "First strike (This creature deals combat damage before creatures without first strike.)\nWhen Ancestor's Chosen enters the battlefield, you gain 1 life for each card in your graveyard.",
+      "flavor": "\"The will of all, by my hand done.\"",
+      "artist": "Pete Venters",
+      "number": "1★",
+      "power": "4",
+      "toughness": "4",
+      "layout": "normal",
+      "variations": [
+        "5f8287b1-5bb6-5f4c-ad17-316a40d5bb0c"
+      ],
+      "printings": [
+        "10E",
+        "JUD",
+        "UMA"
+      ],
+      "legalities": [
+        {
+          "format": "Commander",
+          "legality": "Legal"
+        },
+        {
+          "format": "Duel",
+          "legality": "Legal"
+        },
+        {
+          "format": "Legacy",
+          "legality": "Legal"
+        },
+        {
+          "format": "Modern",
+          "legality": "Legal"
+        },
+        {
+          "format": "Paupercommander",
+          "legality": "Restricted"
+        },
+        {
+          "format": "Penny",
+          "legality": "Legal"
+        },
+        {
+          "format": "Predh",
+          "legality": "Legal"
+        },
+        {
+          "format": "Premodern",
+          "legality": "Legal"
+        },
+        {
+          "format": "Vintage",
+          "legality": "Legal"
+        }
+      ],
+      "id": "b7c19924-b4bf-56fc-aa73-f586e940bd42"
+    },
+    {
+      "name": "Angel of Mercy",
+      "manaCost": "{4}{W}",
+      "cmc": 5,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "type": "Creature — Angel",
+      "types": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Angel"
+      ],
+      "rarity": "Uncommon",
+      "set": "10E",
+      "setName": "Tenth Edition",
+      "text": "Flying\nWhen Angel of Mercy enters the battlefield, you gain 3 life.",
+      "flavor": "Every tear shed is a drop of immortality.",
+      "artist": "Volkan Baǵa",
+      "number": "2",
+      "power": "3",
+      "toughness": "3",
+      "layout": "normal",
+      "multiverseid": "129465",
+      "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=129465&type=card",
+      "variations": [
+        "8fd4e2eb-3eb4-50ea-856b-ef638fa47f8a"
+      ],
+      "foreignNames": [
+        {
+          "name": "Engel der Gnade",
+          "text": "Fliegend (Diese Kreatur kann außer von fliegenden Kreaturen und Kreaturen mit Reichweite nicht geblockt werden.)\nWenn der Engel der Gnade ins Spiel kommt, erhältst du 3 Lebenspunkte dazu.",
+          "type": "Kreatur — Engel",
+          "flavor": "Jede ihrer Tränen ist ein Tropfen Unsterblichkeit.",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=148412&type=card",
+          "language": "German",
+          "multiverseid": 148412
+        },
+        {
+          "name": "Ángel de piedad",
+          "text": "Vuela. (Esta criatura no puede ser bloqueada excepto por criaturas que tengan la habilidad de volar o alcance.)\nCuando el Ángel de piedad entre en juego, gana 3 vidas.",
+          "type": "Criatura — Ángel",
+          "flavor": "Cada lágrima derramada es una gota de inmortalidad.",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=150318&type=card",
+          "language": "Spanish",
+          "multiverseid": 150318
+        },
+        {
+          "name": "Ange de miséricorde",
+          "text": "Vol (Cette créature ne peut être bloquée que par des créatures avec le vol ou la portée.)\nQuand l'Ange de miséricorde arrive en jeu, vous gagnez 3 points de vie.",
+          "type": "Créature : ange",
+          "flavor": "Chaque larme versée est une goutte d'immortalité.",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
+          "language": "French",
+          "multiverseid": 149935
+        },
+        {
+          "name": "Angelo della Misericordia",
+          "text": "Volare (Questa creatura non può essere bloccata tranne che da creature con volare o raggiungere.)\nQuando l'Angelo della Misericordia entra in gioco, guadagni 3 punti vita.",
+          "type": "Creatura — Angelo",
+          "flavor": "Ogni lacrima versata è una goccia d'immortalità.",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=148795&type=card",
+          "language": "Italian",
+          "multiverseid": 148795
+        },
+        {
+          "name": "慈悲の天使",
+          "text": "飛行 （このクリーチャーは飛行や到達を持たないクリーチャーによってブロックされない。）\n慈悲の天使が場に出たとき、あなたは３点のライフを得る。",
+          "type": "クリーチャー — 天使",
+          "flavor": "流す涙は不死の滴。",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=148029&type=card",
+          "language": "Japanese",
+          "multiverseid": 148029
+        },
+        {
+          "name": "Anjo de Misericórdia",
+          "text": "Voar (Esta criatura só pode ser bloqueada por criaturas com a habilidade de voar ou alcance.)\nQuando Anjo de Misericórdia entra em jogo, você ganha 3 pontos de vida.",
+          "type": "Criatura — Anjo",
+          "flavor": "Cada lágrima derramada é uma gota de imortalidade.",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149552&type=card",
+          "language": "Portuguese (Brazil)",
+          "multiverseid": 149552
+        },
+        {
+          "name": "Ангел Милосердия",
+          "text": "Полет (Это существо может быть заблокировано только существом с Полетом или Захватом.)\nКогда Ангел Милосердия входит в игру, вы получаете 3 жизни.",
+          "type": "Существо — Ангел",
+          "flavor": "Каждая пролитая слеза это капля бессмертия.",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149169&type=card",
+          "language": "Russian",
+          "multiverseid": 149169
+        },
+        {
+          "name": "慈悲天使",
+          "text": "飞行（只有具飞行或延势异能的生物才能阻挡它。）\n当慈悲天使进场时，你获得3点生命。",
+          "type": "生物～天使",
+          "flavor": "每颗泪珠都是一滴不朽。",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=147646&type=card",
+          "language": "Chinese Simplified",
+          "multiverseid": 147646
+        }
+      ],
+      "printings": [
+        "10E",
+        "8ED",
+        "9ED",
+        "DDC",
+        "DVD",
+        "IMA",
+        "INV",
+        "JMP",
+        "MB1",
+        "P02",
+        "PS11",
+        "PSAL",
+        "S99"
+      ],
+      "originalText": "Flying (This creature can't be blocked except by creatures with flying or reach.)\nWhen Angel of Mercy comes into play, you gain 3 life.",
+      "originalType": "Creature - Angel",
+      "legalities": [
+        {
+          "format": "Commander",
+          "legality": "Legal"
+        },
+        {
+          "format": "Duel",
+          "legality": "Legal"
+        },
+        {
+          "format": "Gladiator",
+          "legality": "Legal"
+        },
+        {
+          "format": "Historic",
+          "legality": "Legal"
+        },
+        {
+          "format": "Historicbrawl",
+          "legality": "Legal"
+        },
+        {
+          "format": "Legacy",
+          "legality": "Legal"
+        },
+        {
+          "format": "Modern",
+          "legality": "Legal"
+        },
+        {
+          "format": "Pauper",
+          "legality": "Legal"
+        },
+        {
+          "format": "Paupercommander",
+          "legality": "Legal"
+        },
+        {
+          "format": "Penny",
+          "legality": "Legal"
+        },
+        {
+          "format": "Predh",
+          "legality": "Legal"
+        },
+        {
+          "format": "Premodern",
+          "legality": "Legal"
+        },
+        {
+          "format": "Vintage",
+          "legality": "Legal"
+        }
+      ],
+      "id": "57aaebc1-850c-503d-9f6e-bb8d00d8bf7c"
+    },
+    {
+      "name": "Angel of Mercy",
+      "manaCost": "{4}{W}",
+      "cmc": 5,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "type": "Creature — Angel",
+      "types": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Angel"
+      ],
+      "rarity": "Uncommon",
+      "set": "10E",
+      "setName": "Tenth Edition",
+      "text": "Flying\nWhen Angel of Mercy enters the battlefield, you gain 3 life.",
+      "flavor": "Every tear shed is a drop of immortality.",
+      "artist": "Volkan Baǵa",
+      "number": "2★",
+      "power": "3",
+      "toughness": "3",
+      "layout": "normal",
+      "variations": [
+        "57aaebc1-850c-503d-9f6e-bb8d00d8bf7c"
+      ],
+      "printings": [
+        "10E",
+        "8ED",
+        "9ED",
+        "DDC",
+        "DVD",
+        "IMA",
+        "INV",
+        "JMP",
+        "MB1",
+        "P02",
+        "PS11",
+        "PSAL",
+        "S99"
+      ],
+      "legalities": [
+        {
+          "format": "Commander",
+          "legality": "Legal"
+        },
+        {
+          "format": "Duel",
+          "legality": "Legal"
+        },
+        {
+          "format": "Gladiator",
+          "legality": "Legal"
+        },
+        {
+          "format": "Historic",
+          "legality": "Legal"
+        },
+        {
+          "format": "Historicbrawl",
+          "legality": "Legal"
+        },
+        {
+          "format": "Legacy",
+          "legality": "Legal"
+        },
+        {
+          "format": "Modern",
+          "legality": "Legal"
+        },
+        {
+          "format": "Pauper",
+          "legality": "Legal"
+        },
+        {
+          "format": "Paupercommander",
+          "legality": "Legal"
+        },
+        {
+          "format": "Penny",
+          "legality": "Legal"
+        },
+        {
+          "format": "Predh",
+          "legality": "Legal"
+        },
+        {
+          "format": "Premodern",
+          "legality": "Legal"
+        },
+        {
+          "format": "Vintage",
+          "legality": "Legal"
+        }
+      ],
+      "id": "8fd4e2eb-3eb4-50ea-856b-ef638fa47f8a"
+    },
+    {
+      "name": "Angelic Blessing",
+      "manaCost": "{2}{W}",
+      "cmc": 3,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "type": "Sorcery",
+      "types": [
+        "Sorcery"
+      ],
+      "rarity": "Common",
+      "set": "10E",
+      "setName": "Tenth Edition",
+      "text": "Target creature gets +3/+3 and gains flying until end of turn. (It can't be blocked except by creatures with flying or reach.)",
+      "flavor": "Only the warrior who can admit mortal weakness will be bolstered by immortal strength.",
+      "artist": "Mark Zug",
+      "number": "3",
+      "layout": "normal",
+      "multiverseid": "129711",
+      "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=129711&type=card",
+      "variations": [
+        "c5655330-5131-5f40-9d3e-0549d88c6e9e"
+      ],
+      "foreignNames": [
+        {
+          "name": "Himmlischer Segen",
+          "text": "Eine Kreatur deiner Wahl erhält +3/+3 und Flugfähigkeit bis zum Ende des Zuges. (Sie kann außer von fliegenden Kreaturen und Kreaturen mit Reichweite nicht geblockt werden.)",
+          "type": "Hexerei",
+          "flavor": "Nur demjenigen Krieger, der sterbliche Schwäche zugeben kann, wird unsterbliche Stärke gewährt.",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=148414&type=card",
+          "language": "German",
+          "multiverseid": 148414
+        },
+        {
+          "name": "Bendición angélica",
+          "text": "La criatura objetivo obtiene +3/+3 y gana la habilidad de volar hasta el final del turno. (No puede ser bloqueada excepto por criaturas que tengan la habilidad de volar o alcance.)",
+          "type": "Conjuro",
+          "flavor": "Sólo el guerrero que pueda admitir debilidad mortal será auxiliado con fuerza inmortal.",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=150319&type=card",
+          "language": "Spanish",
+          "multiverseid": 150319
+        },
+        {
+          "name": "Bénédiction angélique",
+          "text": "La créature ciblée gagne +3/+3 et acquiert le vol jusqu'à la fin du tour. (Elle ne peut être bloquée que par des créatures avec le vol ou la portée.)",
+          "type": "Rituel",
+          "flavor": "Seul le guerrier qui admet une faiblesse mortelle peut recevoir la force immortelle.",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149936&type=card",
+          "language": "French",
+          "multiverseid": 149936
+        },
+        {
+          "name": "Benedizione Angelica",
+          "text": "Una creatura bersaglio prende +3/+3 e ha volare fino alla fine del turno. (Non può essere bloccata tranne che da creature con volare o raggiungere.)",
+          "type": "Stregoneria",
+          "flavor": "Solo il guerriero capace di ammettere la propria fragilità mortale sarà sostenuto dalla forza immortale.",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=148797&type=card",
+          "language": "Italian",
+          "multiverseid": 148797
+        },
+        {
+          "name": "天使の祝福",
+          "text": "クリーチャー１体を対象とする。それはターン終了時まで＋３/＋３の修整を受けるとともに飛行を得る。 （それは飛行や到達を持たないクリーチャーによってブロックされない。）",
+          "type": "ソーサリー",
+          "flavor": "必滅の身であることを知っている戦士だけが、不滅の力に支えられる。",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=148031&type=card",
+          "language": "Japanese",
+          "multiverseid": 148031
+        },
+        {
+          "name": "Bênção Angelical",
+          "text": "A criatura alvo recebe +3/+3 e ganha a habilidade de voar até o final do turno. (Ela só pode ser bloqueada por criaturas com a habilidade de voar ou alcance.)",
+          "type": "Feitiço",
+          "flavor": "Somente o guerreiro que for capaz de admitir sua própria fragilidade mortal será favorecido com força imortal.",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149553&type=card",
+          "language": "Portuguese (Brazil)",
+          "multiverseid": 149553
+        },
+        {
+          "name": "Благословение Ангела",
+          "text": "Целевое существо получает +3/+3 и Полет до конца хода. (Оно может быть заблокировано только существом с Полетом или Захватом.)",
+          "type": "Волшебство",
+          "flavor": "Только тот воин, что признает в себе слабости смертных, будет наделен силой бессмертных.",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149170&type=card",
+          "language": "Russian",
+          "multiverseid": 149170
+        },
+        {
+          "name": "天使的祝福",
+          "text": "目标生物得+3/+3并获得飞行异能直到回合结束。 （只有具飞行或延势异能的生物才能阻挡它。）",
+          "type": "法术",
+          "flavor": "只有勇于正视自身致命弱点的战士，才能受到超凡力量的庇护。",
+          "imageUrl": "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=147648&type=card",
+          "language": "Chinese Simplified",
+          "multiverseid": 147648
+        }
+      ],
+      "printings": [
+        "10E",
+        "9ED",
+        "EXO",
+        "P02",
+        "POR",
+        "PS11",
+        "S00",
+        "S99",
+        "TPR"
+      ],
+      "originalText": "Target creature gets +3/+3 and gains flying until end of turn. (It can't be blocked except by creatures with flying or reach.)",
+      "originalType": "Sorcery",
+      "legalities": [
+        {
+          "format": "Commander",
+          "legality": "Legal"
+        },
+        {
+          "format": "Duel",
+          "legality": "Legal"
+        },
+        {
+          "format": "Legacy",
+          "legality": "Legal"
+        },
+        {
+          "format": "Modern",
+          "legality": "Legal"
+        },
+        {
+          "format": "Pauper",
+          "legality": "Legal"
+        },
+        {
+          "format": "Paupercommander",
+          "legality": "Legal"
+        },
+        {
+          "format": "Penny",
+          "legality": "Legal"
+        },
+        {
+          "format": "Predh",
+          "legality": "Legal"
+        },
+        {
+          "format": "Premodern",
+          "legality": "Legal"
+        },
+        {
+          "format": "Vintage",
+          "legality": "Legal"
+        }
+      ],
+      "id": "55bd38ca-dc73-5c06-8f80-a6ddd2f44382"
+    }
+  ]
+}

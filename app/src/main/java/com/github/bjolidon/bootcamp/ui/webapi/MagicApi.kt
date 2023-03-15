@@ -4,6 +4,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface MagicApi {
-    @GET("/cards")
+    @GET("cards")
     fun getCards(): Call<DataCards>
 }

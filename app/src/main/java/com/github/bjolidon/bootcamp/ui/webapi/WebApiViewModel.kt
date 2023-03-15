@@ -41,9 +41,6 @@ class WebApiViewModel : ViewModel() {
     }
 
     private fun getCardsWeb() {
-        // set textview to loading
-//        setApiResults(R.string.api_waiting_results)
-
         val magicApi = WebApi.getMagicApi()
 
         // making the request

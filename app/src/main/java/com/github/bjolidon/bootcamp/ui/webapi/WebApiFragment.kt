@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.bjolidon.bootcamp.MainActivity
 import com.github.bjolidon.bootcamp.R
 import com.github.bjolidon.bootcamp.databinding.FragmentScannerBinding
 import com.github.bjolidon.bootcamp.databinding.FragmentWebApiBinding
+import com.github.bjolidon.bootcamp.ui.home.HomeFragment
 
 class WebApiFragment : Fragment() {
 
@@ -39,6 +41,11 @@ class WebApiFragment : Fragment() {
         binding.apiCards.setOnClickListener {
             binding.apiResults.text = getString(R.string.api_waiting_results)
             viewModel.getCards(this.requireContext())
+        }
+
+        binding.apiBackHome.setOnClickListener {
+            val mainActivity = requireActivity() as MainActivity
+            mainActivity.changeFragment(R.id.nav_home)
         }
 
         return root

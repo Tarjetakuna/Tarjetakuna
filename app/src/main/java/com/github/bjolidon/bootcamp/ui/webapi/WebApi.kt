@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object WebApi {
 
-    var url = "https://api.magicthegathering.io/v1"
+    var url = "https://api.magicthegathering.io/v1/"
 
     fun getMagicApi(): MagicApi {
         // building request to API to get bored information
