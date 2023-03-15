@@ -24,5 +24,23 @@ class Utils {
                 else -> false
             }
         }
+
+        // return a string with the description and the value if the value is not null or empty
+        fun printIfNotNullOrEmpty(ob: String?, description: String) : String {
+            return if (ob != null && ob.isNotEmpty()) {
+                description + ob
+            } else {
+                ""
+            }
+        }
+
+        // return a string with the description and the value if the value is not null or empty
+        fun printIfNotNullOrEmpty(ob: Boolean?, description: String) : String {
+            return if (ob != null) {
+                description + ob
+            } else {
+                ""
+            }
+        }
     }
 }

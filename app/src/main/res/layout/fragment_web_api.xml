@@ -8,25 +8,41 @@
     tools:context=".ui.webapi.WebApiFragment">
 
 
-    <Button
-        android:id="@+id/api_cards"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/api_cards"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/api_cards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/api_cards" />
+
+        <Button
+            android:id="@+id/api_sets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:text="@string/api_sets" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/api_results"
         android:layout_width="371dp"
         android:layout_height="0dp"
+        android:scrollbars="vertical"
         android:text="@string/api_default_results"
         app:layout_constraintBottom_toTopOf="@+id/api_back_home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/api_cards" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
         android:id="@+id/api_back_home"

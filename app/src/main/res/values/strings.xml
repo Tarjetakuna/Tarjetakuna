@@ -41,6 +41,7 @@
 
 <!--    web api texts-->
     <string name="api_cards">/cards</string>
+    <string name="api_sets">/sets</string>
     <string name="api_default_results">no results yet</string>
     <string name="api_waiting_results">waiting for results</string>
 </resources>

@@ -2,6 +2,7 @@ package com.github.bjolidon.bootcamp.ui.webapi
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,7 @@ class WebApiFragment : Fragment() {
         _binding = FragmentWebApiBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // observe the apiResults and apiError LiveData
         viewModel.apiResults.observe(viewLifecycleOwner) {
             if (it != null){
                 binding.apiResults.text = it
@@ -38,11 +40,20 @@ class WebApiFragment : Fragment() {
             }
         }
 
+        // set scrolling for the results textview
+        binding.apiResults.movementMethod = ScrollingMovementMethod()
+
+        // set the buttons listeners for the webapi
         binding.apiCards.setOnClickListener {
             binding.apiResults.text = getString(R.string.api_waiting_results)
             viewModel.getCards(this.requireContext())
         }
+        binding.apiSets.setOnClickListener {
+            binding.apiResults.text = getString(R.string.api_waiting_results)
+            viewModel.getSets(this.requireContext())
+        }
 
+        // set the back button listener
         binding.apiBackHome.setOnClickListener {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.changeFragment(R.id.nav_home)
