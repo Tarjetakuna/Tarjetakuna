@@ -14,7 +14,7 @@
     android:gravity="bottom">
 
     <ImageView
-        android:id="@+id/profileIcone"
+        android:id="@+id/profileIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"

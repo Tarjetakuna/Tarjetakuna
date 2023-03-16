@@ -21,8 +21,8 @@ private lateinit var binding: ActivityDrawerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-     binding = ActivityDrawerBinding.inflate(layoutInflater)
-     setContentView(binding.root)
+        binding = ActivityDrawerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setSupportActionBar(binding.appBarDrawer.toolbar)
 
@@ -40,7 +40,8 @@ private lateinit var binding: ActivityDrawerBinding
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        val profileIcone = binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.profileIcone)
+        // Display profile fragment when clicking on the profile icon
+        val profileIcone = binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.profileIcon)
         profileIcone.setOnClickListener {
             changeFragment(R.id.nav_profile)
             binding.drawerLayout.closeDrawer(binding.navView)
