@@ -11,6 +11,7 @@ import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.github.bjolidon.bootcamp.R
+import com.github.bjolidon.bootcamp.database.UserCardsActivity
 import com.google.firebase.auth.FirebaseAuth
 
 /**

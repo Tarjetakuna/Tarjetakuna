@@ -1,0 +1,60 @@
+package com.github.bjolidon.bootcamp.database
+
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.github.bjolidon.bootcamp.R
+import com.github.bjolidon.bootcamp.model.MagicCard
+import com.github.bjolidon.bootcamp.model.MagicLayout
+import com.github.bjolidon.bootcamp.model.MagicSet
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import java.util.concurrent.CompletableFuture
+
+class UserCardsRTDB : AppCompatActivity(){
+    private val db = Firebase.database.reference
+    private val user = Firebase.auth.currentUser
+    private val userCardCollection = db.child(user!!.uid)
+
+
+    fun addCardToCollection(card: MagicCard) : String {
+        val cardUID = card.set.code + card.number
+        userCardCollection.child(cardUID).child("name").setValue(card.name)
+        userCardCollection.child(cardUID).child("text").setValue(card.text)
+        userCardCollection.child(cardUID).child("layout").setValue(card.layout.toString())
+        userCardCollection.child(cardUID).child("convertedManaCost").setValue(card.convertedManaCost)
+        userCardCollection.child(cardUID).child("manaCost").setValue(card.manaCost)
+        userCardCollection.child(cardUID).child("setCode").setValue(card.set.code)
+        userCardCollection.child(cardUID).child("setName").setValue(card.set.name)
+        userCardCollection.child(cardUID).child("number").setValue(card.number)
+        userCardCollection.child(cardUID).child("imageUrl").setValue(card.imageUrl)
+
+        return "Card $cardUID successfully added to collection"
+
+    }
+
+    fun removeCardFromCollection(card: MagicCard) : String {
+        val cardUID = card.set.code + card.number
+        userCardCollection.child(cardUID).removeValue()
+        return "Card $cardUID successfully removed from collection"
+    }
+
+    fun transformData(data: DataSnapshot): MagicCard{
+        val name = data.child("name").value.toString()
+        val text = data.child("text").value.toString()
+        val layout = MagicLayout.valueOf(data.child("layout").value.toString())
+        val convertedManaCost = data.child("convertedManaCost").value.toString().toInt()
+        val manaCost = data.child("manaCost").value.toString()
+        val setCode = data.child("setCode").value.toString()
+        val setName = data.child("setName").value.toString()
+        val number = data.child("number").value.toString().toInt()
+        val imageUrl = data.child("imageUrl").value.toString()
+        val set = MagicSet(setCode, setName)
+        return MagicCard(name, text, layout, convertedManaCost, manaCost, set, number, imageUrl)
+    }
+
+
+
+
+}
