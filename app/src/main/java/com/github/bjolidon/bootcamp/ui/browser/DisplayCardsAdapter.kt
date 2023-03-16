@@ -17,7 +17,7 @@ class DisplayCardsAdapter(private val cards: ArrayList<MagicCard>) :
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardName: TextView = itemView.findViewById(R.id.cardNameRecyclerViewTextView)
-        val setName: TextView = itemView.findViewById(R.id.setRecyclerViewTextView)
+        val setInfo: TextView = itemView.findViewById(R.id.setRecyclerViewTextView)
         val cardImage: ImageView = itemView.findViewById(R.id.cardImageView)
 
     }
@@ -36,8 +36,9 @@ class DisplayCardsAdapter(private val cards: ArrayList<MagicCard>) :
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.cardName.text = cards[position].name
+        // TODO change the image directly from the url (when web API available)
         holder.cardImage.setImageResource(R.drawable.card)
-        holder.setName.text = cards[position].set.toString()
+        holder.setInfo.text = cards[position].set.toString()
     }
 
     /**

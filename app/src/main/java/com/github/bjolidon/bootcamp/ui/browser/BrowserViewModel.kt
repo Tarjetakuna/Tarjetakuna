@@ -18,6 +18,7 @@ class BrowserViewModel : ViewModel() {
     val cards: ArrayList<MagicCard> = generateCards()
 
     /**
+     * TODO change it when we have the web api to get the cards
      * Generate cards in order to simulate the display of the cards
      */
     private fun generateCards(): ArrayList<MagicCard> {
