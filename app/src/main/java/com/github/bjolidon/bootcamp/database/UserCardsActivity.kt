@@ -3,7 +3,6 @@ package com.github.bjolidon.bootcamp.database
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.github.bjolidon.bootcamp.MainActivity
@@ -13,7 +12,6 @@ import com.github.bjolidon.bootcamp.model.MagicLayout
 import com.github.bjolidon.bootcamp.model.MagicSet
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.github.bjolidon.bootcamp.database.UserCardsRTDB
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import java.util.concurrent.CompletableFuture

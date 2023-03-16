@@ -1,8 +1,5 @@
 package com.github.bjolidon.bootcamp.database
 
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import com.github.bjolidon.bootcamp.R
 import com.github.bjolidon.bootcamp.model.MagicCard
 import com.github.bjolidon.bootcamp.model.MagicLayout
 import com.github.bjolidon.bootcamp.model.MagicSet
@@ -10,13 +7,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.util.concurrent.CompletableFuture
 
 /**
  * This class is used to manage the user's collection of cards.
  */
 
-class UserCardsRTDB : AppCompatActivity(){
+class UserCardsRTDB {
     private val db = Firebase.database.reference
     private val user = Firebase.auth.currentUser
     private val userCardCollection = db.child(user!!.uid)
