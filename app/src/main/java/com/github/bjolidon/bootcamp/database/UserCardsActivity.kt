@@ -100,5 +100,4 @@ class UserCardsActivity : AppCompatActivity() {
         val getMessage: TextView = findViewById(R.id.text_get_card)
         getMessage.text = msg
     }
-
 }

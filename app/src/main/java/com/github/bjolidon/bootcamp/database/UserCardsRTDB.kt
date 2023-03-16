@@ -65,8 +65,4 @@ class UserCardsRTDB : AppCompatActivity(){
         val set = MagicSet(setCode, setName)
         return MagicCard(name, text, layout, convertedManaCost, manaCost, set, number, imageUrl)
     }
-
-
-
-
 }
