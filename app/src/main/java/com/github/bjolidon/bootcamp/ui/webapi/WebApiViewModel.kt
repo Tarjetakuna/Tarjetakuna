@@ -56,36 +56,27 @@ class WebApiViewModel : ViewModel() {
 
     // to get cards information from the web
     private fun getCardsWeb() {
-
-        // getting the api
-        val magicApi = WebApi.getMagicApi()
-
-        // making the request
-        magicApi.getCards().enqueue(object : Callback<DataCards> {
-            override fun onResponse(call: Call<DataCards>, response: Response<DataCards>) {
-                CallbackHandler<DataCards>().handleResponse(response, this@WebApiViewModel)
-            }
-
-            override fun onFailure(call: Call<DataCards>, t: Throwable) {
-                CallbackHandler<DataCards>().handleFailure(t, this@WebApiViewModel)
-            }
-        })
+        ApiCall(WebApi.getMagicApi().getCards(), this@WebApiViewModel).enqueue()
     }
 
     private fun getSetsWeb() {
-        // getting the api
-        val magicApi = WebApi.getMagicApi()
+        ApiCall(WebApi.getMagicApi().getSets(), this@WebApiViewModel).enqueue()
+    }
 
-        // making the request
-        magicApi.getSets().enqueue(object : Callback<DataSets> {
-            override fun onResponse(call: Call<DataSets>, response: Response<DataSets>) {
-                CallbackHandler<DataSets>().handleResponse(response, this@WebApiViewModel)
-            }
+    open class ApiCall<T>(private val call: Call<T>, private val viewModel: WebApiViewModel) {
+        fun enqueue() {
+            call.enqueue(object : ApiCallHandler<T>(viewModel) {})
+        }
+    }
 
-            override fun onFailure(call: Call<DataSets>, t: Throwable) {
-                CallbackHandler<DataSets>().handleFailure(t, this@WebApiViewModel)
-            }
-        })
+    open class ApiCallHandler<T>(private val viewModel: WebApiViewModel) : Callback<T> {
+        override fun onResponse(call: Call<T>, response: Response<T>) {
+            CallbackHandler<T>().handleResponse(response, viewModel)
+        }
+
+        override fun onFailure(call: Call<T>, t: Throwable) {
+            CallbackHandler<T>().handleFailure(t, viewModel)
+        }
     }
 
     class CallbackHandler<T>{
