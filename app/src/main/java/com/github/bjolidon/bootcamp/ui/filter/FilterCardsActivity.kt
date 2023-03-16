@@ -1,5 +1,6 @@
 package com.github.bjolidon.bootcamp.ui.filter
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.widget.AdapterView.INVALID_POSITION
@@ -7,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.github.bjolidon.bootcamp.MainActivity
 import com.github.bjolidon.bootcamp.R
 import com.github.bjolidon.bootcamp.model.MagicCard
 import com.github.bjolidon.bootcamp.model.MagicLayout
@@ -64,9 +66,16 @@ class FilterCardsActivity : AppCompatActivity() {
 
         val applyFilterButton: Button = findViewById(R.id.filterButton)
         applyFilterButton.setOnClickListener {
+            applyFilterButton.isEnabled = false
             filter = convertToFilter()
             filterCards()
-            displayCardsFiltered()
+            displayCardsFiltered(applyFilterButton)
+        }
+
+        val returnMainButton: Button = findViewById(R.id.returnMainButton)
+        returnMainButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -271,12 +280,12 @@ class FilterCardsActivity : AppCompatActivity() {
      * Display the cards that have been filter in an alertDialog
      * TODO change this method, it is here since the card display has not been implemented
      */
-    private fun displayCardsFiltered() {
+    private fun displayCardsFiltered(button: Button) {
         val builder = AlertDialog.Builder(this@FilterCardsActivity)
         builder.setMessage(filteredCards.toString())
         builder.setCancelable(false)
         builder.setTitle("Cards have been filtered")
-        builder.setPositiveButton("OK") { _, _ -> }
+        builder.setPositiveButton("OK") { _, _ -> button.isEnabled = true}
         builder.show()
     }
 }
