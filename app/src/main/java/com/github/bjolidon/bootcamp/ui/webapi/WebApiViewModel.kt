@@ -63,28 +63,11 @@ class WebApiViewModel : ViewModel() {
         // making the request
         magicApi.getCards().enqueue(object : Callback<DataCards> {
             override fun onResponse(call: Call<DataCards>, response: Response<DataCards>) {
-                // Handle the response
-                if (response.isSuccessful) {
-                    val cards = response.body()
-                    if (cards != null) {
-                        setApiResults(cards.toString())
-                        // TODO save to cache
-//                        saveBoredActivity(boredActivity)
-                    } else {
-                        setError(R.string.txt_error_msg, "no data")
-                    }
-                } else {
-                    setError(R.string.txt_error_msg, response.errorBody().toString())
-                }
+                CallbackHandler<DataCards>().handleResponse(response, this@WebApiViewModel)
             }
 
             override fun onFailure(call: Call<DataCards>, t: Throwable) {
-                // Handle the error
-                if (t.message != null) {
-                    setError(R.string.txt_error_msg, t.message!!)
-                } else {
-                    setError(R.string.txt_error_msg, "unknown error")
-                }
+                CallbackHandler<DataCards>().handleFailure(t, this@WebApiViewModel)
             }
         })
     }
@@ -96,29 +79,40 @@ class WebApiViewModel : ViewModel() {
         // making the request
         magicApi.getSets().enqueue(object : Callback<DataSets> {
             override fun onResponse(call: Call<DataSets>, response: Response<DataSets>) {
-                // Handle the response
-                if (response.isSuccessful) {
-                    val cards = response.body()
-                    if (cards != null) {
-                        setApiResults(cards.toString())
-                        // TODO save to cache
-//                        saveBoredActivity(boredActivity)
-                    } else {
-                        setError(R.string.txt_error_msg, "no data")
-                    }
-                } else {
-                    setError(R.string.txt_error_msg, response.errorBody().toString())
-                }
+                CallbackHandler<DataSets>().handleResponse(response, this@WebApiViewModel)
             }
 
             override fun onFailure(call: Call<DataSets>, t: Throwable) {
-                // Handle the error
-                if (t.message != null) {
-                    setError(R.string.txt_error_msg, t.message!!)
-                } else {
-                    setError(R.string.txt_error_msg, "unknown error")
-                }
+                CallbackHandler<DataSets>().handleFailure(t, this@WebApiViewModel)
             }
         })
     }
+
+    class CallbackHandler<T>{
+        public fun handleResponse(response: Response<T>, viewModel: WebApiViewModel){
+            // Handle the response
+            if (response.isSuccessful) {
+                val sets = response.body()
+                if (sets != null) {
+                    viewModel.setApiResults(sets.toString())
+                    // TODO save to cache
+                } else {
+                    viewModel.setError(R.string.txt_error_msg, "no data")
+                }
+            } else {
+                viewModel.setError(R.string.txt_error_msg, response.errorBody().toString())
+            }
+        }
+
+        fun handleFailure(t: Throwable, viewModel: WebApiViewModel){
+            // Handle the error
+            if (t.message != null) {
+                viewModel.setError(R.string.txt_error_msg, t.message!!)
+            } else {
+                viewModel.setError(R.string.txt_error_msg, "unknown error")
+            }
+        }
+    }
 }
+
+
