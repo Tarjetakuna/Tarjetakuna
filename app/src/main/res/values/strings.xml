@@ -36,4 +36,7 @@
 
     <string name="signIn">Sign in with Google</string>
     <string name="go_back_to_home_page">Go back to home page</string>
+    <string name="meandering_towershell">Meandering Towershell</string>
+    <string name="mt15">MT15</string>
+    <string name="this_image_is_a_card">this image is a card</string>
 </resources>
