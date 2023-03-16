@@ -25,6 +25,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_browser">Browse</string>
     <string name="menu_scanner">Scan</string>
+    <string name="menu_webapi">Webapi</string>
     <string name="menu_profile">Profile</string>
 
     <string name="scanner_button">Scan a card</string>
@@ -36,6 +37,14 @@
 
     <string name="signIn">Sign in with Google</string>
     <string name="go_back_to_home_page">Go back to home page</string>
+    <string name="txt_error_msg">Error: %s</string>
+
+<!--    web api texts-->
+    <string name="api_cards">/cards</string>
+    <string name="api_sets">/sets</string>
+    <string name="api_default_results">no results yet</string>
+    <string name="api_waiting_results">waiting for results</string>
+
     <string name="meandering_towershell">Meandering Towershell</string>
     <string name="mt15">MT15</string>
     <string name="this_image_is_a_card">this image is a card</string>
@@ -45,4 +54,5 @@
     <string name="get_card_button">Get Card</string>
     <string name="set_card_button">Add Card</string>
     <string name="manage_collection_button">Manage Collection</string>
+
 </resources>
