@@ -12,12 +12,18 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.concurrent.CompletableFuture
 
+/**
+ * This class is used to manage the user's collection of cards.
+ */
+
 class UserCardsRTDB : AppCompatActivity(){
     private val db = Firebase.database.reference
     private val user = Firebase.auth.currentUser
     private val userCardCollection = db.child(user!!.uid)
 
-
+    /**
+     * Adds a card to the user's collection.
+     */
     fun addCardToCollection(card: MagicCard) : String {
         val cardUID = card.set.code + card.number
         userCardCollection.child(cardUID).child("name").setValue(card.name)
@@ -34,12 +40,18 @@ class UserCardsRTDB : AppCompatActivity(){
 
     }
 
+    /**
+     * Removes a card from the user's collection.
+     */
     fun removeCardFromCollection(card: MagicCard) : String {
         val cardUID = card.set.code + card.number
         userCardCollection.child(cardUID).removeValue()
         return "Card $cardUID successfully removed from collection"
     }
 
+    /**
+     * Transforms the data obtained from the database to a MagicCard object.
+     */
     fun transformData(data: DataSnapshot): MagicCard{
         val name = data.child("name").value.toString()
         val text = data.child("text").value.toString()
