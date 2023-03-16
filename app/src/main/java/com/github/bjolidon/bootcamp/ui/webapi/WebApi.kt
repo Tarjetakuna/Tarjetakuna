@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object WebApi {
 
     private const val magicUrl = "https://api.magicthegathering.io/v1/"
-    lateinit var magicApi: MagicApi
+    private lateinit var magicApi: MagicApi
 
     fun getMagicApi(): MagicApi {
         if (!::magicApi.isInitialized) {
