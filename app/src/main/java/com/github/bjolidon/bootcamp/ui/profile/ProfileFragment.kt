@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.github.bjolidon.bootcamp.MainActivity
 import com.github.bjolidon.bootcamp.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -20,6 +22,8 @@ private var _binding: FragmentProfileBinding? = null
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
+
+
   ): View {
     val profileViewModel =
             ViewModelProvider(this).get(ProfileViewModel::class.java)
@@ -31,6 +35,14 @@ private var _binding: FragmentProfileBinding? = null
     profileViewModel.text.observe(viewLifecycleOwner) {
       textView.text = it
     }
+
+    val button: Button = binding.saveNameButton
+    button.setOnClickListener {
+      val name = binding.saveNameText.text.toString()
+      val mainActivity = requireActivity() as MainActivity
+      mainActivity.setNavHeaderName(name)
+    }
+
     return root
   }
 

@@ -2,6 +2,7 @@
     <string name="app_name">Bootcamp</string>
     <string name="demo_button">Demo button: fragment switch </string>
     <string name="hello">Hello</string>
+    <string name="save_name_button">Save name</string>
     <string name="enter_your_name">Enter your name:</string>
     <string name="filter_option_title">Filter options</string>
     <string name="filter">Filter</string>
@@ -12,8 +13,8 @@
     <string name="title_activity_drawer">Drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title"></string>
+    <string name="nav_header_subtitle"></string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
