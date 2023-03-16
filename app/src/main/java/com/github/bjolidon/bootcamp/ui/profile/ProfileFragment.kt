@@ -22,8 +22,6 @@ private var _binding: FragmentProfileBinding? = null
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-
-
   ): View {
     val profileViewModel =
             ViewModelProvider(this).get(ProfileViewModel::class.java)

@@ -17,7 +17,7 @@ import com.github.bjolidon.bootcamp.databinding.ActivityDrawerBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-private lateinit var binding: ActivityDrawerBinding
+    private lateinit var binding: ActivityDrawerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
