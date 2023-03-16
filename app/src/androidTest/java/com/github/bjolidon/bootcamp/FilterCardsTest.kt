@@ -6,6 +6,8 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -58,6 +60,7 @@ class FilterCardsTest {
     private val withIdCmcTextView = withId(R.id.cmcTextView)
     private val withIdFilterButton = withId(R.id.filterButton)
     private val withIdCardNameTextView = withId(R.id.cardNameTextView)
+    private val withIdReturnMainButton = withId(R.id.returnMainButton)
 
     @Before
     public fun setUp() {
@@ -239,4 +242,20 @@ class FilterCardsTest {
          onView(withIdFilterButton).perform(click())
          onView(withText(arrayCard.toString())).inRoot(isDialog()).check(matches(withText(arrayCard.toString())))
      }
+
+    @Test
+    fun testFilterButtonIsEnabledAfterDialogClosed() {
+        onView(withIdFilterButton).perform(click())
+        onView(withIdButton1).perform(click())
+        onView(withIdFilterButton).check((matches(isClickable())))
+    }
+
+    @Test
+    fun testBackButtonWorks() {
+        Intents.init()
+        onView(withIdReturnMainButton).perform(click())
+        Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))
+        Intents.release()
+
+    }
 }

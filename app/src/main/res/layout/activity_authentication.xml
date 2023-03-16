@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/profileIcon"
         android:layout_width="343dp"
         android:layout_height="512dp"
         app:layout_constraintBottom_toBottomOf="parent"
