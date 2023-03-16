@@ -28,4 +28,10 @@
         android:name="com.github.bjolidon.bootcamp.ui.webapi.WebApiFragment"
         android:label="@string/menu_webapi"
         tools:layout="@layout/fragment_web_api" />
+
+	<fragment
+        android:id="@+id/nav_profile"
+        android:name="com.github.bjolidon.bootcamp.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

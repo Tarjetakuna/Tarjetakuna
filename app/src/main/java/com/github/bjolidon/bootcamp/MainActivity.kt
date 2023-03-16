@@ -1,6 +1,7 @@
 package com.github.bjolidon.bootcamp
 import android.os.Bundle
 import android.view.Menu
+import android.widget.ImageView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -10,7 +11,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.github.bjolidon.bootcamp.databinding.ActivityDrawerBinding
 
 class MainActivity : AppCompatActivity() {
@@ -21,8 +21,8 @@ private lateinit var binding: ActivityDrawerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-     binding = ActivityDrawerBinding.inflate(layoutInflater)
-     setContentView(binding.root)
+        binding = ActivityDrawerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setSupportActionBar(binding.appBarDrawer.toolbar)
 
@@ -44,6 +44,13 @@ private lateinit var binding: ActivityDrawerBinding
             drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // Display profile fragment when clicking on the profile icon
+        val profileIcone = binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.profileIcon)
+        profileIcone.setOnClickListener {
+            changeFragment(R.id.nav_profile)
+            binding.drawerLayout.closeDrawer(binding.navView)
+        }
     }
 
     // Change fragment
