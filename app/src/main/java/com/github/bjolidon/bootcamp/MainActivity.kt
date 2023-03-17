@@ -2,6 +2,7 @@ package com.github.bjolidon.bootcamp
 import android.os.Bundle
 import android.view.Menu
 import android.widget.ImageView
+import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -16,7 +17,7 @@ import com.github.bjolidon.bootcamp.databinding.ActivityDrawerBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-private lateinit var binding: ActivityDrawerBinding
+    private lateinit var binding: ActivityDrawerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +58,12 @@ private lateinit var binding: ActivityDrawerBinding
     fun changeFragment(fragment: Int) {
         val navController = findNavController(R.id.nav_host_fragment_content_drawer)
         navController.navigate(fragment)
+    }
+
+    fun setNavHeaderName(name: String) {
+        val navView: NavigationView = binding.navView
+        val navHeaderName = navView.getHeaderView(0).findViewById<TextView>(R.id.navHeaderNameText)
+        navHeaderName.text = name
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
