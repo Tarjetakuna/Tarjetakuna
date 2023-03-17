@@ -23,4 +23,8 @@ data class MagicSet(
         require(code.isNotBlank()) { "Code cannot be blank" }
         require(name.isNotBlank()) { "Name cannot be blank" }
     }
+
+    override fun toString(): String {
+        return "set: $name, code: $code"
+    }
 }
