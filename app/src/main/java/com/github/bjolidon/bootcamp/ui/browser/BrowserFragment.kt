@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.bjolidon.bootcamp.MainActivity
 import com.github.bjolidon.bootcamp.R
 import com.github.bjolidon.bootcamp.databinding.FragmentBrowserBinding
 import com.github.bjolidon.bootcamp.ui.singlecard.SingleCardFragment
@@ -19,7 +20,6 @@ class BrowserFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,8 +44,6 @@ class BrowserFragment : Fragment() {
             override fun onCardClick(position: Int) {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.nav_host_fragment_content_drawer, SingleCardFragment(browserViewModel.cards[position]))
-                    .addToBackStack(null)
-                    .setReorderingAllowed(true)
                     .commit()
             }
         }

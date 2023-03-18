@@ -14,22 +14,22 @@ import com.github.bjolidon.bootcamp.model.MagicCard
  */
 class DisplayCardsAdapter(private val cards: ArrayList<MagicCard>) : RecyclerView.Adapter<DisplayCardsAdapter.ViewHolder>() {
 
+    /**
+     * Interface for managing the click on a card-item of the recycler view
+     */
     interface OnCardClickListener {
         fun onCardClick(position: Int)
     }
 
+    /**
+     * Listener for the click on a card-item of the recycler view
+     */
     var onCardClickListener : OnCardClickListener? = null
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardName: TextView = itemView.findViewById(R.id.cardNameRecyclerViewTextView)
         val setInfo: TextView = itemView.findViewById(R.id.setRecyclerViewTextView)
         val cardImage: ImageView = itemView.findViewById(R.id.cardImageView)
-
-        init {
-            itemView.setOnClickListener {
-                onCardClickListener?.onCardClick(bindingAdapterPosition)
-            }
-        }
     }
 
     /**
@@ -41,7 +41,7 @@ class DisplayCardsAdapter(private val cards: ArrayList<MagicCard>) : RecyclerVie
     }
 
     /**
-     * Set the values of the items
+     * Set the items
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.cardName.text = cards[position].name
