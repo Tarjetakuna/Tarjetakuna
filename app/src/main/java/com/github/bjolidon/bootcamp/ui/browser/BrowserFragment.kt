@@ -8,10 +8,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.bjolidon.bootcamp.R
 import com.github.bjolidon.bootcamp.databinding.FragmentBrowserBinding
-import com.github.bjolidon.bootcamp.model.MagicCard
-import com.github.bjolidon.bootcamp.model.MagicLayout
-import com.github.bjolidon.bootcamp.model.MagicSet
+import com.github.bjolidon.bootcamp.ui.singlecard.SingleCardFragment
 
 class BrowserFragment : Fragment() {
 
@@ -37,7 +36,20 @@ class BrowserFragment : Fragment() {
             textView.text = it
         }
 
-        setUpRecyclerView(browserViewModel)
+        binding.listOfCardsRecyclerView.layoutManager = LinearLayoutManager(context)
+        val adapter = DisplayCardsAdapter(browserViewModel.cards)
+        binding.listOfCardsRecyclerView.adapter = adapter
+
+        adapter.onCardClickListener = object : DisplayCardsAdapter.OnCardClickListener {
+            override fun onCardClick(position: Int) {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.nav_host_fragment_content_drawer, SingleCardFragment(browserViewModel.cards[position]))
+                    .addToBackStack(null)
+                    .setReorderingAllowed(true)
+                    .commit()
+            }
+        }
+
         return root
     }
 
@@ -45,14 +57,4 @@ class BrowserFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-    /**
-     * Set up the recycler view with the cards
-     */
-    private fun setUpRecyclerView(browserViewModel: BrowserViewModel) {
-        val recyclerView = binding.listOfCardsRecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = DisplayCardsAdapter(browserViewModel.cards)
-    }
-
 }

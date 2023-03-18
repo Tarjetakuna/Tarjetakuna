@@ -40,7 +40,7 @@
     <string name="go_back_to_home_page">Go back to home page</string>
     <string name="txt_error_msg">Error: %s</string>
 
-<!--    web api texts-->
+    <!--    web api texts-->
     <string name="api_cards">/cards</string>
     <string name="api_sets">/sets</string>
     <string name="api_default_results">no results yet</string>
