@@ -55,9 +55,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Change fragment
-    fun changeFragment(fragment: Int) {
+    fun changeFragment(fragment: Int, args: Bundle? = null) {
         val navController = findNavController(R.id.nav_host_fragment_content_drawer)
-        navController.navigate(fragment)
+        navController.navigate(fragment, args)
     }
 
     fun setNavHeaderName(name: String) {

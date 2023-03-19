@@ -16,7 +16,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.filter.FilterCardsActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -27,9 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.authentication.AuthenticationButtonActivity"></activity>
-        <activity android:name=".ui.authentication.AuthenticationActivity"></activity>
-        <activity android:name=".ui.authentication.SignOutActivity"></activity>
+        <activity android:name=".ui.authentication.AuthenticationButtonActivity" />
+        <activity android:name=".ui.authentication.AuthenticationActivity" />
+        <activity android:name=".ui.authentication.SignOutActivity" />
     </application>
 
 </manifest>

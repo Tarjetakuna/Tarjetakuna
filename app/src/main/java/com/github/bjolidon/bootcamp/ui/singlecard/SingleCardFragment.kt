@@ -1,31 +1,21 @@
 package com.github.bjolidon.bootcamp.ui.singlecard
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.github.bjolidon.bootcamp.R
 import com.github.bjolidon.bootcamp.databinding.FragmentSingleCardBinding
 import com.github.bjolidon.bootcamp.model.MagicCard
-import com.github.bjolidon.bootcamp.utils.Utils
-import java.util.concurrent.Executors
+import com.google.gson.Gson
 
-class SingleCardFragment(card: MagicCard) : Fragment() {
+class SingleCardFragment: Fragment() {
 
     private var _binding: FragmentSingleCardBinding? = null
     private val binding get() = _binding!!
 
-    private var card: MagicCard
-
-    init {
-        this.card = card
-    }
-    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,24 +23,18 @@ class SingleCardFragment(card: MagicCard) : Fragment() {
     ): View {
         _binding = FragmentSingleCardBinding.inflate(inflater, container, false)
 
-        binding.singleCardNameCard.text = card.name
-
-        val executor = Executors.newSingleThreadExecutor()
-        val handler = Handler(Looper.getMainLooper())
-
-        var image: Bitmap? = null
-        executor.execute {
-            try {
-                val inputStream = java.net.URL(card.imageUrl).openStream()
-                image = BitmapFactory.decodeStream(inputStream)
-                handler.post {
-                    binding.singleCardImage.setImageBitmap(image)
-                }
-            }
-            catch (e: Exception) {
-                e.printStackTrace()
-            }
+        try {
+            val card = Gson().fromJson(arguments?.getString("card"), MagicCard::class.java)
+            binding.singleCardTextCardName.text = card.name
+            binding.singleCardTextCardSet.text = getString(R.string.single_card_showing_set, card.set.name, card.set.code)
+            binding.singleCardTextCardNumber.text = getString(R.string.single_card_showing_number, card.number)
+        } catch (e: Exception) {
+            binding.singleCardTextCardName.text = getString(R.string.error_load_card)
         }
+
+        Glide.with(this)
+            .load("https://cards.scryfall.io/large/front/c/f/cfa00c0e-163d-4f59-b8b9-3ee9143d27bb.jpg?1674420138")
+            .into(binding.singleCardImage)
 
         return binding.root
     }

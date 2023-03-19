@@ -55,5 +55,9 @@
     <string name="get_card_button">Get Card</string>
     <string name="set_card_button">Add Card</string>
     <string name="manage_collection_button">Manage Collection</string>
-
+    <string name="menu_single_card">Card</string>
+    <string name="image_of_the_card">Image of the card</string>
+    <string name="error_load_card">Error loading the card</string>
+    <string name="single_card_showing_set">From %1$s (%2$s)</string>
+    <string name="single_card_showing_number">#%1$d</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.github.bjolidon.bootcamp.ui.browser
 
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import com.github.bjolidon.bootcamp.MainActivity
 import com.github.bjolidon.bootcamp.R
 import com.github.bjolidon.bootcamp.databinding.FragmentBrowserBinding
 import com.github.bjolidon.bootcamp.ui.singlecard.SingleCardFragment
+import com.google.gson.Gson
 
 class BrowserFragment : Fragment() {
 
@@ -42,9 +45,9 @@ class BrowserFragment : Fragment() {
 
         adapter.onCardClickListener = object : DisplayCardsAdapter.OnCardClickListener {
             override fun onCardClick(position: Int) {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment_content_drawer, SingleCardFragment(browserViewModel.cards[position]))
-                    .commit()
+                val bundle = Bundle()
+                bundle.putString("card", Gson().toJson(browserViewModel.cards[position]))
+                (requireActivity() as MainActivity).changeFragment(R.id.nav_single_card, bundle)
             }
         }
 
