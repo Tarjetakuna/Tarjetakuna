@@ -11,6 +11,7 @@ import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.github.bjolidon.bootcamp.R
+import com.github.bjolidon.bootcamp.utils.Utils
 import com.google.firebase.auth.FirebaseAuth
 
 /**
@@ -45,7 +46,7 @@ class AuthenticationActivity: AppCompatActivity() {
             IdpConfig.GoogleBuilder().build()
         )
         // Check if the device is connected to the internet
-        if(isNetworkAvailable(this.baseContext)) {
+        if(Utils.isNetworkAvailable(this.baseContext)) {
             // Create and launch sign-in intent
             val signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
@@ -88,25 +89,6 @@ class AuthenticationActivity: AppCompatActivity() {
                 val intent = Intent(this, AuthenticationButtonActivity::class.java)
                 startActivity(intent)
             }
-    }
-
-    /**
-     * Check if the device is connected to the internet
-     */
-    private fun isNetworkAvailable(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val nw = connectivityManager.activeNetwork ?: return false
-        val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
-        return when {
-            actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-            actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-            //for other device that are able to connect with Ethernet
-            actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-            //for check internet over Bluetooth
-            actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
-            else -> false
-        }
     }
 
     /**
