@@ -24,6 +24,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import com.github.bjolidon.bootcamp.R
+import com.github.bjolidon.bootcamp.utils.CustomTypeSafeMatcher
 import org.hamcrest.Description
 import org.hamcrest.TypeSafeMatcher
 import org.junit.After
@@ -53,7 +54,7 @@ class ScannerFragmentTest {
         intending(hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(result)
 
         onView(withId(R.id.button_scan)).perform(click())
-        onView(withId(R.id.image_card)).check(matches(withDrawable(imageBitmap)))
+        onView(withId(R.id.image_card)).check(matches(CustomTypeSafeMatcher.withDrawable(imageBitmap)))
         onView(withId(R.id.text_information)).check(matches(withText(R.string.operation_success)))
     }
 
@@ -65,15 +66,5 @@ class ScannerFragmentTest {
 
         onView(withId(R.id.button_scan)).perform(click())
         onView(withId(R.id.text_information)).check(matches(withText(R.string.operation_failed)))
-    }
-
-    private fun withDrawable(bitmap: Bitmap) = object : TypeSafeMatcher<View>() {
-        override fun describeTo(description: Description) {
-            description.appendText("ImageView with drawable same as a bitmap")
-        }
-
-        override fun matchesSafely(view: View): Boolean {
-            return view is ImageView && view.drawable.toBitmap().sameAs(bitmap)
-        }
     }
 }
