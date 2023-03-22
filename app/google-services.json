@@ -1,92 +1,34 @@
 {
   "project_info": {
-    "project_number": "977629908956",
-    "firebase_url": "https://sdp-firebase-bootcamp-30644-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "sdp-firebase-bootcamp-30644",
-    "storage_bucket": "sdp-firebase-bootcamp-30644.appspot.com"
+    "project_number": "1007028555187",
+    "firebase_url": "https://tarjetakuna-database-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "tarjetakuna-database",
+    "storage_bucket": "tarjetakuna-database.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:977629908956:android:23b7f01584c9d4fb330919",
+        "mobilesdk_app_id": "1:1007028555187:android:6491fc9088d945bfcb4fc6",
         "android_client_info": {
-          "package_name": "com.example.fireapp"
+          "package_name": "com.github.sdp.tarjetakuna"
         }
       },
       "oauth_client": [
         {
-          "client_id": "977629908956-sigdt65kvtdcun6duqcoq3nkb146i0t5.apps.googleusercontent.com",
+          "client_id": "1007028555187-lm0pi9k8iatqltbq4u3cjo1g28tugdns.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB-85DOUKIhk0lGZ2Is8yfiIVbBiYX8qBc"
+          "current_key": "AIzaSyBN2rAFhT10k5GTomOEvQbokG3JAlEFrfo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "977629908956-sigdt65kvtdcun6duqcoq3nkb146i0t5.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:977629908956:android:e4a52e20a6fc66c2330919",
-        "android_client_info": {
-          "package_name": "com.example.firebase_bootcamp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "977629908956-sigdt65kvtdcun6duqcoq3nkb146i0t5.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB-85DOUKIhk0lGZ2Is8yfiIVbBiYX8qBc"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "977629908956-sigdt65kvtdcun6duqcoq3nkb146i0t5.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:977629908956:android:5aa1270f91ef36b7330919",
-        "android_client_info": {
-          "package_name": "com.github.bjolidon.bootcamp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "977629908956-sigdt65kvtdcun6duqcoq3nkb146i0t5.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB-85DOUKIhk0lGZ2Is8yfiIVbBiYX8qBc"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "977629908956-sigdt65kvtdcun6duqcoq3nkb146i0t5.apps.googleusercontent.com",
+              "client_id": "1007028555187-lm0pi9k8iatqltbq4u3cjo1g28tugdns.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
