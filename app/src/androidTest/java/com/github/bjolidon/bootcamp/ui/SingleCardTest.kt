@@ -4,15 +4,17 @@ import android.os.Bundle
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.bumptech.glide.Glide
 import com.github.bjolidon.bootcamp.R
-import com.github.bjolidon.bootcamp.model.MagicCard
-import com.github.bjolidon.bootcamp.model.MagicLayout
-import com.github.bjolidon.bootcamp.model.MagicSet
+import com.github.bjolidon.bootcamp.model.*
 import com.github.bjolidon.bootcamp.ui.singlecard.SingleCardFragment
+import com.github.bjolidon.bootcamp.utils.CustomGlide
+import com.github.bjolidon.bootcamp.utils.CustomTypeSafeMatcher.withDrawable
 import com.google.gson.Gson
 import org.hamcrest.Matchers.not
 import org.junit.After
@@ -37,7 +39,11 @@ class SingleCardTest {
         "{1}",
         MagicSet("TS", "TestSet"),
         1,
-        "https://cards.scryfall.io/large/front/c/f/cfa00c0e-163d-4f59-b8b9-3ee9143d27bb.jpg?1674420138")
+        "https://cards.scryfall.io/large/front/c/f/cfa00c0e-163d-4f59-b8b9-3ee9143d27bb.jpg?1674420138",
+        MagicRarity.Common,
+        MagicType.Artifact,
+        listOf("Human", "Soldier"),
+    )
 
     private val validJson = Gson().toJson(validMagicCard)
     private val invalidJson = "This is not a valid json string"
@@ -47,15 +53,18 @@ class SingleCardTest {
     private val textCardSet = onView(withId(R.id.singleCard_text_cardSet))
     private val textCardNumber = onView(withId(R.id.singleCard_text_cardNumber))
     private val textCardText = onView(withId(R.id.singleCard_text_cardText))
+    private val textCardRarity = onView(withId(R.id.singleCard_text_cardRarity))
+    private val textCardType = onView(withId(R.id.singleCard_text_cardType))
     private val imageCard = onView(withId(R.id.singleCard_image))
 
     @Before
-    fun setUp() {
-
+    fun setup() {
+        IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
     }
 
     @After
-    fun after() {
+    fun tearDown() {
+        IdlingRegistry.getInstance().unregister(CustomGlide.countingIdlingResource)
         scenario.close()
     }
 
@@ -71,6 +80,8 @@ class SingleCardTest {
         textCardSet.check(matches(withText("")))
         textCardNumber.check(matches(withText("")))
         textCardText.check(matches(withText("")))
+        textCardRarity.check(matches(withText("")))
+        textCardType.check(matches(withText("")))
         imageCard.check(matches(not(isDisplayed())))
     }
 
@@ -88,6 +99,8 @@ class SingleCardTest {
         textCardSet.check(matches(withText("")))
         textCardNumber.check(matches(withText("")))
         textCardText.check(matches(withText("")))
+        textCardRarity.check(matches(withText("")))
+        textCardType.check(matches(withText("")))
         imageCard.check(matches(not(isDisplayed())))
     }
 
@@ -96,14 +109,25 @@ class SingleCardTest {
      */
     @Test
     fun testValidJsonInArgumentsIsValid() {
+
+        val bitmap = Glide.with(context)
+            .asBitmap()
+            .load(validMagicCard.imageUrl)
+            .submit()
+            .get()
+
         val bundleArgs = Bundle().apply { putString("card", validJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
+
+        val strSubType = if (validMagicCard.subtypes.isNotEmpty()) context.getString(R.string.single_card_showing_type_subtypes, validMagicCard.subtypes.joinToString(", ")) else ""
 
         textCardName.check(matches(withText(validMagicCard.name)))
         textCardSet.check(matches(withText(context.getString(R.string.single_card_showing_set, validMagicCard.set.name, validMagicCard.set.code))))
         textCardNumber.check(matches(withText(context.getString(R.string.single_card_showing_number, validMagicCard.number))))
         textCardText.check(matches(withText(validMagicCard.text)))
-        //TODO: check if the image is the same as the one in the card
-        //imageCard.check(matches(isDisplayed()))
+        textCardRarity.check(matches(withText(validMagicCard.rarity.toString())))
+        textCardType.check(matches(withText(validMagicCard.type.toString() + strSubType)))
+        imageCard.check(matches(isDisplayed()))
+        imageCard.check(matches(withDrawable(bitmap)))
     }
 }

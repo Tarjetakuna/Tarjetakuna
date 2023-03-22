@@ -60,4 +60,5 @@
     <string name="error_load_card">Error loading the card</string>
     <string name="single_card_showing_set">From %1$s (%2$s)</string>
     <string name="single_card_showing_number">#%1$d</string>
+    <string name="single_card_showing_type_subtypes">- %1$s</string>
 </resources>
