@@ -13,6 +13,23 @@ import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentFilterCardsBinding
 
+/**
+ * fragment to filter cards.
+ * Get the list of cards to be filtered from the bundle as a json string
+ * e.g
+ * [{"convertedManaCost": 7,
+"imageUrl": "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
+"layout": "Normal",
+"manaCost": "{5}{W}{W}",
+"name": "Test Card",
+"number": 56,
+"set": {
+"code": "MT15",
+"name": "Magic 2015"
+},
+"text": "Test Type"
+}, ...]
+ */
 class FilterCardsFragment : Fragment() {
 
     private var _binding: FragmentFilterCardsBinding? = null

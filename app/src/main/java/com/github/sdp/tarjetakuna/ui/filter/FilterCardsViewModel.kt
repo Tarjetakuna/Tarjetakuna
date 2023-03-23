@@ -14,7 +14,11 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
-class FilterCardsViewModel() : ViewModel() {
+
+/**
+ * ViewModel for the FilterCardsFragment
+ */
+class FilterCardsViewModel : ViewModel() {
 
     private var valuesMap: Map<String, ArrayList<String>> = emptyMap()
 
@@ -37,6 +41,9 @@ class FilterCardsViewModel() : ViewModel() {
     )
     val manaCostArray: Array<String> = (0..16).map { it.toString() }.toTypedArray()
 
+    /**
+     * Initialize the attributes of the view model
+     */
     fun initializeAttributes(bundle: Bundle, fragment: FilterCardsFragment) {
         cards = getCardsFromBundle(bundle)
         filteredCards = ArrayList()
@@ -143,6 +150,9 @@ class FilterCardsViewModel() : ViewModel() {
     }
 
 
+    /**
+     * What happens when the "OK" button is clicked
+     */
     fun setSingleOKButton(
         dialog: DialogInterface,
         title: String,
@@ -176,10 +186,16 @@ class FilterCardsViewModel() : ViewModel() {
         textView.text = message
     }
 
+    /**
+     * Check if the valuesMap contains the key title and the item "item"
+     */
     fun valuesMapDoesContain(title: String, item: String): Boolean {
         return valuesMap.containsKey(title) && valuesMap[title]!!.contains(item)
     }
 
+    /**
+     * Get the filtered cards in string format
+     */
     fun getFilterCardsString(): String {
         return filteredCards.toString()
     }
