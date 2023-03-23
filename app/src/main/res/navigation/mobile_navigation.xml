@@ -34,4 +34,11 @@
         android:name="com.github.sdp.tarjetakuna.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_filter"
+        android:name="com.github.sdp.tarjetakuna.ui.filter.FilterCardsFragment"
+        android:label="@string/menu_filter"
+        tools:layout="@layout/fragment_filter_cards" />
+
 </navigation>

@@ -1,21 +1,19 @@
 package com.github.sdp.tarjetakuna
 
-import android.content.Intent
+import android.os.Bundle
+import androidx.navigation.Navigation.findNavController
 import androidx.test.core.app.ActivityScenario
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.github.sdp.tarjetakuna.ui.filter.FilterCardsActivity
 import com.google.gson.Gson
+import org.hamcrest.Matchers.equalTo
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,16 +21,20 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class FilterCardsTest {
 
-    private lateinit var activityRule: ActivityScenario<FilterCardsActivity>
-    private val card1 = MagicCard("Angel of Mercy", "Flying",
+    private lateinit var activityRule: ActivityScenario<MainActivity>
+    private val card1 = MagicCard(
+        "Angel of Mercy", "Flying",
         MagicLayout.Normal, 7, "{5}{W}{W}",
         MagicSet("MT15", "Magic 2015"), 56,
-        "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card")
+        "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card"
+    )
 
-    private val card2 = MagicCard("Meandering Towershell", "Islandwalk",
+    private val card2 = MagicCard(
+        "Meandering Towershell", "Islandwalk",
         MagicLayout.DoubleFaced, 5, "{3}{G}{G}",
         MagicSet("MT15", "Magic 2015"), 141,
-        "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=386602")
+        "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=386602"
+    )
 
     private val arrayCard = arrayListOf(card1, card2)
 
@@ -66,9 +68,18 @@ class FilterCardsTest {
     public fun setUp() {
         val gson = Gson()
         val arrayCardJson = gson.toJson(arrayCard)
-        val intent = Intent(ApplicationProvider.getApplicationContext(), FilterCardsActivity::class.java)
-        intent.putExtra("cards", arrayCardJson)
-        activityRule = ActivityScenario.launch(intent)
+
+        // Create a bundle and set the parameters
+        val bundle = Bundle()
+        bundle.putString("cards", arrayCardJson)
+
+        // Use the ActivityScenarioRule to launch the fragment
+        activityRule = ActivityScenario.launch(MainActivity::class.java)
+
+        // Get a reference to the fragment's view
+        activityRule.onActivity { activity ->
+            activity.changeFragment(R.id.nav_filter, bundle)
+        }
     }
 
     @Test
@@ -76,12 +87,6 @@ class FilterCardsTest {
         onView(withIdLayoutTextView).check(matches(isDisplayed()))
     }
 
-    @Test
-    fun testContainsCardsInIntents() {
-        activityRule.onActivity { activity ->
-            assert(activity.intent.getStringExtra("cards") != null)
-        }
-    }
 
     @Test
     fun testClickOnLayoutShowsLayoutList() {
@@ -201,7 +206,8 @@ class FilterCardsTest {
     @Test
     fun testFilterButtonWithEmptyFilterWorks() {
         onView(withIdFilterButton).perform(click())
-        onView(withText(arrayCard.toString())).inRoot(isDialog()).check(matches(withText(arrayCard.toString())))
+        onView(withText(arrayCard.toString())).inRoot(isDialog())
+            .check(matches(withText(arrayCard.toString())))
 
     }
 
@@ -232,16 +238,17 @@ class FilterCardsTest {
         onView(withText("[$card1]")).inRoot(isDialog()).check(matches(withText("[$card1]")))
     }
 
-     @Test
-     fun testFilterOnlyWithCMC() {
-         onView(withIdCmcTextView).perform(click())
-         onView(withText("5")).perform(click())
-         onView(withText("7")).perform(click())
-         onView(withIdButton1).perform(click())
+    @Test
+    fun testFilterOnlyWithCMC() {
+        onView(withIdCmcTextView).perform(click())
+        onView(withText("5")).perform(click())
+        onView(withText("7")).perform(click())
+        onView(withIdButton1).perform(click())
 
-         onView(withIdFilterButton).perform(click())
-         onView(withText(arrayCard.toString())).inRoot(isDialog()).check(matches(withText(arrayCard.toString())))
-     }
+        onView(withIdFilterButton).perform(click())
+        onView(withText(arrayCard.toString())).inRoot(isDialog())
+            .check(matches(withText(arrayCard.toString())))
+    }
 
     @Test
     fun testFilterButtonIsEnabledAfterDialogClosed() {
@@ -252,10 +259,15 @@ class FilterCardsTest {
 
     @Test
     fun testBackButtonWorks() {
-        Intents.init()
+
+        // Navigate back to the previous destination
         onView(withIdReturnMainButton).perform(click())
-        Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))
-        Intents.release()
+
+        // Verify that we've navigated back to the previous destination
+        activityRule.onActivity { activity ->
+            val navController = findNavController(activity, R.id.nav_host_fragment_content_drawer)
+            assertThat(navController.currentDestination?.id, equalTo(R.id.nav_home))
+        }
 
     }
 }
