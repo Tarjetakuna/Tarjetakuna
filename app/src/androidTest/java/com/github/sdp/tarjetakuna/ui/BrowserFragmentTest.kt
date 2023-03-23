@@ -1,8 +1,8 @@
 package com.github.sdp.tarjetakuna.ui
 
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -12,10 +12,10 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.ui.browser.BrowserFragment
-import com.github.sdp.tarjetakuna.ui.browser.DisplayCardsAdapter
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
+import org.hamcrest.Matchers.equalTo
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -24,17 +24,22 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class BrowserFragmentTest {
 
-    private lateinit var scenario: FragmentScenario<BrowserFragment>
+    private lateinit var activityRule: ActivityScenario<MainActivity>
 
     @Before
     fun setUp() {
         Intents.init()
-        scenario = launchFragmentInContainer()
+        activityRule = ActivityScenario.launch(MainActivity::class.java)
+
+        // Get a reference to the fragment's view
+        activityRule.onActivity { activity ->
+            activity.changeFragment(R.id.nav_browser, null)
+        }
     }
 
     @After
     fun after() {
-        scenario.close()
+        activityRule.close()
         Intents.release()
     }
 
@@ -53,8 +58,12 @@ class BrowserFragmentTest {
 
     @Test
     fun clickOnItemChangeFragment() {
-        onView(withId(R.id.listOfCardsRecyclerView)).perform(actionOnItemAtPosition<DisplayCardsAdapter.ViewHolder>(0, click()))
+        onView(withId(R.id.listOfCardsRecyclerView)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0))
+        onView(withId(R.id.listOfCardsRecyclerView)).perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
 
-        //Intents.intended(hasComponent(SingleCardFragment::class.java.name))
+        activityRule.onActivity { activity ->
+            val navController = findNavController(activity, R.id.nav_host_fragment_content_drawer)
+            assertThat(navController.currentDestination?.id, equalTo(R.id.nav_single_card))
+        }
     }
 }
