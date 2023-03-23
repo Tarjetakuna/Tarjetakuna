@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.UserCardsActivity
+import com.github.sdp.tarjetakuna.ui.collectionexport.ExportCollectionActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -41,6 +42,12 @@ class SignOutActivity: AppCompatActivity() {
         val configureCollectionButton  = findViewById<Button>(R.id.manage_collection_button)
         configureCollectionButton.setOnClickListener {
             val intent = Intent(this, UserCardsActivity::class.java)
+            startActivity(intent)
+        }
+
+        val exportCollectionButton  = findViewById<Button>(R.id.export_collection_button)
+        exportCollectionButton.setOnClickListener {
+            val intent = Intent(this, ExportCollectionActivity::class.java)
             startActivity(intent)
         }
     }
