@@ -7,37 +7,37 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.github.bjolidon.bootcamp.ui.home.HomeFragment"
+        android:name="com.github.sdp.tarjetakuna.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_browser"
-        android:name="com.github.bjolidon.bootcamp.ui.browser.BrowserFragment"
+        android:name="com.github.sdp.tarjetakuna.ui.browser.BrowserFragment"
         android:label="@string/menu_browser"
         tools:layout="@layout/fragment_browser" />
 
     <fragment
         android:id="@+id/nav_scanner"
-        android:name="com.github.bjolidon.bootcamp.ui.scanner.ScannerFragment"
+        android:name="com.github.sdp.tarjetakuna.ui.scanner.ScannerFragment"
         android:label="@string/menu_scanner"
         tools:layout="@layout/fragment_scanner" />
 
     <fragment
         android:id="@+id/nav_webapi"
-        android:name="com.github.bjolidon.bootcamp.ui.webapi.WebApiFragment"
+        android:name="com.github.sdp.tarjetakuna.ui.webapi.WebApiFragment"
         android:label="@string/menu_webapi"
         tools:layout="@layout/fragment_web_api" />
 
 	<fragment
         android:id="@+id/nav_profile"
-        android:name="com.github.bjolidon.bootcamp.ui.profile.ProfileFragment"
+        android:name="com.github.sdp.tarjetakuna.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/nav_single_card"
-        android:name="com.github.bjolidon.bootcamp.ui.singlecard.SingleCardFragment"
+        android:name="com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment"
         android:label="@string/menu_single_card"
         tools:layout="@layout/fragment_single_card" />
 </navigation>

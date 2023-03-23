@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace 'com.github.bjolidon.bootcamp'
+    namespace 'com.github.sdp.tarjetakuna'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.github.bjolidon.bootcamp"
+        applicationId "com.github.sdp.tarjetakuna"
         minSdk 28
         targetSdk 33
         versionCode 1
