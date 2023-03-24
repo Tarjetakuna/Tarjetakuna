@@ -62,5 +62,4 @@ class SignOutFragment : Fragment() {
         return root
     }
 
-
 }

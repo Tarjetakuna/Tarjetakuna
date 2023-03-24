@@ -135,7 +135,6 @@ class FilterCardsFragment : Fragment() {
                 selectedItemsPositions.add(index)
             }
         }
-        // TODO IS THIS HOW IT WORKS?
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         builder.setTitle(title)
         builder.setCancelable(false)

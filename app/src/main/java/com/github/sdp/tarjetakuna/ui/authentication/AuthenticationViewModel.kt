@@ -13,7 +13,6 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 class AuthenticationViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
 
     private val _reportErrorString = MutableLiveData<String>()
     val reportErrorString: LiveData<String> = _reportErrorString
