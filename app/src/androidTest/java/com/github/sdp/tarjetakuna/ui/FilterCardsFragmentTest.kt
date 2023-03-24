@@ -1,4 +1,4 @@
-package com.github.sdp.tarjetakuna
+package com.github.sdp.tarjetakuna.ui
 
 import android.os.Bundle
 import androidx.navigation.Navigation.findNavController
@@ -9,6 +9,8 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.sdp.tarjetakuna.MainActivity
+import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
@@ -19,7 +21,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class FilterCardsTest {
+class FilterCardsFragmentTest {
 
     private lateinit var activityRule: ActivityScenario<MainActivity>
     private val card1 = MagicCard(

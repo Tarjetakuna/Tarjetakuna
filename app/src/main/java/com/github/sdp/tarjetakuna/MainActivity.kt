@@ -42,8 +42,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home,
                 R.id.nav_browser,
                 R.id.nav_scanner,
-                R.id.nav_webapi,
-                R.id.nav_filter
+                R.id.nav_webapi
             ),
             drawerLayout
         )

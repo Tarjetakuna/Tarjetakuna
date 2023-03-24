@@ -20,7 +20,7 @@ import java.lang.reflect.Type
  */
 class FilterCardsViewModel : ViewModel() {
 
-    private var valuesMap: Map<String, ArrayList<String>> = emptyMap()
+    private var valuesMap: Map<Int, ArrayList<String>> = emptyMap()
 
     private lateinit var filteredCards: ArrayList<MagicCard>
     private lateinit var filter: Filter
@@ -85,17 +85,17 @@ class FilterCardsViewModel : ViewModel() {
         val convertedManaCost: ArrayList<Int> = arrayListOf()
         for (i in valuesMap.keys) {
             when (i) {
-                fragment.getString(R.string.card_name) -> {
+                R.id.cardNameTextView -> {
                     name = valuesMap[i]!![0]
                 }
 
-                fragment.getString(R.string.layout_name) -> {
+                R.id.layoutTextView -> {
                     for (j in valuesMap[i]!!) {
                         layout.add(MagicLayout.valueOf(j))
                     }
                 }
 
-                fragment.getString(R.string.cmc) -> {
+               R.id.cmcTextView -> {
                     for (j in valuesMap[i]!!) {
                         convertedManaCost.add(j.toInt())
                     }
@@ -127,8 +127,8 @@ class FilterCardsViewModel : ViewModel() {
      * Set the "OK" button so that it sets the text on the text view and adds the values to the valuesMap
      */
     fun multiChoiceOKButtonClicked(
-        textView: TextView, title: String,
-        selectedItemsPositions: ArrayList<Int>, itemsArray: Array<String>
+        textView: TextView, selectedItemsPositions: ArrayList<Int>,
+        itemsArray: Array<String>
     ) {
         // create list to add them in valuesMap
         val selectedItems: ArrayList<String> = ArrayList()
@@ -142,7 +142,7 @@ class FilterCardsViewModel : ViewModel() {
             }
         }
         if (selectedItems.isNotEmpty()) {
-            valuesMap = valuesMap.plus(Pair(title, selectedItems))
+            valuesMap = valuesMap.plus(Pair(textView.id, selectedItems))
         }
 
         // set text on textView and set ellipses so that it does not exceed the box
@@ -155,13 +155,12 @@ class FilterCardsViewModel : ViewModel() {
      */
     fun setSingleOKButton(
         dialog: DialogInterface,
-        title: String,
         textView: TextView,
         options: Array<String>
     ) {
         val selectedItemPosition = (dialog as AlertDialog).listView.checkedItemPosition
         if (selectedItemPosition != AdapterView.INVALID_POSITION) {
-            valuesMap = valuesMap.plus(Pair(title, arrayListOf(options[selectedItemPosition])))
+            valuesMap = valuesMap.plus(Pair(textView.id, arrayListOf(options[selectedItemPosition])))
             // set text on textView and set ellipses so that it does not exceed the box
             displayTextOnTextView(textView, options[selectedItemPosition])
         }
@@ -170,9 +169,9 @@ class FilterCardsViewModel : ViewModel() {
     /**
      * Set the "Clear All" button so that it clears the text view and the valuesMap
      */
-    fun setClearAllButton(textView: TextView, title: String) {
+    fun setClearAllButton(textView: TextView) {
         textView.text = ""
-        valuesMap = valuesMap.minus(title)
+        valuesMap = valuesMap.minus(textView.id)
     }
 
     /**
@@ -189,8 +188,8 @@ class FilterCardsViewModel : ViewModel() {
     /**
      * Check if the valuesMap contains the key title and the item "item"
      */
-    fun valuesMapDoesContain(title: String, item: String): Boolean {
-        return valuesMap.containsKey(title) && valuesMap[title]!!.contains(item)
+    fun valuesMapDoesContain(id: Int, item: String): Boolean {
+        return valuesMap.containsKey(id) && valuesMap[id]!!.contains(item)
     }
 
     /**

@@ -89,7 +89,7 @@ class FilterCardsFragment : Fragment() {
         textView.setOnClickListener {
             val selectedItems = BooleanArray(itemsArray.size)
             for (i in itemsArray) {
-                if (viewModel.valuesMapDoesContain(title, i)) {
+                if (viewModel.valuesMapDoesContain(textView.id, i)) {
                     selectedItems[itemsArray.indexOf(i)] = true
                 }
             }
@@ -111,7 +111,7 @@ class FilterCardsFragment : Fragment() {
         textView.setOnClickListener {
             var selectedItem = -1
             for (i in itemsArray.indices) {
-                if (viewModel.valuesMapDoesContain(title, itemsArray[i])) {
+                if (viewModel.valuesMapDoesContain(textView.id, itemsArray[i])) {
                     selectedItem = i
                 }
             }
@@ -151,7 +151,6 @@ class FilterCardsFragment : Fragment() {
         ) { _, _ ->
             viewModel.multiChoiceOKButtonClicked(
                 textView,
-                title,
                 selectedItemsPositions,
                 itemsArray
             )
@@ -160,7 +159,7 @@ class FilterCardsFragment : Fragment() {
         builder.setNeutralButton(
             "Clear All"
         ) { _, _ ->
-            viewModel.setClearAllButton(textView, title)
+            viewModel.setClearAllButton(textView)
         }
 
         builder.show()
@@ -183,13 +182,13 @@ class FilterCardsFragment : Fragment() {
         builder.setPositiveButton(
             "OK"
         ) { dialog, _ ->
-            viewModel.setSingleOKButton(dialog, title, textView, options)
+            viewModel.setSingleOKButton(dialog, textView, options)
         }
 
         builder.setNeutralButton(
             "Clear All"
         ) { _, _ ->
-            viewModel.setClearAllButton(textView, title)
+            viewModel.setClearAllButton(textView)
         }
         builder.show()
     }
