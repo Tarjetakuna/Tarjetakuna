@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bootcamp</string>
+    <string name="app_name">Tarjetakuna</string>
     <string name="demo_button">Demo button: fragment switch </string>
     <string name="hello">Hello</string>
     <string name="save_name_button">Save name</string>
