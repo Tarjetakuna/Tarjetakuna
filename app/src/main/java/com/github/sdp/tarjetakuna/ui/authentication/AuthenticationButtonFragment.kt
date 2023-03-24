@@ -1,17 +1,13 @@
 package com.github.sdp.tarjetakuna.ui.authentication
 
-import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.databinding.FragmentAuthenticationBinding
 import com.github.sdp.tarjetakuna.databinding.FragmentAuthenticationButtonBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

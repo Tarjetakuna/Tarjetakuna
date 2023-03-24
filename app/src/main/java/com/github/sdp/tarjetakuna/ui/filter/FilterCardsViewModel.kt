@@ -95,7 +95,7 @@ class FilterCardsViewModel : ViewModel() {
                     }
                 }
 
-               R.id.cmcTextView -> {
+                R.id.cmcTextView -> {
                     for (j in valuesMap[i]!!) {
                         convertedManaCost.add(j.toInt())
                     }
@@ -160,7 +160,8 @@ class FilterCardsViewModel : ViewModel() {
     ) {
         val selectedItemPosition = (dialog as AlertDialog).listView.checkedItemPosition
         if (selectedItemPosition != AdapterView.INVALID_POSITION) {
-            valuesMap = valuesMap.plus(Pair(textView.id, arrayListOf(options[selectedItemPosition])))
+            valuesMap =
+                valuesMap.plus(Pair(textView.id, arrayListOf(options[selectedItemPosition])))
             // set text on textView and set ellipses so that it does not exceed the box
             displayTextOnTextView(textView, options[selectedItemPosition])
         }

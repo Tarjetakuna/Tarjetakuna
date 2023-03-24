@@ -26,6 +26,7 @@ class AuthenticationViewModel : ViewModel() {
 
     private val _changeToAuthenButtonFragment = MutableLiveData<Boolean>()
     val changeToAuthenticationButtonFragment: LiveData<Boolean> = _changeToAuthenButtonFragment
+
     /**
      * Create an intent to sign in the user and wait for the result.
      */
@@ -35,7 +36,7 @@ class AuthenticationViewModel : ViewModel() {
             AuthUI.IdpConfig.GoogleBuilder().build()
         )
         // Check if the device is connected to the internet
-        if(Utils.isNetworkAvailable(baseContext)) {
+        if (Utils.isNetworkAvailable(baseContext)) {
             // Create and launch sign-in intent
             val signInIntent2 = AuthUI.getInstance()
                 .createSignInIntentBuilder()
@@ -68,8 +69,6 @@ class AuthenticationViewModel : ViewModel() {
             }
         }
     }
-
-
 
 
 }
