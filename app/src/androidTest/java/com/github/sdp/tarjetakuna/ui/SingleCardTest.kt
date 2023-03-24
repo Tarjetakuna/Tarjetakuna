@@ -18,6 +18,7 @@ import com.github.sdp.tarjetakuna.utils.CustomTypeSafeMatcher.withDrawable
 import com.google.gson.Gson
 import org.hamcrest.Matchers.not
 import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -61,8 +62,14 @@ class SingleCardTest {
     private val textCardArtist = onView(withId(R.id.singleCard_text_cardArtist))
     private val textCardManaCost = onView(withId(R.id.singleCard_text_cardManaCost))
 
+    @Before
+    fun setup() {
+        IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
+    }
+
     @After
     fun tearDown() {
+        IdlingRegistry.getInstance().unregister(CustomGlide.countingIdlingResource)
         scenario.close()
     }
 
@@ -111,7 +118,6 @@ class SingleCardTest {
      */
     @Test
     fun testValidJsonInArgumentsIsValid() {
-        IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
         val bitmap = Glide.with(context)
             .asBitmap()
             .load(validMagicCard.imageUrl)
@@ -134,7 +140,6 @@ class SingleCardTest {
         textCardManaCost.check(matches(withText(context.getString(R.string.single_card_showing_mana_cost, validMagicCard.convertedManaCost))))
         imageCard.check(matches(isDisplayed()))
         imageCard.check(matches(withDrawable(bitmap)))
-        IdlingRegistry.getInstance().unregister(CustomGlide.countingIdlingResource)
     }
 
     /**
@@ -143,14 +148,12 @@ class SingleCardTest {
      */
     @Test
     fun testTypeTextWorkCorrectlyWithCreatureNoSubtype() {
-        IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
         val anotherValidMagicCard = validMagicCard.copy(type = MagicType.Creature, subtypes = listOf())
         val anotherValidJson = Gson().toJson(anotherValidMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
 
         textCardType.check(matches(withText(anotherValidMagicCard.type.toString() + " " + context.getString(R.string.single_card_showing_stats, validMagicCard.power, validMagicCard.toughness))))
-        IdlingRegistry.getInstance().unregister(CustomGlide.countingIdlingResource)
     }
 
     /**
@@ -159,14 +162,12 @@ class SingleCardTest {
      */
     @Test
     fun testTypeTextWorkCorrectlyWithArtifactNoSubtype() {
-        IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
         val anotherValidMagicCard = validMagicCard.copy(subtypes = listOf())
         val anotherValidJson = Gson().toJson(anotherValidMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
 
         textCardType.check(matches(withText(anotherValidMagicCard.type.toString())))
-        IdlingRegistry.getInstance().unregister(CustomGlide.countingIdlingResource)
     }
 
     /**
@@ -175,7 +176,6 @@ class SingleCardTest {
      */
     @Test
     fun testTypeTextWorkCorrectlyWithCreatureWithSubtype() {
-        IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
         val anotherValidMagicCard = validMagicCard.copy(type = MagicType.Creature)
         val anotherValidJson = Gson().toJson(anotherValidMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
@@ -184,6 +184,5 @@ class SingleCardTest {
         textCardType.check(matches(withText(anotherValidMagicCard.type.toString()
             + " " + context.getString(R.string.single_card_showing_stats, validMagicCard.power, validMagicCard.toughness)
             + " " + context.getString(R.string.single_card_showing_subtypes, anotherValidMagicCard.subtypes.joinToString(", ")))))
-        IdlingRegistry.getInstance().unregister(CustomGlide.countingIdlingResource)
     }
 }
