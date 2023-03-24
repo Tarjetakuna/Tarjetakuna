@@ -1,6 +1,5 @@
 package com.github.sdp.tarjetakuna.ui.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.github.sdp.tarjetakuna.ui.authentication.AuthenticationButtonActivity
 import com.google.gson.Gson
 
 class HomeFragment : Fragment() {
@@ -81,8 +79,8 @@ class HomeFragment : Fragment() {
 
         val authenticationButton: Button = binding.authenticationButton
         authenticationButton.setOnClickListener {
-            val intent = Intent(activity, AuthenticationButtonActivity::class.java)
-            startActivity(intent)
+            val mainActivity = requireActivity() as MainActivity
+            mainActivity.changeFragment(R.id.nav_authentication_button)
         }
 
         return root

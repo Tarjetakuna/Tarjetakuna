@@ -29,6 +29,10 @@
     <string name="menu_webapi">Webapi</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_filter">Filter</string>
+    <string name="menu_authentication">Authentication</string>
+    <string name="menu_authentication_button">Authentication button</string>
+    <string name="menu_sign_out">Sign out</string>
+    <string name="menu_user_cards">User cards</string>
 
     <string name="scanner_button">Scan a card</string>
     <string name="scanner_description">Here you can scan a card by clicking on the button below.</string>
