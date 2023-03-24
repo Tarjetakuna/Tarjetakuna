@@ -22,6 +22,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.CustomTypeSafeMatcher
+import okhttp3.internal.wait
 import org.junit.After
 
 @RunWith(AndroidJUnit4::class)
@@ -33,6 +34,7 @@ class ScannerFragmentTest {
     fun setUp() {
         Intents.init()
         scenario = launchFragmentInContainer()
+        Thread.sleep(100) // Wait for the fragment to be created (otherwise the test fails because there is no view)
     }
 
     @After
