@@ -1,4 +1,6 @@
 package com.github.sdp.tarjetakuna
+
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.widget.ImageView
@@ -29,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.appBarDrawer.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+                .setAction("Action", null).show()
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -41,17 +43,20 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home,
                 R.id.nav_browser,
                 R.id.nav_scanner,
-                R.id.nav_webapi),
-            drawerLayout)
+                R.id.nav_webapi
+            ),
+            drawerLayout
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        val headerView = binding.navView.getHeaderView(0)
         // Display profile fragment when clicking on the profile icon
-        val profileIcone = binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.profileIcon)
-        profileIcone.setOnClickListener {
+        headerView.findViewById<ImageView>(R.id.profileIcon).setOnClickListener {
             changeFragment(R.id.nav_profile)
             binding.drawerLayout.closeDrawer(binding.navView)
         }
+        updateHeader()
     }
 
     // Change fragment
@@ -60,10 +65,16 @@ class MainActivity : AppCompatActivity() {
         navController.navigate(fragment)
     }
 
-    fun setNavHeaderName(name: String) {
-        val navView: NavigationView = binding.navView
-        val navHeaderName = navView.getHeaderView(0).findViewById<TextView>(R.id.navHeaderNameText)
-        navHeaderName.text = name
+    fun updateHeader() {
+        val headerView = binding.navView.getHeaderView(0)
+        val sharedPref = getSharedPreferences("com.github.sdp.tarjetakuna", Context.MODE_PRIVATE)
+        headerView.findViewById<TextView>(R.id.navHeaderNameText).text = sharedPref.getString(
+            "user_name", getString(R.string.name_entry_hint)
+        )
+        headerView.findViewById<TextView>(R.id.navHeaderDescriptionText).text =
+            sharedPref.getString(
+                "user_description", getString(R.string.description_entry_hint)
+            )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

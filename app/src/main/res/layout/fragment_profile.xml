@@ -48,7 +48,7 @@
         android:inputType="textMultiLine"
         android:minHeight="48dp"
         android:padding="8dp"
-        android:maxLines="3"
+        android:maxLines="1"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/saveNameButton"
         app:layout_constraintEnd_toEndOf="parent"
