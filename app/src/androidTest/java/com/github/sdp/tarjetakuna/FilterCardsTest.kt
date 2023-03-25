@@ -63,12 +63,13 @@ class FilterCardsTest {
     private val withIdReturnMainButton = withId(R.id.returnMainButton)
 
     @Before
-    public fun setUp() {
+    fun setUp() {
         val gson = Gson()
         val arrayCardJson = gson.toJson(arrayCard)
         val intent = Intent(ApplicationProvider.getApplicationContext(), FilterCardsActivity::class.java)
         intent.putExtra("cards", arrayCardJson)
         activityRule = ActivityScenario.launch(intent)
+        Thread.sleep(100) // Wait for the activity to be created (otherwise the test fails because there is no view)
     }
 
     @Test
