@@ -118,6 +118,7 @@ class SingleCardTest {
      */
     @Test
     fun testValidJsonInArgumentsIsValid() {
+        //TODO : Get the bitmap from a mockWebserver integration
         val bitmap = Glide.with(context)
             .asBitmap()
             .load(validMagicCard.imageUrl)

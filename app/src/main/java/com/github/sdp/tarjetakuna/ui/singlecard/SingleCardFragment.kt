@@ -29,6 +29,15 @@ class SingleCardFragment: Fragment() {
     ): View {
         _binding = FragmentSingleCardBinding.inflate(inflater, container, false)
 
+        loadCardFromJson()
+
+        return binding.root
+    }
+
+    /**
+     * Loads the card from the json string passed in the arguments.
+     */
+    private fun loadCardFromJson() {
         try {
             val card = Gson().fromJson(arguments?.getString("card"), MagicCard::class.java)
             binding.singleCardTextCardName.text = card.name
@@ -52,8 +61,6 @@ class SingleCardFragment: Fragment() {
         } catch (e: Exception) {
             binding.singleCardTextCardName.text = getString(R.string.error_load_card)
         }
-
-        return binding.root
     }
 
     override fun onDestroyView() {
