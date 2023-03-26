@@ -24,15 +24,19 @@ import org.junit.runner.RunWith
 class FilterCardsTest {
 
     private lateinit var activityRule: ActivityScenario<FilterCardsActivity>
-    private val card1 = MagicCard("Angel of Mercy", "Flying",
+    private val card1 = MagicCard(
+        "Angel of Mercy", "Flying",
         MagicLayout.Normal, 7, "{5}{W}{W}",
         MagicSet("MT15", "Magic 2015"), 56,
-        "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card")
+        "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card"
+    )
 
-    private val card2 = MagicCard("Meandering Towershell", "Islandwalk",
+    private val card2 = MagicCard(
+        "Meandering Towershell", "Islandwalk",
         MagicLayout.DoubleFaced, 5, "{3}{G}{G}",
         MagicSet("MT15", "Magic 2015"), 141,
-        "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=386602")
+        "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=386602"
+    )
 
     private val arrayCard = arrayListOf(card1, card2)
 
@@ -66,10 +70,12 @@ class FilterCardsTest {
     fun setUp() {
         val gson = Gson()
         val arrayCardJson = gson.toJson(arrayCard)
-        val intent = Intent(ApplicationProvider.getApplicationContext(), FilterCardsActivity::class.java)
+        val intent =
+            Intent(ApplicationProvider.getApplicationContext(), FilterCardsActivity::class.java)
         intent.putExtra("cards", arrayCardJson)
         activityRule = ActivityScenario.launch(intent)
         Thread.sleep(100) // Wait for the activity to be created (otherwise the test fails because there is no view)
+        //TODO : Find a better way to wait for the activity to be created
     }
 
     @Test
@@ -202,7 +208,8 @@ class FilterCardsTest {
     @Test
     fun testFilterButtonWithEmptyFilterWorks() {
         onView(withIdFilterButton).perform(click())
-        onView(withText(arrayCard.toString())).inRoot(isDialog()).check(matches(withText(arrayCard.toString())))
+        onView(withText(arrayCard.toString())).inRoot(isDialog())
+            .check(matches(withText(arrayCard.toString())))
 
     }
 
@@ -233,16 +240,17 @@ class FilterCardsTest {
         onView(withText("[$card1]")).inRoot(isDialog()).check(matches(withText("[$card1]")))
     }
 
-     @Test
-     fun testFilterOnlyWithCMC() {
-         onView(withIdCmcTextView).perform(click())
-         onView(withText("5")).perform(click())
-         onView(withText("7")).perform(click())
-         onView(withIdButton1).perform(click())
+    @Test
+    fun testFilterOnlyWithCMC() {
+        onView(withIdCmcTextView).perform(click())
+        onView(withText("5")).perform(click())
+        onView(withText("7")).perform(click())
+        onView(withIdButton1).perform(click())
 
-         onView(withIdFilterButton).perform(click())
-         onView(withText(arrayCard.toString())).inRoot(isDialog()).check(matches(withText(arrayCard.toString())))
-     }
+        onView(withIdFilterButton).perform(click())
+        onView(withText(arrayCard.toString())).inRoot(isDialog())
+            .check(matches(withText(arrayCard.toString())))
+    }
 
     @Test
     fun testFilterButtonIsEnabledAfterDialogClosed() {

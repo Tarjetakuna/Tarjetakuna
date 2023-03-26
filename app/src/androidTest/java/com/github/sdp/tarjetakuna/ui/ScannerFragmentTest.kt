@@ -34,6 +34,7 @@ class ScannerFragmentTest {
         Intents.init()
         scenario = launchFragmentInContainer()
         Thread.sleep(100) // Wait for the fragment to be created (otherwise the test fails because there is no view)
+        //TODO : Find a better way to wait for the activity to be created
     }
 
     @After
