@@ -5,6 +5,7 @@
 
 package com.github.sdp.tarjetakuna.model
 
+@Suppress("unused")
 /**
  * Represents the rarity of a Magic card.
  */

@@ -16,14 +16,13 @@ import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.ui.scanner.ScannerFragment
+import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.utils.CustomTypeSafeMatcher
-import okhttp3.internal.wait
-import org.junit.After
 
 @RunWith(AndroidJUnit4::class)
 class ScannerFragmentTest {
@@ -51,7 +50,13 @@ class ScannerFragmentTest {
         intending(hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(result)
 
         onView(withId(R.id.button_scan)).perform(click())
-        onView(withId(R.id.image_card)).check(matches(CustomTypeSafeMatcher.withDrawable(imageBitmap)))
+        onView(withId(R.id.image_card)).check(
+            matches(
+                WithDrawableSafeMatcher.withDrawable(
+                    imageBitmap
+                )
+            )
+        )
         onView(withId(R.id.text_information)).check(matches(withText(R.string.operation_success)))
     }
 

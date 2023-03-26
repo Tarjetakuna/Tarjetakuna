@@ -14,7 +14,7 @@ import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.*
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
 import com.github.sdp.tarjetakuna.utils.CustomGlide
-import com.github.sdp.tarjetakuna.utils.CustomTypeSafeMatcher.withDrawable
+import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
 import com.google.gson.Gson
 import org.hamcrest.Matchers.not
 import org.junit.After
@@ -127,19 +127,75 @@ class SingleCardTest {
         val bundleArgs = Bundle().apply { putString("card", validJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
 
-        val strStatsCreature = if (validMagicCard.type == MagicType.Creature) " " + context.getString(R.string.single_card_showing_stats, validMagicCard.power, validMagicCard.toughness) else ""
-        val strSubType = if (validMagicCard.subtypes.isNotEmpty()) " " + context.getString(R.string.single_card_showing_subtypes, validMagicCard.subtypes.joinToString(", ")) else ""
+        val strStatsCreature =
+            if (validMagicCard.type == MagicType.Creature) " " + context.getString(
+                R.string.single_card_showing_stats,
+                validMagicCard.power,
+                validMagicCard.toughness
+            ) else ""
+        val strSubType = if (validMagicCard.subtypes.isNotEmpty()) " " + context.getString(
+            R.string.single_card_showing_subtypes,
+            validMagicCard.subtypes.joinToString(", ")
+        ) else ""
 
         textCardName.check(matches(withText(validMagicCard.name)))
-        textCardSet.check(matches(withText(context.getString(R.string.single_card_showing_set, validMagicCard.set.name, validMagicCard.set.code))))
-        textCardNumber.check(matches(withText(context.getString(R.string.single_card_showing_number, validMagicCard.number))))
+        textCardSet.check(
+            matches(
+                withText(
+                    context.getString(
+                        R.string.single_card_showing_set,
+                        validMagicCard.set.name,
+                        validMagicCard.set.code
+                    )
+                )
+            )
+        )
+        textCardNumber.check(
+            matches(
+                withText(
+                    context.getString(
+                        R.string.single_card_showing_number,
+                        validMagicCard.number
+                    )
+                )
+            )
+        )
         textCardText.check(matches(withText(validMagicCard.text)))
         textCardRarity.check(matches(withText(validMagicCard.rarity.toString())))
-        textCardType.check(matches(withText(context.getString(R.string.single_card_showing_type_subtypes_stats, validMagicCard.type.toString(), strStatsCreature, strSubType))))
-        textCardArtist.check(matches(withText(context.getString(R.string.single_card_showing_artist, validMagicCard.artist))))
-        textCardManaCost.check(matches(withText(context.getString(R.string.single_card_showing_mana_cost, validMagicCard.convertedManaCost))))
+        textCardType.check(
+            matches(
+                withText(
+                    context.getString(
+                        R.string.single_card_showing_type_subtypes_stats,
+                        validMagicCard.type.toString(),
+                        strStatsCreature,
+                        strSubType
+                    )
+                )
+            )
+        )
+        textCardArtist.check(
+            matches(
+                withText(
+                    context.getString(
+                        R.string.single_card_showing_artist,
+                        validMagicCard.artist
+                    )
+                )
+            )
+        )
+        textCardManaCost.check(
+            matches(
+                withText(
+                    context.getString(
+                        R.string.single_card_showing_mana_cost,
+                        validMagicCard.convertedManaCost
+                    )
+                )
+            )
+        )
         imageCard.check(matches(isDisplayed()))
-        imageCard.check(matches(withDrawable(bitmap)))
+        imageCard.check(matches(WithDrawableSafeMatcher.withDrawable(bitmap)))
     }
 
     /**
@@ -148,12 +204,23 @@ class SingleCardTest {
      */
     @Test
     fun testTypeTextWorkCorrectlyWithCreatureNoSubtype() {
-        val anotherValidMagicCard = validMagicCard.copy(type = MagicType.Creature, subtypes = listOf())
+        val anotherValidMagicCard =
+            validMagicCard.copy(type = MagicType.Creature, subtypes = listOf())
         val anotherValidJson = Gson().toJson(anotherValidMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
 
-        textCardType.check(matches(withText(anotherValidMagicCard.type.toString() + " " + context.getString(R.string.single_card_showing_stats, validMagicCard.power, validMagicCard.toughness))))
+        textCardType.check(
+            matches(
+                withText(
+                    anotherValidMagicCard.type.toString() + " " + context.getString(
+                        R.string.single_card_showing_stats,
+                        validMagicCard.power,
+                        validMagicCard.toughness
+                    )
+                )
+            )
+        )
     }
 
     /**
@@ -181,8 +248,21 @@ class SingleCardTest {
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
 
-        textCardType.check(matches(withText(anotherValidMagicCard.type.toString()
-            + " " + context.getString(R.string.single_card_showing_stats, validMagicCard.power, validMagicCard.toughness)
-            + " " + context.getString(R.string.single_card_showing_subtypes, anotherValidMagicCard.subtypes.joinToString(", ")))))
+        textCardType.check(
+            matches(
+                withText(
+                    anotherValidMagicCard.type.toString()
+                            + " " + context.getString(
+                        R.string.single_card_showing_stats,
+                        validMagicCard.power,
+                        validMagicCard.toughness
+                    )
+                            + " " + context.getString(
+                        R.string.single_card_showing_subtypes,
+                        anotherValidMagicCard.subtypes.joinToString(", ")
+                    )
+                )
+            )
+        )
     }
 }

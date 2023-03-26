@@ -10,14 +10,14 @@ import org.hamcrest.TypeSafeMatcher
 /**
  * Custom TypeSafeMatcher to use inside Espresso matchers
  */
-object CustomTypeSafeMatcher {
+object WithDrawableSafeMatcher {
 
     /**
      * Matcher to check if an ImageView has the same drawable as a bitmap
      */
     fun withDrawable(bitmap: Bitmap) = object : TypeSafeMatcher<View>() {
         override fun describeTo(description: Description) {
-            description.appendText("ImageView with drawable same as a bitmap")
+            description.appendText("ImageView with same drawable as bitmap")
         }
 
         override fun matchesSafely(view: View): Boolean {
