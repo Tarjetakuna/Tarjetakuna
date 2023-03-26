@@ -3,11 +3,10 @@ package com.github.sdp.tarjetakuna
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.hamcrest.Matchers
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -34,14 +33,11 @@ class SignOutFragmentTest {
             val navController =
                 Navigation.findNavController(activity, R.id.nav_host_fragment_content_drawer)
             // check if it goes back to nav_authentication first and then to nav_authentication_button
-            ViewMatchers.assertThat(
+            assertEquals(
                 navController.previousBackStackEntry?.destination?.id,
-                Matchers.equalTo(R.id.nav_authentication)
+                R.id.nav_authentication
             )
-            ViewMatchers.assertThat(
-                navController.currentDestination?.id,
-                Matchers.equalTo(R.id.nav_authentication_button)
-            )
+            assertEquals(navController.currentDestination?.id, R.id.nav_authentication_button)
         }
     }
 
@@ -51,12 +47,7 @@ class SignOutFragmentTest {
         activityRule.scenario.onActivity { activity ->
             val navController =
                 Navigation.findNavController(activity, R.id.nav_host_fragment_content_drawer)
-            ViewMatchers.assertThat(
-                navController.currentDestination?.id,
-                Matchers.equalTo(
-                    R.id.nav_home
-                )
-            )
+            assertEquals(navController.currentDestination?.id, R.id.nav_home)
         }
     }
 }

@@ -3,11 +3,10 @@ package com.github.sdp.tarjetakuna
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.hamcrest.Matchers
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -35,10 +34,7 @@ class AuthenticationButtonFragmentTest {
         activityRule.scenario.onActivity { activity ->
             val navController =
                 Navigation.findNavController(activity, R.id.nav_host_fragment_content_drawer)
-            ViewMatchers.assertThat(
-                navController.currentDestination?.id,
-                Matchers.equalTo(R.id.nav_authentication)
-            )
+            assertEquals(navController.currentDestination?.id, R.id.nav_authentication)
         }
     }
 
@@ -50,10 +46,7 @@ class AuthenticationButtonFragmentTest {
         activityRule.scenario.onActivity { activity ->
             val navController =
                 Navigation.findNavController(activity, R.id.nav_host_fragment_content_drawer)
-            ViewMatchers.assertThat(
-                navController.currentDestination?.id,
-                Matchers.equalTo(R.id.nav_home)
-            )
+            assertEquals(navController.currentDestination?.id, R.id.nav_home)
         }
     }
 }

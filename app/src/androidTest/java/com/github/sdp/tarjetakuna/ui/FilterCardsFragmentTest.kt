@@ -67,7 +67,7 @@ class FilterCardsFragmentTest {
     private val withIdReturnMainButton = withId(R.id.returnMainButton)
 
     @Before
-    public fun setUp() {
+    fun setUp() {
         val gson = Gson()
         val arrayCardJson = gson.toJson(arrayCard)
 
@@ -99,7 +99,6 @@ class FilterCardsFragmentTest {
     @Test
     fun testCanClickOnChoices() {
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withPhenomenonText).inRoot(isDialog()).perform(click())
         onView(withTokenText).inRoot(isDialog()).perform(click())
@@ -111,7 +110,6 @@ class FilterCardsFragmentTest {
     @Test
     fun testValuesAllCleared() {
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withPhenomenonText).inRoot(isDialog()).perform(click())
         onView(withIdButton1).perform(click())
@@ -126,7 +124,6 @@ class FilterCardsFragmentTest {
     @Test
     fun testCheckBoxUnchecked() {
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withLevelerText).inRoot(isDialog()).perform(click())
@@ -138,7 +135,6 @@ class FilterCardsFragmentTest {
     @Test
     fun testCheckBoxStillCheckedAfterConfirmingAndReopening() {
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withLevelerText).inRoot(isDialog()).perform(click())
         onView(withIdButton1).perform(click())
@@ -146,7 +142,6 @@ class FilterCardsFragmentTest {
         onView(withIdLayoutTextView).check(matches(withText("$normal, $leveler")))
 
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withIdButton1).perform(click())
 
@@ -216,7 +211,6 @@ class FilterCardsFragmentTest {
     @Test
     fun testFilterButtonWithEmptyName() {
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withDoubleFacedText).inRoot(isDialog()).perform(click())
         onView(withIdButton1).perform(click())
         onView(withIdFilterButton).perform(click())
@@ -231,7 +225,6 @@ class FilterCardsFragmentTest {
         onView(withIdButton1).perform(click())
 
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withLevelerText).inRoot(isDialog()).perform(click())
         onView(withIdButton1).perform(click())
