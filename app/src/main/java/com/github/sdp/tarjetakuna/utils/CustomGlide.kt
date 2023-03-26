@@ -12,6 +12,8 @@ import com.bumptech.glide.request.transition.Transition
  */
 object CustomGlide {
 
+    // TODO: This is a temporary solution to keep track of the loading process.
+    //  This should be replaced inside the test files.
     private const val RESOURCE = "GLOBAL"
     @JvmField val countingIdlingResource = CountingIdlingResource(RESOURCE)
 
