@@ -48,7 +48,6 @@ class DisplayCardsAdapter(private val cards: ArrayList<MagicCard>) : RecyclerVie
         // TODO change the image directly from the url (when web API available)
         holder.cardImage.setImageResource(R.drawable.card)
         holder.setInfo.text = cards[position].set.toString()
-
         holder.itemView.setOnClickListener {
             onCardClickListener?.onCardClick(position)
         }

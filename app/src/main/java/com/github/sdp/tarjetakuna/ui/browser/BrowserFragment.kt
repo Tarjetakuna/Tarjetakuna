@@ -55,4 +55,5 @@ class BrowserFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
