@@ -31,11 +31,31 @@ import java.io.IOException
  */
 class ExportCollectionFragment : Fragment() {
 
-    private lateinit var viewModel: ExportCollectionViewModel
     private lateinit var binding: FragmentExportCollectionBinding
     private val fileProviderAuthority = "com.github.sdp.tarjetakuna.fileprovider"
 
-
+    // This is a test collection, it will be replaced later by the user's collection
+    private val testCollection = listOf(
+        MagicCard(
+            "MagicCard",
+            "A beautiful card",
+            MagicLayout.Normal,
+            7,
+            "{5}{W}{W}",
+            MagicSet("MT15", "Magic 2015"),
+            56,
+            "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
+        ),
+        MagicCard(
+            "BestMagicCard",
+            "An even more beautiful card",
+            MagicLayout.Normal,
+            7,
+            "{7}{W}{W}",
+            MagicSet("MT15", "Magic 2015"),
+            56,
+            "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
+        ))
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +63,6 @@ class ExportCollectionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentExportCollectionBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this).get(ExportCollectionViewModel::class.java)
         return binding.root
     }
 
@@ -56,13 +75,10 @@ class ExportCollectionFragment : Fragment() {
                 requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.absolutePath + "/" + fileName
             val excelFile = File(filePath)
 
-            // Set the user's collection (to be replace later with the user's collection)
-            viewModel.setCollectionData()
+            // Write the collection to the excel file (to be changed later, when the user's collection is available)
+            writeDataToExcel(excelFile, testCollection)
 
-            // Write the collection to the excel file
-            writeDataToExcel(excelFile, viewModel.collectionLiveData.value!!)
-
-            // Open the excel file
+            // Open the view to share the excel file
             openExcelFile(excelFile)
         }
     }
