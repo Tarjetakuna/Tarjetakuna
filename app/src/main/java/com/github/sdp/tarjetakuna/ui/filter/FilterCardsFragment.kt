@@ -87,12 +87,7 @@ class FilterCardsFragment : Fragment() {
         itemsArray: Array<String>
     ) {
         textView.setOnClickListener {
-            val selectedItems = BooleanArray(itemsArray.size)
-            for (i in itemsArray) {
-                if (viewModel.valuesMapDoesContain(textView.id, i)) {
-                    selectedItems[itemsArray.indexOf(i)] = true
-                }
-            }
+            val selectedItems = viewModel.getAlreadySelectedItems(itemsArray, textView)
             showMultiChoiceDialog(
                 textView, title, selectedItems,
                 itemsArray
@@ -109,12 +104,7 @@ class FilterCardsFragment : Fragment() {
         itemsArray: Array<String>
     ) {
         textView.setOnClickListener {
-            var selectedItem = -1
-            for (i in itemsArray.indices) {
-                if (viewModel.valuesMapDoesContain(textView.id, itemsArray[i])) {
-                    selectedItem = i
-                }
-            }
+            val selectedItem = viewModel.getAlreadySelectedItem(itemsArray, textView)
             showSingleChoiceDialog(textView, title, selectedItem, itemsArray)
         }
     }

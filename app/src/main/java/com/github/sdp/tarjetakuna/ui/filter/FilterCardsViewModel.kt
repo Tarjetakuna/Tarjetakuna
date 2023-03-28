@@ -194,6 +194,35 @@ class FilterCardsViewModel : ViewModel() {
     }
 
     /**
+     * Get the already selected item if there is any, otherwise return -1
+     * This method is used for the single choice dialog
+     */
+
+    fun getAlreadySelectedItem(itemsArray: Array<String>, textView: TextView): Int {
+        var selectedItem = -1
+        for (i in itemsArray.indices) {
+            if (valuesMapDoesContain(textView.id, itemsArray[i])) {
+                selectedItem = i
+            }
+        }
+        return selectedItem
+    }
+
+    /**
+     * Get the already selected items if there is any, otherwise return an empty array
+     * This method is used for the multi choice dialog
+     */
+    fun getAlreadySelectedItems(itemsArray: Array<String>, textView: TextView): BooleanArray {
+        val selectedItems = BooleanArray(itemsArray.size)
+        for (i in itemsArray) {
+            if (valuesMapDoesContain(textView.id, i)) {
+                selectedItems[itemsArray.indexOf(i)] = true
+            }
+        }
+        return selectedItems
+    }
+
+    /**
      * Get the filtered cards in string format
      */
     fun getFilterCardsString(): String {
