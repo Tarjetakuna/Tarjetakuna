@@ -29,7 +29,7 @@
         android:label="@string/menu_webapi"
         tools:layout="@layout/fragment_web_api" />
 
-	<fragment
+    <fragment
         android:id="@+id/nav_profile"
         android:name="com.github.sdp.tarjetakuna.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
@@ -65,4 +65,9 @@
         android:label="@string/menu_user_cards"
         tools:layout="@layout/fragment_user_cards" />
 
+    <fragment
+        android:id="@+id/nav_single_card"
+        android:name="com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment"
+        android:label="@string/menu_single_card"
+        tools:layout="@layout/fragment_single_card" />
 </navigation>

@@ -45,7 +45,7 @@
     <string name="go_back_to_home_page">Go back to home page</string>
     <string name="txt_error_msg">Error: %s</string>
 
-<!--    web api texts-->
+    <!--    web api texts-->
     <string name="api_cards">/cards</string>
     <string name="api_sets">/sets</string>
     <string name="api_default_results">no results yet</string>
@@ -60,5 +60,16 @@
     <string name="get_card_button">Get Card</string>
     <string name="set_card_button">Add Card</string>
     <string name="manage_collection_button">Manage Collection</string>
+
+    <string name="menu_single_card">Card</string>
+    <string name="image_of_the_card">Image of the card</string>
+    <string name="error_load_card">Error loading the card</string>
+    <string name="single_card_showing_set">From %1$s (%2$s)</string>
+    <string name="single_card_showing_number">#%1$d</string>
+    <string name="single_card_showing_subtypes">- %1$s</string>
+    <string name="single_card_showing_artist">Artist : %1$s</string>
+    <string name="single_card_showing_stats">(%1$s/%2$s)</string>
+    <string name="single_card_showing_type_subtypes_stats">%1$s%2$s%3$s</string>
+    <string name="single_card_showing_mana_cost">Mana cost : %1$s</string>
 
 </resources>
