@@ -28,6 +28,7 @@
     <string name="menu_scanner">Scan</string>
     <string name="menu_webapi">Webapi</string>
     <string name="menu_profile">Profile</string>
+    <string name="menu_exportcollection">Export Collection</string>
 
     <string name="scanner_button">Scan a card</string>
     <string name="scanner_description">Here you can scan a card by clicking on the button below.</string>
@@ -55,10 +56,6 @@
     <string name="get_card_button">Get Card</string>
     <string name="set_card_button">Add Card</string>
     <string name="manage_collection_button">Manage Collection</string>
-    <string name="return_to_home">Go back</string>
-    <string name="export_my_collection">Export my collection</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="menu_exportcollection">Export Collection</string>
+    <string name="ExportCollection_export_button">Export my collection</string>
 
 </resources>

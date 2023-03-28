@@ -118,7 +118,6 @@ class ExportCollectionFragment : Fragment() {
                 "Failed to write data to Excel file",
                 Toast.LENGTH_SHORT
             ).show()
-            e.printStackTrace()
         }
     }
 

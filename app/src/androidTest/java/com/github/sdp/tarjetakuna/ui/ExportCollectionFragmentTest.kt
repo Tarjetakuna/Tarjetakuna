@@ -41,8 +41,8 @@ class ExportCollectionFragmentTest {
 
     @After
     fun after() {
-        Intents.release()
         scenario.close()
+        Intents.release()
     }
 
     @Test
