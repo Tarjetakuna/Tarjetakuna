@@ -8,14 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentExportCollectionBinding
-import com.github.sdp.tarjetakuna.model.*
-import com.github.sdp.tarjetakuna.ui.authentication.SignOutActivity
+import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.model.MagicLayout
+import com.github.sdp.tarjetakuna.model.MagicSet
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
@@ -55,7 +53,8 @@ class ExportCollectionFragment : Fragment() {
             MagicSet("MT15", "Magic 2015"),
             56,
             "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
-        ))
+        )
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -114,7 +113,11 @@ class ExportCollectionFragment : Fragment() {
             workbook.write(fileOutputStream)
             fileOutputStream.close()
         } catch (e: IOException) {
-            Toast.makeText(this.requireContext(), "Failed to write data to Excel file", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this.requireContext(),
+                "Failed to write data to Excel file",
+                Toast.LENGTH_SHORT
+            ).show()
             e.printStackTrace()
         }
     }
@@ -123,7 +126,8 @@ class ExportCollectionFragment : Fragment() {
      * Open the view to share the excel file
      */
     private fun openExcelFile(excelFile: File) {
-        val uri: Uri = FileProvider.getUriForFile(this.requireContext(), fileProviderAuthority, excelFile)
+        val uri: Uri =
+            FileProvider.getUriForFile(this.requireContext(), fileProviderAuthority, excelFile)
 
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "application/excel"
@@ -133,7 +137,11 @@ class ExportCollectionFragment : Fragment() {
         try {
             startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(this.requireContext(), "No app found to share Excel file", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this.requireContext(),
+                "No app found to share Excel file",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
