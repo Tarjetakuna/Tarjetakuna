@@ -45,15 +45,19 @@ class UserCardsFragment : Fragment() {
         setButton.setOnClickListener {
             //TODO replace this with a function call
             //this is for now hardcoded but will be replaced by a function call
-            val msg = viewModel.usc.addCardToCollection(viewModel.card2)
-            setMessage.text = msg
+            viewModel.addCardToCollection(viewModel.card2)
+        }
 
+        viewModel.setMessage.observe(viewLifecycleOwner) {
+            if (it != null) {
+                putSetMessage(it)
+            }
         }
 
         // observe the message from the view model and display it in the UI when it changes
-        viewModel.message.observe(viewLifecycleOwner) {
+        viewModel.getMessage.observe(viewLifecycleOwner) {
             if (it != null) {
-                putMessage(it)
+                putGetMessage(it)
             }
         }
         val getButton = binding.getCardButton
@@ -65,11 +69,21 @@ class UserCardsFragment : Fragment() {
     }
 
     /**
-     * This function is used to display a message in the UI. Should be written UserCardsRTDB
+     * put the message in the "getMessage" textview.
+     * @param msg the message to be displayed
      */
-    private fun putMessage(msg: String) {
+    private fun putGetMessage(msg: String) {
         val getMessage: TextView = binding.textGetCard
         getMessage.text = msg
+    }
+
+    /**
+     * put the message in the "setMessage" textview.
+     * @param msg the message to be displayed
+     */
+    private fun putSetMessage(msg: String) {
+        val setMessage: TextView = binding.textSetCard
+        setMessage.text = msg
     }
 
 }

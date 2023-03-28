@@ -18,8 +18,11 @@ class UserCardsViewModel : ViewModel() {
     private val user = Firebase.auth.currentUser
     private val userCardCollection = db.child(user!!.uid)
 
-    private val _message = MutableLiveData<String>()
-    val message: LiveData<String> = _message
+    private val _getMessage = MutableLiveData<String>()
+    val getMessage: LiveData<String> = _getMessage
+
+    private val _setMessage = MutableLiveData<String>()
+    val setMessage: LiveData<String> = _setMessage
 
     //TODO Remove these hardcoded values and replace them with the web API callss
     val card1 = MagicCard(
@@ -46,20 +49,25 @@ class UserCardsViewModel : ViewModel() {
         val future = CompletableFuture<DataSnapshot>()
         userCardCollection.child(cardUID).get().addOnSuccessListener {
             if (it.value == null) {
-                _message.value = "Card $cardUID was not found in your collection"
+                _getMessage.value = "Card $cardUID was not found in your collection"
                 future.completeExceptionally(NoSuchFieldException())
             } else {
                 future.complete(it)
             }
         }.addOnFailureListener {
-            _message.value = "Error getting $cardUID"
+            _getMessage.value = "Error getting $cardUID"
             future.completeExceptionally(it)
         }
         //the actual value gotten from the database
         future.thenAccept {
             val card = usc.transformData(it) //turn the retrieved data into a MagicCard object
-            _message.value = "Card $cardUID was succesfully retrieved from your collection"
+            _setMessage.value = "Card $cardUID was succesfully retrieved from your collection"
         }
+    }
+
+    fun addCardToCollection(card: MagicCard) {
+        val msg = usc.addCardToCollection(card)
+        _setMessage.value = msg
     }
 
 
