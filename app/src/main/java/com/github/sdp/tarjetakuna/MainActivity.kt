@@ -5,13 +5,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_drawer)
+        val navController = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         // Display profile fragment when clicking on the profile icon
-        val profileIcone = binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.profileIcon)
-        profileIcone.setOnClickListener {
+        val profileIcon = binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.profileIcon)
+        profileIcon.setOnClickListener {
             changeFragment(R.id.nav_profile)
             binding.drawerLayout.closeDrawer(binding.navView)
         }
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
     // Change fragment
     fun changeFragment(fragment: Int, args: Bundle? = null) {
-        val navController = findNavController(R.id.nav_host_fragment_content_drawer)
+        val navController = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
         navController.navigate(fragment, args)
     }
 
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_drawer)
+        val navController = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
