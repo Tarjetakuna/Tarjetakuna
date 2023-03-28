@@ -1,6 +1,7 @@
 package com.github.sdp.tarjetakuna.ui.filter
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +46,14 @@ class FilterCardsFragment : Fragment() {
         _binding = FragmentFilterCardsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        viewModel.initializeAttributes(requireArguments(), this)
+        viewModel.initializeAttributes(requireArguments())
+
+        viewModel.mediatorLiveData.observe(viewLifecycleOwner) { (textViewId, message) ->
+            if (textViewId != null && message != null) {
+                displayTextOnTextView(requireView().findViewById(textViewId), message)
+            }
+        }
+
         //TODO change the UI for this filter to be either an keyboard entry or a sliding bar
         val manaCostTextView: TextView = binding.cmcTextView
         addListenerToMultiChoice(manaCostTextView, getString(R.string.cmc), viewModel.manaCostArray)
@@ -87,7 +95,7 @@ class FilterCardsFragment : Fragment() {
         itemsArray: Array<String>
     ) {
         textView.setOnClickListener {
-            val selectedItems = viewModel.getAlreadySelectedItems(itemsArray, textView)
+            val selectedItems = viewModel.getAlreadySelectedItems(itemsArray, textView.id)
             showMultiChoiceDialog(
                 textView, title, selectedItems,
                 itemsArray
@@ -104,7 +112,7 @@ class FilterCardsFragment : Fragment() {
         itemsArray: Array<String>
     ) {
         textView.setOnClickListener {
-            val selectedItem = viewModel.getAlreadySelectedItem(itemsArray, textView)
+            val selectedItem = viewModel.getAlreadySelectedItem(itemsArray, textView.id)
             showSingleChoiceDialog(textView, title, selectedItem, itemsArray)
         }
     }
@@ -139,7 +147,7 @@ class FilterCardsFragment : Fragment() {
             "OK"
         ) { _, _ ->
             viewModel.multiChoiceOKButtonClicked(
-                textView,
+                textView.id,
                 selectedItemsPositions,
                 itemsArray
             )
@@ -148,7 +156,8 @@ class FilterCardsFragment : Fragment() {
         builder.setNeutralButton(
             "Clear All"
         ) { _, _ ->
-            viewModel.setClearAllButton(textView)
+            textView.text = ""
+            viewModel.setClearAllButton(textView.id)
         }
 
         builder.show()
@@ -171,13 +180,14 @@ class FilterCardsFragment : Fragment() {
         builder.setPositiveButton(
             "OK"
         ) { dialog, _ ->
-            viewModel.setSingleOKButton(dialog, textView, options)
+            viewModel.setSingleOKButton(dialog, textView.id, options)
         }
 
         builder.setNeutralButton(
             "Clear All"
         ) { _, _ ->
-            viewModel.setClearAllButton(textView)
+            textView.text = ""
+            viewModel.setClearAllButton(textView.id)
         }
         builder.show()
     }
@@ -193,6 +203,17 @@ class FilterCardsFragment : Fragment() {
         builder.setTitle("Cards have been filtered")
         builder.setPositiveButton("OK") { _, _ -> button.isEnabled = true }
         builder.show()
+    }
+
+    /**
+     * Set text on textView and set ellipses so that it does not exceed the box
+     */
+    private fun displayTextOnTextView(textView: TextView, message: String) {
+        textView.maxWidth = textView.measuredWidth
+        textView.maxLines = 1
+        textView.setHorizontallyScrolling(true)
+        textView.movementMethod = ScrollingMovementMethod()
+        textView.text = message
     }
 
 }

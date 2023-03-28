@@ -2,10 +2,10 @@ package com.github.sdp.tarjetakuna.ui.filter
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.widget.AdapterView
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
@@ -27,8 +27,26 @@ class FilterCardsViewModel : ViewModel() {
 
     private lateinit var cards: ArrayList<MagicCard>
 
-    // So we are able to call the getString(resourceId) method
-    private lateinit var fragment: FilterCardsFragment
+    private val textViewId = MutableLiveData<Int>()
+    private val newMessage = MutableLiveData<String>()
+    val mediatorLiveData = MediatorLiveData<Pair<Int?, String?>>().apply {
+        var value1: Int? = null
+        var value2: String? = null
+
+        addSource(textViewId) {
+            value1 = it
+            if (value1 != null && value2 != null) {
+                value = Pair(value1, value2)
+            }
+        }
+
+        addSource(newMessage) {
+            value2 = it
+            if (value1 != null && value2 != null) {
+                value = Pair(value1, value2)
+            }
+        }
+    }
 
     // The names that will be displayed in the filter
     val layoutArray: Array<String> = MagicLayout.values().map { it.toString() }.toTypedArray()
@@ -44,10 +62,9 @@ class FilterCardsViewModel : ViewModel() {
     /**
      * Initialize the attributes of the view model
      */
-    fun initializeAttributes(bundle: Bundle, fragment: FilterCardsFragment) {
+    fun initializeAttributes(bundle: Bundle) {
         cards = getCardsFromBundle(bundle)
         filteredCards = ArrayList()
-        this.fragment = fragment
     }
 
 
@@ -127,7 +144,7 @@ class FilterCardsViewModel : ViewModel() {
      * Set the "OK" button so that it sets the text on the text view and adds the values to the valuesMap
      */
     fun multiChoiceOKButtonClicked(
-        textView: TextView, selectedItemsPositions: ArrayList<Int>,
+        textViewId: Int, selectedItemsPositions: ArrayList<Int>,
         itemsArray: Array<String>
     ) {
         // create list to add them in valuesMap
@@ -142,11 +159,12 @@ class FilterCardsViewModel : ViewModel() {
             }
         }
         if (selectedItems.isNotEmpty()) {
-            valuesMap = valuesMap.plus(Pair(textView.id, selectedItems))
+            valuesMap = valuesMap.plus(Pair(textViewId, selectedItems))
         }
 
-        // set text on textView and set ellipses so that it does not exceed the box
-        displayTextOnTextView(textView, stringBuilder.toString())
+        // set text on textView and the message for the view to update it
+        this.textViewId.value = textViewId
+        newMessage.value = stringBuilder.toString()
     }
 
 
@@ -155,36 +173,26 @@ class FilterCardsViewModel : ViewModel() {
      */
     fun setSingleOKButton(
         dialog: DialogInterface,
-        textView: TextView,
+        textViewId: Int,
         options: Array<String>
     ) {
         val selectedItemPosition = (dialog as AlertDialog).listView.checkedItemPosition
         if (selectedItemPosition != AdapterView.INVALID_POSITION) {
             valuesMap =
-                valuesMap.plus(Pair(textView.id, arrayListOf(options[selectedItemPosition])))
+                valuesMap.plus(Pair(textViewId, arrayListOf(options[selectedItemPosition])))
             // set text on textView and set ellipses so that it does not exceed the box
-            displayTextOnTextView(textView, options[selectedItemPosition])
+            this.textViewId.value = textViewId
+            newMessage.value = options[selectedItemPosition]
         }
     }
 
     /**
      * Set the "Clear All" button so that it clears the text view and the valuesMap
      */
-    fun setClearAllButton(textView: TextView) {
-        textView.text = ""
-        valuesMap = valuesMap.minus(textView.id)
+    fun setClearAllButton(textViewId: Int) {
+        valuesMap = valuesMap.minus(textViewId)
     }
 
-    /**
-     * Set text on textView and set ellipses so that it does not exceed the box
-     */
-    private fun displayTextOnTextView(textView: TextView, message: String) {
-        textView.maxWidth = textView.measuredWidth
-        textView.maxLines = 1
-        textView.setHorizontallyScrolling(true)
-        textView.movementMethod = ScrollingMovementMethod()
-        textView.text = message
-    }
 
     /**
      * Check if the valuesMap contains the key title and the item "item"
@@ -198,10 +206,10 @@ class FilterCardsViewModel : ViewModel() {
      * This method is used for the single choice dialog
      */
 
-    fun getAlreadySelectedItem(itemsArray: Array<String>, textView: TextView): Int {
+    fun getAlreadySelectedItem(itemsArray: Array<String>, textViewId: Int): Int {
         var selectedItem = -1
         for (i in itemsArray.indices) {
-            if (valuesMapDoesContain(textView.id, itemsArray[i])) {
+            if (valuesMapDoesContain(textViewId, itemsArray[i])) {
                 selectedItem = i
             }
         }
@@ -212,10 +220,10 @@ class FilterCardsViewModel : ViewModel() {
      * Get the already selected items if there is any, otherwise return an empty array
      * This method is used for the multi choice dialog
      */
-    fun getAlreadySelectedItems(itemsArray: Array<String>, textView: TextView): BooleanArray {
+    fun getAlreadySelectedItems(itemsArray: Array<String>, textViewId: Int): BooleanArray {
         val selectedItems = BooleanArray(itemsArray.size)
         for (i in itemsArray) {
-            if (valuesMapDoesContain(textView.id, i)) {
+            if (valuesMapDoesContain(textViewId, i)) {
                 selectedItems[itemsArray.indexOf(i)] = true
             }
         }
