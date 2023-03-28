@@ -71,6 +71,11 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
 
+    // mock webserver dependencies for tests
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.9.3"
+    androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
+    testImplementation "com.squareup.okhttp3:mockwebserver:4.10.0"
+
     debugImplementation 'androidx.test:monitor:1.6.1'
     debugImplementation 'androidx.fragment:fragment-testing:1.5.5'
     testImplementation 'junit:junit:4.13.2'

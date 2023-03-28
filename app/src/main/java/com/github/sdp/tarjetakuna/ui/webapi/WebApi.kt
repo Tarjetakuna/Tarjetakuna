@@ -1,35 +1,13 @@
 package com.github.sdp.tarjetakuna.ui.webapi
 
 import com.github.sdp.tarjetakuna.utils.Utils.Companion.printIfNotNullOrEmpty
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-object WebApi {
-
-    private const val magicUrl = "https://api.magicthegathering.io/v1/"
-    private lateinit var magicApi: MagicApi
-
-    fun getMagicApi(): MagicApi {
-        if (!::magicApi.isInitialized) {
-            magicApi = buildMagicApi()
-        }
-        return magicApi
-    }
-
-    private fun buildMagicApi(): MagicApi {
-        // building request to API to get bored information
-        val retrofit = Retrofit.Builder()
-            .baseUrl(magicUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        return retrofit.create(MagicApi::class.java)
-    }
-}
-
+// singleton object for the API
+object WebApi : WebApiClass()
 
 data class DataCards(
     val cards: List<DataCard>
-){
+) {
     override fun toString(): String {
         return cards.joinToString(separator = "\n\n")
     }
@@ -113,7 +91,7 @@ data class Legalities(
 
 data class DataSets(
     val sets: List<DataSet>
-){
+) {
     override fun toString(): String {
         return sets.joinToString(separator = "\n\n")
     }
