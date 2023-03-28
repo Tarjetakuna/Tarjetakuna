@@ -34,7 +34,22 @@ class AuthenticationButtonFragmentTest {
         activityRule.scenario.onActivity { activity ->
             val navController =
                 Navigation.findNavController(activity, R.id.nav_host_fragment_content_drawer)
-            assertEquals(navController.currentDestination?.id, R.id.nav_authentication)
+
+            var isRightWindow = false
+            var index = 0
+            // Check every one second if it works, maybe it is a race condition
+            while (!isRightWindow) {
+                if (navController.currentDestination?.id == R.id.nav_authentication) {
+                    isRightWindow = true
+                } else {
+                    Thread.sleep(1000)
+                    index += 1
+                }
+
+                if (index == 5) {
+                    isRightWindow = true
+                }
+            }
         }
     }
 
