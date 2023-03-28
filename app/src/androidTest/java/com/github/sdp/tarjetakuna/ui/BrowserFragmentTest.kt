@@ -56,7 +56,6 @@ class BrowserFragmentTest {
 
     //This test is not working with the SingleCardTest. I put in comment for now
     //TODO : Correct this test
-    /*
     @Test
     fun clickOnItemChangeFragment() {
         onView(withId(R.id.listOfCardsRecyclerView)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0))
@@ -67,5 +66,4 @@ class BrowserFragmentTest {
             assertThat(navController.currentDestination?.id, equalTo(R.id.nav_single_card))
         }
     }
-    */
 }
