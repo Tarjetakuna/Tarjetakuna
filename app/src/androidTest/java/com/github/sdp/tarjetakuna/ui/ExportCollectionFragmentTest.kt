@@ -1,4 +1,4 @@
-package com.github.sdp.tarjetakuna.ui.collectionexport
+package com.github.sdp.tarjetakuna.ui
 
 import android.content.Context
 import android.content.Intent
@@ -15,11 +15,11 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.github.sdp.tarjetakuna.ui.browser.BrowserFragment
-import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.ui.collectionexport.ExportCollectionFragment
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.junit.After
 import org.junit.Assert.*
