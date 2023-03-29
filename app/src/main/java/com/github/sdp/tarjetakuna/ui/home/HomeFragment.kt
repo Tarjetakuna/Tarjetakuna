@@ -14,12 +14,10 @@ import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.github.sdp.tarjetakuna.ui.filter.FilterCardsActivity
 import com.google.gson.Gson
 
 class HomeFragment : Fragment() {
 
-<<<<<<< HEAD
     private val magicSet = MagicSet("MT15", "Magic 2015")
     private val cmc = 5
     private val magicLayout = MagicLayout.Normal
@@ -52,40 +50,6 @@ class HomeFragment : Fragment() {
     ): View {
         val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
-=======
-  private val magicSet = MagicSet("MT15", "Magic 2015")
-  private val cmc = 5
-  private val magicLayout = MagicLayout.Normal
-  private val link = "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid="
-  private val cards: ArrayList<MagicCard> = arrayListOf(
-    MagicCard(
-      "Meandering Towershell", "Islandwalk",
-      magicLayout, cmc, "{3}{G}{G}",
-      magicSet, 141,
-      "${link}386602"
-    ),
-    MagicCard(
-      "Angel of Mercy", "Flying",
-      magicLayout, cmc, "{4}{W}",
-      magicSet, 1,
-      "${link}82992"
-    )
-  )
-
-  private var _binding: FragmentHomeBinding? = null
-
-  // This property is only valid between onCreateView and
-  // onDestroyView.
-  private val binding get() = _binding!!
-
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    val homeViewModel =
-      ViewModelProvider(this).get(HomeViewModel::class.java)
->>>>>>> main
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -113,7 +77,6 @@ class HomeFragment : Fragment() {
             mainActivity.changeFragment(R.id.nav_filter, bundle)
         }
 
-<<<<<<< HEAD
         val authenticationButton: Button = binding.authenticationButton
         authenticationButton.setOnClickListener {
             val mainActivity = requireActivity() as MainActivity
@@ -129,14 +92,3 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 }
-=======
-    return root
-  }
-
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-  }
-}
->>>>>>> main

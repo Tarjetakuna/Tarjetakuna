@@ -1,7 +1,6 @@
 package com.github.sdp.tarjetakuna.ui.profile
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,9 +10,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentProfileBinding
-import com.github.sdp.tarjetakuna.ui.authentication.AuthenticationButtonActivity
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
 
@@ -83,8 +82,8 @@ class ProfileFragment : Fragment() {
         // Link the authentication button to the authentication activity
         val authenticationButton: Button = binding.authenticationButton
         authenticationButton.setOnClickListener {
-            val intent = Intent(activity, AuthenticationButtonActivity::class.java)
-            startActivity(intent)
+            val mainActivity = requireActivity() as MainActivity
+            mainActivity.changeFragment(R.id.nav_authentication_button)
         }
 
         return root
