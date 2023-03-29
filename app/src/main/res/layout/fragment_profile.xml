@@ -1,52 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.browser.BrowserFragment" >
+    tools:context=".ui.profile.ProfileFragment">
 
-    <TextView
-        android:id="@+id/text_profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/profile_picture"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="30dp"
+        android:contentDescription="@string/profile_picture_content_description"
+        android:scaleType="centerCrop"
+        android:src="@drawable/profile_picture"
+        app:layout_constraintBottom_toTopOf="@+id/nameEntry"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.172" />
-
-    <Button
-        android:id="@+id/saveNameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save_name_button"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.633" />
+        app:layout_constraintVertical_bias="0.25"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <EditText
-        android:id="@+id/saveNameText"
-        android:layout_width="161dp"
-        android:layout_height="67dp"
-        android:autofillHints="name"
-        android:ems="10"
-        android:hint="@string/enter_your_name"
+        android:id="@+id/nameEntry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/name_entry_hint"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:maxLines="1"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_picture"
+        android:autofillHints="name"
+        tools:ignore="VisualLintTextFieldSize" />
+
+    <EditText
+        android:id="@+id/descriptionEntry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="description"
+        android:gravity="start|top"
+        android:hint="@string/description_entry_hint"
+        android:inputType="textMultiLine"
+        android:maxLines="1"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameEntry"
+        tools:ignore="VisualLintTextFieldSize" />
+
+    <Button
+        android:id="@+id/authenticationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/signIn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionEntry" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
