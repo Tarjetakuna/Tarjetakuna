@@ -5,7 +5,7 @@ import com.github.sdp.tarjetakuna.model.*
 
 class BrowserViewModel : ViewModel() {
 
-    val cards: ArrayList<MagicCard> = generateCards()
+    val initialCards: ArrayList<MagicCard> = generateCards()
 
     /**
      * TODO change it when we have the web api to get the cards
@@ -37,6 +37,26 @@ class BrowserViewModel : ViewModel() {
             )
             cardsArray.add(card)
         }
+
+        //Example of an another card
+        cardsArray.add(
+            MagicCard(
+                "Pégase solgrâce",
+                "Vol\nLien de vie",
+                MagicLayout.Normal,
+                2,
+                "{1}{W}",
+                MagicSet("M15", "Magic 2015"),
+                1,
+                "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
+                MagicRarity.Common,
+                MagicType.Creature,
+                listOf("Pégase"),
+                "1",
+                "2",
+                "Phill Simmer"
+            )
+        )
         return cardsArray
     }
 }

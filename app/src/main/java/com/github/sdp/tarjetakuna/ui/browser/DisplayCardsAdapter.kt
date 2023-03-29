@@ -12,7 +12,8 @@ import com.github.sdp.tarjetakuna.model.MagicCard
 /**
  * Adapter for the recycler view that displays the cards.
  */
-class DisplayCardsAdapter(private val cards: ArrayList<MagicCard>) : RecyclerView.Adapter<DisplayCardsAdapter.ViewHolder>() {
+class DisplayCardsAdapter(val cards: ArrayList<MagicCard>) :
+    RecyclerView.Adapter<DisplayCardsAdapter.ViewHolder>() {
 
     /**
      * Interface for managing the click on a card-item of the recycler view
@@ -24,7 +25,7 @@ class DisplayCardsAdapter(private val cards: ArrayList<MagicCard>) : RecyclerVie
     /**
      * Listener for the click on a card-item of the recycler view
      */
-    var onCardClickListener : OnCardClickListener? = null
+    var onCardClickListener: OnCardClickListener? = null
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardName: TextView = itemView.findViewById(R.id.cardNameRecyclerViewTextView)
@@ -36,7 +37,8 @@ class DisplayCardsAdapter(private val cards: ArrayList<MagicCard>) : RecyclerVie
      * Create the format of the items
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.cards_recycler_view_row, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.cards_recycler_view_row, parent, false)
         return ViewHolder(view)
     }
 

@@ -3,6 +3,7 @@ package com.github.sdp.tarjetakuna.ui
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
@@ -37,6 +38,9 @@ class BrowserFragmentTest {
         Intents.release()
     }
 
+    /**
+     * Test if the initial cards are displayed
+     */
     @Test
     fun cardsAreDisplayed() {
         for (i in 0..39) {
@@ -47,6 +51,20 @@ class BrowserFragmentTest {
             )
                 .check(matches(hasDescendant(withText("Ambush Paratrooper ${i + 1}"))))
         }
+    }
+
+    /**
+     * Test if the search bar shown the correct card
+     */
+    @Test
+    fun searchForCard() {
+        onView(withId(R.id.browser_searchbar)).perform(click())
+        onView(withId(R.id.browser_searchbar)).perform(typeText("Ambush Paratrooper 14"))
+        onView(withId(R.id.browser_list_cards)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
+                0
+            )
+        ).check(matches(hasDescendant(withText("Ambush Paratrooper 14"))))
     }
 
     //This test is not working with the SingleCardTest. I put in comment for now
