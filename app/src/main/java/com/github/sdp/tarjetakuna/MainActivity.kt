@@ -1,5 +1,7 @@
 package com.github.sdp.tarjetakuna
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -8,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -16,31 +19,33 @@ import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
 import com.github.sdp.tarjetakuna.ui.collectionexport.ExportCollection
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
+import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityDrawerBinding
+    private val sharedPrefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == SharedPreferencesKeys.user_name || key == SharedPreferencesKeys.user_description) {
+            updateHeader()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Set up the view
         binding = ActivityDrawerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.appBarDrawer.toolbar)
-
-        binding.appBarDrawer.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-
-        }
-
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_drawer)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        val drawerLayout: DrawerLayout = binding.drawerLayout
+        val navView: NavigationView = binding.navView
+        val navController =
+            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home,
@@ -54,24 +59,39 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         // Display profile fragment when clicking on the profile icon
-        val profileIcone =
-            binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.profileIcon)
-        profileIcone.setOnClickListener {
+        val headerView = binding.navView.getHeaderView(0)
+        headerView.findViewById<ImageView>(R.id.profileIcon).setOnClickListener {
             changeFragment(R.id.nav_profile)
             binding.drawerLayout.closeDrawer(binding.navView)
         }
+
+        // Update the header when the user changes their name or description
+        val sharedPref = getSharedPreferences(shared_pref_name, Context.MODE_PRIVATE)
+        sharedPref.registerOnSharedPreferenceChangeListener(sharedPrefListener)
+
+        updateHeader()
     }
 
     // Change fragment
-    fun changeFragment(fragment: Int) {
-        val navController = findNavController(R.id.nav_host_fragment_content_drawer)
-        navController.navigate(fragment)
+    fun changeFragment(fragment: Int, args: Bundle? = null) {
+        val navController =
+            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
+        navController.navigate(fragment, args)
     }
 
-    fun setNavHeaderName(name: String) {
-        val navView: NavigationView = binding.navView
-        val navHeaderName = navView.getHeaderView(0).findViewById<TextView>(R.id.navHeaderNameText)
-        navHeaderName.text = name
+    /**
+     * Update the header of the navigation drawer to display the user's name and description
+     */
+    fun updateHeader() {
+        val headerView = binding.navView.getHeaderView(0)
+        val sharedPref = getSharedPreferences(shared_pref_name, Context.MODE_PRIVATE)
+        headerView.findViewById<TextView>(R.id.navHeaderNameText).text = sharedPref.getString(
+            SharedPreferencesKeys.user_name, getString(R.string.name_entry_hint)
+        )
+        headerView.findViewById<TextView>(R.id.navHeaderDescriptionText).text =
+            sharedPref.getString(
+                SharedPreferencesKeys.user_description, getString(R.string.description_entry_hint)
+            )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -81,7 +101,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_drawer)
+        val navController =
+            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 

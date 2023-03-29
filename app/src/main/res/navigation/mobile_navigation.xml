@@ -35,4 +35,39 @@
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
 
+    <fragment
+        android:id="@+id/nav_filter"
+        android:name="com.github.sdp.tarjetakuna.ui.filter.FilterCardsFragment"
+        android:label="@string/menu_filter"
+        tools:layout="@layout/fragment_filter_cards" />
+
+    <fragment
+        android:id="@+id/nav_authentication"
+        android:name="com.github.sdp.tarjetakuna.ui.authentication.AuthenticationFragment"
+        android:label="@string/menu_authentication"
+        tools:layout="@layout/fragment_authentication" />
+
+    <fragment
+        android:id="@+id/nav_authentication_button"
+        android:name="com.github.sdp.tarjetakuna.ui.authentication.AuthenticationButtonFragment"
+        android:label="@string/menu_authentication_button"
+        tools:layout="@layout/fragment_authentication_button" />
+
+    <fragment
+        android:id="@+id/nav_sign_out"
+        android:name="com.github.sdp.tarjetakuna.ui.authentication.SignOutFragment"
+        android:label="@string/menu_sign_out"
+        tools:layout="@layout/fragment_sign_out" />
+
+    <fragment
+        android:id="@+id/nav_user_cards"
+        android:name="com.github.sdp.tarjetakuna.database.UserCardsFragment"
+        android:label="@string/menu_user_cards"
+        tools:layout="@layout/fragment_user_cards" />
+
+    <fragment
+        android:id="@+id/nav_single_card"
+        android:name="com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment"
+        android:label="@string/menu_single_card"
+        tools:layout="@layout/fragment_single_card" />
 </navigation>
