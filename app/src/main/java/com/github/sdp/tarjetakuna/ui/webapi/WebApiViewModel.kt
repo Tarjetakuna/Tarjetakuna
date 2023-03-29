@@ -6,6 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicCard
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicCards
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicSet
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicSets
 import com.github.sdp.tarjetakuna.utils.Utils.Companion.isNetworkAvailable
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,7 +37,16 @@ open class WebApiViewModel : ViewModel() {
         _apiError.value = Pair(resId, s)
     }
 
-    // to get cards information
+    // Cards and sets live data
+    private val _cards = MutableLiveData<MagicCards>()
+    val cards: LiveData<MagicCards> = _cards
+
+    private val _sets = MutableLiveData<MagicSets>()
+    val sets: LiveData<MagicSets> = _sets
+
+    /**
+     * Get all cards information
+     */
     fun getCards(context: Context) {
         // check if network is available
         if (isNetworkAvailable(context)) {
@@ -45,7 +58,51 @@ open class WebApiViewModel : ViewModel() {
         }
     }
 
-    // to get sets information
+    /**
+     * Search cards by name
+     */
+    fun getCardsByName(context: Context, cardName: String) {
+        // check if network is available
+        if (isNetworkAvailable(context)) {
+            getCardsByNameWeb(cardName)
+        }
+        // TODO else get from cache
+        else {
+            Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Search cards by set code
+     */
+    fun getCardsBySet(context: Context, setCode: String) {
+        // check if network is available
+        if (isNetworkAvailable(context)) {
+            getCardsBySetWeb(setCode)
+        }
+        // TODO else get from cache
+        else {
+            Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Search card by id
+     */
+    fun getCardById(context: Context, id: String) {
+        // check if network is available
+        if (isNetworkAvailable(context)) {
+            getCardByIdWeb(id)
+        }
+        // TODO else get from cache
+        else {
+            Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Get all sets information
+     */
     fun getSets(context: Context) {
         // check if network is available
         if (isNetworkAvailable(context)) {
@@ -57,13 +114,60 @@ open class WebApiViewModel : ViewModel() {
         }
     }
 
-    // to get cards information from the web
+    /**
+     * Get a single set by its set code
+     */
+    fun getSetByCode(context: Context, code: String) {
+        // check if network is available
+        if (isNetworkAvailable(context)) {
+            getSetByCodeWeb(code)
+        }
+        // TODO else get from cache
+        else {
+            Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * get cards from the web
+     */
     protected fun getCardsWeb() {
         ApiCall(WebApi.getMagicApi().getCards(), this@WebApiViewModel).enqueue()
     }
 
+    /**
+     * search cards by name from the web
+     */
+    protected fun getCardsByNameWeb(name: String) {
+        ApiCall(WebApi.getMagicApi().getCardsByName(name), this@WebApiViewModel).enqueue()
+    }
+
+    /**
+     * search cards by set code from the web
+     */
+    protected fun getCardsBySetWeb(set: String) {
+        ApiCall(WebApi.getMagicApi().getCardsBySet(set), this@WebApiViewModel).enqueue()
+    }
+
+    /**
+     * get a single card by id from the web
+     */
+    protected fun getCardByIdWeb(id: String) {
+        ApiCall(WebApi.getMagicApi().getCardById(id), this@WebApiViewModel).enqueue()
+    }
+
+    /**
+     * get sets from the web
+     */
     protected fun getSetsWeb() {
         ApiCall(WebApi.getMagicApi().getSets(), this@WebApiViewModel).enqueue()
+    }
+
+    /**
+     * get a single set by code from the web
+     */
+    protected fun getSetByCodeWeb(code: String) {
+        ApiCall(WebApi.getMagicApi().getSetByCode(code), this@WebApiViewModel).enqueue()
     }
 
     open class ApiCall<T>(private val call: Call<T>, private val viewModel: WebApiViewModel) {
@@ -83,12 +187,21 @@ open class WebApiViewModel : ViewModel() {
     }
 
     class CallbackHandler<T> {
-        public fun handleResponse(response: Response<T>, viewModel: WebApiViewModel) {
+        fun handleResponse(response: Response<T>, viewModel: WebApiViewModel) {
             // Handle the response
             if (response.isSuccessful) {
-                val sets = response.body()
-                if (sets != null) {
-                    viewModel.setApiResults(sets.toString())
+                val body = response.body()
+                if (body != null) {
+                    if (body is MagicCards) {
+                        viewModel._cards.value = body
+                    } else if (body is MagicSets) {
+                        viewModel._sets.value = body
+                    } else if (body is MagicCard) {
+                        viewModel._cards.value = MagicCards(listOf(body))
+                    } else if (body is MagicSet) {
+                        viewModel._sets.value = MagicSets(listOf(body))
+                    }
+                    viewModel.setApiResults(body.toString())
                     // TODO save to cache
                 } else {
                     viewModel.setError(R.string.txt_error_msg, "no data")
