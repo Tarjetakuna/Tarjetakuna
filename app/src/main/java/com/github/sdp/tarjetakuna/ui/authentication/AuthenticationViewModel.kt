@@ -12,6 +12,10 @@ import com.github.sdp.tarjetakuna.utils.Utils
 import com.google.firebase.auth.FirebaseAuth
 
 
+/**
+ * View model of the authentication fragment. It does the computations and stores the data for the UI
+ * to display.
+ */
 class AuthenticationViewModel : ViewModel() {
 
     private val _reportErrorString = MutableLiveData<String>()

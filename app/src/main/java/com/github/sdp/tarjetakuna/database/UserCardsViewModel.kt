@@ -12,6 +12,10 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.concurrent.CompletableFuture
 
+/**
+ * View model of the user's collection of cards.
+ * It does the computations and stores the data for the UI
+ */
 class UserCardsViewModel : ViewModel() {
 
     private val db = Firebase.database.reference

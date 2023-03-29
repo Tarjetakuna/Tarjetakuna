@@ -12,7 +12,7 @@ import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentUserCardsBinding
 
 /**
- * Activity to manage cards in the user's collection.
+ * Fragment to manage cards in the user's collection.
  */
 class UserCardsFragment : Fragment() {
 
