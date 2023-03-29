@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentSignOutBinding
@@ -21,8 +20,6 @@ import com.google.firebase.ktx.Firebase
 class SignOutFragment : Fragment() {
 
 
-    private lateinit var viewModel: SignOutViewModel
-
     private var _binding: FragmentSignOutBinding? = null
     private val binding get() = _binding!!
 
@@ -31,7 +28,6 @@ class SignOutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this)[SignOutViewModel::class.java]
         _binding = FragmentSignOutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 

@@ -81,7 +81,7 @@ class AuthenticationFragment : Fragment() {
     }
 
     /**
-     * Return to the AuthenticationButtonActivity with the appropriate error code
+     * Return to the AuthenticationButtonFragment with the appropriate error code
      */
     private fun reportError(errorCode: String) {
         val mainActivity = requireActivity() as MainActivity
@@ -91,7 +91,7 @@ class AuthenticationFragment : Fragment() {
     }
 
     /**
-     * Sign out the user and return to the AuthenticationButtonActivity.
+     * Sign out the user and return to the AuthenticationButtonFragment.
      */
     private fun signOut() {
         AuthUI.getInstance()

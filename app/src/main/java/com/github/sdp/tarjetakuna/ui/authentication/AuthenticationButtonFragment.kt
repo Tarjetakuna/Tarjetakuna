@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentAuthenticationButtonBinding
@@ -18,8 +17,6 @@ import com.google.firebase.ktx.Firebase
  */
 class AuthenticationButtonFragment : Fragment() {
 
-    private lateinit var viewModel: AuthenticationButtonViewModel
-
     private var _binding: FragmentAuthenticationButtonBinding? = null
     private val binding get() = _binding!!
 
@@ -27,7 +24,6 @@ class AuthenticationButtonFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this)[AuthenticationButtonViewModel::class.java]
         _binding = FragmentAuthenticationButtonBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val user = Firebase.auth.currentUser
