@@ -8,6 +8,7 @@ import android.os.Environment
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
+import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
@@ -118,7 +119,7 @@ object ExportCollection {
         } catch (e: Exception) {
             Toast.makeText(
                 context,
-                "No app found to share Excel file",
+                R.string.ExportCollection_appNotFound,
                 Toast.LENGTH_SHORT
             ).show()
         }
