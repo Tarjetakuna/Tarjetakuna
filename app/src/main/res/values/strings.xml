@@ -2,19 +2,15 @@
     <string name="app_name">Tarjetakuna</string>
     <string name="demo_button">Demo button: fragment switch </string>
     <string name="hello">Hello</string>
+    <string name="filter_option_title">Filter options</string>
     <string name="save_name_button">Save name</string>
     <string name="enter_your_name">Enter your name:</string>
-    <string name="filter_option_title">Filter options</string>
     <string name="filter">Filter</string>
     <string name="card_name">Card name</string>
     <string name="cmc">Converted mana cost</string>
     <string name="layout_name">Layout</string>
-    <string name="card_type">Card type</string>
-    <string name="title_activity_drawer">Drawer</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title"></string>
-    <string name="nav_header_subtitle"></string>
+    <string name="nav_header_title" />
+    <string name="nav_header_subtitle" />
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -28,6 +24,11 @@
     <string name="menu_scanner">Scan</string>
     <string name="menu_webapi">Webapi</string>
     <string name="menu_profile">Profile</string>
+    <string name="menu_filter">Filter</string>
+    <string name="menu_authentication">Authentication</string>
+    <string name="menu_authentication_button">Authentication button</string>
+    <string name="menu_sign_out">Sign out</string>
+    <string name="menu_user_cards">User cards</string>
 
     <string name="scanner_button">Scan a card</string>
     <string name="scanner_description">Here you can scan a card by clicking on the button below.</string>
@@ -40,7 +41,7 @@
     <string name="go_back_to_home_page">Go back to home page</string>
     <string name="txt_error_msg">Error: %s</string>
 
-<!--    web api texts-->
+    <!--    web api texts-->
     <string name="api_cards">/cards</string>
     <string name="api_sets">/sets</string>
     <string name="api_default_results">no results yet</string>
@@ -55,5 +56,20 @@
     <string name="get_card_button">Get Card</string>
     <string name="set_card_button">Add Card</string>
     <string name="manage_collection_button">Manage Collection</string>
+    <string name="save_button_text">Save</string>
+    <string name="description_entry_hint">Enter a description here</string>
+    <string name="name_entry_hint">Enter your name</string>
+    <string name="profile_picture_content_description">Profile picture</string>
+
+    <string name="menu_single_card">Card</string>
+    <string name="image_of_the_card">Image of the card</string>
+    <string name="error_load_card">Error loading the card</string>
+    <string name="single_card_showing_set">From %1$s (%2$s)</string>
+    <string name="single_card_showing_number">#%1$d</string>
+    <string name="single_card_showing_subtypes">- %1$s</string>
+    <string name="single_card_showing_artist">Artist : %1$s</string>
+    <string name="single_card_showing_stats">(%1$s/%2$s)</string>
+    <string name="single_card_showing_type_subtypes_stats">%1$s%2$s%3$s</string>
+    <string name="single_card_showing_mana_cost">Mana cost : %1$s</string>
 
 </resources>

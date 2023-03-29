@@ -6,9 +6,6 @@ import android.app.Instrumentation
 import android.content.Intent
 import android.graphics.Bitmap
 import android.provider.MediaStore
-import android.view.View
-import android.widget.ImageView
-import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
@@ -19,14 +16,13 @@ import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.ui.scanner.ScannerFragment
+import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import com.github.sdp.tarjetakuna.R
-import org.hamcrest.Description
-import org.hamcrest.TypeSafeMatcher
-import org.junit.After
 
 @RunWith(AndroidJUnit4::class)
 class ScannerFragmentTest {
@@ -37,6 +33,8 @@ class ScannerFragmentTest {
     fun setUp() {
         Intents.init()
         scenario = launchFragmentInContainer()
+        Thread.sleep(100) // Wait for the fragment to be created (otherwise the test fails because there is no view)
+        //TODO : Find a better way to wait for the activity to be created
     }
 
     @After
@@ -53,7 +51,13 @@ class ScannerFragmentTest {
         intending(hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(result)
 
         onView(withId(R.id.button_scan)).perform(click())
-        onView(withId(R.id.image_card)).check(matches(withDrawable(imageBitmap)))
+        onView(withId(R.id.image_card)).check(
+            matches(
+                WithDrawableSafeMatcher.withDrawable(
+                    imageBitmap
+                )
+            )
+        )
         onView(withId(R.id.text_information)).check(matches(withText(R.string.operation_success)))
     }
 
@@ -65,15 +69,5 @@ class ScannerFragmentTest {
 
         onView(withId(R.id.button_scan)).perform(click())
         onView(withId(R.id.text_information)).check(matches(withText(R.string.operation_failed)))
-    }
-
-    private fun withDrawable(bitmap: Bitmap) = object : TypeSafeMatcher<View>() {
-        override fun describeTo(description: Description) {
-            description.appendText("ImageView with drawable same as a bitmap")
-        }
-
-        override fun matchesSafely(view: View): Boolean {
-            return view is ImageView && view.drawable.toBitmap().sameAs(bitmap)
-        }
     }
 }
