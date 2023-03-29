@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna
 
+
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -14,6 +15,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
+
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
 import com.google.android.material.navigation.NavigationView
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityDrawerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.appBarDrawer.toolbar)
+
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.

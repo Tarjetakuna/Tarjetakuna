@@ -17,12 +17,6 @@
             android:value="true"
             android:targetSdkVersion="33" />
         <activity
-            android:name=".database.UserCardsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.filter.FilterCardsActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Bootcamp.NoActionBar">
@@ -32,9 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.authentication.AuthenticationButtonActivity" />
-        <activity android:name=".ui.authentication.AuthenticationActivity" />
-        <activity android:name=".ui.authentication.SignOutActivity" />
     </application>
 
 </manifest>
