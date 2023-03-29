@@ -1,5 +1,8 @@
 package com.github.sdp.tarjetakuna.ui
 
+import androidx.fragment.app.testing.FragmentScenario
+import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
@@ -12,7 +15,10 @@ import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
 import com.github.sdp.tarjetakuna.ui.filter.FilterCardsActivity
+import com.github.sdp.tarjetakuna.ui.home.HomeFragment
 import com.google.gson.Gson
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -33,6 +39,19 @@ class HomeFragmentTest {
             "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=82992"
         )
     )
+
+    private lateinit var scenario: FragmentScenario<HomeFragment>
+
+    @Before
+    fun setUp() {
+        scenario = launchFragmentInContainer()
+        scenario.moveToState(Lifecycle.State.STARTED)
+    }
+
+    @After
+    fun after() {
+        scenario.close()
+    }
 
     @Test
     fun testFilterButtonWorks() {
