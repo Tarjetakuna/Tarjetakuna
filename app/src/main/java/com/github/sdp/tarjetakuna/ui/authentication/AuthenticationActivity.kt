@@ -9,7 +9,6 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.Utils
-import com.google.firebase.auth.FirebaseAuth
 
 /**
  * This activity is used to sign in or sign out the user.
@@ -63,7 +62,6 @@ class AuthenticationActivity: AppCompatActivity() {
         val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
             // Successfully signed in
-            val user = FirebaseAuth.getInstance().currentUser
             val intent = Intent(this, SignOutActivity::class.java)
             startActivity(intent)
         } else {
