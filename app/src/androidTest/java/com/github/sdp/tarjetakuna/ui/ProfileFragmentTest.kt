@@ -15,6 +15,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.ui.profile.ProfileFragment
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
+import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
 import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.Before
@@ -56,7 +57,7 @@ class ProfileFragmentTest {
         onView(withId(R.id.nameEntry)).check(matches(withText(newName)))
 
         val sharedPref = ApplicationProvider.getApplicationContext<Context>()
-            .getSharedPreferences("com.github.sdp.tarjetakuna", Context.MODE_PRIVATE)
+            .getSharedPreferences(shared_pref_name, Context.MODE_PRIVATE)
         assertEquals(newName, sharedPref.getString(SharedPreferencesKeys.user_name, ""))
     }
 
@@ -69,7 +70,7 @@ class ProfileFragmentTest {
         onView(withId(R.id.descriptionEntry)).check(matches(withText(newDescription)))
 
         val sharedPref = ApplicationProvider.getApplicationContext<Context>()
-            .getSharedPreferences("com.github.sdp.tarjetakuna", Context.MODE_PRIVATE)
+            .getSharedPreferences(shared_pref_name, Context.MODE_PRIVATE)
         assertEquals(
             newDescription,
             sharedPref.getString(SharedPreferencesKeys.user_description, "")

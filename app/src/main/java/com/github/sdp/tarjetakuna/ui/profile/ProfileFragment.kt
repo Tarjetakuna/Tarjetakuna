@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentProfileBinding
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
+import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
 
 class ProfileFragment : Fragment() {
 
@@ -33,10 +34,17 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val sharedPref = requireActivity().getSharedPreferences(
-            "com.github.sdp.tarjetakuna",
+            shared_pref_name,
             Context.MODE_PRIVATE
         )
 
+        /* This function is used to initiate the sharedPrefEntryInitiate
+         * It takes a textView, a key and a hint
+         * Its goal is to always match the textView value to the value stored in sharedPref with
+         * the given key if it exists, otherwise it sets the value to the given hint
+         * It retrieves the value stored in sharedPref at startup to set the textView value
+         * It sets a textWatcher to update the value in sharedPref when the textView value changes
+         */
         fun sharedPrefEntryInitiate(textView: TextView, key: String, hint: String) {
             // Not using a viewmodel for this as it is stored in sharedPref
             textView.text = sharedPref.getString(key, hint)
@@ -61,6 +69,7 @@ class ProfileFragment : Fragment() {
             })
         }
 
+        // Link the user name and description to the sharedPref
         sharedPrefEntryInitiate(
             binding.nameEntry,
             SharedPreferencesKeys.user_name,
