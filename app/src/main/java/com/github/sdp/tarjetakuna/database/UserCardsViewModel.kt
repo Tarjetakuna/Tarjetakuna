@@ -64,7 +64,7 @@ class UserCardsViewModel : ViewModel() {
         }
         //the actual value gotten from the database
         future.thenAccept {
-            val card = usc.transformData(it) //turn the retrieved data into a MagicCard object
+            //val card = usc.transformData(it) //turn the retrieved data into a MagicCard object
             _setMessage.value = "Card $cardUID was succesfully retrieved from your collection"
         }
     }
