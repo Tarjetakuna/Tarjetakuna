@@ -46,11 +46,10 @@
         android:gravity="start|top"
         android:hint="@string/description_entry_hint"
         android:inputType="textMultiLine"
+        android:maxLines="1"
         android:minHeight="48dp"
         android:padding="8dp"
-        android:maxLines="1"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/saveNameButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,13 +57,14 @@
         tools:ignore="VisualLintTextFieldSize" />
 
     <Button
-        android:id="@+id/saveNameButton"
+        android:id="@+id/authenticationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save_button_text"
+
+        android:text="@string/signIn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionEntry"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionEntry" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

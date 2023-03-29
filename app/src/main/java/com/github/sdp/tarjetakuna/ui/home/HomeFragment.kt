@@ -11,13 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.ui.filter.FilterCardsActivity
 import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
+import com.github.sdp.tarjetakuna.ui.filter.FilterCardsActivity
 import com.google.gson.Gson
-import com.github.sdp.tarjetakuna.ui.authentication.AuthenticationButtonActivity
 
 class HomeFragment : Fragment() {
 
@@ -26,17 +25,22 @@ class HomeFragment : Fragment() {
   private val magicLayout = MagicLayout.Normal
   private val link = "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid="
   private val cards: ArrayList<MagicCard> = arrayListOf(
-    MagicCard("Meandering Towershell", "Islandwalk",
+    MagicCard(
+      "Meandering Towershell", "Islandwalk",
       magicLayout, cmc, "{3}{G}{G}",
       magicSet, 141,
-      "${link}386602"),
-    MagicCard("Angel of Mercy", "Flying",
+      "${link}386602"
+    ),
+    MagicCard(
+      "Angel of Mercy", "Flying",
       magicLayout, cmc, "{4}{W}",
       magicSet, 1,
-      "${link}82992")
+      "${link}82992"
+    )
   )
 
-private var _binding: FragmentHomeBinding? = null
+  private var _binding: FragmentHomeBinding? = null
+
   // This property is only valid between onCreateView and
   // onDestroyView.
   private val binding get() = _binding!!
@@ -47,7 +51,7 @@ private var _binding: FragmentHomeBinding? = null
     savedInstanceState: Bundle?
   ): View {
     val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+      ViewModelProvider(this).get(HomeViewModel::class.java)
 
     _binding = FragmentHomeBinding.inflate(inflater, container, false)
     val root: View = binding.root
@@ -75,18 +79,12 @@ private var _binding: FragmentHomeBinding? = null
       startActivity(intent)
     }
 
-    val authenticationButton: Button = binding.authenticationButton
-    authenticationButton.setOnClickListener {
-      val intent = Intent(activity, AuthenticationButtonActivity::class.java)
-      startActivity(intent)
-    }
-
     return root
   }
 
 
-override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+  }
 }
