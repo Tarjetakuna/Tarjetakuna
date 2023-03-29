@@ -38,11 +38,6 @@ class BrowserFragmentTest {
     }
 
     @Test
-    fun textIsDisplayed() {
-        onView(withId(R.id.browser_searchbar)).check(matches(withText("Coming soon here: a search bar to filter your cards")))
-    }
-
-    @Test
     fun cardsAreDisplayed() {
         for (i in 0..39) {
             onView(withId(R.id.browser_list_cards)).perform(
