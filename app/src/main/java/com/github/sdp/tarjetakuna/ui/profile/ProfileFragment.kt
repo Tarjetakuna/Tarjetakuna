@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentProfileBinding
+import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 
 class ProfileFragment : Fragment() {
 
@@ -60,10 +61,14 @@ class ProfileFragment : Fragment() {
             })
         }
 
-        sharedPrefEntryInitiate(binding.nameEntry, "user_name", getString(R.string.name_entry_hint))
+        sharedPrefEntryInitiate(
+            binding.nameEntry,
+            SharedPreferencesKeys.user_name,
+            getString(R.string.name_entry_hint)
+        )
         sharedPrefEntryInitiate(
             binding.descriptionEntry,
-            "user_description",
+            SharedPreferencesKeys.user_description,
             getString(R.string.description_entry_hint)
         )
 

@@ -14,6 +14,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
+import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityDrawerBinding
     private val sharedPrefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == "user_name" || key == "user_description") {
+        if (key == SharedPreferencesKeys.user_name || key == SharedPreferencesKeys.user_description) {
             updateHeader()
         }
     }
@@ -79,11 +80,11 @@ class MainActivity : AppCompatActivity() {
         val headerView = binding.navView.getHeaderView(0)
         val sharedPref = getSharedPreferences("com.github.sdp.tarjetakuna", Context.MODE_PRIVATE)
         headerView.findViewById<TextView>(R.id.navHeaderNameText).text = sharedPref.getString(
-            "user_name", getString(R.string.name_entry_hint)
+            SharedPreferencesKeys.user_name, getString(R.string.name_entry_hint)
         )
         headerView.findViewById<TextView>(R.id.navHeaderDescriptionText).text =
             sharedPref.getString(
-                "user_description", getString(R.string.description_entry_hint)
+                SharedPreferencesKeys.user_description, getString(R.string.description_entry_hint)
             )
     }
 
