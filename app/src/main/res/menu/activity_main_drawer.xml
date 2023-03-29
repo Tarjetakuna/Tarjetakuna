@@ -20,10 +20,5 @@
             android:id="@+id/nav_webapi"
             android:icon="@drawable/baseline_language_24"
             android:title="@string/menu_webapi" />
-        <item
-            android:id="@+id/nav_exportcollection"
-            android:icon="@drawable/baseline_file_download_24"
-            android:title="@string/menu_exportcollection" />
-
     </group>
 </menu>

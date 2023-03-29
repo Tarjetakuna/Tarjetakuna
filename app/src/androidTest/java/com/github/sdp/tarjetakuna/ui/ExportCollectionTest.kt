@@ -3,61 +3,51 @@ package com.github.sdp.tarjetakuna.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Environment
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.github.sdp.tarjetakuna.ui.collectionexport.ExportCollectionFragment
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.FileInputStream
 
 @RunWith(AndroidJUnit4::class)
-class ExportCollectionFragmentTest {
+class ExportCollectionTest {
 
-    private lateinit var scenario: FragmentScenario<ExportCollectionFragment>
+    @get:Rule
+    val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun setUp() {
         Intents.init()
-        scenario = launchFragmentInContainer()
     }
 
     @After
     fun after() {
-        scenario.close()
         Intents.release()
     }
 
     @Test
-    fun testExportButtonNotNull() {
-        assertNotNull(onView(withId(R.id.exportCollectionButton)))
-    }
-
-    @Test
-    fun testExportButtonIsDisplayed() {
-        onView(withId(R.id.exportCollectionButton)).check(matches(isDisplayed()))
-    }
-
-    @Test
     fun clickExportButtonSendAnIntentWithActionSend() {
-        onView(withId(R.id.exportCollectionButton)).perform(click())
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
+        onView(withText(R.string.menu_exportcollection)).perform(click())
         intended(hasAction(Intent.ACTION_SEND))
     }
 
@@ -86,7 +76,9 @@ class ExportCollectionFragmentTest {
                 "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
             )
         )
-        onView(withId(R.id.exportCollectionButton)).perform(click())
+
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
+        onView(withText(R.string.menu_exportcollection)).perform(click())
 
         val excelFile = ApplicationProvider.getApplicationContext<Context>()
             .getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.resolve("MyMagicCollection.xls")
