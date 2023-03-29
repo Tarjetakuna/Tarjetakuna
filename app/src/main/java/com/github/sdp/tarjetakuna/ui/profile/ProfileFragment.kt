@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentProfileBinding
 
@@ -46,8 +45,6 @@ class ProfileFragment : Fragment() {
                         putString(key, s.toString())
                         apply()
                     }
-                    val mainActivity = requireActivity() as MainActivity
-                    mainActivity.updateHeader()
                 }
 
                 override fun beforeTextChanged(

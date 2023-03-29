@@ -1,25 +1,31 @@
 package com.github.sdp.tarjetakuna
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityDrawerBinding
+    private val sharedPrefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == "user_name" || key == "user_description") {
+            updateHeader()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +62,10 @@ class MainActivity : AppCompatActivity() {
             changeFragment(R.id.nav_profile)
             binding.drawerLayout.closeDrawer(binding.navView)
         }
+
+        val sharedPref = getSharedPreferences("com.github.sdp.tarjetakuna", Context.MODE_PRIVATE)
+        sharedPref.registerOnSharedPreferenceChangeListener(sharedPrefListener)
+
         updateHeader()
     }
 
