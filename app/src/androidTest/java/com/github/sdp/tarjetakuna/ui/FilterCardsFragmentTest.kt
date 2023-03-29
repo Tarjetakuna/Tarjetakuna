@@ -1,29 +1,29 @@
-package com.github.sdp.tarjetakuna
+package com.github.sdp.tarjetakuna.ui
 
-import android.content.Intent
+import android.os.Bundle
+import androidx.navigation.Navigation.findNavController
 import androidx.test.core.app.ActivityScenario
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.sdp.tarjetakuna.MainActivity
+import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.github.sdp.tarjetakuna.ui.filter.FilterCardsActivity
 import com.google.gson.Gson
+import org.hamcrest.Matchers.equalTo
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class FilterCardsTest {
+class FilterCardsFragmentTest {
 
-    private lateinit var activityRule: ActivityScenario<FilterCardsActivity>
+    private lateinit var activityRule: ActivityScenario<MainActivity>
     private val card1 = MagicCard(
         "Angel of Mercy", "Flying",
         MagicLayout.Normal, 7, "{5}{W}{W}",
@@ -70,12 +70,18 @@ class FilterCardsTest {
     fun setUp() {
         val gson = Gson()
         val arrayCardJson = gson.toJson(arrayCard)
-        val intent =
-            Intent(ApplicationProvider.getApplicationContext(), FilterCardsActivity::class.java)
-        intent.putExtra("cards", arrayCardJson)
-        activityRule = ActivityScenario.launch(intent)
-        Thread.sleep(100) // Wait for the activity to be created (otherwise the test fails because there is no view)
-        //TODO : Find a better way to wait for the activity to be created
+
+        // Create a bundle and set the parameters
+        val bundle = Bundle()
+        bundle.putString("cards", arrayCardJson)
+
+        // Use the ActivityScenarioRule to launch the fragment
+        activityRule = ActivityScenario.launch(MainActivity::class.java)
+
+        // Get a reference to the fragment's view
+        activityRule.onActivity { activity ->
+            activity.changeFragment(R.id.nav_filter, bundle)
+        }
     }
 
     @Test
@@ -83,12 +89,6 @@ class FilterCardsTest {
         onView(withIdLayoutTextView).check(matches(isDisplayed()))
     }
 
-    @Test
-    fun testContainsCardsInIntents() {
-        activityRule.onActivity { activity ->
-            assert(activity.intent.getStringExtra("cards") != null)
-        }
-    }
 
     @Test
     fun testClickOnLayoutShowsLayoutList() {
@@ -99,7 +99,6 @@ class FilterCardsTest {
     @Test
     fun testCanClickOnChoices() {
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withPhenomenonText).inRoot(isDialog()).perform(click())
         onView(withTokenText).inRoot(isDialog()).perform(click())
@@ -111,7 +110,6 @@ class FilterCardsTest {
     @Test
     fun testValuesAllCleared() {
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withPhenomenonText).inRoot(isDialog()).perform(click())
         onView(withIdButton1).perform(click())
@@ -126,7 +124,6 @@ class FilterCardsTest {
     @Test
     fun testCheckBoxUnchecked() {
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withLevelerText).inRoot(isDialog()).perform(click())
@@ -138,7 +135,6 @@ class FilterCardsTest {
     @Test
     fun testCheckBoxStillCheckedAfterConfirmingAndReopening() {
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withLevelerText).inRoot(isDialog()).perform(click())
         onView(withIdButton1).perform(click())
@@ -146,7 +142,6 @@ class FilterCardsTest {
         onView(withIdLayoutTextView).check(matches(withText("$normal, $leveler")))
 
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withIdButton1).perform(click())
 
@@ -216,7 +211,6 @@ class FilterCardsTest {
     @Test
     fun testFilterButtonWithEmptyName() {
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withDoubleFacedText).inRoot(isDialog()).perform(click())
         onView(withIdButton1).perform(click())
         onView(withIdFilterButton).perform(click())
@@ -231,7 +225,6 @@ class FilterCardsTest {
         onView(withIdButton1).perform(click())
 
         onView(withIdLayoutTextView).perform(click())
-        onView(withLayoutText).inRoot(isDialog()).perform(click())
         onView(withNormalText).inRoot(isDialog()).perform(click())
         onView(withLevelerText).inRoot(isDialog()).perform(click())
         onView(withIdButton1).perform(click())
@@ -261,10 +254,15 @@ class FilterCardsTest {
 
     @Test
     fun testBackButtonWorks() {
-        Intents.init()
+
+        // Navigate back to the previous destination
         onView(withIdReturnMainButton).perform(click())
-        Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))
-        Intents.release()
+
+        // Verify that we've navigated back to the previous destination
+        activityRule.onActivity { activity ->
+            val navController = findNavController(activity, R.id.nav_host_fragment_content_drawer)
+            assertThat(navController.currentDestination?.id, equalTo(R.id.nav_home))
+        }
 
     }
 }
