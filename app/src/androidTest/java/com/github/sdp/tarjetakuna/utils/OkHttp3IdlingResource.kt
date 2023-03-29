@@ -5,6 +5,9 @@ import androidx.test.espresso.IdlingResource
 import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 
+/**
+ * A simple wrapper around OkHttp's Dispatcher that makes it easy to register as an Espresso IdlingResource.
+ */
 class OkHttp3IdlingResource private constructor(
     private val name: String,
     private val dispatcher: Dispatcher

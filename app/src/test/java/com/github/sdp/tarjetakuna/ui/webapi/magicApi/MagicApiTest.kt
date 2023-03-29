@@ -5,6 +5,9 @@ import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Test for MagicApi - mostly done in the androidTest as need UI
+ */
 class MagicApiTest {
 
     private lateinit var api: MagicApi
@@ -14,6 +17,9 @@ class MagicApiTest {
         api = createMagicApi()
     }
 
+    /**
+     * Test that the call is not executed but that the call is created
+     */
     @Test
     fun test_GetCards() {
         val call = api.getCards()
@@ -21,6 +27,9 @@ class MagicApiTest {
         assert(call.isExecuted.not())
     }
 
+    /**
+     * Test that the call is not executed but that the call is created
+     */
     @Test
     fun test_GetSets() {
         val call = api.getSets()

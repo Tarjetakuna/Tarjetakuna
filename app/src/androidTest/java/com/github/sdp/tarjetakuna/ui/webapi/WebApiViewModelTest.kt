@@ -21,6 +21,9 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+/**
+ * Test the WebApiViewModel behaviour (need UI to mock the webserver) of apiResults and apiError
+ */
 class WebApiViewModelTest {
     private val viewModel = WebApiViewModelTester()
     private lateinit var scenario: FragmentScenario<WebApiFragment>
@@ -57,17 +60,18 @@ class WebApiViewModelTest {
 
 
     @Test
-    fun test_getMagicApi() {
-        val apiResults = viewModel.apiResults
-        assert(apiResults.value == null)
+    fun test_initialValues() {
+        assert(viewModel.apiResults.value == null)
+        assert(viewModel.apiError.value == null)
     }
 
     @Test
     fun test_getCards_success() {
+        // check initial values
         val apiResults = viewModel.apiResults
         assert(apiResults.value == null)
 
-        // setup the mock webserver to return the response
+        // setup the mock webserver to return a delayed response
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
@@ -81,9 +85,10 @@ class WebApiViewModelTest {
             apiResults.observeForever { }
         }
 
-        // call the api
+        // call the api to get the cards
         viewModel.getCards()
 
+        // get the text displayed during the waiting time
         val waitResult =
             InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.api_waiting_results)
 
@@ -115,7 +120,7 @@ class WebApiViewModelTest {
         val apiResults = viewModel.apiResults
         assert(apiResults.value == null)
 
-        // setup the mock webserver to return the response
+        // setup the mock webserver to return a delayed response
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
@@ -171,7 +176,7 @@ class WebApiViewModelTest {
         val apiError = viewModel.apiError
         assert(apiError.value == null)
 
-        // setup the mock webserver to return the response
+        // setup the mock webserver to return a delayed error response
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(404)
@@ -204,7 +209,7 @@ class WebApiViewModelTest {
         val apiError = viewModel.apiError
         assert(apiError.value == null)
 
-        // setup the mock webserver to return the response
+        // setup the mock webserver to return a delayed error response
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(404)
@@ -237,6 +242,8 @@ class WebApiViewModelTest {
         val apiError = viewModel.apiError
         assert(apiError.value == null)
 
+        // no response from the server
+
         // use global scope to observe the live data
         GlobalScope.launch(Dispatchers.Main) {
             apiError.observeForever { }
@@ -260,6 +267,8 @@ class WebApiViewModelTest {
     fun test_getSets_noResponse() {
         val apiError = viewModel.apiError
         assert(apiError.value == null)
+
+        // no response from the server
 
         // use global scope to observe the live data
         GlobalScope.launch(Dispatchers.Main) {

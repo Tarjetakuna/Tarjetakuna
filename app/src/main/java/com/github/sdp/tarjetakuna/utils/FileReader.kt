@@ -4,6 +4,9 @@ import androidx.test.platform.app.InstrumentationRegistry
 import java.io.IOException
 import java.io.InputStreamReader
 
+/**
+ * Reads a file from the assets folder
+ */
 object FileReader {
     fun readStringFromFile(fileName: String): String {
         try {

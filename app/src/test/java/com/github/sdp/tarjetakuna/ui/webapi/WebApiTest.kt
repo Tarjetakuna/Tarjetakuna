@@ -2,6 +2,9 @@ package com.github.sdp.tarjetakuna.ui.webapi
 
 import org.junit.Test
 
+/**
+ * Test for WebApi - mostly done in the androidTest as need UI
+ */
 class WebApiTest {
 
     private val magicUrlTest = "https://api.magicthegathering.io/v1/"

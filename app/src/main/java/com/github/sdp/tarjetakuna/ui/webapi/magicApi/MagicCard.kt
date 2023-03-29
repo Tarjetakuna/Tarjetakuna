@@ -1,5 +1,8 @@
 package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 
+/**
+ * Data class for a MagicCard (need to match the doc in api.magicthegathering.io/v1/)
+ */
 data class MagicCard(
     val name: String,
     val manaCost: String,

@@ -35,6 +35,7 @@ class NavigationTest {
     fun test_changeToWebApi() {
         activityScenarioRule.scenario.onActivity {
             it.changeFragment(R.id.nav_webapi)
+            // TODO : implement better navigation tests
             // doenst work yet
 //            checkNotNull(fragment)
 //            assert(fragment is WebApiFragment)

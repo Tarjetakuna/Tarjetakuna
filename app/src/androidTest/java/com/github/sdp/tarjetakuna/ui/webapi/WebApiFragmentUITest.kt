@@ -20,6 +20,9 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/**
+ * Test the WebApiFragment UI reacting to UI events
+ */
 @RunWith(AndroidJUnit4::class)
 class WebApiFragmentUITest {
 
@@ -64,6 +67,7 @@ class WebApiFragmentUITest {
         // setup the api to use the mock webserver
         WebApi.magicUrl = "http://127.0.0.1:8080"
 
+        // setup the mock webserver to return a delayed response
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
@@ -97,6 +101,7 @@ class WebApiFragmentUITest {
         // setup the api to use the mock webserver
         WebApi.magicUrl = "http://127.0.0.1:8080"
 
+        // setup the mock webserver to return a delayed response
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)

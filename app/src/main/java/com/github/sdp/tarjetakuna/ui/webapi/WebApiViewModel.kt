@@ -1,7 +1,6 @@
 package com.github.sdp.tarjetakuna.ui.webapi
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +12,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
+/**
+ * ViewModel for the WebApiFragment
+ */
 open class WebApiViewModel : ViewModel() {
 
     // api results

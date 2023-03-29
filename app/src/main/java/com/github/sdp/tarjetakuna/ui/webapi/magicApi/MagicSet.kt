@@ -2,6 +2,9 @@ package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 
 import com.github.sdp.tarjetakuna.utils.Utils
 
+/**
+ * Set of MagicCards (need to match the doc in api.magicthegathering.io/v1/)
+ */
 data class MagicSet(
     val code: String,
     val name: String,
