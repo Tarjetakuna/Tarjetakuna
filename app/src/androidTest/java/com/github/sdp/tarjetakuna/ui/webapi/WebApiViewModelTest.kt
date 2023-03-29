@@ -231,7 +231,8 @@ class WebApiViewModelTest {
         val apiError = viewModel.apiError
         assert(apiError.value == null)
 
-        // no response from the server
+        // no response from the server, set timeout to 1s
+        WebApi.setReadTimeout(1L)
 
         // use global scope to observe the live data
         GlobalScope.launch(Dispatchers.Main) {
@@ -241,8 +242,8 @@ class WebApiViewModelTest {
         // call the api
         viewModel.getCards()
 
-        // wait for the response
-        Utils.waitWhileTrue(100, 10) { apiError.value == null }
+        // wait for the response - timeout of 1s, wait 3 times to be sure
+        Utils.waitWhileTrue(1000, 3) { apiError.value == null }
 
         // check that the text change to the response
         assertThat(
@@ -255,7 +256,8 @@ class WebApiViewModelTest {
         val apiError = viewModel.apiError
         assert(apiError.value == null)
 
-        // no response from the server
+        // no response from the server, set timeout to 1s
+        WebApi.setReadTimeout(1L)
 
         // use global scope to observe the live data
         GlobalScope.launch(Dispatchers.Main) {
@@ -265,8 +267,8 @@ class WebApiViewModelTest {
         // call the api
         viewModel.getSets()
 
-        // wait for the response
-        Utils.waitWhileTrue(100, 10) { apiError.value == null }
+        // wait for the response - timeout of 1s, wait 3 times to be sure
+        Utils.waitWhileTrue(1000, 3) { apiError.value == null }
 
         // check that the text change to the response
         assertThat(
