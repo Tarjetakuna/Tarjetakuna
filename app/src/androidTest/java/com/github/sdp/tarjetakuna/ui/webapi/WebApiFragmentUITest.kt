@@ -10,9 +10,7 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.utils.FileReader
-import com.github.sdp.tarjetakuna.utils.OkHttp3IdlingResource
-import com.github.sdp.tarjetakuna.utils.OkHttpProvider
+import com.github.sdp.tarjetakuna.utils.*
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -62,18 +60,6 @@ class WebApiFragmentUITest {
     }
 
     @Test
-    fun test_clickOnCardsButton() {
-        onView(withId(R.id.api_cards)).perform(click())
-        onView(withId(R.id.api_results)).check(matches(withText(R.string.api_waiting_results)))
-    }
-
-    @Test
-    fun test_clickOnSetsButton() {
-        onView(withId(R.id.api_sets)).perform(click())
-        onView(withId(R.id.api_results)).check(matches(withText(R.string.api_waiting_results)))
-    }
-
-    @Test
     fun test_clickOnCardsButtonWithMockWebServer() {
         // setup the api to use the mock webserver
         WebApi.magicUrl = "http://127.0.0.1:8080"
@@ -82,10 +68,25 @@ class WebApiFragmentUITest {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
                     .setBody(FileReader.readStringFromFile("magic_webapi_cards_response.json"))
+                    .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
             }
         }
 
+        // check that the text is the default one
+        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 100))
+
+        // click on the button
+        onView(withId(R.id.api_cards)).perform(waitForText(R.string.api_cards, 100))
         onView(withId(R.id.api_cards)).perform(click())
+
+        // check that the text change to "waiting results" after the click
+        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_waiting_results, 200))
+        onView(withId(R.id.api_results)).check(matches(withText(R.string.api_waiting_results)))
+
+        // wait for the response - allowed because we manually set the delay on the mock response
+        onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 300))
+
+        // check that the text change to the response
         onView(withId(R.id.api_results)).check(matches(withSubstring("DataCard(name='Ancestor's Chosen', manaCost='{5}{W}{W}'")))
         onView(withId(R.id.api_results)).check(matches(withSubstring("DataCard(name='Angel of Mercy', manaCost='{4}{W}', colors=W")))
         onView(withId(R.id.api_results)).check(matches(withSubstring("DataCard(name='Angelic Blessing', manaCost='{2}{W}', colors=W")))
@@ -100,10 +101,25 @@ class WebApiFragmentUITest {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
                     .setBody(FileReader.readStringFromFile("magic_webapi_sets_response.json"))
+                    .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
             }
         }
 
+        // check that the text is the default one
+        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 100))
+
+        // click on the button
+        onView(withId(R.id.api_sets)).perform(waitForText(R.string.api_sets, 100))
         onView(withId(R.id.api_sets)).perform(click())
+
+        // check that the text change to "waiting results" after the click
+        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_waiting_results, 200))
+        onView(withId(R.id.api_results)).check(matches(withText(R.string.api_waiting_results)))
+
+        // wait for the response - allowed because we manually set the delay on the mock response
+        onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 300))
+
+        // check that the text change to the response
         onView(withId(R.id.api_results)).check(matches(withSubstring("DataSet(code='2ED', name='Unlimited Edition', type='core', releaseDate=1993-12-01")))
         onView(withId(R.id.api_results)).check(matches(withSubstring("DataSet(code='2X2', name='Double Masters 2022', type='masters', releaseDate=2022-07-08")))
         onView(withId(R.id.api_results)).check(matches(withSubstring("DataSet(code='2XM', name='Double Masters', type='masters', releaseDate=2020-08-07")))
