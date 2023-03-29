@@ -4,17 +4,12 @@
     <string name="hello">Hello</string>
     <string name="save_name_button">Save name</string>
     <string name="enter_your_name">Enter your name:</string>
-    <string name="filter_option_title">Filter options</string>
     <string name="filter">Filter</string>
     <string name="card_name">Card name</string>
     <string name="cmc">Converted mana cost</string>
     <string name="layout_name">Layout</string>
-    <string name="card_type">Card type</string>
-    <string name="title_activity_drawer">Drawer</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title"></string>
-    <string name="nav_header_subtitle"></string>
+    <string name="nav_header_title" />
+    <string name="nav_header_subtitle" />
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
