@@ -42,6 +42,9 @@ class WebApiFragmentUITest {
         )
         IdlingRegistry.getInstance().register(okHttp3IdlingResource)
         mockWebServer.start(8080)
+
+        // setup the api to use the mock webserver
+        WebApi.magicUrl = "http://127.0.0.1:8080"
     }
 
     @After
@@ -64,9 +67,6 @@ class WebApiFragmentUITest {
 
     @Test
     fun test_clickOnCardsButtonWithMockWebServer() {
-        // setup the api to use the mock webserver
-        WebApi.magicUrl = "http://127.0.0.1:8080"
-
         // setup the mock webserver to return a delayed response
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
@@ -98,9 +98,6 @@ class WebApiFragmentUITest {
 
     @Test
     fun test_clickOnSetsButtonWithMockWebServer() {
-        // setup the api to use the mock webserver
-        WebApi.magicUrl = "http://127.0.0.1:8080"
-
         // setup the mock webserver to return a delayed response
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {

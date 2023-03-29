@@ -8,6 +8,7 @@ import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.FileReader
 import com.github.sdp.tarjetakuna.utils.OkHttp3IdlingResource
 import com.github.sdp.tarjetakuna.utils.OkHttpProvider
+import com.github.sdp.tarjetakuna.utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -93,12 +94,8 @@ class WebApiViewModelTest {
             InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.api_waiting_results)
 
         // wait for the response
-        while (apiResults.value == null) {
-            Thread.sleep(100)
-        }
-        while (apiResults.value == waitResult) {
-            Thread.sleep(100)
-        }
+        Utils.waitWhileTrue(100, 10) { apiResults.value == null }
+        Utils.waitWhileTrue(100, 10) { apiResults.value == waitResult }
 
         // check that the text change to the response
         assertThat(
@@ -141,12 +138,8 @@ class WebApiViewModelTest {
             InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.api_waiting_results)
 
         // wait for the response
-        while (apiResults.value == null) {
-            Thread.sleep(100)
-        }
-        while (apiResults.value == waitResult) {
-            Thread.sleep(100)
-        }
+        Utils.waitWhileTrue(100, 10) { apiResults.value == null }
+        Utils.waitWhileTrue(100, 10) { apiResults.value == waitResult }
 
         // check that the text change to the response
         assertThat(
@@ -194,9 +187,7 @@ class WebApiViewModelTest {
         viewModel.getCards()
 
         // wait for the response
-        while (apiError.value == null) {
-            Thread.sleep(100)
-        }
+        Utils.waitWhileTrue(100, 10) { apiError.value == null }
 
         // check that the text change to the response
         assertThat(
@@ -227,9 +218,7 @@ class WebApiViewModelTest {
         viewModel.getSets()
 
         // wait for the response
-        while (apiError.value == null) {
-            Thread.sleep(100)
-        }
+        Utils.waitWhileTrue(100, 10) { apiError.value == null }
 
         // check that the text change to the response
         assertThat(
@@ -253,9 +242,7 @@ class WebApiViewModelTest {
         viewModel.getCards()
 
         // wait for the response
-        while (apiError.value == null) {
-            Thread.sleep(100)
-        }
+        Utils.waitWhileTrue(100, 10) { apiError.value == null }
 
         // check that the text change to the response
         assertThat(
@@ -279,9 +266,7 @@ class WebApiViewModelTest {
         viewModel.getSets()
 
         // wait for the response
-        while (apiError.value == null) {
-            Thread.sleep(100)
-        }
+        Utils.waitWhileTrue(100, 10) { apiError.value == null }
 
         // check that the text change to the response
         assertThat(
