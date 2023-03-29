@@ -2,6 +2,7 @@
     <string name="app_name">Tarjetakuna</string>
     <string name="demo_button">Demo button: fragment switch </string>
     <string name="hello">Hello</string>
+    <string name="filter_option_title">Filter options</string>
     <string name="save_name_button">Save name</string>
     <string name="enter_your_name">Enter your name:</string>
     <string name="filter">Filter</string>
@@ -50,6 +51,10 @@
     <string name="get_card_button">Get Card</string>
     <string name="set_card_button">Add Card</string>
     <string name="manage_collection_button">Manage Collection</string>
+    <string name="save_button_text">Save</string>
+    <string name="description_entry_hint">Enter a description here</string>
+    <string name="name_entry_hint">Enter your name</string>
+    <string name="profile_picture_content_description">Profile picture</string>
 
     <string name="menu_single_card">Card</string>
     <string name="image_of_the_card">Image of the card</string>
