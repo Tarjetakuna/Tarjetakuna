@@ -104,6 +104,10 @@ dependencies {
     implementation 'com.google.gms:google-services:4.3.15'
 
     implementation 'io.magicthegathering:kotlinsdk:1.0.4'
+
+    // Library to read and write Excel files
+    implementation 'org.apache.poi:poi:5.2.2'
+    implementation 'org.apache.poi:poi-ooxml:5.2.2'
 }
 
 tasks.withType(Test) {
