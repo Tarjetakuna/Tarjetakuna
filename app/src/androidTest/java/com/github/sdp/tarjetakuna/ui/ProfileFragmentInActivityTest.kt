@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna.ui
 
+import android.content.Context
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -11,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.Before
@@ -35,6 +37,9 @@ class ProfileFragmentInActivityTest {
         activityRule.close()
     }
 
+    /**
+     * Test that the profile fragment is displayed when the profile icon is clicked
+     */
     @Test
     fun navigatingToProfileFragment() {
         // Click on the profile icon in the navigation header
@@ -46,5 +51,29 @@ class ProfileFragmentInActivityTest {
         } else {
             onView(withId(R.id.profile_picture)).check(matches(isDisplayed()))
         }
+    }
+
+    /**
+     * Test that the user's name and description in the navigation header are updated when the
+     * shared preferences are updated
+     */
+    @Test
+    fun sharedPreferencesAreUpdated() {
+        val user_name = "Jane"
+        val user_description = "I am a collector of rare cards"
+        activityRule.onActivity { activity ->
+            val sharedPref = activity.getSharedPreferences(
+                SharedPreferencesKeys.shared_pref_name,
+                Context.MODE_PRIVATE
+            )
+
+            with(sharedPref.edit()) {
+                putString(SharedPreferencesKeys.user_name, user_name)
+                putString(SharedPreferencesKeys.user_description, user_description)
+                apply()
+            }
+        }
+        onView(withId(R.id.navHeaderNameText)).check(matches(withText(user_name)))
+        onView(withId(R.id.navHeaderDescriptionText)).check(matches(withText(user_description)))
     }
 }
