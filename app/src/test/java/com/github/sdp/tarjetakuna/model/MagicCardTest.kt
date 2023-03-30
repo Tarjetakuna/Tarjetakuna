@@ -4,7 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
-class APIMagicCardTest {
+class MagicCardTest {
 
     private val validName = "Angel of Mercy"
     private val validText = "Flying"
