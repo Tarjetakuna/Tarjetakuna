@@ -38,8 +38,8 @@ class SingleCardFragment : Fragment() {
         viewModel.checkUserConnected()
         viewModel.isConnected.observe(viewLifecycleOwner) {
             displayButton(it)
-//            viewModel.checkCardInCollection()
-//            viewModel.checkCardInWanted()
+            viewModel.checkCardInCollection()
+            viewModel.checkCardInWanted()
         }
 
         binding.singleCardButtonAddToDeck.setOnClickListener {
