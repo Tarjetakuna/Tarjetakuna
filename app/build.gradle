@@ -45,6 +45,19 @@ android {
     buildFeatures {
         viewBinding true
     }
+    sourceSets {
+        main {
+            assets {
+                srcDirs 'src\\main\\assets'
+            }
+        }
+
+        test {
+            resources {
+                srcDirs 'src\\test\\assets'
+            }
+        }
+    }
 }
 
 dependencies {

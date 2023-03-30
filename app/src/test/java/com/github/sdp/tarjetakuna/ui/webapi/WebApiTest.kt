@@ -22,4 +22,18 @@ class WebApiTest {
         assert(api.getSets().isExecuted.not())
         assert(api.getCards().isExecuted.not())
     }
+
+    @Test
+    fun test_getCards(){
+        val fCards = WebApi.getCards()
+        fCards.whenComplete { cards, throwable ->
+            assert(cards != null)
+            assert(throwable == null)
+            assert(cards.cards.isNotEmpty())
+            assert(cards.cards.size == 5)
+            assert(cards.cards[0].name.isNotEmpty())
+            assert(cards.cards[0].name == "Ancestor's Chosen")
+            assert(cards.cards[0].imageUrl.isNotEmpty())
+        }.get()
+    }
 }

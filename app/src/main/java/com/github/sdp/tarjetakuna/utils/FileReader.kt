@@ -1,7 +1,11 @@
 package com.github.sdp.tarjetakuna.utils
 
 
+import android.content.Context
+import android.content.res.AssetManager.AssetInputStream
+import android.content.res.loader.AssetsProvider
 import androidx.test.platform.app.InstrumentationRegistry
+import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
 
@@ -22,5 +26,14 @@ object FileReader {
         } catch (e: IOException) {
             throw e
         }
+    }
+
+    fun readFile(context: Context, fileName: String): String {
+        val builder = StringBuilder()
+        val reader = InputStreamReader(context.assets.open(fileName), "UTF-8")
+        reader.readLines().forEach {
+            builder.append(it)
+        }
+        return builder.toString()
     }
 }
