@@ -3,6 +3,7 @@ package com.github.sdp.tarjetakuna.database
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
@@ -20,14 +21,14 @@ class UserCardsViewModel : ViewModel() {
 
     private var retrievedCardJson = ""
 
-    private val _getMessage = MutableLiveData<String>()
-    val getMessage: LiveData<String> = _getMessage
+    private val _getMessage = MutableLiveData<Pair<Int, String>>()
+    val getMessage: LiveData<Pair<Int, String>> = _getMessage
 
-    private val _setMessage = MutableLiveData<String>()
-    val setMessage: LiveData<String> = _setMessage
+    private val _setMessage = MutableLiveData<Pair<Int, String>>()
+    val setMessage: LiveData<Pair<Int, String>> = _setMessage
 
-    private val _removeMessage = MutableLiveData<String>()
-    val removeMessage: LiveData<String> = _removeMessage
+    private val _removeMessage = MutableLiveData<Pair<Int, String>>()
+    val removeMessage: LiveData<Pair<Int, String>> = _removeMessage
 
 
     //TODO Remove these hardcoded values and replace them with the web API callss
@@ -37,8 +38,6 @@ class UserCardsViewModel : ViewModel() {
         MagicSet("MT15", "Magic 2015"), 56,
         "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card"
     )
-
-    private val card1UID = card1.set.code + card1.number
 
     val card2 = MagicCard(
         "Meandering Towershell", "Islandwalk",
@@ -53,7 +52,7 @@ class UserCardsViewModel : ViewModel() {
      */
     fun onSetButtonClick(card: MagicCard) {
         usc.addCardToCollection(card)
-        _setMessage.value = "${card.name} was successfully added to your collection"
+        _setMessage.value = Pair(R.string.text_add_success, card.name)
 
     }
 
@@ -62,7 +61,7 @@ class UserCardsViewModel : ViewModel() {
      */
     fun onRemoveButtonClick(card: MagicCard) {
         usc.removeCardFromCollection(card)
-        _removeMessage.value = "${card.name} was successfully removed from your collection"
+        _removeMessage.value = Pair(R.string.text_remove_success, card.name)
     }
 
     /**
@@ -73,9 +72,9 @@ class UserCardsViewModel : ViewModel() {
         data
             .thenAccept {
                 retrievedCardJson = it.value.toString()
-                putGetMessage("Card ${it.key} was successfully retrieved from your collection:\n ${it.value}")
+                putGetMessage(R.string.text_get_success, it.key.toString())
             }.exceptionally { e ->
-                putGetMessage("Failed to retrieve card : ${e.message}")
+                putGetMessage(R.string.text_get_fail, e.message.toString())
                 null
             }
     }
@@ -83,7 +82,7 @@ class UserCardsViewModel : ViewModel() {
     /**
      * puts the message to be displayed in the UI, (doesn't work otherwise)
      */
-    private fun putGetMessage(msg: String) {
-        _getMessage.value = msg
+    private fun putGetMessage(rid: Int, msg: String) {
+        _getMessage.value = Pair(rid, msg)
     }
 }
