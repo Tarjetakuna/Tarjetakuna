@@ -16,6 +16,11 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class UserCardsFragmentTest {
+
+    @Test
+    fun addition_isCorrect() {
+        assertEquals(4, 2 + 2)
+    }
 //    @get:Rule
 //    public val activityRule = ActivityScenarioRule(MainActivity::class.java)
 //
