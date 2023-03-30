@@ -3,6 +3,7 @@ package com.github.sdp.tarjetakuna.database
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
@@ -18,15 +19,17 @@ import java.util.concurrent.CompletableFuture
  */
 class UserCardsViewModel : ViewModel() {
 
-    private val db = Firebase.database.reference
-    private val user = Firebase.auth.currentUser
-    private val userCardCollection = db.child(user!!.uid)
+    private var retrievedCardJson = ""
 
-    private val _getMessage = MutableLiveData<String>()
-    val getMessage: LiveData<String> = _getMessage
+    private val _getMessage = MutableLiveData<Pair<Int, String>>()
+    val getMessage: LiveData<Pair<Int, String>> = _getMessage
 
-    private val _setMessage = MutableLiveData<String>()
-    val setMessage: LiveData<String> = _setMessage
+    private val _setMessage = MutableLiveData<Pair<Int, String>>()
+    val setMessage: LiveData<Pair<Int, String>> = _setMessage
+
+    private val _removeMessage = MutableLiveData<Pair<Int, String>>()
+    val removeMessage: LiveData<Pair<Int, String>> = _removeMessage
+
 
     //TODO Remove these hardcoded values and replace them with the web API callss
     val card1 = MagicCard(
@@ -36,8 +39,6 @@ class UserCardsViewModel : ViewModel() {
         "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card"
     )
 
-    private val card1UID = card1.set.code + card1.number
-
     val card2 = MagicCard(
         "Meandering Towershell", "Islandwalk",
         MagicLayout.DoubleFaced, 5, "{3}{G}{G}",
@@ -46,33 +47,42 @@ class UserCardsViewModel : ViewModel() {
     )
     val usc = UserCardsRTDB()
 
-    fun onCardButtonClick() {
-        //this code should be in a separate function in UserCardsRTDB so it can be separated from this activitiy's UI
+    /**
+     * Add the card to the user's collection
+     */
+    fun onSetButtonClick(card: MagicCard) {
+        usc.addCardToCollection(card)
+        _setMessage.value = Pair(R.string.text_add_success, card.name)
 
-        val cardUID = card1UID
-        val future = CompletableFuture<DataSnapshot>()
-        userCardCollection.child(cardUID).get().addOnSuccessListener {
-            if (it.value == null) {
-                _getMessage.value = "Card $cardUID was not found in your collection"
-                future.completeExceptionally(NoSuchFieldException())
-            } else {
-                future.complete(it)
+    }
+
+    /**
+     * Remove the card from the user's collection
+     */
+    fun onRemoveButtonClick(card: MagicCard) {
+        usc.removeCardFromCollection(card)
+        _removeMessage.value = Pair(R.string.text_remove_success, card.name)
+    }
+
+    /**
+     * Get the card from the user's collection if it exists
+     */
+    fun onGetButtonClick(card: MagicCard) {
+        val data = usc.getCardFromCollection(card)
+        data
+            .thenAccept {
+                retrievedCardJson = it.value.toString()
+                putGetMessage(R.string.text_get_success, it.key.toString())
+            }.exceptionally { e ->
+                putGetMessage(R.string.text_get_fail, e.message.toString())
+                null
             }
-        }.addOnFailureListener {
-            _getMessage.value = "Error getting $cardUID"
-            future.completeExceptionally(it)
-        }
-        //the actual value gotten from the database
-        future.thenAccept {
-            //val card = usc.transformData(it) //turn the retrieved data into a MagicCard object
-            _setMessage.value = "Card $cardUID was succesfully retrieved from your collection"
-        }
     }
 
-    fun addCardToCollection(card: MagicCard) {
-        val msg = usc.addCardToCollection(card)
-        _setMessage.value = msg
+    /**
+     * puts the message to be displayed in the UI, (doesn't work otherwise)
+     */
+    private fun putGetMessage(rid: Int, msg: String) {
+        _getMessage.value = Pair(rid, msg)
     }
-
-
 }
