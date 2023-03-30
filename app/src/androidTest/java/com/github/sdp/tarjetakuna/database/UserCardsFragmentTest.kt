@@ -1,4 +1,5 @@
 package com.github.sdp.tarjetakuna.database
+
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.click
