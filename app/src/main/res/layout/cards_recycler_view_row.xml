@@ -37,6 +37,7 @@
                 android:layout_marginStart="30dp"
                 android:fontFamily="sans-serif"
                 android:text="@string/meandering_towershell"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/cardImageView"
                 app:layout_constraintTop_toTopOf="parent" />
 

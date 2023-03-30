@@ -55,7 +55,7 @@ class SingleCardFragment: Fragment() {
 
             //The picture from the public API has a certificate problem,
             // so we use a placeholder for now.
-            CustomGlide.loadDrawable(this, "https://cards.scryfall.io/large/front/c/f/cfa00c0e-163d-4f59-b8b9-3ee9143d27bb.jpg?1674420138") {
+            CustomGlide.loadDrawable(this, card.imageUrl) {
                 binding.singleCardImage.setImageDrawable(it)
             }
         } catch (e: Exception) {
