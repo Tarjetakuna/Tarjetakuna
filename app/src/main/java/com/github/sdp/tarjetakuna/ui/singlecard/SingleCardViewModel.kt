@@ -3,9 +3,9 @@ package com.github.sdp.tarjetakuna.ui.singlecard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.sdp.tarjetakuna.database.FbNodeName
+import com.github.sdp.tarjetakuna.database.UserCardsRTDB
 import com.github.sdp.tarjetakuna.model.MagicCard
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 class SingleCardViewModel : ViewModel() {
 
@@ -14,20 +14,74 @@ class SingleCardViewModel : ViewModel() {
     private val _isConnected = MutableLiveData<Boolean>()
     val isConnected: LiveData<Boolean> = _isConnected
 
-    private var user = Firebase.auth.currentUser
+    private val _buttonText = MutableLiveData<String>()
+    val buttonText: LiveData<String> = _buttonText
+
+    private var user = UserCardsRTDB()
 
     fun checkUserConnected() {
         //TODO : Check if the user is connected
-        user = Firebase.auth.currentUser
-        _isConnected.value = user != null
+        _isConnected.value = user.isConnected()
+    }
+
+    /**
+     * Check if the card is in the collection of the user
+     */
+    fun checkCardInCollection() {
+        if (!user.isConnected()) {
+            return
+        }
+        val data = user.getCardFromFirebase(card, FbNodeName.OWNED.name)
+        data.thenAccept {
+            _buttonText.value = "Remove from collection"
+        }.exceptionally {
+            _buttonText.value = "Add to collection"
+            null
+        }
+    }
+
+    /**
+     * Check if the card is in the wanted cards of the user
+     */
+    fun checkCardInWanted() {
+        //TODO : Check if the card is in the wanted cards of the user
+    }
+
+    /**
+     * Manage the collection of the user,
+     * add the card if it's not in the collection,
+     * remove it if it's in the collection
+     */
+    fun manageOwnedCollection() {
+        val data = user.getCardFromFirebase(card, FbNodeName.OWNED.name)
+        data.thenAccept {
+            removeCardFromFirebase(FbNodeName.OWNED.name)
+        }.exceptionally {
+            addCardToFirebase(FbNodeName.OWNED.name)
+            null
+        }
     }
 
     /**
      * Add the card to the collection of the user
      */
-    fun addCardToCollection() {
+    private fun addCardToFirebase(nodeName: String) {
+        user.addCardToFirebase(card, nodeName)
+        val data = user.getCardFromFirebase(card, nodeName)
+        data.thenAccept {
+            _buttonText.value = "Remove from collection"
+        }
+    }
 
-        //TODO : Add the card to the collection
+    /**
+     * Remove the card from the collection of the user
+     */
+    private fun removeCardFromFirebase(nodeName: String) {
+        user.removeCardFromFirebase(card, nodeName)
+        val data = user.getCardFromFirebase(card, nodeName)
+        data.thenAccept {
+            _buttonText.value = "Add to collection"
+        }
     }
 
     /**
@@ -36,6 +90,4 @@ class SingleCardViewModel : ViewModel() {
     fun addCardToWanted() {
         //TODO : Add the card to the wanted cards
     }
-
-
 }

@@ -38,11 +38,16 @@ class SingleCardFragment : Fragment() {
         viewModel.checkUserConnected()
         viewModel.isConnected.observe(viewLifecycleOwner) {
             displayButton(it)
+//            viewModel.checkCardInCollection()
+//            viewModel.checkCardInWanted()
         }
 
         binding.singleCardButtonAddToDeck.setOnClickListener {
-            viewModel.addCardToCollection()
-            //TODO : Add the card to the deck
+            viewModel.manageOwnedCollection()
+        }
+
+        viewModel.buttonText.observe(viewLifecycleOwner) {
+            binding.singleCardButtonAddToDeck.text = it
         }
 
         binding.singleCardButtonAddToWanted.setOnClickListener {
