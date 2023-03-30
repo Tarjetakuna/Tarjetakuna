@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.github.sdp.tarjetakuna.utils.Utils
-import com.google.firebase.auth.FirebaseAuth
 
 
 /**
@@ -59,7 +58,7 @@ class AuthenticationViewModel : ViewModel() {
         val response = result.idpResponse
         if (result.resultCode == AppCompatActivity.RESULT_OK) {
             // Successfully signed in
-            val user = FirebaseAuth.getInstance().currentUser
+            //val user = FirebaseAuth.getInstance().currentUser
             // The observer will be notified and launch the SignOutFragment
             _changeToSignOutFragment.value = true
         } else {
