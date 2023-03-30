@@ -12,11 +12,11 @@ import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.util.CellUtil
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -75,7 +75,7 @@ object ExportCollection {
      */
     private fun writeDataToExcel(context: Context, excelFile: File, collection: List<MagicCard>) {
         try {
-            val workbook: Workbook = HSSFWorkbook()
+            val workbook: Workbook = XSSFWorkbook()
             val sheet: Sheet = workbook.createSheet("NewSheet")
 
             // Create header row
@@ -117,7 +117,7 @@ object ExportCollection {
             FileProvider.getUriForFile(context, fileProviderAuthority, excelFile)
 
         val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "application/vnd.ms-excel"
+        intent.type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         intent.putExtra(Intent.EXTRA_STREAM, uri)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
