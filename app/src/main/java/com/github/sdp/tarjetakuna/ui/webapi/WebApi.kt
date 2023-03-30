@@ -1,10 +1,10 @@
 package com.github.sdp.tarjetakuna.ui.webapi
 
-import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApi
-import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicCards
-import com.github.sdp.tarjetakuna.utils.ResourceHelper.ResourceHelper
-import com.google.gson.Gson
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.*
 import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.CompletableFuture
@@ -22,14 +22,9 @@ open class WebApi {
     open var magicUrl = "https://api.magicthegathering.io/v1/"
 
     /**
-     * readTimeout for the API
+     * readTimeout for the API (in seconds), default is 30 as some query take a long time
      */
-    private var readTimeout = 10L
-
-    /**
-     * writeTimeout for the API
-     */
-    private var writeTimeout = 10L
+    private var readTimeout = 30L
 
     /**
      * Magic API
@@ -43,7 +38,7 @@ open class WebApi {
     /**
      * Get the Magic API
      */
-    fun getMagicApi(): MagicApi {
+    private fun getMagicApi(): MagicApi {
         if (_magicApi == null) {
             _magicApi = buildMagicApi()
         }
@@ -54,11 +49,10 @@ open class WebApi {
      * Build the Magic API
      */
     private fun buildMagicApi(): MagicApi {
-
         val okHttpClient: OkHttpClient = OkHttpClient.Builder()
             .connectTimeout(1, TimeUnit.MINUTES)
             .readTimeout(readTimeout, TimeUnit.SECONDS)
-            .writeTimeout(writeTimeout, TimeUnit.SECONDS)
+            .writeTimeout(10L, TimeUnit.SECONDS)
             .build()
 
         // building request to API to get bored information
@@ -79,41 +73,94 @@ open class WebApi {
     }
 
     /**
-     * Set the write timeout, and invalidate the api
-     */
-    fun setWriteTimeout(writeTimeout: Long) {
-        this.writeTimeout = writeTimeout
-        _magicApi = null
-    }
-
-    // TODO : uncomment this when the API is available
-//    fun getCards(): Future<MagicCards> {
-//        val response = getMagicApi().getCards().execute()
-//            if (response.isSuccessful) {
-//                return@Future response.body() ?: MagicCards(emptyList())
-//            }
-//            return@Future MagicCards(emptyList())
-//    }
-
-
-    /**
-     * Get the cards from a file in resources - use to mock api response for now
-     * TODO : remove this when the API is available
-     */
-    private fun getCardsFromFile(): MagicCards {
-        val cardsJSON = ResourceHelper.loadString("magic_webapi_cards_response.json")
-        return Gson().fromJson(cardsJSON, MagicCards::class.java)
-    }
-
-    /**
-     * Get the cards from the webapi as a future
-     *
-     * this is a wrapper to easily expose the webapi functionality
-     * TODO : use the real API when it is available
+     * Get the cards
      */
     fun getCards(): CompletableFuture<MagicCards> {
         val promise = CompletableFuture<MagicCards>()
-        promise.complete(getCardsFromFile())
+        ApiCall(getMagicApi().getCards(), promise).enqueue()
         return promise
     }
+
+    /**
+     * Get the cards by [set] code
+     */
+    fun getCardsBySet(set: String): CompletableFuture<MagicCards> {
+        val promise = CompletableFuture<MagicCards>()
+        ApiCall(getMagicApi().getCardsBySet(set), promise).enqueue()
+        return promise
+    }
+
+    /**
+     * Get the cards by [name]
+     */
+    fun getCardsByName(name: String): CompletableFuture<MagicCards> {
+        val promise = CompletableFuture<MagicCards>()
+        ApiCall(getMagicApi().getCardsByName(name), promise).enqueue()
+        return promise
+    }
+
+    /**
+     * Get the cards by [id]
+     */
+    fun getCardById(id: String): CompletableFuture<MagicCard> {
+        val promise = CompletableFuture<MagicCard>()
+        ApiCall(getMagicApi().getCardById(id), promise).enqueue()
+        return promise
+    }
+
+    /**
+     * Get the sets
+     */
+    fun getSets(): CompletableFuture<MagicSets> {
+        val promise = CompletableFuture<MagicSets>()
+        ApiCall(getMagicApi().getSets(), promise).enqueue()
+        return promise
+    }
+
+    /**
+     * Get the set by [code]
+     */
+    fun getSetByCode(code: String): CompletableFuture<MagicSet> {
+        val promise = CompletableFuture<MagicSet>()
+        ApiCall(getMagicApi().getSetByCode(code), promise).enqueue()
+        return promise
+    }
+
+    class ApiCall<T>(private val call: Call<T>, private val promise: CompletableFuture<T>) {
+        fun enqueue() {
+            call.enqueue(object : ApiCallHandler<T>(promise) {})
+        }
+    }
+
+    open class ApiCallHandler<T>(private val promise: CompletableFuture<T>) : Callback<T> {
+        override fun onResponse(call: Call<T>, response: Response<T>) {
+            CallbackHandler<T>().handleResponse(response, promise)
+        }
+
+        override fun onFailure(call: Call<T>, t: Throwable) {
+            CallbackHandler<T>().handleFailure(t, promise)
+        }
+    }
+
+    class CallbackHandler<T> {
+        fun handleResponse(response: Response<T>, promise: CompletableFuture<T>) {
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null) {
+                    promise.complete(body)
+                } else {
+                    promise.completeExceptionally(Exception("body is null"))
+                }
+            } else {
+                val error = response.errorBody()!!.string()
+                promise.completeExceptionally(Exception(error))
+            }
+        }
+
+        fun handleFailure(t: Throwable, promise: CompletableFuture<T>) {
+            val error = t.message ?: "unknown error"
+            promise.completeExceptionally(Exception(error))
+        }
+    }
+
 }

@@ -44,9 +44,17 @@
 
     <!--    web api texts-->
     <string name="api_cards">/cards</string>
+    <string name="api_cardsBySet">/cards_By_Set</string>
+    <string name="api_cardsByName">/cards_By_Name</string>
+    <string name="api_cardName">card name</string>
+    <string name="api_cardById">/cards_By_Id</string>
+    <string name="api_cardId">card id</string>
+    <string name="api_setId">set id</string>
     <string name="api_sets">/sets</string>
+    <string name="api_setByCode">/set_By_Code</string>
     <string name="api_default_results">no results yet</string>
     <string name="api_waiting_results">waiting for results</string>
+
 
     <string name="meandering_towershell">Meandering Towershell</string>
     <string name="mt15">MT15</string>
