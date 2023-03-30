@@ -18,15 +18,17 @@ import java.util.concurrent.CompletableFuture
  */
 class UserCardsViewModel : ViewModel() {
 
-    private val db = Firebase.database.reference
-    private val user = Firebase.auth.currentUser
-    private val userCardCollection = db.child(user!!.uid)
+    private var retrievedCardJson = ""
 
     private val _getMessage = MutableLiveData<String>()
     val getMessage: LiveData<String> = _getMessage
 
     private val _setMessage = MutableLiveData<String>()
     val setMessage: LiveData<String> = _setMessage
+
+    private val _removeMessage = MutableLiveData<String>()
+    val removeMessage: LiveData<String> = _removeMessage
+
 
     //TODO Remove these hardcoded values and replace them with the web API callss
     val card1 = MagicCard(
@@ -46,33 +48,38 @@ class UserCardsViewModel : ViewModel() {
     )
     val usc = UserCardsRTDB()
 
-    fun onCardButtonClick() {
-        //this code should be in a separate function in UserCardsRTDB so it can be separated from this activitiy's UI
+    /**
+     * Add the card to the user's collection
+     */
+    fun onSetButtonClick(card: MagicCard) {
+        usc.addCardToCollection(card)
+        _setMessage.value = "${card.name} was successfully added to your collection"
+    }
 
-        val cardUID = card1UID
-        val future = CompletableFuture<DataSnapshot>()
-        userCardCollection.child(cardUID).get().addOnSuccessListener {
-            if (it.value == null) {
-                _getMessage.value = "Card $cardUID was not found in your collection"
-                future.completeExceptionally(NoSuchFieldException())
-            } else {
-                future.complete(it)
+    fun onRemoveButtonClick(card:MagicCard){
+        usc.removeCardFromCollection(card)
+        _removeMessage.value = "${card.name} was successfully removed from your collection"
+    }
+
+    /**
+     * Get the card from the user's collection if it exists
+     */
+    fun onGetButtonClick(card: MagicCard) {
+        val data = usc.getCardFromCollection(card1)
+        data
+            .thenAccept {
+                retrievedCardJson = it.value.toString()
+                putGetMessage("Card ${it.key} was successfully retrieved from your collection:\n ${it.value}")
+        }.exceptionally{ e ->
+                putGetMessage("Failed to retrieve card : ${e.message}")
+                null
             }
-        }.addOnFailureListener {
-            _getMessage.value = "Error getting $cardUID"
-            future.completeExceptionally(it)
-        }
-        //the actual value gotten from the database
-        future.thenAccept {
-            val card = usc.transformData(it) //turn the retrieved data into a MagicCard object
-            _setMessage.value = "Card $cardUID was succesfully retrieved from your collection"
-        }
     }
 
-    fun addCardToCollection(card: MagicCard) {
-        val msg = usc.addCardToCollection(card)
-        _setMessage.value = msg
+    /**
+     * puts the message to be displayed in the UI, (doesn't work otherwise)
+     */
+    private fun putGetMessage(msg: String) {
+        _getMessage.value = msg
     }
-
-
 }

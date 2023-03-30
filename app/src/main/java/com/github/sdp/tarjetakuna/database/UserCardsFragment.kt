@@ -33,7 +33,10 @@ class UserCardsFragment : Fragment() {
         setMessage.text = ""
         val getMessage: TextView = binding.textGetCard
         getMessage.text = ""
+        val removeMessage: TextView = binding.textRemoveCard
+        removeMessage.text = ""
 
+        //go back to home fragment
         val backButton = binding.buttonBackHome2
         backButton.setOnClickListener {
             val mainActivity = activity as MainActivity
@@ -44,27 +47,36 @@ class UserCardsFragment : Fragment() {
         val setButton = binding.setCardButton
         setButton.setOnClickListener {
             //TODO replace this with a function call
-            //this is for now hardcoded but will be replaced by a function call
-            viewModel.addCardToCollection(viewModel.card2)
+            viewModel.onSetButtonClick(viewModel.card1)
         }
-
+        // Retrieving card from the user's collection (database)
+        val getButton = binding.getCardButton
+        getButton.setOnClickListener {
+            //TODO replace this with a function call
+            viewModel.onGetButtonClick(viewModel.card1)
+        }
+        //Removing card from user's collection (database)
+        val removeButton = binding.removeCardButton
+        removeButton.setOnClickListener {
+            //TODO replace this with a function call
+            viewModel.onRemoveButtonClick(viewModel.card1)
+        }
+        // observe the message from the view model and display it in the UI when it changes
         viewModel.setMessage.observe(viewLifecycleOwner) {
             if (it != null) {
                 putSetMessage(it)
             }
         }
-
-        // observe the message from the view model and display it in the UI when it changes
         viewModel.getMessage.observe(viewLifecycleOwner) {
             if (it != null) {
                 putGetMessage(it)
             }
         }
-        val getButton = binding.getCardButton
-        getButton.setOnClickListener {
-            viewModel.onCardButtonClick()
+        viewModel.removeMessage.observe(viewLifecycleOwner) {
+            if (it != null) {
+                putRemoveMessage(it)
+            }
         }
-
         return root
     }
 
@@ -86,4 +98,12 @@ class UserCardsFragment : Fragment() {
         setMessage.text = msg
     }
 
+    /**
+     * put the message in the "removeMessage" textview.
+     * @param msg the message to be displayed
+     */
+    private fun putRemoveMessage(msg: String) {
+        val removeMessage: TextView = binding.textRemoveCard
+        removeMessage.text = msg
+    }
 }
