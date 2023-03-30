@@ -3,6 +3,8 @@ package com.github.sdp.tarjetakuna.ui.singlecard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.sdp.tarjetakuna.database.FBCardPossesion
+import com.github.sdp.tarjetakuna.database.FBMagicCard
 import com.github.sdp.tarjetakuna.database.UserCardsRTDB
 import com.github.sdp.tarjetakuna.model.MagicCard
 
@@ -30,9 +32,10 @@ class SingleCardViewModel : ViewModel() {
         if (!user.isConnected()) {
             return
         }
-        val data = user.getCardFromCollection(card)
+        val data = user.getCardFromCollection(FBMagicCard(card, FBCardPossesion.NONE))
         data.thenAccept {
-            _buttonAddText.value = false
+            val fbCard = it.getValue(FBMagicCard::class.java)
+            _buttonAddText.value = fbCard?.possession != FBCardPossesion.OWNED
         }.exceptionally {
             _buttonAddText.value = true
             null
@@ -52,7 +55,7 @@ class SingleCardViewModel : ViewModel() {
      * remove it if it's in the collection
      */
     fun manageOwnedCollection() {
-        val data = user.getCardFromCollection(card)
+        val data = user.getCardFromCollection(FBMagicCard(card, FBCardPossesion.NONE))
         data.thenAccept {
             removeCardFromFirebase()
         }.exceptionally {
@@ -65,8 +68,9 @@ class SingleCardViewModel : ViewModel() {
      * Add the card to the collection of the user
      */
     private fun addCardToFirebase() {
-        user.addCardToCollection(card)
-        val data = user.getCardFromCollection(card)
+        val fbCard = FBMagicCard(card, FBCardPossesion.OWNED)
+        user.addCardToCollection(fbCard)
+        val data = user.getCardFromCollection(fbCard)
         data.thenAccept {
             _buttonAddText.value = false
         }
@@ -76,8 +80,9 @@ class SingleCardViewModel : ViewModel() {
      * Remove the card from the collection of the user
      */
     private fun removeCardFromFirebase() {
-        user.removeCardFromCollection(card)
-        val data = user.getCardFromCollection(card)
+        val fbCard = FBMagicCard(card, FBCardPossesion.NONE)
+        user.removeCardFromCollection(fbCard)
+        val data = user.getCardFromCollection(fbCard)
         data.exceptionally {
             _buttonAddText.value = true
             null

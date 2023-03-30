@@ -1,6 +1,5 @@
 package com.github.sdp.tarjetakuna.database
 
-import com.github.sdp.tarjetakuna.model.MagicCard
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ktx.database
@@ -29,25 +28,26 @@ class UserCardsRTDB {
     /**
      * Adds a card to the user's collection.
      */
-    fun addCardToCollection(card: MagicCard) {
-        val cardUID = card.set.code + card.number
-        val data = Gson().toJson(card)
+    fun addCardToCollection(fbCard: FBMagicCard) {
+        val cardUID = fbCard.card.set.code + fbCard.card.number
+        val data = Gson().toJson(fbCard)
         userCardCollection.child(cardUID).setValue(data)
     }
 
     /**
      * Removes a card from the user's collection.
      */
-    fun removeCardFromCollection(card: MagicCard) {
-        val cardUID = card.set.code + card.number
+    fun removeCardFromCollection(fbCard: FBMagicCard) {
+        val cardUID = fbCard.card.set.code + fbCard.card.number
         userCardCollection.child(cardUID).removeValue()
     }
 
     /**
      * Retrieves a card asynchronously from the database
+     * The card is identified by only its set code and its number
      */
-    fun getCardFromCollection(card: MagicCard): CompletableFuture<DataSnapshot> {
-        val cardUID = card.set.code + card.number
+    fun getCardFromCollection(fbCard: FBMagicCard): CompletableFuture<DataSnapshot> {
+        val cardUID = fbCard.card.set.code + fbCard.card.number
         val future = CompletableFuture<DataSnapshot>()
         userCardCollection.child(cardUID).get().addOnSuccessListener {
             if (it.value == null) {
