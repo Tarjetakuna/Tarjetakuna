@@ -55,19 +55,19 @@ class BrowserFragment : Fragment() {
             "3",
             "Steve Prescott"
         )
-        val adapter = try {
-            if (UserCardsRTDB().getCardFromCollection(card).isCompletedExceptionally) {
-                DisplayCardsAdapter(browserViewModel.initialCards)
-            } else {
-                DisplayCardsAdapter(ArrayList())
-            }
-        } catch (e: Exception) {
-            DisplayCardsAdapter(ArrayList())
+        var cards: ArrayList<MagicCard> = ArrayList()
+        var adapter = DisplayCardsAdapter(ArrayList())
+        if (Demo.canBeShown) {
+            cards = browserViewModel.initialCards
+            adapter = DisplayCardsAdapter(browserViewModel.initialCards)
+        } else {
+            cards = ArrayList()
+            adapter = DisplayCardsAdapter(ArrayList())
         }
 
         binding.browserListCards.adapter = adapter
 
-        initSearchBar(browserViewModel)
+        initSearchBar(cards)
         initOnCardClickListener(adapter)
 
         return root
@@ -76,7 +76,7 @@ class BrowserFragment : Fragment() {
     /**
      * Initialize the search bar
      */
-    private fun initSearchBar(browserViewModel: BrowserViewModel) {
+    private fun initSearchBar(cards: ArrayList<MagicCard>) {
         binding.browserSearchbar.isIconified = false
         binding.browserSearchbar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -85,7 +85,7 @@ class BrowserFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val adapter = DisplayCardsAdapter(
-                    browserViewModel.initialCards.filter { card ->
+                    cards.filter { card ->
                         card.name.contains(newText!!, true)
                     } as ArrayList<MagicCard>
                 )
@@ -106,7 +106,6 @@ class BrowserFragment : Fragment() {
             true
         }
     }
-
     /**
      * Initialize the listener for the click on a card-item of the recycler view
      */

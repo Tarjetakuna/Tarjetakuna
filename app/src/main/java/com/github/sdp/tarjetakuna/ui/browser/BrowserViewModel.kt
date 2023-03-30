@@ -53,7 +53,7 @@ class BrowserViewModel : ViewModel() {
         )
         cardsArray.add(
             MagicCard(
-                "Moutain",
+                "Mountain",
                 "<-: Add {R} to your mana pool.",
                 MagicLayout.Normal,
                 0,

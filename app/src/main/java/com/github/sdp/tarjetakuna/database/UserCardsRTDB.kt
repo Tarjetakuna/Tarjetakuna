@@ -3,6 +3,7 @@ package com.github.sdp.tarjetakuna.database
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
+import com.github.sdp.tarjetakuna.ui.browser.Demo
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ktx.database
@@ -27,6 +28,7 @@ class UserCardsRTDB {
         val cardUID = card.set.code + card.number
         val data = Gson().toJson(card)
         userCardCollection.child(cardUID).setValue(data)
+        Demo.canBeShown = true
     }
 
     /**
@@ -35,6 +37,7 @@ class UserCardsRTDB {
     fun removeCardFromCollection(card: MagicCard) {
         val cardUID = card.set.code + card.number
         userCardCollection.child(cardUID).removeValue()
+        Demo.canBeShown = false
     }
 
     /**
