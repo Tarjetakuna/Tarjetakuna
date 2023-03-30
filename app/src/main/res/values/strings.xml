@@ -74,6 +74,6 @@
     <string name="single_card_showing_mana_cost">Mana cost : %1$s</string>
     <string name="single_card_showing_add_to_collection">add to Collection</string>
     <string name="single_card_showing_add_to_wanted">add to wanted cards</string>
-    <string name="single_card_ask_connection">Please connect if you want to add or mark the card as wanted</string>
+    <string name="single_card_ask_connection">Please connect if you want to manage the card</string>
 
 </resources>
