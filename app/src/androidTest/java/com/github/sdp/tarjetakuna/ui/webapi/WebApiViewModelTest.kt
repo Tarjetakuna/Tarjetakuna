@@ -9,6 +9,7 @@ import com.github.sdp.tarjetakuna.utils.FileReader
 import com.github.sdp.tarjetakuna.utils.OkHttp3IdlingResource
 import com.github.sdp.tarjetakuna.utils.OkHttpProvider
 import com.github.sdp.tarjetakuna.utils.Utils
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -66,6 +67,7 @@ class WebApiViewModelTest {
         assert(viewModel.apiError.value == null)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @Test
     fun test_getCards_success() {
         // check initial values
@@ -112,6 +114,7 @@ class WebApiViewModelTest {
         )
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @Test
     fun test_getSets_success() {
         val apiResults = viewModel.apiResults
@@ -164,6 +167,7 @@ class WebApiViewModelTest {
         )
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @Test
     fun test_getCards_failure() {
         val apiError = viewModel.apiError
@@ -195,6 +199,7 @@ class WebApiViewModelTest {
         )
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @Test
     fun test_getSets_failure() {
         val apiError = viewModel.apiError
@@ -226,6 +231,7 @@ class WebApiViewModelTest {
         )
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @Test
     fun test_getCards_noResponse() {
         val apiError = viewModel.apiError
@@ -251,6 +257,7 @@ class WebApiViewModelTest {
         )
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @Test
     fun test_getSets_noResponse() {
         val apiError = viewModel.apiError
