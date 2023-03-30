@@ -27,8 +27,10 @@ class SingleCardViewModel : ViewModel() {
 
     private var userDB = UserCardsRTDB()
 
+    /**
+     * Check if the user is connected to the app with a google account
+     */
     fun checkUserConnected() {
-        //TODO : Check if the user is connected
         _isConnected.value = userDB.isConnected()
     }
 
@@ -48,7 +50,6 @@ class SingleCardViewModel : ViewModel() {
         }
         val data = userDB.getCardFromCollection(FBMagicCard(card, FBCardPossession.NONE))
         data.thenAccept {
-            println(it)
             val fbCard = convertJsonToFBMagicCard(it.value as String)
             _buttonAddText.value = fbCard.possession != FBCardPossession.OWNED
             _buttonWantedText.value = fbCard.possession != FBCardPossession.WANTED

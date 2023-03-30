@@ -46,7 +46,7 @@ class UserCardsViewModel : ViewModel() {
      * Add the card to the user's collection
      */
     fun onSetButtonClick(card: MagicCard) {
-        usc.addCardToCollection(FBMagicCard(card, FBCardPossession.NONE))
+        usc.addCardToCollection(FBMagicCard(card, FBCardPossession.OWNED))
         _setMessage.value = Pair(R.string.text_add_success, card.name)
 
     }
