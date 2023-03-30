@@ -1,12 +1,13 @@
 package com.github.sdp.tarjetakuna.database
 
 import com.github.sdp.tarjetakuna.model.MagicCard
-import com.github.sdp.tarjetakuna.model.MagicLayout
-import com.github.sdp.tarjetakuna.model.MagicSet
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
+import java.util.concurrent.CompletableFuture
+
 
 /**
  * This class is used to manage the user's collection of cards.
@@ -20,47 +21,37 @@ class UserCardsRTDB {
     /**
      * Adds a card to the user's collection.
      */
-    fun addCardToCollection(card: MagicCard): String {
+    fun addCardToCollection(card: MagicCard) {
         val cardUID = card.set.code + card.number
-        userCardCollection.child(cardUID).child("name").setValue(card.name)
-        userCardCollection.child(cardUID).child("text").setValue(card.text)
-        userCardCollection.child(cardUID).child("layout").setValue(card.layout.toString())
-        userCardCollection.child(cardUID).child("convertedManaCost")
-            .setValue(card.convertedManaCost)
-        userCardCollection.child(cardUID).child("manaCost").setValue(card.manaCost)
-        userCardCollection.child(cardUID).child("setCode").setValue(card.set.code)
-        userCardCollection.child(cardUID).child("setName").setValue(card.set.name)
-        userCardCollection.child(cardUID).child("number").setValue(card.number)
-        userCardCollection.child(cardUID).child("imageUrl").setValue(card.imageUrl)
-
-        return "Card $cardUID successfully added to collection"
-
+        val data = Gson().toJson(card)
+        userCardCollection.child(cardUID)
+            .setValue(data) //or child(cardUID).child(owned/wanted).setValue(data)
     }
 
     /**
      * Removes a card from the user's collection.
      */
-    fun removeCardFromCollection(card: MagicCard): String {
+    fun removeCardFromCollection(card: MagicCard) {
         val cardUID = card.set.code + card.number
         userCardCollection.child(cardUID).removeValue()
-        return "Card $cardUID successfully removed from collection"
     }
 
     /**
-     * Transforms the data obtained from the database to a MagicCard object.
+     * Retrieves a card asynchronously from the database
      */
-    fun transformData(data: DataSnapshot): MagicCard {
-        val name = data.child("name").value.toString()
-        val text = data.child("text").value.toString()
-        val layout = MagicLayout.valueOf(data.child("layout").value.toString())
-        val convertedManaCost = data.child("convertedManaCost").value.toString().toInt()
-        val manaCost = data.child("manaCost").value.toString()
-        val setCode = data.child("setCode").value.toString()
-        val setName = data.child("setName").value.toString()
-        val number = data.child("number").value.toString().toInt()
-        val imageUrl = data.child("imageUrl").value.toString()
-        val set = MagicSet(setCode, setName)
-        return MagicCard(name, text, layout, convertedManaCost, manaCost, set, number, imageUrl)
+    fun getCardFromCollection(card: MagicCard): CompletableFuture<DataSnapshot> {
+        val cardUID = card.set.code + card.number
+        val future = CompletableFuture<DataSnapshot>()
+        userCardCollection.child(cardUID).get().addOnSuccessListener {
+            if (it.value == null) {
+                future.completeExceptionally(NoSuchFieldException("card $cardUID not found in collection"))
+            } else {
+                future.complete(it)
+            }
+        }.addOnFailureListener {
+            future.completeExceptionally(it)
+        }
+        return future
     }
 
     /**

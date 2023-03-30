@@ -54,8 +54,10 @@
 
     <string name="text_set_card">set</string>
     <string name="text_get_card">get</string>
+    <string name="text_remove_card">remove</string>
     <string name="get_card_button">Get Card</string>
     <string name="set_card_button">Add Card</string>
+    <string name="remove_card_button">Remove Card</string>
     <string name="manage_collection_button">Manage Collection</string>
     <string name="save_button_text">Save</string>
     <string name="description_entry_hint">Enter a description here</string>
