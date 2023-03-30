@@ -26,7 +26,7 @@ class UserCardsRTDB {
     fun addCardToCollection(card: MagicCard) {
         val cardUID = card.set.code + card.number
         val data = Gson().toJson(card)
-        userCardCollection.child(cardUID).setValue(data) //or child(cardUID).child(owned/wanted).setValue(data)
+        userCardCollection.child(cardUID).setValue(data)
     }
 
     /**
@@ -40,12 +40,12 @@ class UserCardsRTDB {
     /**
      * Retrieves a card asynchronously from the database
      */
-    fun getCardFromCollection(card: MagicCard) : CompletableFuture<DataSnapshot> {
+    fun getCardFromCollection(card: MagicCard): CompletableFuture<DataSnapshot> {
         val cardUID = card.set.code + card.number
         val future = CompletableFuture<DataSnapshot>()
         userCardCollection.child(cardUID).get().addOnSuccessListener {
             if (it.value == null) {
-                future.completeExceptionally(NoSuchFieldException("card $cardUID not found in collection"))
+                future.completeExceptionally(NoSuchFieldException("card $cardUID is not in your collection"))
             } else {
                 future.complete(it)
             }

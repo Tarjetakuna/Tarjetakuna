@@ -56,7 +56,10 @@ class UserCardsViewModel : ViewModel() {
         _setMessage.value = "${card.name} was successfully added to your collection"
     }
 
-    fun onRemoveButtonClick(card:MagicCard){
+    /**
+     * Remove the card from the user's collection
+     */
+    fun onRemoveButtonClick(card: MagicCard) {
         usc.removeCardFromCollection(card)
         _removeMessage.value = "${card.name} was successfully removed from your collection"
     }
@@ -70,7 +73,7 @@ class UserCardsViewModel : ViewModel() {
             .thenAccept {
                 retrievedCardJson = it.value.toString()
                 putGetMessage("Card ${it.key} was successfully retrieved from your collection:\n ${it.value}")
-        }.exceptionally{ e ->
+            }.exceptionally { e ->
                 putGetMessage("Failed to retrieve card : ${e.message}")
                 null
             }
