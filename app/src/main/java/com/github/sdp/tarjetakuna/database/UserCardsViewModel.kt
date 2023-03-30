@@ -54,6 +54,7 @@ class UserCardsViewModel : ViewModel() {
     fun onSetButtonClick(card: MagicCard) {
         usc.addCardToCollection(card)
         _setMessage.value = "${card.name} was successfully added to your collection"
+
     }
 
     /**
@@ -68,7 +69,7 @@ class UserCardsViewModel : ViewModel() {
      * Get the card from the user's collection if it exists
      */
     fun onGetButtonClick(card: MagicCard) {
-        val data = usc.getCardFromCollection(card1)
+        val data = usc.getCardFromCollection(card)
         data
             .thenAccept {
                 retrievedCardJson = it.value.toString()

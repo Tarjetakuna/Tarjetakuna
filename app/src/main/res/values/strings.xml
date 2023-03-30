@@ -59,6 +59,10 @@
     <string name="set_card_button">Add Card</string>
     <string name="remove_card_button">Remove Card</string>
     <string name="manage_collection_button">Manage Collection</string>
+    <string name="text_add_success">%1$s was successfully added to your collection</string>
+    <string name="text_remove_success">%1$s was successfully removed from your collection</string>
+    <string name="text_get_success">Card %1$s was successfully retrieved from your collection: %2$s</string>
+    <string name="text_get_fail">Failed to retrieve card %1$s </string>
 
     <string name="ExportCollection_export_button">Export my collection</string>
     <string name="ExportCollection_appNotFound">No app found to share Excel file</string>
