@@ -86,6 +86,7 @@ open class WebApi {
         _magicApi = null
     }
 
+    // TODO : uncomment this when the API is available
 //    fun getCards(): Future<MagicCards> {
 //        val response = getMagicApi().getCards().execute()
 //            if (response.isSuccessful) {
@@ -94,11 +95,22 @@ open class WebApi {
 //            return@Future MagicCards(emptyList())
 //    }
 
+
+    /**
+     * Get the cards from a file in resources - use to mock api response for now
+     * TODO : remove this when the API is available
+     */
     private fun getCardsFromFile(): MagicCards {
         val cardsJSON = ResourceHelper.loadString("magic_webapi_cards_response.json")
         return Gson().fromJson(cardsJSON, MagicCards::class.java)
     }
 
+    /**
+     * Get the cards from the webapi as a future
+     *
+     * this is a wrapper to easily expose the webapi functionality
+     * TODO : use the real API when it is available
+     */
     fun getCards(): CompletableFuture<MagicCards> {
         val promise = CompletableFuture<MagicCards>()
         promise.complete(getCardsFromFile())

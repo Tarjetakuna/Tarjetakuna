@@ -4,12 +4,21 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 
+/**
+ * Helper class to load resources, usable for unit tests that don't have a context
+ */
 class ResourceHelper {
     object ResourceHelper {
+        /**
+         * Load the file [name] as a string
+         */
         fun loadString(name: String?): String? {
             return loadString(ResourceHelper::class.java.classLoader, name)
         }
 
+        /**
+         * Load the file [name] as a string using the class loader
+         */
         fun loadString( loader: ClassLoader?, name: String?): String? {
             if (loader == null) {
                 return null
@@ -27,6 +36,9 @@ class ResourceHelper {
             }
         }
 
+        /**
+         * Read the input stream into a string
+         */
         fun loadString( inputStream: InputStream?): String? {
             if (inputStream == null) {
                 return null

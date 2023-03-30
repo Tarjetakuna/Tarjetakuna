@@ -45,6 +45,8 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    // allow to use assets folder in application and in tests
     sourceSets {
         main {
             assets {
