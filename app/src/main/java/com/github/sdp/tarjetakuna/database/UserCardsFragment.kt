@@ -64,17 +64,17 @@ class UserCardsFragment : Fragment() {
         // observe the message from the view model and display it in the UI when it changes
         viewModel.setMessage.observe(viewLifecycleOwner) {
             if (it != null) {
-                putSetMessage(it)
+                putSetMessage(getString(it.first, it.second))
             }
         }
         viewModel.getMessage.observe(viewLifecycleOwner) {
             if (it != null) {
-                putGetMessage(it)
+                putGetMessage(getString(it.first, it.second))
             }
         }
         viewModel.removeMessage.observe(viewLifecycleOwner) {
             if (it != null) {
-                putRemoveMessage(it)
+                putRemoveMessage(getString(it.first, it.second))
             }
         }
         return root

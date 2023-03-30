@@ -3,7 +3,6 @@ package com.github.sdp.tarjetakuna.ui.singlecard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.sdp.tarjetakuna.database.FBCardPossesion
 import com.github.sdp.tarjetakuna.database.UserCardsRTDB
 import com.github.sdp.tarjetakuna.model.MagicCard
 
@@ -31,7 +30,7 @@ class SingleCardViewModel : ViewModel() {
         if (!user.isConnected()) {
             return
         }
-        val data = user.getCardFromFirebase(card, FBCardPossesion.OWNED.name)
+        val data = user.getCardFromCollection(card)
         data.thenAccept {
             _buttonAddText.value = false
         }.exceptionally {
@@ -53,11 +52,11 @@ class SingleCardViewModel : ViewModel() {
      * remove it if it's in the collection
      */
     fun manageOwnedCollection() {
-        val data = user.getCardFromFirebase(card, FBCardPossesion.OWNED.name)
+        val data = user.getCardFromCollection(card)
         data.thenAccept {
-            removeCardFromFirebase(FBCardPossesion.OWNED.name)
+            removeCardFromFirebase()
         }.exceptionally {
-            addCardToFirebase(FBCardPossesion.OWNED.name)
+            addCardToFirebase()
             null
         }
     }
@@ -65,9 +64,9 @@ class SingleCardViewModel : ViewModel() {
     /**
      * Add the card to the collection of the user
      */
-    private fun addCardToFirebase(nodeName: String) {
-        user.addCardToFirebase(card, nodeName)
-        val data = user.getCardFromFirebase(card, nodeName)
+    private fun addCardToFirebase() {
+        user.addCardToCollection(card)
+        val data = user.getCardFromCollection(card)
         data.thenAccept {
             _buttonAddText.value = false
         }
@@ -76,9 +75,9 @@ class SingleCardViewModel : ViewModel() {
     /**
      * Remove the card from the collection of the user
      */
-    private fun removeCardFromFirebase(nodeName: String) {
-        user.removeCardFromFirebase(card, nodeName)
-        val data = user.getCardFromFirebase(card, nodeName)
+    private fun removeCardFromFirebase() {
+        user.removeCardFromCollection(card)
+        val data = user.getCardFromCollection(card)
         data.exceptionally {
             _buttonAddText.value = true
             null

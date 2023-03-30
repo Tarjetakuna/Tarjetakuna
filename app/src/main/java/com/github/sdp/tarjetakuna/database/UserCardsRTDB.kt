@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture
 class UserCardsRTDB {
     private val db = Firebase.database.reference
     private val user = Firebase.auth.currentUser
-    private val userCardCollection = if (user != null) db.child(user.uid) else null
+    private val userCardCollection = db.child(user!!.uid)
 
 
     /**
@@ -29,34 +29,33 @@ class UserCardsRTDB {
     /**
      * Adds a card to the user's collection.
      */
-    fun addCardToFirebase(card: MagicCard, nodeName: String) {
+    fun addCardToCollection(card: MagicCard) {
         val cardUID = card.set.code + card.number
         val data = Gson().toJson(card)
-        userCardCollection?.child(nodeName)?.child(cardUID)
-            ?.setValue(data) //or child(cardUID).child(owned/wanted).setValue(data)
+        userCardCollection.child(cardUID).setValue(data)
     }
 
     /**
      * Removes a card from the user's collection.
      */
-    fun removeCardFromFirebase(card: MagicCard, nodeName: String) {
+    fun removeCardFromCollection(card: MagicCard) {
         val cardUID = card.set.code + card.number
-        userCardCollection?.child(nodeName)?.child(cardUID)?.removeValue()
+        userCardCollection.child(cardUID).removeValue()
     }
 
     /**
      * Retrieves a card asynchronously from the database
      */
-    fun getCardFromFirebase(card: MagicCard, nodeName: String): CompletableFuture<DataSnapshot> {
+    fun getCardFromCollection(card: MagicCard): CompletableFuture<DataSnapshot> {
         val cardUID = card.set.code + card.number
         val future = CompletableFuture<DataSnapshot>()
-        userCardCollection?.child(nodeName)?.child(cardUID)?.get()?.addOnSuccessListener {
+        userCardCollection.child(cardUID).get().addOnSuccessListener {
             if (it.value == null) {
-                future.completeExceptionally(NoSuchFieldException("card $cardUID not found in collection"))
+                future.completeExceptionally(NoSuchFieldException("card $cardUID is not in your collection"))
             } else {
                 future.complete(it)
             }
-        }?.addOnFailureListener {
+        }.addOnFailureListener {
             future.completeExceptionally(it)
         }
         return future
