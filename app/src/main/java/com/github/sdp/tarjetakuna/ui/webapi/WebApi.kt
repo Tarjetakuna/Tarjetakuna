@@ -1,156 +1,84 @@
 package com.github.sdp.tarjetakuna.ui.webapi
 
-import com.github.sdp.tarjetakuna.utils.Utils.Companion.printIfNotNullOrEmpty
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApi
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
-object WebApi {
 
-    private const val magicUrl = "https://api.magicthegathering.io/v1/"
-    private lateinit var magicApi: MagicApi
+/**
+ * Singleton class to access the Web API of magic the gathering
+ */
+open class WebApi {
 
+    /**
+     * Base url of the API
+     */
+    open var magicUrl = "https://api.magicthegathering.io/v1/"
+
+    /**
+     * readTimeout for the API
+     */
+    private var readTimeout = 10L
+
+    /**
+     * writeTimeout for the API
+     */
+    private var writeTimeout = 10L
+
+    /**
+     * Magic API
+     */
+    private var _magicApi: MagicApi? = null
+    private val magicApiProperty get() = _magicApi!!
+
+
+    companion object WebApiObject : WebApi()
+
+    /**
+     * Get the Magic API
+     */
     fun getMagicApi(): MagicApi {
-        if (!::magicApi.isInitialized) {
-            magicApi = buildMagicApi()
+        if (_magicApi == null) {
+            _magicApi = buildMagicApi()
         }
-        return magicApi
+        return magicApiProperty
     }
 
+    /**
+     * Build the Magic API
+     */
     private fun buildMagicApi(): MagicApi {
+
+        val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+            .connectTimeout(1, TimeUnit.MINUTES)
+            .readTimeout(readTimeout, TimeUnit.SECONDS)
+            .writeTimeout(writeTimeout, TimeUnit.SECONDS)
+            .build()
+
         // building request to API to get bored information
         val retrofit = Retrofit.Builder()
             .baseUrl(magicUrl)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(MagicApi::class.java)
     }
-}
 
-
-data class DataCards(
-    val cards: List<DataCard>
-){
-    override fun toString(): String {
-        return cards.joinToString(separator = "\n\n")
+    /**
+     * Set the read timeout, and invalidate the api
+     */
+    fun setReadTimeout(readTimeout: Long) {
+        this.readTimeout = readTimeout
+        _magicApi = null
     }
-}
 
-// DataCard that matches the JSON structure from the API
-data class DataCard(
-    val name: String,
-    val manaCost: String,
-    val cmc: Int,
-    val colors: List<String>,
-    val colorIdentity: List<String>,
-    val type: String,
-    val types: List<String>,
-    val subtypes: List<String>,
-    val rarity: String,
-    val set: String,
-    val setName: String,
-    val text: String,
-    val artist: String,
-    val number: String,
-    val power: String,
-    val toughness: String,
-    val layout: String,
-    val multiverseid: String,
-    val imageUrl: String,
-    val variations: List<String>,
-    val foreignNames: List<ForeignName>,
-    val printings: List<String>,
-    val originalText: String,
-    val originalType: String,
-    val legalities: List<Legalities>,
-    val id: String
-) {
-    override fun toString(): String {
-        return "DataCard(" +
-                "name='$name', " +
-                "manaCost='$manaCost', " +
-//                "cmc=$cmc, " +
-                "colors=${colors[0]}, " +
-//                "colorIdentity=$colorIdentity, " +
-                "type='$type', " +
-//                "types=$types, " +
-//                "subtypes=$subtypes, " +
-                "rarity='$rarity', " +
-                "set='$set', " +
-//                "setName='$setName', " +
-                "text='$text', " +
-//                "artist='$artist', " +
-//                "number='$number', " +
-                "power='$power', " +
-                "toughness='$toughness', " +
-//                "layout='$layout', " +
-//                "multiverseid='$multiverseid', " +
-                "imageUrl='$imageUrl', " +
-//                "variations=$variations, " +
-//                "foreignNames=$foreignNames, " +
-//                "printings=$printings, " +
-//                "originalText='$originalText', " +
-//                "originalType='$originalType', " +
-                "legalities=${legalities[0]}..., " +
-                "id='$id'" +
-                ")"
-    }
-}
-
-data class ForeignName(
-    val name: String,
-    val text: String,
-    val type: String,
-    val flavor: String,
-    val imageUrl: String,
-    val language: String,
-    val multiverseid: Int
-)
-
-data class Legalities(
-    val format: String,
-    val legality: String
-)
-
-data class DataSets(
-    val sets: List<DataSet>
-){
-    override fun toString(): String {
-        return sets.joinToString(separator = "\n\n")
-    }
-}
-
-data class DataSet(
-    val code: String,
-    val name: String,
-    val type: String,
-    val border: String?,
-    val mkm_id: String?,
-    val mkm_name: String?,
-    val gathererCode: String,
-    val magicCardsInfoCode: String,
-    val releaseDate: String,
-    val block: String,
-    val onlineOnly: Boolean,
-//    val booster: List<String>,
-    val mkm_idExpansion: String,
-    val mkm_nameExpansion: String
-) {
-    override fun toString(): String {
-        return "DataSet(" +
-                "code='$code', " +
-                "name='$name', " +
-                "type='$type', " +
-                printIfNotNullOrEmpty(border, "border=") +
-                printIfNotNullOrEmpty(mkm_id, "mkm_id=") +
-                printIfNotNullOrEmpty(mkm_name, "mkm_name=") +
-                printIfNotNullOrEmpty(gathererCode, "gathererCode=") +
-                printIfNotNullOrEmpty(magicCardsInfoCode, "magicCardsInfoCode=") +
-                printIfNotNullOrEmpty(releaseDate, "releaseDate=") +
-                printIfNotNullOrEmpty(block, "block=") +
-                printIfNotNullOrEmpty(onlineOnly, "onlineOnly=") +
-//                "booster=$booster, " +
-                printIfNotNullOrEmpty(mkm_idExpansion, "mkm_idExpansion=") +
-                printIfNotNullOrEmpty(mkm_nameExpansion, "mkm_nameExpansion=") +
-                ")"
+    /**
+     * Set the write timeout, and invalidate the api
+     */
+    fun setWriteTimeout(writeTimeout: Long) {
+        this.writeTimeout = writeTimeout
+        _magicApi = null
     }
 }
