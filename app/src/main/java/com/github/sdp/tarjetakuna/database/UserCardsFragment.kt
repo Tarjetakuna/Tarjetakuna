@@ -37,7 +37,7 @@ class UserCardsFragment : Fragment() {
         removeMessage.text = ""
 
         //go back to home fragment
-        val backButton = binding.buttonBackHome2
+        val backButton = binding.homeButton
         backButton.setOnClickListener {
             val mainActivity = activity as MainActivity
             mainActivity.changeFragment(R.id.nav_home)

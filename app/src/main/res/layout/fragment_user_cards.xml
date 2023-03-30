@@ -7,7 +7,7 @@
     tools:context=".database.UserCardsFragment">
 
     <Button
-        android:id="@+id/button_back_home2"
+        android:id="@+id/home_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="51dp"
