@@ -46,8 +46,14 @@ class SingleCardFragment : Fragment() {
             viewModel.manageOwnedCollection()
         }
 
-        viewModel.buttonText.observe(viewLifecycleOwner) {
-            binding.singleCardButtonAddToDeck.text = it
+        viewModel.buttonAddText.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.singleCardButtonAddToDeck.text =
+                    getString(R.string.single_card_showing_add_to_collection)
+            } else {
+                binding.singleCardButtonAddToDeck.text =
+                    getString(R.string.single_card_showing_remove_collection)
+            }
         }
 
         binding.singleCardButtonAddToWanted.setOnClickListener {

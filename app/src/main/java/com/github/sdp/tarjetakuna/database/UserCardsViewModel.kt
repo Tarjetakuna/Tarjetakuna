@@ -47,12 +47,12 @@ class UserCardsViewModel : ViewModel() {
      * Add the card to the user's collection
      */
     fun onSetButtonClick(card: MagicCard) {
-        usc.addCardToFirebase(card, FbNodeName.OWNED.name)
+        usc.addCardToFirebase(card, FBCardPossesion.OWNED.name)
         _setMessage.value = "${card.name} was successfully added to your collection"
     }
 
     fun onRemoveButtonClick(card: MagicCard) {
-        usc.removeCardFromFirebase(card, FbNodeName.OWNED.name)
+        usc.removeCardFromFirebase(card, FBCardPossesion.OWNED.name)
         _removeMessage.value = "${card.name} was successfully removed from your collection"
     }
 
@@ -60,7 +60,7 @@ class UserCardsViewModel : ViewModel() {
      * Get the card from the user's collection if it exists
      */
     fun onGetButtonClick(card: MagicCard) {
-        val data = usc.getCardFromFirebase(card, FbNodeName.OWNED.name)
+        val data = usc.getCardFromFirebase(card, FBCardPossesion.OWNED.name)
         data
             .thenAccept {
                 retrievedCardJson = it.value.toString()

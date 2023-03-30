@@ -1,6 +1,7 @@
 package com.github.sdp.tarjetakuna.database
 
-enum class FbNodeName {
+enum class FBCardPossesion {
     OWNED,
-    WANTED
+    WANTED,
+    NOTHING
 }
