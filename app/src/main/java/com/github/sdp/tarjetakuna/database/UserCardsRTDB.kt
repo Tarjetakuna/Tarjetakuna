@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture
 class UserCardsRTDB {
     private val db = Firebase.database.reference
     private val user = Firebase.auth.currentUser
-    private val userCardCollection = db.child(user!!.uid)
+    private val userCardCollection = if (user != null) db.child(user.uid) else null
 
 
     /**
@@ -31,7 +31,7 @@ class UserCardsRTDB {
     fun addCardToCollection(fbCard: FBMagicCard) {
         val cardUID = fbCard.card.set.code + fbCard.card.number
         val data = Gson().toJson(fbCard)
-        userCardCollection.child(cardUID).setValue(data)
+        userCardCollection?.child(cardUID)?.setValue(data)
     }
 
     /**
@@ -39,7 +39,7 @@ class UserCardsRTDB {
      */
     fun removeCardFromCollection(fbCard: FBMagicCard) {
         val cardUID = fbCard.card.set.code + fbCard.card.number
-        userCardCollection.child(cardUID).removeValue()
+        userCardCollection?.child(cardUID)?.removeValue()
     }
 
     /**
@@ -49,13 +49,13 @@ class UserCardsRTDB {
     fun getCardFromCollection(fbCard: FBMagicCard): CompletableFuture<DataSnapshot> {
         val cardUID = fbCard.card.set.code + fbCard.card.number
         val future = CompletableFuture<DataSnapshot>()
-        userCardCollection.child(cardUID).get().addOnSuccessListener {
+        userCardCollection?.child(cardUID)?.get()?.addOnSuccessListener {
             if (it.value == null) {
                 future.completeExceptionally(NoSuchFieldException("card $cardUID is not in your collection"))
             } else {
                 future.complete(it)
             }
-        }.addOnFailureListener {
+        }?.addOnFailureListener {
             future.completeExceptionally(it)
         }
         return future

@@ -65,6 +65,7 @@ class SingleCardTest {
     @Before
     fun setup() {
         IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
+
     }
 
     @After

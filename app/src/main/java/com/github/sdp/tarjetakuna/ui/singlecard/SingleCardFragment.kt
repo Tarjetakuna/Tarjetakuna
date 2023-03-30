@@ -30,8 +30,9 @@ class SingleCardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[SingleCardViewModel::class.java]
         _binding = FragmentSingleCardBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this)[SingleCardViewModel::class.java]
+
 
         loadCardFromJson()
 
