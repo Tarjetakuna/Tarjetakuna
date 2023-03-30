@@ -54,7 +54,7 @@ class DisplayCardsAdapter(val cards: ArrayList<MagicCard>) :
         Glide.with(holder.cardImage.context)
             .load(cards[position].imageUrl)
             .into(holder.cardImage)
-        holder.setInfo.text = cards[position].set.toString()
+        holder.setInfo.text = "Set : " + cards[position].set.name + " #" + cards[position].number
         holder.itemView.setOnClickListener {
             onCardClickListener?.onCardClick(position)
         }

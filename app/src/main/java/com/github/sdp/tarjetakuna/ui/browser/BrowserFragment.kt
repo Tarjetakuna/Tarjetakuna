@@ -12,8 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.UserCardsRTDB
 import com.github.sdp.tarjetakuna.databinding.FragmentBrowserBinding
-import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.model.*
 import com.google.gson.Gson
 
 /**
@@ -37,7 +38,33 @@ class BrowserFragment : Fragment() {
         val root: View = binding.root
 
         binding.browserListCards.layoutManager = LinearLayoutManager(context)
-        val adapter = DisplayCardsAdapter(browserViewModel.initialCards)
+        val card = MagicCard(
+            "Gwenna, Eyes of Gaea",
+            "<-: Add two mana in any combination of colors. Spend this mana only to cast creature spells or activate abilities of a creature or creature card.\n" +
+                    "Whenever you cast a creature spell with power 5 or greater, put a +1/+1 counter on Gwenna, Eyes of Gaea and untap it.",
+            MagicLayout.Normal,
+            3,
+            "{2}{W}",
+            MagicSet("BRO", "The Brothers War"),
+            185,
+            "https://cards.scryfall.io/large/front/7/e/7ee387b7-18e4-41b7-aefe-f2b5954e3051.jpg?1674421589",
+            MagicRarity.Rare,
+            MagicType.Creature,
+            listOf("Elf", "Druid", "Scout"),
+            "2",
+            "3",
+            "Steve Prescott"
+        )
+        val adapter = try {
+            if (UserCardsRTDB().getCardFromCollection(card).isCompletedExceptionally) {
+                DisplayCardsAdapter(browserViewModel.initialCards)
+            } else {
+                DisplayCardsAdapter(ArrayList())
+            }
+        } catch (e: Exception) {
+            DisplayCardsAdapter(ArrayList())
+        }
+
         binding.browserListCards.adapter = adapter
 
         initSearchBar(browserViewModel)
