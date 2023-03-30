@@ -40,11 +40,14 @@ class SingleCardFragment : Fragment() {
         viewModel.isConnected.observe(viewLifecycleOwner) {
             displayButton(it)
             viewModel.checkCardInCollection()
-            viewModel.checkCardInWanted()
         }
 
         binding.singleCardButtonAddToDeck.setOnClickListener {
             viewModel.manageOwnedCollection()
+        }
+
+        binding.singleCardButtonAddToWanted.setOnClickListener {
+            viewModel.manageWantedCollection()
         }
 
         viewModel.buttonAddText.observe(viewLifecycleOwner) {
@@ -57,9 +60,14 @@ class SingleCardFragment : Fragment() {
             }
         }
 
-        binding.singleCardButtonAddToWanted.setOnClickListener {
-            //TODO : Add the card to the wanted cards
-            viewModel.addCardToWanted()
+        viewModel.buttonWantedText.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.singleCardButtonAddToWanted.text =
+                    getString(R.string.single_card_showing_add_to_wanted)
+            } else {
+                binding.singleCardButtonAddToWanted.text =
+                    getString(R.string.single_card_showing_remove_wanted)
+            }
         }
 
         return binding.root

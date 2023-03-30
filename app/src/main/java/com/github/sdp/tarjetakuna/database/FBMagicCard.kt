@@ -2,5 +2,8 @@ package com.github.sdp.tarjetakuna.database
 
 import com.github.sdp.tarjetakuna.model.MagicCard
 
-data class FBMagicCard(val card: MagicCard, val possession: FBCardPossesion) {
+/**
+ * Class to represent a MagicCard in the Firebase database
+ */
+data class FBMagicCard(val card: MagicCard, val possession: FBCardPossession) {
 }
