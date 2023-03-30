@@ -81,7 +81,7 @@ class ExportCollectionTest {
         onView(withText(R.string.menu_exportcollection)).perform(click())
 
         val excelFile = ApplicationProvider.getApplicationContext<Context>()
-            .getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.resolve("MyMagicCollection.xls")
+            .getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.resolve("MyMagicCollection.xlsx")
 
 
         val workbook = HSSFWorkbook(FileInputStream(excelFile))

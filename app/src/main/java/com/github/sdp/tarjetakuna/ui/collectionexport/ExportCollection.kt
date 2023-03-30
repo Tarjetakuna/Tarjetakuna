@@ -21,6 +21,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
+/**
+ * Object containing the methods to export the collection to an excel file
+ */
 object ExportCollection {
 
     private const val fileProviderAuthority = "com.github.sdp.tarjetakuna.fileprovider"
@@ -49,8 +52,12 @@ object ExportCollection {
         )
     )
 
+    /**
+     * Export the collection of the user to an excel file
+     * (The function is using a test collection for now, it will be changed later)
+     */
     fun exportCollection(context: Context) {
-        val fileName = "MyMagicCollection.xls"
+        val fileName = "MyMagicCollection.xlsx"
         val filePath =
             context
                 .getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.absolutePath + "/" + fileName
@@ -96,7 +103,7 @@ object ExportCollection {
         } catch (e: IOException) {
             Toast.makeText(
                 context,
-                "Failed to write data to Excel file",
+                R.string.ExportCollection_fileCreationFailed,
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -110,7 +117,7 @@ object ExportCollection {
             FileProvider.getUriForFile(context, fileProviderAuthority, excelFile)
 
         val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "application/excel"
+        intent.type = "application/vnd.ms-excel"
         intent.putExtra(Intent.EXTRA_STREAM, uri)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
