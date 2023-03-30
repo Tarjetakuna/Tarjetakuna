@@ -57,13 +57,13 @@ class WebApiFragment : Fragment() {
         binding.apiCardsBySet.setOnClickListener {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
-            viewModel.getCardsByName(this.requireContext(), binding.setIdForCards.text.toString())
+            viewModel.getCardsBySet(this.requireContext(), binding.setIdForCards.text.toString())
         }
 
         binding.apiCardById.setOnClickListener {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
-            viewModel.getCardsByName(this.requireContext(), binding.cardId.text.toString())
+            viewModel.getCardById(this.requireContext(), binding.cardId.text.toString())
         }
 
         binding.apiSets.setOnClickListener {

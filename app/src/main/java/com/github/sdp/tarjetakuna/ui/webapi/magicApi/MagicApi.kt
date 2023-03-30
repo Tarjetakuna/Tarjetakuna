@@ -2,6 +2,7 @@ package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -17,13 +18,13 @@ interface MagicApi {
     @GET("cards")
     fun getCardsByName(@Query("name") name: String): Call<MagicCards>
 
-    @GET("cards/{id}")
-    fun getCardById(@Query("multiverseId") id: String): Call<MagicCard>
+    @GET("cards/{multiverseId}")
+    fun getCardById(@Path("multiverseId") multiverseId: String): Call<MagicCard>
 
     @GET("sets")
     fun getSets(): Call<MagicSets>
 
-    @GET("sets/{code}")
-    fun getSetByCode(@Query("setCode") code: String): Call<MagicSet>
+    @GET("sets/{setCode}")
+    fun getSetByCode(@Path("setCode") setCode: String): Call<MagicSet>
 
 }
