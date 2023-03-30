@@ -24,6 +24,7 @@
     <string name="menu_scanner">Scan</string>
     <string name="menu_webapi">Webapi</string>
     <string name="menu_profile">Profile</string>
+    <string name="menu_exportcollection">Export Collection</string>
     <string name="menu_filter">Filter</string>
     <string name="menu_authentication">Authentication</string>
     <string name="menu_authentication_button">Authentication button</string>
@@ -59,6 +60,9 @@
     <string name="set_card_button">Add Card</string>
     <string name="remove_card_button">Remove Card</string>
     <string name="manage_collection_button">Manage Collection</string>
+    <string name="ExportCollection_export_button">Export my collection</string>
+    <string name="ExportCollection_appNotFound">No app found to share Excel file</string>
+    <string name="ExportCollection_fileCreationFailed">Failed to write data to Excel file</string>
     <string name="save_button_text">Save</string>
     <string name="description_entry_hint">Enter a description here</string>
     <string name="name_entry_hint">Enter your name</string>

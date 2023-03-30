@@ -12,7 +12,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class WebApiViewModel : ViewModel() {
+/**
+ * ViewModel for the WebApiFragment
+ */
+open class WebApiViewModel : ViewModel() {
 
     // api results
     private val _apiResults = MutableLiveData<String>()
@@ -37,7 +40,7 @@ class WebApiViewModel : ViewModel() {
             getCardsWeb()
         }
         // TODO else get from cache
-        else{
+        else {
             Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
         }
     }
@@ -49,17 +52,17 @@ class WebApiViewModel : ViewModel() {
             getSetsWeb()
         }
         // TODO else get from cache
-        else{
+        else {
             Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
         }
     }
 
     // to get cards information from the web
-    private fun getCardsWeb() {
+    protected fun getCardsWeb() {
         ApiCall(WebApi.getMagicApi().getCards(), this@WebApiViewModel).enqueue()
     }
 
-    private fun getSetsWeb() {
+    protected fun getSetsWeb() {
         ApiCall(WebApi.getMagicApi().getSets(), this@WebApiViewModel).enqueue()
     }
 
@@ -79,8 +82,8 @@ class WebApiViewModel : ViewModel() {
         }
     }
 
-    class CallbackHandler<T>{
-        public fun handleResponse(response: Response<T>, viewModel: WebApiViewModel){
+    class CallbackHandler<T> {
+        public fun handleResponse(response: Response<T>, viewModel: WebApiViewModel) {
             // Handle the response
             if (response.isSuccessful) {
                 val sets = response.body()
@@ -91,11 +94,12 @@ class WebApiViewModel : ViewModel() {
                     viewModel.setError(R.string.txt_error_msg, "no data")
                 }
             } else {
-                viewModel.setError(R.string.txt_error_msg, response.errorBody().toString())
+                val error = response.errorBody()!!.string()
+                viewModel.setError(R.string.txt_error_msg, error)
             }
         }
 
-        fun handleFailure(t: Throwable, viewModel: WebApiViewModel){
+        fun handleFailure(t: Throwable, viewModel: WebApiViewModel) {
             // Handle the error
             if (t.message != null) {
                 viewModel.setError(R.string.txt_error_msg, t.message!!)
@@ -105,5 +109,3 @@ class WebApiViewModel : ViewModel() {
         }
     }
 }
-
-
