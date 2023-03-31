@@ -21,6 +21,7 @@ class UserCardsFragmentTest {
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
     }
+    //works locally but not on CI
 //    @get:Rule
 //    public val activityRule = ActivityScenarioRule(MainActivity::class.java)
 //

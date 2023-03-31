@@ -7,11 +7,6 @@ import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import java.util.concurrent.CompletableFuture
 
 /**
  * View model of the user's collection of cards.
@@ -51,7 +46,7 @@ class UserCardsViewModel : ViewModel() {
      * Add the card to the user's collection
      */
     fun onSetButtonClick(card: MagicCard) {
-        usc.addCardToCollection(card)
+        usc.addCardToCollection(FBMagicCard(card, FBCardPossession.OWNED))
         _setMessage.value = Pair(R.string.text_add_success, card.name)
 
     }
@@ -60,7 +55,7 @@ class UserCardsViewModel : ViewModel() {
      * Remove the card from the user's collection
      */
     fun onRemoveButtonClick(card: MagicCard) {
-        usc.removeCardFromCollection(card)
+        usc.removeCardFromCollection(FBMagicCard(card, FBCardPossession.NONE))
         _removeMessage.value = Pair(R.string.text_remove_success, card.name)
     }
 
@@ -68,7 +63,7 @@ class UserCardsViewModel : ViewModel() {
      * Get the card from the user's collection if it exists
      */
     fun onGetButtonClick(card: MagicCard) {
-        val data = usc.getCardFromCollection(card)
+        val data = usc.getCardFromCollection(FBMagicCard(card, FBCardPossession.NONE))
         data
             .thenAccept {
                 retrievedCardJson = it.value.toString()

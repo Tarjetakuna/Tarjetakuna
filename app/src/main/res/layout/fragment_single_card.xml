@@ -125,5 +125,36 @@
                 android:textSize="20sp" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="10sp">
+
+            <Button
+                android:id="@+id/singleCard_button_addToDeck"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/single_card_showing_add_to_collection"
+                android:layout_marginEnd="10dp" />
+
+            <Button
+                android:id="@+id/singleCard_button_addToWanted"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/single_card_showing_add_to_wanted" />
+
+            <TextView
+                android:id="@+id/singleCard_text_askConnection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/single_card_ask_connection"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

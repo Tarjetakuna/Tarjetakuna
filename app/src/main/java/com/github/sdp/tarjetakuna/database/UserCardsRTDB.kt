@@ -1,8 +1,5 @@
 package com.github.sdp.tarjetakuna.database
 
-import com.github.sdp.tarjetakuna.model.MagicCard
-import com.github.sdp.tarjetakuna.model.MagicLayout
-import com.github.sdp.tarjetakuna.model.MagicSet
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ktx.database
@@ -18,38 +15,47 @@ import java.util.concurrent.CompletableFuture
 class UserCardsRTDB {
     private val db = Firebase.database.reference
     private val user = Firebase.auth.currentUser
-    private val userCardCollection = db.child(user!!.uid)
+    private val userCardCollection = if (user != null) db.child(user.uid) else null
+
+
+    /**
+     * Checks if the user is connected.
+     */
+    fun isConnected(): Boolean {
+        return user != null
+    }
 
     /**
      * Adds a card to the user's collection.
      */
-    fun addCardToCollection(card: MagicCard) {
-        val cardUID = card.set.code + card.number
-        val data = Gson().toJson(card)
-        userCardCollection.child(cardUID).setValue(data)
+    fun addCardToCollection(fbCard: FBMagicCard) {
+        val cardUID = fbCard.card.set.code + fbCard.card.number
+        val data = Gson().toJson(fbCard)
+        userCardCollection?.child(cardUID)?.setValue(data)
     }
 
     /**
      * Removes a card from the user's collection.
      */
-    fun removeCardFromCollection(card: MagicCard) {
-        val cardUID = card.set.code + card.number
-        userCardCollection.child(cardUID).removeValue()
+    fun removeCardFromCollection(fbCard: FBMagicCard) {
+        val cardUID = fbCard.card.set.code + fbCard.card.number
+        userCardCollection?.child(cardUID)?.removeValue()
     }
 
     /**
      * Retrieves a card asynchronously from the database
+     * The card is identified by only its set code and its number
      */
-    fun getCardFromCollection(card: MagicCard): CompletableFuture<DataSnapshot> {
-        val cardUID = card.set.code + card.number
+    fun getCardFromCollection(fbCard: FBMagicCard): CompletableFuture<DataSnapshot> {
+        val cardUID = fbCard.card.set.code + fbCard.card.number
         val future = CompletableFuture<DataSnapshot>()
-        userCardCollection.child(cardUID).get().addOnSuccessListener {
+        userCardCollection?.child(cardUID)?.get()?.addOnSuccessListener {
             if (it.value == null) {
                 future.completeExceptionally(NoSuchFieldException("card $cardUID is not in your collection"))
             } else {
                 future.complete(it)
             }
-        }.addOnFailureListener {
+        }?.addOnFailureListener {
             future.completeExceptionally(it)
         }
         return future
