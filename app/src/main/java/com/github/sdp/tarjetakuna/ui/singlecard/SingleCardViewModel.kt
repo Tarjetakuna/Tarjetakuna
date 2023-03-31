@@ -36,6 +36,7 @@ class SingleCardViewModel : ViewModel() {
 
     /**
      * Convert a json string to a FBMagicCard
+     * @param json the json string to convert
      */
     private fun convertJsonToFBMagicCard(json: String): FBMagicCard {
         return Gson().fromJson(json, FBMagicCard::class.java)
@@ -48,7 +49,7 @@ class SingleCardViewModel : ViewModel() {
         if (!userDB.isConnected()) {
             return
         }
-        val data = userDB.getCardFromCollection(FBMagicCard(card, FBCardPossession.NONE))
+        val data = userDB.getCardFromCollection(FBMagicCard(card))
         data.thenAccept {
             val fbCard = convertJsonToFBMagicCard(it.value as String)
             _buttonAddText.value = fbCard.possession != FBCardPossession.OWNED
@@ -66,7 +67,7 @@ class SingleCardViewModel : ViewModel() {
      * remove it only if it's not owned
      */
     fun manageWantedCollection() {
-        val data = userDB.getCardFromCollection(FBMagicCard(card, FBCardPossession.NONE))
+        val data = userDB.getCardFromCollection(FBMagicCard(card))
         data.thenAccept {
             val fbCard = convertJsonToFBMagicCard(it.value as String)
             if (fbCard.possession == FBCardPossession.WANTED) {
@@ -84,7 +85,7 @@ class SingleCardViewModel : ViewModel() {
      * remove it if it's in the collection
      */
     fun manageOwnedCollection() {
-        val data = userDB.getCardFromCollection(FBMagicCard(card, FBCardPossession.NONE))
+        val data = userDB.getCardFromCollection(FBMagicCard(card))
         data.thenAccept {
             val fbCard = convertJsonToFBMagicCard(it.value as String)
             if (fbCard.possession == FBCardPossession.OWNED) {
@@ -100,6 +101,7 @@ class SingleCardViewModel : ViewModel() {
 
     /**
      * Add the card to the collection of the user
+     * @param p the possession of the card (owned or wanted)
      */
     private fun addCardToFirebase(p: FBCardPossession) {
         val fbCard = FBMagicCard(card, p)
@@ -120,7 +122,7 @@ class SingleCardViewModel : ViewModel() {
      * Remove the card from the collection of the user
      */
     private fun removeCardFromFirebase() {
-        val fbCard = FBMagicCard(card, FBCardPossession.NONE)
+        val fbCard = FBMagicCard(card)
         userDB.removeCardFromCollection(fbCard)
         val data = userDB.getCardFromCollection(fbCard)
         data.exceptionally {

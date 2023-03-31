@@ -138,7 +138,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/single_card_showing_add_to_collection"
-                android:layout_marginRight="10dp" />
+                android:layout_marginEnd="10dp" />
 
             <Button
                 android:id="@+id/singleCard_button_addToWanted"

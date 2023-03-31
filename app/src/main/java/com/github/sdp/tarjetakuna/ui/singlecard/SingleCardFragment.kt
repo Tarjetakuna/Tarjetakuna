@@ -127,10 +127,10 @@ class SingleCardFragment : Fragment() {
 
     /**
      * Displays the buttons to add the card to the deck or to the wanted cards if the user is connected.
-     * @param boolean true if the user is connected, false otherwise.
+     * @param userIsConnected true if the user is connected, false otherwise.
      */
-    private fun displayButton(boolean: Boolean) {
-        if (boolean) {
+    private fun displayButton(userIsConnected: Boolean) {
+        if (userIsConnected) {
             binding.singleCardButtonAddToDeck.visibility = View.VISIBLE
             binding.singleCardButtonAddToWanted.visibility = View.VISIBLE
             binding.singleCardTextAskConnection.visibility = View.GONE
