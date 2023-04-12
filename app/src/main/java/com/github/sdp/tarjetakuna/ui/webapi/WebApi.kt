@@ -19,7 +19,12 @@ open class WebApi {
     /**
      * Base url of the API
      */
-    open var magicUrl = "https://api.magicthegathering.io/v1/"
+    open var magicUrl: String = "https://api.magicthegathering.io/v1/"
+        set(value) {
+            field = value
+            _magicApi = null
+        }
+
 
     /**
      * readTimeout for the API (in seconds), default is 30 as some query take a long time
@@ -75,8 +80,8 @@ open class WebApi {
     /**
      * Get the cards
      */
-    fun getCards(): CompletableFuture<MagicCards> {
-        val promise = CompletableFuture<MagicCards>()
+    fun getCards(): CompletableFuture<MagicApiCards> {
+        val promise = CompletableFuture<MagicApiCards>()
         ApiCall(getMagicApi().getCards(), promise).enqueue()
         return promise
     }
@@ -84,8 +89,8 @@ open class WebApi {
     /**
      * Get the cards by [set] code
      */
-    fun getCardsBySet(set: String): CompletableFuture<MagicCards> {
-        val promise = CompletableFuture<MagicCards>()
+    fun getCardsBySet(set: String): CompletableFuture<MagicApiCards> {
+        val promise = CompletableFuture<MagicApiCards>()
         ApiCall(getMagicApi().getCardsBySet(set), promise).enqueue()
         return promise
     }
@@ -93,8 +98,8 @@ open class WebApi {
     /**
      * Get the cards by [name]
      */
-    fun getCardsByName(name: String): CompletableFuture<MagicCards> {
-        val promise = CompletableFuture<MagicCards>()
+    fun getCardsByName(name: String): CompletableFuture<MagicApiCards> {
+        val promise = CompletableFuture<MagicApiCards>()
         ApiCall(getMagicApi().getCardsByName(name), promise).enqueue()
         return promise
     }
@@ -102,8 +107,8 @@ open class WebApi {
     /**
      * Get the cards by [id]
      */
-    fun getCardById(id: String): CompletableFuture<MagicCard> {
-        val promise = CompletableFuture<MagicCard>()
+    fun getCardById(id: String): CompletableFuture<MagicApiCard> {
+        val promise = CompletableFuture<MagicApiCard>()
         ApiCall(getMagicApi().getCardById(id), promise).enqueue()
         return promise
     }
@@ -111,8 +116,8 @@ open class WebApi {
     /**
      * Get the sets
      */
-    fun getSets(): CompletableFuture<MagicSets> {
-        val promise = CompletableFuture<MagicSets>()
+    fun getSets(): CompletableFuture<MagicApiSets> {
+        val promise = CompletableFuture<MagicApiSets>()
         ApiCall(getMagicApi().getSets(), promise).enqueue()
         return promise
     }
@@ -120,8 +125,8 @@ open class WebApi {
     /**
      * Get the set by [code]
      */
-    fun getSetByCode(code: String): CompletableFuture<MagicSet> {
-        val promise = CompletableFuture<MagicSet>()
+    fun getSetByCode(code: String): CompletableFuture<MagicApiSet> {
+        val promise = CompletableFuture<MagicApiSet>()
         ApiCall(getMagicApi().getSetByCode(code), promise).enqueue()
         return promise
     }

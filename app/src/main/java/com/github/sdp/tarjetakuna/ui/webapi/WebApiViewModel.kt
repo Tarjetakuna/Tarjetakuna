@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicCards
-import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicSets
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiCards
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiSets
 import com.github.sdp.tarjetakuna.utils.Utils.Companion.isNetworkAvailable
 
 
@@ -34,11 +34,11 @@ open class WebApiViewModel : ViewModel() {
     }
 
     // Cards and sets live data
-    private val _cards = MutableLiveData<MagicCards>()
-    val cards: LiveData<MagicCards> = _cards
+    private val _cards = MutableLiveData<MagicApiCards>()
+    val cards: LiveData<MagicApiCards> = _cards
 
-    private val _sets = MutableLiveData<MagicSets>()
-    val sets: LiveData<MagicSets> = _sets
+    private val _sets = MutableLiveData<MagicApiSets>()
+    val sets: LiveData<MagicApiSets> = _sets
 
     /**
      * Get all cards information
@@ -178,8 +178,8 @@ open class WebApiViewModel : ViewModel() {
     protected fun getCardByIdWeb(id: String) {
         WebApi.getCardById(id)
             .thenAccept {
-                if (it != null) _cards.value = MagicCards(listOf(it))
-                else _cards.value = MagicCards(listOf())
+                if (it != null) _cards.value = MagicApiCards(listOf(it.card))
+                else _cards.value = MagicApiCards(listOf())
                 setApiResults(it.toString())
             }
             .exceptionally { e ->
@@ -211,8 +211,8 @@ open class WebApiViewModel : ViewModel() {
     protected fun getSetByCodeWeb(code: String) {
         WebApi.getSetByCode(code)
             .thenAccept {
-                if (it != null) _sets.value = MagicSets(listOf(it))
-                else _sets.value = MagicSets(listOf())
+                if (it != null) _sets.value = MagicApiSets(listOf(it.set))
+                else _sets.value = MagicApiSets(listOf())
                 setApiResults(it.toString())
             }
             .exceptionally { e ->
