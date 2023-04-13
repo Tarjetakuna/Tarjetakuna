@@ -17,6 +17,12 @@
             android:name="enableOnBackInvokedCallback"
             android:value="true"
             android:targetSdkVersion="33" />
+
+        <!-- Optional: Automatically download ML model to device after app is installed.-->
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="ocr" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

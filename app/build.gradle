@@ -123,6 +123,11 @@ dependencies {
     // Library to read and write Excel files
     implementation 'org.apache.poi:poi:5.2.2'
     implementation 'org.apache.poi:poi-ooxml:5.2.2'
+
+    // dependency for vision api
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.2'
+    implementation 'com.google.mlkit:object-detection:17.0.0'
+
 }
 
 tasks.withType(Test) {
