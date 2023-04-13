@@ -1,31 +1,24 @@
 package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 
-import org.junit.After
-import org.junit.Before
+import com.github.sdp.tarjetakuna.utils.TestHelperWebApi
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.MatcherAssert
 import org.junit.Test
 
-///**
-// * List of MagicSets (need to match the doc in api.magicthegathering.io/v1/)
-// */
-//data class MagicApiSets(
-//    val sets: List<MagicSet>
-//) {
-//    override fun toString(): String {
-//        return sets.joinToString(separator = "\n\n")
-//    }
-//}
-
-// TODO implement the tests
 class MagicApiSetsTest {
-    @Before
-    fun setUp() {
-    }
+    @Test
+    fun test_ConstructorWithSets() {
+        val sets = TestHelperWebApi.getSetsResponse()
+        val testSets = MagicApiSets(sets)
 
-    @After
-    fun tearDown() {
+        MatcherAssert.assertThat("sets are equal", testSets.sets, equalTo(sets))
     }
 
     @Test
-    fun test_() {
+    fun test_callToString() {
+        val sets = TestHelperWebApi.getSetsResponse()
+        val testSets = MagicApiSets(sets)
+
+        MatcherAssert.assertThat("toString not empty", testSets.toString().isNotEmpty())
     }
 }
