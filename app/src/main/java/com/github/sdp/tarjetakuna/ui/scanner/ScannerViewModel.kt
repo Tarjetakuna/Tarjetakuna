@@ -26,7 +26,7 @@ class ScannerViewModel : ViewModel() {
      */
     fun detectObjectSuccess(text: String) {
         _objectDetected.value = Text("Success $text", emptyList<TextBlock>())
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     /**
