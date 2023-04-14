@@ -12,14 +12,14 @@ data class MagicSet(
     val border: String?,
     val mkm_id: String?,
     val mkm_name: String?,
-    val gathererCode: String,
-    val magicCardsInfoCode: String,
+    val gathererCode: String?,
+    val magicCardsInfoCode: String?,
     val releaseDate: String,
     val block: String,
     val onlineOnly: Boolean,
 //    val booster: List<String>,
-    val mkm_idExpansion: String,
-    val mkm_nameExpansion: String
+    val mkm_idExpansion: String?,
+    val mkm_nameExpansion: String?
 ) {
     override fun toString(): String {
         return "DataSet(" +
