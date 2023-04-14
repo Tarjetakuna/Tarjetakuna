@@ -3,7 +3,7 @@ package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 /**
  * List of MagicCard (need to match the doc in api.magicthegathering.io/v1/)
  */
-class MagicApiCards(
+data class MagicApiCards(
     val cards: List<MagicCard>
 ) {
     override fun toString(): String {

@@ -56,10 +56,10 @@ class WebApiTest {
 
     @Test
     fun test_getCards() {
-        test_getCards_witRetry(5)
+        test_getCards_withRetry(5)
     }
 
-    private fun test_getCards_witRetry(retry: Int) {
+    private fun test_getCards_withRetry(retry: Int) {
         // setup the mock webserver to return a delayed response with the cards
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
@@ -138,10 +138,10 @@ class WebApiTest {
 
     @Test
     fun test_getCardById() {
-        test_getCardById(5)
+        test_getCardById_withRetry(5)
     }
 
-    private fun test_getCardById(retry: Int) {
+    private fun test_getCardById_withRetry(retry: Int) {
         // setup the mock webserver to return a delayed response with the cards
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
@@ -155,7 +155,7 @@ class WebApiTest {
         val fCard = WebApi.getCardById("386616")
         fCard.whenComplete { card, throwable ->
             if (throwable != null && retry > 0) {
-                test_getCardById(retry - 1)
+                test_getCardById_withRetry(retry - 1)
             } else {
                 assertThat("retry is > 0", retry, `is`(greaterThan(0)))
                 assertThat("cards is not null", card, `is`(notNullValue()))

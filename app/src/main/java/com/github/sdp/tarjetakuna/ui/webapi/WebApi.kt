@@ -32,6 +32,11 @@ open class WebApi {
     private var readTimeout = 30L
 
     /**
+     * writeTimeout for the API (in seconds), default is 10
+     */
+    private val writeTimeout = 10L
+
+    /**
      * Magic API
      */
     private var _magicApi: MagicApi? = null
@@ -57,7 +62,7 @@ open class WebApi {
         val okHttpClient: OkHttpClient = OkHttpClient.Builder()
             .connectTimeout(1, TimeUnit.MINUTES)
             .readTimeout(readTimeout, TimeUnit.SECONDS)
-            .writeTimeout(10L, TimeUnit.SECONDS)
+            .writeTimeout(writeTimeout, TimeUnit.SECONDS)
             .build()
 
         // building request to API to get bored information
