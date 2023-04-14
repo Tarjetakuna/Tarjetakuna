@@ -51,7 +51,7 @@ class ScannerFragmentTest {
         intending(hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(result)
 
         onView(withId(R.id.button_scan)).perform(click())
-        onView(withId(R.id.image_card)).check(
+        onView(withId(R.id.imagePreview)).check(
             matches(
                 WithDrawableSafeMatcher.withDrawable(
                     imageBitmap

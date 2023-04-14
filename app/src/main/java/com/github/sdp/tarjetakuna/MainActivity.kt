@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -16,6 +17,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
 import com.github.sdp.tarjetakuna.ui.collectionexport.ExportCollection
+import com.github.sdp.tarjetakuna.ui.scanner.ScannerFragment
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
 import com.google.android.material.navigation.NavigationView
@@ -41,8 +43,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        val navController =
-            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
+        val navController = getNavController()
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home,
@@ -71,9 +72,11 @@ class MainActivity : AppCompatActivity() {
 
     // Change fragment
     fun changeFragment(fragment: Int, args: Bundle? = null) {
-        val navController =
-            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
-        navController.navigate(fragment, args)
+        getNavController().navigate(fragment, args)
+    }
+
+    fun navigateUp() {
+        getNavController().navigateUp()
     }
 
     /**
@@ -98,10 +101,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController =
-            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return getNavController().navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+    private fun getNavController(): NavController =
+        (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
 
     fun onClick(item: MenuItem) {
         when (item.itemId) {
@@ -109,5 +113,32 @@ class MainActivity : AppCompatActivity() {
                 ExportCollection.exportCollection(this)
             }
         }
+    }
+
+    /**
+     * When the user grants or denies permissions, the result is passed to the fragment that might have requested them
+     */
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == ScannerFragment.RQUSTCODE_PERMISSIONS) {
+            supportFragmentManager.fragments.forEach {
+                it.childFragmentManager.fragments.forEach { it2 ->
+                    if (it2 is ScannerFragment) {
+                        it2.requestPermissionsResult(
+                            requestCode,
+                            permissions,
+                            grantResults
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }

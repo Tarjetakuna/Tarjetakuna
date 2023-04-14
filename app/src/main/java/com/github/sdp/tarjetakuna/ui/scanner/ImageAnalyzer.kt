@@ -1,18 +1,52 @@
 package com.github.sdp.tarjetakuna.ui.scanner
 
-import android.graphics.Bitmap
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
+import com.google.android.gms.tasks.Task
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
-class ImageAnalyzer {
-    val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+/**
+ * ImageAnalyzer is a class that implements the ImageAnalysis.Analyzer interface to analyze the image at runtime.
+ * Analyzing is doing text recognition and object detection.
+ */
+class ImageAnalyzer(
+    private val textDetectedListener: TextDetectedListener,
+    private val objectDetectedListener: ObjectDetectedListener
+) : ImageAnalysis.Analyzer {
 
-    fun detectText(bitmap: Bitmap, callback: (Text) -> Unit, errorCallback: (Exception) -> Unit) {
-        val image = InputImage.fromBitmap(bitmap, 0)
-        val result = recognizer.process(image)
-            .addOnSuccessListener { visionText -> callback(visionText) }
-            .addOnFailureListener { e -> errorCallback(e) }
+    private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+
+    /**
+     * Detects text in the image.
+     */
+    private fun detectText(
+        image: InputImage
+    ): Task<Text> {
+        return recognizer.process(image)
+            .addOnSuccessListener { visionText -> textDetectedListener.callback(visionText) }
+            .addOnFailureListener { e -> textDetectedListener.errorCallback(e) }
+    }
+
+    /**
+     * Detects objects in the image.
+     */
+    private fun detectObject(image: InputImage) {
+        TODO("not implemented yet")
+    }
+
+    /**
+     * Analyzes the image, called by the camera.
+     */
+    @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
+    override fun analyze(imageProxy: ImageProxy) {
+        val mediaImage = imageProxy.image
+        if (mediaImage != null) {
+            val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+            detectObject(image)
+//            detectText(image)
+        }
     }
 }
