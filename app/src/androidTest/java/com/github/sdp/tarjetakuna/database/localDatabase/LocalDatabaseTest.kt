@@ -9,6 +9,7 @@ import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.database.local.MagicCardEntity
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -41,8 +42,10 @@ class LocalDatabaseTest {
     fun testInsertCard() {
         var databaseCards: List<MagicCardEntity>
         runBlocking {
-            database.magicCardDao().insertCard(cards[0])
-            databaseCards = database.magicCardDao().getAllCards()
+            withTimeout(5000) {
+                database.magicCardDao().insertCard(cards[0])
+                databaseCards = database.magicCardDao().getAllCards()
+            }
         }
         assert(databaseCards.isNotEmpty())
         assert(databaseCards[0].name == cards[0].name)
@@ -53,7 +56,9 @@ class LocalDatabaseTest {
     fun testEmptyDatabase() {
         var databaseCards: List<MagicCardEntity>
         runBlocking {
-            databaseCards = database.magicCardDao().getAllCards()
+            withTimeout(5000) {
+                databaseCards = database.magicCardDao().getAllCards()
+            }
         }
         assert(databaseCards.isEmpty())
     }
@@ -62,9 +67,11 @@ class LocalDatabaseTest {
     fun testDeleteCard() {
         var databaseCards: List<MagicCardEntity>
         runBlocking {
-            database.magicCardDao().insertCard(cards[5])
-            database.magicCardDao().deleteCard(cards[5])
-            databaseCards = database.magicCardDao().getAllCards()
+            withTimeout(5000) {
+                database.magicCardDao().insertCard(cards[5])
+                database.magicCardDao().deleteCard(cards[5])
+                databaseCards = database.magicCardDao().getAllCards()
+            }
         }
         assert(databaseCards.isEmpty())
     }
@@ -73,9 +80,11 @@ class LocalDatabaseTest {
     fun testAdd2Cards() {
         var databaseCards: List<MagicCardEntity>
         runBlocking {
-            database.magicCardDao().insertCard(cards[0])
-            database.magicCardDao().insertCard(cards[1])
-            databaseCards = database.magicCardDao().getAllCards()
+            withTimeout(5000) {
+                database.magicCardDao().insertCard(cards[0])
+                database.magicCardDao().insertCard(cards[1])
+                databaseCards = database.magicCardDao().getAllCards()
+            }
         }
         assert(databaseCards.isNotEmpty())
         assert(databaseCards[0].name == cards[0].name)
@@ -87,13 +96,14 @@ class LocalDatabaseTest {
     fun testDeleteAll() {
         var databaseCards: List<MagicCardEntity>
         runBlocking {
-            for (i in 0..5) {
-                database.magicCardDao().insertCard(cards[i])
+            withTimeout(5000) {
+                for (i in 0..5) {
+                    database.magicCardDao().insertCard(cards[i])
+                }
+                database.magicCardDao().deleteAllCards()
+                databaseCards = database.magicCardDao().getAllCards()
             }
-            database.magicCardDao().deleteAllCards()
-            databaseCards = database.magicCardDao().getAllCards()
         }
-
         assert(databaseCards.isEmpty())
     }
 }

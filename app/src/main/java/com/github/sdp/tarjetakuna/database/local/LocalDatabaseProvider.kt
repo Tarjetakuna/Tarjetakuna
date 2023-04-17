@@ -33,4 +33,11 @@ object LocalDatabaseProvider {
         localDatabase?.close()
         localDatabase = null
     }
+
+    /**
+     * Get the local database
+     */
+    fun getDatabase(): AppDatabase? {
+        return localDatabase
+    }
 }

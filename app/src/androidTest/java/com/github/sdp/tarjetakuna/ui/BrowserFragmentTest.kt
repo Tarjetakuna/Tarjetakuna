@@ -2,6 +2,7 @@ package com.github.sdp.tarjetakuna.ui
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -11,6 +12,10 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
+import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -24,6 +29,17 @@ class BrowserFragmentTest {
     @Before
     fun setUp() {
         Intents.init()
+
+        LocalDatabaseProvider.setTestDatabase(ApplicationProvider.getApplicationContext())
+        runBlocking {
+            withTimeout(5000) {
+                for (i in generateCards()) {
+                    LocalDatabaseProvider.getDatabase()?.magicCardDao()
+                        ?.insertCard(i.toMagicCardEntity())
+                }
+            }
+        }
+
         activityRule = ActivityScenario.launch(MainActivity::class.java)
 
         // Get a reference to the fragment's view
@@ -34,6 +50,7 @@ class BrowserFragmentTest {
 
     @After
     fun after() {
+        LocalDatabaseProvider.closeDatabase()
         activityRule.close()
         Intents.release()
     }
