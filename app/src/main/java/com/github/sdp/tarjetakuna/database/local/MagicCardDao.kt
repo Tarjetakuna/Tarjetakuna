@@ -1,9 +1,6 @@
 package com.github.sdp.tarjetakuna.database.local
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 /**
  * Represents a Magic card data access object.
@@ -14,9 +11,9 @@ interface MagicCardDao {
     @Query("SELECT * FROM magic_card")
     suspend fun getAllCards(): List<MagicCardEntity>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCard(card: MagicCardEntity)
-
+    
     @Delete
     suspend fun deleteCard(card: MagicCardEntity)
 

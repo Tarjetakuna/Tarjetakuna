@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.github.sdp.tarjetakuna.database.FBCardPossession
 import com.github.sdp.tarjetakuna.database.FBMagicCard
 import com.github.sdp.tarjetakuna.database.UserCardsRTDB
+import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.google.gson.Gson
 
@@ -14,6 +15,7 @@ import com.google.gson.Gson
  */
 class SingleCardViewModel : ViewModel() {
 
+    lateinit var localDatabase: AppDatabase
     lateinit var card: MagicCard
 
     private val _isConnected = MutableLiveData<Boolean>()

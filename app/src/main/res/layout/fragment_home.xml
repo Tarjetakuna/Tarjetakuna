@@ -36,6 +36,17 @@
         app:layout_constraintVertical_bias="0.303" />
 
     <Button
+        android:id="@+id/addRandomCardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+
+        android:text="@string/add_a_random_card"
+        app:layout_constraintBottom_toTopOf="@+id/filterFragmentButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
         android:id="@+id/filterFragmentButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

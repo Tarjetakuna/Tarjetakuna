@@ -10,10 +10,9 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.database.local.AppDatabase
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentBrowserBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.google.gson.Gson
@@ -39,22 +38,19 @@ class BrowserFragment : Fragment() {
         val root: View = binding.root
 
         // Set the local database
-        browserViewModel.database =
-            Room.databaseBuilder(requireContext(), AppDatabase::class.java, "cards").build()
+        browserViewModel.localDatabase =
+            LocalDatabaseProvider.setDatabase(requireContext(), "cards")
 
         binding.browserListCards.layoutManager = LinearLayoutManager(context)
-        val adapter = DisplayCardsAdapter(arrayListOf())
-//        val adapter = DisplayCardsAdapter(browserViewModel.initialCards)
-//        val adapter = DisplayCardsAdapter(browserViewModel.getCardsFromDatabase())
-        binding.browserListCards.adapter = adapter
-
         initSearchBar(browserViewModel)
-        initOnCardClickListener(adapter)
 
         // update the recycler view when the cards are retrieved from the database
         browserViewModel.getCardsFromDatabase()
         browserViewModel.cards.observe(viewLifecycleOwner) {
-            binding.browserListCards.adapter = DisplayCardsAdapter(it)
+            val adapter = DisplayCardsAdapter(it)
+            binding.browserListCards.adapter = adapter
+            initOnCardClickListener(adapter)
+
         }
         return root
     }
@@ -71,7 +67,7 @@ class BrowserFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val adapter = DisplayCardsAdapter(
-                    browserViewModel.initialCards.filter { card ->
+                    browserViewModel.cards.value?.filter { card ->
                         card.name.contains(newText!!, true)
                     } as ArrayList<MagicCard>
                 )

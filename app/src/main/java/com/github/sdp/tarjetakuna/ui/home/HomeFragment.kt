@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
@@ -60,6 +61,9 @@ class HomeFragment : Fragment() {
 
         }
 
+        // TODO remove when not owned card search is implemented
+        homeViewModel.localDatabase = LocalDatabaseProvider.setDatabase(requireContext(), "cards")
+
         //val plainText: EditText = binding.mainName2
         val button: Button = binding.mainGoButton2
         button.setOnClickListener {
@@ -81,6 +85,11 @@ class HomeFragment : Fragment() {
         authenticationButton.setOnClickListener {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.changeFragment(R.id.nav_authentication_button)
+        }
+
+        val addRandomCardButton: Button = binding.addRandomCardButton
+        addRandomCardButton.setOnClickListener {
+            homeViewModel.addRandomCard()
         }
 
         return root

@@ -96,5 +96,6 @@
     <string name="single_card_showing_add_to_wanted">add to wanted cards</string>
     <string name="single_card_showing_remove_wanted">remove from wanted cards</string>
     <string name="single_card_ask_connection">Please connect if you want to manage the card</string>
+    <string name="add_a_random_card">add a random card</string>
 
 </resources>

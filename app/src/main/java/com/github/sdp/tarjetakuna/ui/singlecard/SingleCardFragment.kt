@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentSingleCardBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicType
@@ -35,6 +36,9 @@ class SingleCardFragment : Fragment() {
 
 
         loadCardFromJson()
+
+        // Initialize the local database
+        viewModel.localDatabase = LocalDatabaseProvider.setDatabase(requireContext(), "cards")
 
         viewModel.checkUserConnected()
         viewModel.isConnected.observe(viewLifecycleOwner) {
