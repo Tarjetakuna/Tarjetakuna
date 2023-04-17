@@ -1,5 +1,8 @@
 package com.github.sdp.tarjetakuna.model
 
+import com.github.sdp.tarjetakuna.database.local.MagicCardEntity
+import com.google.gson.Gson
+
 /**
  * Represents a Magic card.
  */
@@ -97,5 +100,27 @@ data class MagicCard(
         for (subtype in subtypes) {
             require(subtype.isNotBlank()) { "Subtype cannot be blank" }
         }
+    }
+
+    /**
+     * Converts a MagicCard to a MagicCardEntity.
+     */
+    fun toMagicCardEntity(): MagicCardEntity {
+        return MagicCardEntity(
+            name = name,
+            text = text,
+            layout = layout,
+            convertedManaCost = convertedManaCost,
+            manaCost = manaCost,
+            set = Gson().toJson(set),
+            number = number,
+            imageUrl = imageUrl,
+            rarity = rarity,
+            type = type,
+            subtypes = Gson().toJson(subtypes),
+            power = power,
+            toughness = toughness,
+            artist = artist
+        )
     }
 }
