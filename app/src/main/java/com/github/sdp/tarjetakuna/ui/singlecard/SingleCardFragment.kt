@@ -36,7 +36,6 @@ class SingleCardFragment : Fragment() {
 
 
         loadCardFromJson()
-
         // Initialize the local database
         viewModel.localDatabase = LocalDatabaseProvider.setDatabase(requireContext(), "cards")
 

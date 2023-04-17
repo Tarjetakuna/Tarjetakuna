@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna.model
 
+import com.github.sdp.tarjetakuna.database.FBCardPossession
 import com.github.sdp.tarjetakuna.database.local.MagicCardEntity
 import com.google.gson.Gson
 
@@ -105,7 +106,7 @@ data class MagicCard(
     /**
      * Converts a MagicCard to a MagicCardEntity.
      */
-    fun toMagicCardEntity(): MagicCardEntity {
+    fun toMagicCardEntity(possession: FBCardPossession): MagicCardEntity {
         return MagicCardEntity(
             name = name,
             text = text,
@@ -120,7 +121,15 @@ data class MagicCard(
             subtypes = Gson().toJson(subtypes),
             power = power,
             toughness = toughness,
-            artist = artist
+            artist = artist,
+            possession = possession
         )
+    }
+
+    /**
+     * Converts a MagicCard to a MagicCardEntity with default posession none.
+     */
+    fun toMagicCardEntity(): MagicCardEntity {
+        return toMagicCardEntity(FBCardPossession.NONE)
     }
 }

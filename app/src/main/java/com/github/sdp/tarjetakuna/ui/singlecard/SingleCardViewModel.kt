@@ -15,7 +15,7 @@ import com.google.gson.Gson
  */
 class SingleCardViewModel : ViewModel() {
 
-    lateinit var localDatabase: AppDatabase
+    var localDatabase: AppDatabase? = null
     lateinit var card: MagicCard
 
     private val _isConnected = MutableLiveData<Boolean>()

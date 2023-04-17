@@ -2,41 +2,47 @@ package com.github.sdp.tarjetakuna
 
 import android.os.Bundle
 import androidx.navigation.Navigation
+import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.sdp.tarjetakuna.model.MagicCard
-import com.github.sdp.tarjetakuna.model.MagicLayout
-import com.github.sdp.tarjetakuna.model.MagicSet
+import com.github.sdp.tarjetakuna.database.local.AppDatabase
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
+import com.github.sdp.tarjetakuna.database.local.MagicCardEntity
+import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import com.google.gson.Gson
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import org.hamcrest.Matchers
-import org.junit.Rule
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class HomeFragmentTest {
 
-    val cards: ArrayList<MagicCard> = arrayListOf(
-        MagicCard(
-            "Meandering Towershell", "Islandwalk",
-            MagicLayout.Normal, 5, "{3}{G}{G}",
-            MagicSet("MT15", "Magic 2015"), 141,
-            "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=386602"
-        ),
-        MagicCard(
-            "Angel of Mercy", "Flying",
-            MagicLayout.Normal, 5, "{4}{W}",
-            MagicSet("MT15", "Magic 2015"), 1,
-            "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=82992"
-        )
-    )
+    private val cards = generateCards()
+    private lateinit var database: AppDatabase
 
-    @get:Rule
-    public val activityRule = ActivityScenarioRule(MainActivity::class.java)
+
+    private lateinit var activityRule: ActivityScenario<MainActivity>
+
+    @Before
+    fun setUp() {
+        database =
+            LocalDatabaseProvider.setTestDatabase(ApplicationProvider.getApplicationContext())
+        activityRule = ActivityScenario.launch(MainActivity::class.java)
+
+    }
+
+    @After
+    fun tearDown() {
+        LocalDatabaseProvider.closeDatabase()
+    }
 
     @Test
     fun testFilterButtonWorks() {
@@ -44,7 +50,7 @@ class HomeFragmentTest {
         val bundle = Bundle()
         bundle.putString("cards", Gson().toJson(cards))
 
-        activityRule.scenario.onActivity { activity ->
+        activityRule.onActivity { activity ->
             activity.changeFragment(R.id.nav_filter, bundle)
             val navController =
                 Navigation.findNavController(activity, R.id.nav_host_fragment_content_drawer)
@@ -53,5 +59,17 @@ class HomeFragmentTest {
                 Matchers.equalTo(R.id.nav_filter)
             )
         }
+    }
+
+    @Test
+    fun buttonAddRandomCardWorks() {
+        val databaseCards: List<MagicCardEntity>
+        onView(withId(R.id.addRandomCardButton)).perform(click())
+        runBlocking {
+            withTimeout(5000) {
+                databaseCards = database.magicCardDao().getAllCards()
+            }
+        }
+        assert(databaseCards.isNotEmpty())
     }
 }

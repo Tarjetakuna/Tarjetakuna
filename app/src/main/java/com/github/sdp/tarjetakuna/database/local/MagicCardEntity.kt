@@ -1,6 +1,7 @@
 package com.github.sdp.tarjetakuna.database.local
 
 import androidx.room.Entity
+import com.github.sdp.tarjetakuna.database.FBCardPossession
 import com.github.sdp.tarjetakuna.model.*
 import com.google.gson.Gson
 
@@ -87,23 +88,36 @@ data class MagicCardEntity(
      * The card artist.
      */
     val artist: String = "Unknown artist",
-) {
-//    init {
-//        require(name.isNotBlank()) { "Name cannot be blank" }
-//        require(text.isNotBlank()) { "Text cannot be blank" }
-//        require(convertedManaCost >= 0) { "CMC cannot be negative" }
-//        require(manaCost.isNotBlank()) { "Mana cost cannot be blank" } //TODO : parsing
-//        require(number > 0) { "Number cannot be negative or zero" }
-//        require(imageUrl.isNotBlank()) { "Image url cannot be blank" }
-//        require(power.isNotBlank()) { "Power cannot be blank" }
-//        require(toughness.isNotBlank()) { "Toughness cannot be blank" }
-//        require(artist.isNotBlank()) { "Artist cannot be blank" }
-//
-//        for (subtype in subtypes) {
-//            require(subtype.isNotBlank()) { "Subtype cannot be blank" }
-//        }
-//    }
 
+    /**
+     * The card possession
+     */
+    val possession: FBCardPossession = FBCardPossession.NONE
+) {
+    /**
+     * Creates a MagicCardEntity from a MagicCard and a possession.
+     */
+    constructor(card: MagicCard, possession: FBCardPossession) : this(
+        name = card.name,
+        text = card.text,
+        layout = card.layout,
+        convertedManaCost = card.convertedManaCost,
+        manaCost = card.manaCost,
+        set = Gson().toJson(card.set),
+        number = card.number,
+        imageUrl = card.imageUrl,
+        rarity = card.rarity,
+        type = card.type,
+        subtypes = Gson().toJson(card.subtypes),
+        power = card.power,
+        toughness = card.toughness,
+        artist = card.artist,
+        possession = possession
+    )
+
+    /**
+     * Converts the entity to a MagicCard.
+     */
     fun toMagicCard(): MagicCard {
         return MagicCard(
             name = name,

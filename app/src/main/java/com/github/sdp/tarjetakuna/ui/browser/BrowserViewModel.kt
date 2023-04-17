@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 
 class BrowserViewModel : ViewModel() {
 
-    lateinit var localDatabase: AppDatabase
+    var localDatabase: AppDatabase? = null
 
     // The cards that are displayed in the recycler view
     private val _cards: MutableLiveData<ArrayList<MagicCard>> = MutableLiveData()
@@ -25,9 +25,11 @@ class BrowserViewModel : ViewModel() {
         val cardsArray = ArrayList<MagicCard>()
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val cards = localDatabase.magicCardDao().getAllCards()
-                for (card in cards) {
-                    cardsArray.add(card.toMagicCard())
+                val cards = localDatabase?.magicCardDao()?.getAllCards()
+                if (cards != null) {
+                    for (card in cards) {
+                        cardsArray.add(card.toMagicCard())
+                    }
                 }
             }
         }.invokeOnCompletion {
