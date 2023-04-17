@@ -1,11 +1,36 @@
 package com.github.sdp.tarjetakuna.ui.browser
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sdp.tarjetakuna.model.*
 
 class BrowserViewModel : ViewModel() {
 
-    val initialCards: ArrayList<MagicCard> = generateCards()
+    private val _filterState = MutableLiveData<FilterState>()
+    private val _initialCards = MutableLiveData<ArrayList<MagicCard>>()
+    val filterState: MutableLiveData<FilterState> = _filterState
+    val initialCards: MutableLiveData<ArrayList<MagicCard>> = _initialCards
+
+    init {
+        _filterState.value = FilterState()
+        _initialCards.value = applyFilter(filterState.value!!)
+    }
+
+    fun setFilterState(filterState: FilterState) {
+        _filterState.value = filterState
+    }
+
+    fun updateFilterType(filterType: FilterType) {
+        _filterState.value = FilterState(filterType, _filterState.value!!.filterValue)
+    }
+
+    fun updateFilterValue(filterValue: String) {
+        _filterState.value = FilterState(_filterState.value!!.filterType, filterValue)
+    }
+
+    fun setInitialCards(filterState: FilterState) {
+        _initialCards.value = applyFilter(filterState)
+    }
 
     /**
      * TODO change it when we have the web api to get the cards
@@ -58,5 +83,22 @@ class BrowserViewModel : ViewModel() {
             )
         )
         return cardsArray
+    }
+
+    /**
+     * Apply the filter to the cards
+     */
+    private fun applyFilter(filterState: FilterState): ArrayList<MagicCard> {
+        val cardsArray = generateCards()
+        return when (filterState.filterType) {
+            FilterType.NONE -> cardsArray
+            FilterType.NAME -> cardsArray.filter { it.name.contains(filterState.filterValue, true) }
+            FilterType.SET -> cardsArray.filter {
+                it.set.name.contains(
+                    filterState.filterValue,
+                    true
+                )
+            }
+        } as ArrayList<MagicCard>
     }
 }

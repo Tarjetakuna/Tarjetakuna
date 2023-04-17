@@ -96,5 +96,10 @@
     <string name="single_card_showing_add_to_wanted">add to wanted cards</string>
     <string name="single_card_showing_remove_wanted">remove from wanted cards</string>
     <string name="single_card_ask_connection">Please connect if you want to manage the card</string>
+    <string name="browserFragment_filter">Filter</string>
+    <string name="browserFragment_sort">Sort</string>
+    <string name="browserFragment_filter_by_set">By set:</string>
+    <string name="browserFragment_enter_set_code">Enter the set code</string>
+    <string name="browserFragment_apply">Apply</string>
 
 </resources>

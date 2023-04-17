@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentBrowserBinding
-import com.github.sdp.tarjetakuna.model.MagicCard
 import com.google.gson.Gson
 
 /**
@@ -22,6 +21,7 @@ import com.google.gson.Gson
 class BrowserFragment : Fragment() {
 
     private var _binding: FragmentBrowserBinding? = null
+    private lateinit var viewModel: BrowserViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -31,17 +31,23 @@ class BrowserFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val browserViewModel = ViewModelProvider(this)[BrowserViewModel::class.java]
-
+        viewModel = ViewModelProvider(this)[BrowserViewModel::class.java]
         _binding = FragmentBrowserBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.browserListCards.layoutManager = LinearLayoutManager(context)
-        val adapter = DisplayCardsAdapter(browserViewModel.initialCards)
-        binding.browserListCards.adapter = adapter
+        viewModel.filterState.observe(viewLifecycleOwner) {
+            viewModel.setInitialCards(it)
+        }
 
-        initSearchBar(browserViewModel)
-        initOnCardClickListener(adapter)
+        viewModel.initialCards.observe(viewLifecycleOwner) {
+            binding.browserListCards.layoutManager = LinearLayoutManager(context)
+            val adapter = DisplayCardsAdapter(it)
+            binding.browserListCards.adapter = adapter
+            initOnCardClickListener(adapter)
+        }
+
+        initSearchBar(viewModel)
+        initFilterButtonsListener()
 
         return root
     }
@@ -57,25 +63,13 @@ class BrowserFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val adapter = DisplayCardsAdapter(
-                    browserViewModel.initialCards.filter { card ->
-                        card.name.contains(newText!!, true)
-                    } as ArrayList<MagicCard>
-                )
-                initOnCardClickListener(adapter)
-                binding.browserListCards.adapter = adapter
+                browserViewModel.updateFilterValue(newText!!)
                 return true
             }
         })
         //Close keyboard when the search bar is closed
         binding.browserSearchbar.setOnCloseListener {
-            getSystemService(
-                requireContext(),
-                InputMethodManager::class.java
-            )?.hideSoftInputFromWindow(
-                binding.browserSearchbar.windowToken,
-                0
-            )
+            hideKeyboard()
             true
         }
     }
@@ -97,9 +91,36 @@ class BrowserFragment : Fragment() {
             }
     }
 
+    private fun initFilterButtonsListener() {
+        binding.browserFilterButton.setOnClickListener {
+            val currentState = binding.filterBox.visibility
+            if (currentState == View.VISIBLE) {
+                binding.filterBox.visibility = View.GONE
+            } else {
+                binding.filterBox.visibility = View.VISIBLE
+            }
+            hideKeyboard()
+        }
+
+        binding.filterBySetButton.setOnClickListener {
+            viewModel.setFilterState(
+                FilterState(
+                    FilterType.SET,
+                    binding.filterBySetEdittext.text.toString()
+                )
+            )
+            hideKeyboard()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun hideKeyboard() {
+        val imm = getSystemService(requireContext(), InputMethodManager::class.java)
+        imm?.hideSoftInputFromWindow(binding.browserSearchbar.windowToken, 0)
     }
 
 }
