@@ -1,11 +1,14 @@
 package com.github.sdp.tarjetakuna.ui.singlecard
 
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentSingleCardBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
@@ -35,6 +38,13 @@ class SingleCardFragment : Fragment() {
 
 
         loadCardFromJson()
+
+        binding.singleCardTextCardSet.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("set", Gson().toJson(viewModel.card.set))
+            //TODO : Should be changed to remove the dependency on MainActivity
+            (requireActivity() as MainActivity).changeFragment(R.id.nav_single_set, bundle)
+        }
 
         viewModel.checkUserConnected()
         viewModel.isConnected.observe(viewLifecycleOwner) {
@@ -84,8 +94,9 @@ class SingleCardFragment : Fragment() {
 
             // display the card
             binding.singleCardTextCardName.text = card.name
-            binding.singleCardTextCardSet.text =
-                getString(R.string.single_card_showing_set, card.set.name, card.set.code)
+            val spannableSet = SpannableString(getString(R.string.single_card_showing_set, card.set.name, card.set.code))
+            spannableSet.setSpan(UnderlineSpan(), 0, spannableSet.length, 0)
+            binding.singleCardTextCardSet.text = spannableSet
             binding.singleCardTextCardNumber.text =
                 getString(R.string.single_card_showing_number, card.number)
             binding.singleCardTextCardText.text = card.text
