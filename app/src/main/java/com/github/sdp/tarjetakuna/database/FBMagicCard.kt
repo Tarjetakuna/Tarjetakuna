@@ -7,6 +7,7 @@ import com.github.sdp.tarjetakuna.model.MagicCard
 < */
 data class FBMagicCard(
     val card: MagicCard,
-    val possession: FBCardPossession = FBCardPossession.NONE
+    val possession: FBCardPossession = FBCardPossession.NONE,
+    val lastUpdate: Long = System.currentTimeMillis()
 ) {
 }

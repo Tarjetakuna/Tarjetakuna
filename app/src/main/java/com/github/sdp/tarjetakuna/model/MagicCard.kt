@@ -108,20 +108,7 @@ data class MagicCard(
      */
     fun toMagicCardEntity(possession: FBCardPossession): MagicCardEntity {
         return MagicCardEntity(
-            name = name,
-            text = text,
-            layout = layout,
-            convertedManaCost = convertedManaCost,
-            manaCost = manaCost,
-            set = Gson().toJson(set),
-            number = number,
-            imageUrl = imageUrl,
-            rarity = rarity,
-            type = type,
-            subtypes = Gson().toJson(subtypes),
-            power = power,
-            toughness = toughness,
-            artist = artist,
+            magicCard = Gson().toJson(this),
             possession = possession
         )
     }

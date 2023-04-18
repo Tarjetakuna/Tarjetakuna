@@ -8,12 +8,16 @@ import androidx.room.*
 
 @Dao
 interface MagicCardDao {
+
+    @Query("SELECT * FROM magic_card WHERE 'set' = :set AND 'number' = :number")
+    suspend fun getCard(set: String, number: String): MagicCardEntity?
+
     @Query("SELECT * FROM magic_card")
     suspend fun getAllCards(): List<MagicCardEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCard(card: MagicCardEntity)
-    
+
     @Delete
     suspend fun deleteCard(card: MagicCardEntity)
 
