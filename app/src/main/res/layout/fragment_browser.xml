@@ -15,22 +15,31 @@
             android:id="@+id/browser_searchbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="8dp" />
+            android:layout_weight="2"
+            android:layout_margin="4dp" />
 
         <Button
             android:id="@+id/browser_filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/browserFragment_filter"
-            android:layout_margin="8dp" />
+            android:layout_margin="4dp" />
 
         <Button
             android:id="@+id/browser_sort_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/browserFragment_sort"
-            android:layout_margin="8dp" />
+            android:layout_margin="4dp" />
+
+
+        <ImageButton
+            android:id="@+id/clear_filters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:contentDescription="@string/browserFragment_clear_filters" />
 
     </LinearLayout>
 
@@ -54,7 +63,7 @@
                 android:textSize="16sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:text="@string/browserFragment_filter_by_set" />
 
@@ -64,7 +73,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:hint="@string/browserFragment_enter_set_code"
                 android:autofillHints="@string/browserFragment_enter_set_code"
                 android:inputType="text" />
@@ -73,7 +82,7 @@
                 android:id="@+id/filter_by_set_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:layout_margin="8dp"
                 android:text="@string/browserFragment_apply" />
 
@@ -84,25 +93,33 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/filter_by_mana_textview"
+                android:textSize="16sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:text="@string/browserFragment_filter_by_mana" />
+
+            <EditText
+                android:id="@+id/filter_by_mana_edittext"
+                android:textSize="16sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="2"
+                android:hint="@string/browserFragment_enter_manacost"
+                android:autofillHints="@string/browserFragment_enter_manacost"
+                android:inputType="text" />
+
             <Button
-                android:id="@+id/filter_by_color_button"
+                android:id="@+id/filter_by_mana_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="8dp"
-                android:text="@string/browserFragment_filter_by_set" />
-
-
-            <EditText
-                android:id="@+id/filter_by_color_textview"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:layout_margin="8dp"
-                android:hint="@string/browserFragment_enter_set_code"
-                android:autofillHints="@string/browserFragment_enter_set_code"
-                android:inputType="text" />
+                android:text="@string/browserFragment_apply" />
 
         </LinearLayout>
 
@@ -110,12 +127,60 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/sort_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:background="#83F31B5F">
+
+        <Button
+            android:id="@+id/sort_by_name_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:text="@string/browserFragment_sort_by_name"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/sort_by_mana_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:text="@string/browserFragment_sort_by_mana"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/sort_by_rarity_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:text="@string/browserFragment_sort_by_rarity"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/sort_by_set_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:text="@string/browserFragment_sort_by_set"
+            style="?android:attr/buttonBarButtonStyle" />
+
+
+    </LinearLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/browser_list_cards"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingBottom="30dp" />
-
 
 </LinearLayout>

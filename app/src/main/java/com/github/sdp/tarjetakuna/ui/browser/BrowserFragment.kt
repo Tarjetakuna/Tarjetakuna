@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentBrowserBinding
+import com.github.sdp.tarjetakuna.model.MagicCard
 import com.google.gson.Gson
 
 /**
@@ -35,8 +36,30 @@ class BrowserFragment : Fragment() {
         _binding = FragmentBrowserBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        initObservers()
+
+        initSearchBar(viewModel)
+        initFilterButtonsListener()
+        initSorterButtonsListener()
+
+        return root
+    }
+
+    /**
+     * Initialize the different observers to apply the different filters and sorters
+     */
+    private fun initObservers() {
+
+        viewModel.searchState.observe(viewLifecycleOwner) {
+            viewModel.setInitialCards()
+        }
+
         viewModel.filterState.observe(viewLifecycleOwner) {
-            viewModel.setInitialCards(it)
+            viewModel.setInitialCards()
+        }
+
+        viewModel.sorterState.observe(viewLifecycleOwner) {
+            viewModel.setInitialCards()
         }
 
         viewModel.initialCards.observe(viewLifecycleOwner) {
@@ -45,11 +68,6 @@ class BrowserFragment : Fragment() {
             binding.browserListCards.adapter = adapter
             initOnCardClickListener(adapter)
         }
-
-        initSearchBar(viewModel)
-        initFilterButtonsListener()
-
-        return root
     }
 
     /**
@@ -63,7 +81,7 @@ class BrowserFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                browserViewModel.updateFilterValue(newText!!)
+                browserViewModel.setSearchState(newText!!)
                 return true
             }
         })
@@ -91,12 +109,18 @@ class BrowserFragment : Fragment() {
             }
     }
 
+
+    /**
+     * Initialize all the Listeners needed for the buttons that filter the cards
+     */
     private fun initFilterButtonsListener() {
+
         binding.browserFilterButton.setOnClickListener {
             val currentState = binding.filterBox.visibility
             if (currentState == View.VISIBLE) {
                 binding.filterBox.visibility = View.GONE
             } else {
+                binding.sortBox.visibility = View.GONE
                 binding.filterBox.visibility = View.VISIBLE
             }
             hideKeyboard()
@@ -110,6 +134,74 @@ class BrowserFragment : Fragment() {
                 )
             )
             hideKeyboard()
+        }
+
+        binding.filterByManaButton.setOnClickListener {
+            val value = binding.filterByManaEdittext.text.toString().toIntOrNull()
+            if (value == null || value < 0) {
+                viewModel.setFilterState(FilterState(FilterType.NONE, ""))
+            } else {
+                viewModel.setFilterState(
+                    FilterState(
+                        FilterType.MANA,
+                        binding.filterByManaEdittext.text.toString()
+                    )
+                )
+            }
+            hideKeyboard()
+        }
+
+        binding.clearFilters.setOnClickListener {
+            viewModel.setFilterState(FilterState(FilterType.NONE, ""))
+            viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
+                o1.name.compareTo(o2.name)
+            }
+            hideKeyboard()
+        }
+    }
+
+    /**
+     * Initialize all the Listeners needed for the buttons that sort the cards
+     */
+    private fun initSorterButtonsListener() {
+        binding.browserSortButton.setOnClickListener {
+            val currentState = binding.sortBox.visibility
+            if (currentState == View.VISIBLE) {
+                binding.sortBox.visibility = View.GONE
+            } else {
+                binding.filterBox.visibility = View.GONE
+                binding.sortBox.visibility = View.VISIBLE
+            }
+            hideKeyboard()
+        }
+
+        binding.sortByNameButton.setOnClickListener {
+            viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
+                o1.name.compareTo(o2.name)
+            }
+        }
+
+        binding.sortByManaButton.setOnClickListener {
+            viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
+                o1.manaCost.compareTo(o2.manaCost)
+            }
+        }
+
+        binding.sortByRarityButton.setOnClickListener {
+            viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
+                o1.rarity.ordinal.compareTo(o2.rarity.ordinal)
+            }
+        }
+
+        binding.sortBySetButton.setOnClickListener {
+            viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
+                val result = o1.set.name.compareTo(o2.set.name)
+                if (result == 0) {
+                    o1.number.compareTo(o2.number)
+                } else {
+                    result
+                }
+            }
         }
     }
 

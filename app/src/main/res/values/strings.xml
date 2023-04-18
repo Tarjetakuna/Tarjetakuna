@@ -101,5 +101,12 @@
     <string name="browserFragment_filter_by_set">By set:</string>
     <string name="browserFragment_enter_set_code">Enter the set code</string>
     <string name="browserFragment_apply">Apply</string>
+    <string name="browserFragment_filter_by_mana">By mana:</string>
+    <string name="browserFragment_enter_manacost">Enter the mana cost:</string>
+    <string name="browserFragment_sort_by_mana">Mana</string>
+    <string name="browserFragment_sort_by_name">Name</string>
+    <string name="browserFragment_sort_by_rarity">Rarity</string>
+    <string name="browserFragment_clear_filters">Clear all the filters</string>
+    <string name="browserFragment_sort_by_set">Set</string>
 
 </resources>

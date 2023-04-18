@@ -6,30 +6,48 @@ import com.github.sdp.tarjetakuna.model.*
 
 class BrowserViewModel : ViewModel() {
 
+    private val _searchState = MutableLiveData<String>()
     private val _filterState = MutableLiveData<FilterState>()
+    private val _sorterState = MutableLiveData<Comparator<MagicCard>>()
     private val _initialCards = MutableLiveData<ArrayList<MagicCard>>()
+    val searchState: MutableLiveData<String> = _searchState
     val filterState: MutableLiveData<FilterState> = _filterState
+    val sorterState: MutableLiveData<Comparator<MagicCard>> = _sorterState
     val initialCards: MutableLiveData<ArrayList<MagicCard>> = _initialCards
 
     init {
+        _searchState.value = ""
         _filterState.value = FilterState()
-        _initialCards.value = applyFilter(filterState.value!!)
+        _sorterState.value = Comparator { card1, card2 -> card1.name.compareTo(card2.name) }
+        _initialCards.value = applyFilters()
     }
 
+    /**
+     * Change the state of the search bar
+     */
+    fun setSearchState(searchState: String) {
+        _searchState.value = searchState
+    }
+
+    /**
+     * Change the state of the filter
+     */
     fun setFilterState(filterState: FilterState) {
         _filterState.value = filterState
     }
 
-    fun updateFilterType(filterType: FilterType) {
-        _filterState.value = FilterState(filterType, _filterState.value!!.filterValue)
+    /**
+     * Change the state of the sorter
+     */
+    fun setSorterState(sorterState: Comparator<MagicCard>) {
+        _sorterState.value = sorterState
     }
 
-    fun updateFilterValue(filterValue: String) {
-        _filterState.value = FilterState(_filterState.value!!.filterType, filterValue)
-    }
-
-    fun setInitialCards(filterState: FilterState) {
-        _initialCards.value = applyFilter(filterState)
+    /**
+     * Apply the filters to the cards
+     */
+    fun setInitialCards() {
+        _initialCards.value = applyFilters()
     }
 
     /**
@@ -53,7 +71,7 @@ class BrowserViewModel : ViewModel() {
                 MagicSet("BRO", name),
                 1,
                 "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
-                MagicRarity.Common,
+                MagicRarity.Rare,
                 MagicType.Creature,
                 listOf("Human", "Soldier"),
                 "1",
@@ -69,8 +87,8 @@ class BrowserViewModel : ViewModel() {
                 "Pégase solgrâce",
                 "Vol\nLien de vie",
                 MagicLayout.Normal,
-                2,
-                "{1}{W}",
+                3,
+                "{1}{W}{W}",
                 MagicSet("M15", "Magic 2015"),
                 1,
                 "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
@@ -86,19 +104,32 @@ class BrowserViewModel : ViewModel() {
     }
 
     /**
-     * Apply the filter to the cards
+     * Apply the filter and the sorter to the list of cards
      */
-    private fun applyFilter(filterState: FilterState): ArrayList<MagicCard> {
+    private fun applyFilters(): ArrayList<MagicCard> {
         val cardsArray = generateCards()
-        return when (filterState.filterType) {
+        val searchState = searchState.value!!
+        val filterState = filterState.value!!
+        val sorterState = sorterState.value!!
+        val filteredArray = when (filterState.filterType) {
             FilterType.NONE -> cardsArray
-            FilterType.NAME -> cardsArray.filter { it.name.contains(filterState.filterValue, true) }
             FilterType.SET -> cardsArray.filter {
-                it.set.name.contains(
+                it.set.code.contains(
                     filterState.filterValue,
                     true
                 )
             }
-        } as ArrayList<MagicCard>
+            FilterType.MANA -> cardsArray.filter {
+                it.convertedManaCost == filterState.filterValue.toInt()
+            }
+        }
+
+        val nameFilteredArray = filteredArray.filter {
+            it.name.contains(
+                searchState,
+                true
+            )
+        }
+        return ArrayList(nameFilteredArray.sortedWith(sorterState))
     }
 }
