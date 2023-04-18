@@ -14,7 +14,7 @@
             android:id="@+id/singleSet_set_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="@string/single_set_error_loading"
             android:textAlignment="center"
             android:textSize="34sp"
             android:textStyle="bold" />
@@ -23,7 +23,36 @@
             android:id="@+id/singleSet_set_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="@string/single_set_code"
+            android:textAlignment="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/singleSet_set_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/single_set_type"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/singleSet_set_block"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/single_set_block"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/singleSet_set_release_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/single_set_release_date"
             android:textAlignment="center" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

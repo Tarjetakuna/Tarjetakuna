@@ -1,5 +1,7 @@
 package com.github.sdp.tarjetakuna.model
 
+import java.time.LocalDate
+
 /**
  * Represents a Magic card.
  */
@@ -36,7 +38,13 @@ data class MagicCard(
      * The card set.
      * Example : MagicSet("M21", "Core Set 2021")
      */
-    val set: MagicSet = MagicSet("Unknown code", "Unknown name"),
+    val set: MagicSet = MagicSet(
+        "Unknown code",
+        "Unknown name",
+        "Unknown type",
+        "Unknown block",
+        LocalDate.now()
+    ),
 
     /**
      * The card number of the set.
@@ -58,7 +66,7 @@ data class MagicCard(
      * The card type.
      * Example : Creature
      */
-    val type: MagicType = MagicType.Creature,
+    val type: MagicCardType = MagicCardType.Creature,
 
     /**
      * The card subtypes.

@@ -26,7 +26,7 @@ import org.junit.runner.RunWith
  * This class is used to test the SingleCardFragment.
  */
 @RunWith(AndroidJUnit4::class)
-class SingleCardTest {
+class SingleCardFragmentTest {
 
     private lateinit var scenario: FragmentScenario<SingleCardFragment>
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -41,7 +41,7 @@ class SingleCardTest {
         1,
         "https://cards.scryfall.io/large/front/c/f/cfa00c0e-163d-4f59-b8b9-3ee9143d27bb.jpg?1674420138",
         MagicRarity.Common,
-        MagicType.Artifact,
+        MagicCardType.Artifact,
         listOf("Human", "Soldier"),
         "3",
         "2",
@@ -130,7 +130,7 @@ class SingleCardTest {
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
 
         val strStatsCreature =
-            if (validMagicCard.type == MagicType.Creature) " " + context.getString(
+            if (validMagicCard.type == MagicCardType.Creature) " " + context.getString(
                 R.string.single_card_showing_stats,
                 validMagicCard.power,
                 validMagicCard.toughness
@@ -207,7 +207,7 @@ class SingleCardTest {
     @Test
     fun testTypeTextWorkCorrectlyWithCreatureNoSubtype() {
         val anotherValidMagicCard =
-            validMagicCard.copy(type = MagicType.Creature, subtypes = listOf())
+            validMagicCard.copy(type = MagicCardType.Creature, subtypes = listOf())
         val anotherValidJson = Gson().toJson(anotherValidMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
@@ -245,7 +245,7 @@ class SingleCardTest {
      */
     @Test
     fun testTypeTextWorkCorrectlyWithCreatureWithSubtype() {
-        val anotherValidMagicCard = validMagicCard.copy(type = MagicType.Creature)
+        val anotherValidMagicCard = validMagicCard.copy(type = MagicCardType.Creature)
         val anotherValidJson = Gson().toJson(anotherValidMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)

@@ -38,9 +38,17 @@ class SingleSetFragment : Fragment() {
             val set = Gson().fromJson(arguments?.getString("set"), MagicSet::class.java)
             binding.singleSetSetName.text = set.name
             binding.singleSetSetCode.text = getString(R.string.single_set_code, set.code)
+            binding.singleSetSetType.text = getString(R.string.single_set_type, set.type)
+            binding.singleSetSetBlock.text = getString(R.string.single_set_block, set.block)
+            binding.singleSetSetReleaseDate.text =
+                getString(R.string.single_set_release_date, set.releaseDate.toString())
 
         } catch (e: Exception) {
             binding.singleSetSetName.text = getString(R.string.single_set_error_loading)
+            binding.singleSetSetCode.text = ""
+            binding.singleSetSetType.text = ""
+            binding.singleSetSetBlock.text = ""
+            binding.singleSetSetReleaseDate.text = ""
         }
     }
 }

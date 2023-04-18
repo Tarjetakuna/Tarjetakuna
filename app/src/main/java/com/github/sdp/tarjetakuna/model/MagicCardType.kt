@@ -3,7 +3,7 @@ package com.github.sdp.tarjetakuna.model
 /**
  * Represents a Magic type.
  */
-enum class MagicType {
+enum class MagicCardType {
     Artifact,
     Creature,
     Enchantment,
