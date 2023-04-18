@@ -412,7 +412,7 @@ class MagicCardTest {
         assertEquals(MagicLayout.Normal, card.layout)
         assertEquals(0, card.convertedManaCost)
         assertEquals("{0}", card.manaCost)
-        assertEquals(MagicSet("Unknown code", "Unknown name"), card.set)
+        assertEquals(MagicSet(), card.set)
         assertEquals(1, card.number)
         assertEquals(
             "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",

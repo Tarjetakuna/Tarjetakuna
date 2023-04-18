@@ -30,7 +30,7 @@ class SingleSetFragmentTest {
         "M15", "Magic 2015", "core", "core block", LocalDate.of(2014, 7, 18)
     )
 
-    private val validJson = Gson().toJson(validMagicSet)
+    private val validJson = Gson().toJson(validMagicSet, MagicSet::class.java)
     private val invalidJson = "This is not a valid json string"
 
     //ViewMatchers of the fragment

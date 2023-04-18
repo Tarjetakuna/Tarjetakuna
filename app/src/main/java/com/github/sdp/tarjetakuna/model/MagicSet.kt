@@ -1,10 +1,7 @@
-// ====================
-// MagicSet.kt
-// Tarjetakuna, 2023
-// ====================
-
 package com.github.sdp.tarjetakuna.model
 
+import com.github.sdp.tarjetakuna.utils.JsonAdapters
+import com.google.gson.annotations.JsonAdapter
 import java.time.LocalDate
 
 /**
@@ -34,6 +31,7 @@ data class MagicSet(
     /**
      * The set release date.
      */
+    @field:JsonAdapter(JsonAdapters.LocalDateAdapter::class)
     val releaseDate: LocalDate = LocalDate.of(1970, 1, 1)
 ) {
     init {
@@ -41,9 +39,5 @@ data class MagicSet(
         require(name.isNotBlank()) { "Name cannot be blank" }
         require(type.isNotBlank()) { "Type cannot be blank" }
         require(block.isNotBlank()) { "Block cannot be blank" }
-    }
-
-    override fun toString(): String {
-        return "set: $name, code: $code, type: $type, block: $block, release date: $releaseDate"
     }
 }
