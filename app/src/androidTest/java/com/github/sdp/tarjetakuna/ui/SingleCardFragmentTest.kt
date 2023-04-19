@@ -41,7 +41,7 @@ class SingleCardFragmentTest {
         1,
         "https://cards.scryfall.io/large/front/c/f/cfa00c0e-163d-4f59-b8b9-3ee9143d27bb.jpg?1674420138",
         MagicRarity.Common,
-        MagicCardType.Artifact,
+        MagicCardType.ARTIFACT,
         listOf("Human", "Soldier"),
         "3",
         "2",
@@ -130,7 +130,7 @@ class SingleCardFragmentTest {
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
 
         val strStatsCreature =
-            if (validMagicCard.type == MagicCardType.Creature) " " + context.getString(
+            if (validMagicCard.type == MagicCardType.CREATURE) " " + context.getString(
                 R.string.single_card_showing_stats,
                 validMagicCard.power,
                 validMagicCard.toughness
@@ -207,7 +207,7 @@ class SingleCardFragmentTest {
     @Test
     fun testTypeTextWorkCorrectlyWithCreatureNoSubtype() {
         val anotherValidMagicCard =
-            validMagicCard.copy(type = MagicCardType.Creature, subtypes = listOf())
+            validMagicCard.copy(type = MagicCardType.CREATURE, subtypes = listOf())
         val anotherValidJson = Gson().toJson(anotherValidMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
@@ -245,7 +245,7 @@ class SingleCardFragmentTest {
      */
     @Test
     fun testTypeTextWorkCorrectlyWithCreatureWithSubtype() {
-        val anotherValidMagicCard = validMagicCard.copy(type = MagicCardType.Creature)
+        val anotherValidMagicCard = validMagicCard.copy(type = MagicCardType.CREATURE)
         val anotherValidJson = Gson().toJson(anotherValidMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)

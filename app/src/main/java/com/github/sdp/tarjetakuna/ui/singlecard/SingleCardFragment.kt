@@ -110,7 +110,7 @@ class SingleCardFragment : Fragment() {
             binding.singleCardTextCardManaCost.text =
                 getString(R.string.single_card_showing_mana_cost, card.convertedManaCost.toString())
 
-            val powerToughnessStr = if (card.type == MagicCardType.Creature) " " + getString(
+            val powerToughnessStr = if (card.type == MagicCardType.CREATURE) " " + getString(
                 R.string.single_card_showing_stats,
                 card.power,
                 card.toughness

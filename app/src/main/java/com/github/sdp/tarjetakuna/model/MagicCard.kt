@@ -56,9 +56,9 @@ data class MagicCard(
 
     /**
      * The card type.
-     * Example : Creature
+     * Example : CREATURE
      */
-    val type: MagicCardType = MagicCardType.Creature,
+    val type: MagicCardType = MagicCardType.CREATURE,
 
     /**
      * The card subtypes.
