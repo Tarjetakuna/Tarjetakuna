@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
     fun onClick(item: MenuItem) {
         when (item.itemId) {
             R.id.action_export_collection -> {
-                ExportCollection.exportCollection(this, testCollection)
+                ExportCollection.exportCollection(applicationContext, testCollection)
             }
         }
     }

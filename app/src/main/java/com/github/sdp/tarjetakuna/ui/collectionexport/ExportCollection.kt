@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
+import android.os.StrictMode
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
@@ -37,11 +38,7 @@ object ExportCollection {
                 .getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.absolutePath + "/" + fileName
         val excelFile = File(filePath)
 
-        // Write the collection to the excel file (to be changed later, when the user's collection is available)
-        writeDataToExcel(context, excelFile, collectionToExport)
-
-        // Open the view to share the excel file
-        openExcelFile(context, excelFile)
+        if (writeDataToExcel(context, excelFile, collectionToExport)) openExcelFile(context, excelFile)
     }
 
     /**
@@ -51,7 +48,7 @@ object ExportCollection {
         context: Context,
         excelFile: File,
         collectionToExport: List<MagicCard>
-    ) {
+    ): Boolean {
         try {
             val workbook: Workbook = HSSFWorkbook()
             val sheet: Sheet = workbook.createSheet(sheetName)
@@ -78,13 +75,15 @@ object ExportCollection {
             val fileOutputStream = FileOutputStream(excelFile)
             workbook.write(fileOutputStream)
             fileOutputStream.close()
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Toast.makeText(
                 context,
                 R.string.ExportCollection_fileCreationFailed,
                 Toast.LENGTH_SHORT
             ).show()
+            return false
         }
+        return true
     }
 
     /**
