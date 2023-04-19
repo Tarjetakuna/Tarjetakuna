@@ -16,9 +16,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.model.MagicCard
-import com.github.sdp.tarjetakuna.model.MagicLayout
-import com.github.sdp.tarjetakuna.model.MagicSet
+import com.github.sdp.tarjetakuna.ui.collectionexport.ExportCollection
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.junit.After
 import org.junit.Assert.*
@@ -52,37 +50,17 @@ class ExportCollectionTest {
     }
 
     @Test
-    fun testRightDataAreWrittenIntoExcelFile() {
-        //Unused value which will be usefull when the actual user collection will be used
-        val testCollection = listOf(
-            MagicCard(
-                "MagicCard",
-                "A beautiful card",
-                MagicLayout.Normal,
-                7,
-                "{5}{W}{W}",
-                MagicSet("MT15", "Magic 2015"),
-                56,
-                "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
-            ),
-            MagicCard(
-                "BestMagicCard",
-                "An even more beautiful card",
-                MagicLayout.Normal,
-                7,
-                "{7}{W}{W}",
-                MagicSet("MT15", "Magic 2015"),
-                56,
-                "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
-            )
-        )
+    fun nullCollectionSendToast() {
+        ExportCollection.exportCollection(activityRule.scenario.)
+    }
 
+    @Test
+    fun testRightDataAreWrittenIntoExcelFile() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText(R.string.menu_exportcollection)).perform(click())
 
         val excelFile = ApplicationProvider.getApplicationContext<Context>()
             .getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.resolve("MyMagicCollection.xls")
-
 
         val workbook = HSSFWorkbook(FileInputStream(excelFile))
         val sheet = workbook.getSheetAt(0)

@@ -15,6 +15,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
+import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.model.MagicLayout
+import com.github.sdp.tarjetakuna.model.MagicSet
 import com.github.sdp.tarjetakuna.ui.collectionexport.ExportCollection
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
@@ -30,6 +33,30 @@ class MainActivity : AppCompatActivity() {
             updateHeader()
         }
     }
+
+    //To be removed
+    private val testCollection = listOf(
+        MagicCard(
+            "MagicCard",
+            "A beautiful card",
+            MagicLayout.Normal,
+            7,
+            "{5}{W}{W}",
+            MagicSet("MT15", "Magic 2015"),
+            56,
+            "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
+        ),
+        MagicCard(
+            "BestMagicCard",
+            "An even more beautiful card",
+            MagicLayout.Normal,
+            7,
+            "{7}{W}{W}",
+            MagicSet("MT15", "Magic 2015"),
+            56,
+            "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
+        )
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,7 +138,7 @@ class MainActivity : AppCompatActivity() {
     fun onClick(item: MenuItem) {
         when (item.itemId) {
             R.id.action_export_collection -> {
-                ExportCollection.exportCollection(this)
+                ExportCollection.exportCollection(this, testCollection)
             }
         }
     }
