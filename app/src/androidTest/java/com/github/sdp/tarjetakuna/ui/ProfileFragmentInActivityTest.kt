@@ -23,9 +23,7 @@ import org.junit.runner.RunWith
 class ProfileFragmentInActivityTest {
 
     private lateinit var activityRule: ActivityScenario<MainActivity>
-    val navController = TestNavHostController(
-        ApplicationProvider.getApplicationContext()
-    )
+    private val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
 
     @Before
     fun setUp() {
@@ -42,7 +40,6 @@ class ProfileFragmentInActivityTest {
      */
     @Test
     fun navigatingToProfileFragment() {
-        // Click on the profile icon in the navigation header
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
         onView(withId(R.id.profileIcon)).perform(ViewActions.click())
         val id = navController.currentDestination?.id
@@ -59,8 +56,8 @@ class ProfileFragmentInActivityTest {
      */
     @Test
     fun sharedPreferencesAreUpdated() {
-        val user_name = "Jane"
-        val user_description = "I am a collector of rare cards"
+        val username = "Jane"
+        val userDescription = "I am a collector of rare cards"
         activityRule.onActivity { activity ->
             val sharedPref = activity.getSharedPreferences(
                 SharedPreferencesKeys.shared_pref_name,
@@ -68,12 +65,12 @@ class ProfileFragmentInActivityTest {
             )
 
             with(sharedPref.edit()) {
-                putString(SharedPreferencesKeys.user_name, user_name)
-                putString(SharedPreferencesKeys.user_description, user_description)
+                putString(SharedPreferencesKeys.user_name, username)
+                putString(SharedPreferencesKeys.user_description, userDescription)
                 apply()
             }
         }
-        onView(withId(R.id.navHeaderNameText)).check(matches(withText(user_name)))
-        onView(withId(R.id.navHeaderDescriptionText)).check(matches(withText(user_description)))
+        onView(withId(R.id.navHeaderNameText)).check(matches(withText(username)))
+        onView(withId(R.id.navHeaderDescriptionText)).check(matches(withText(userDescription)))
     }
 }

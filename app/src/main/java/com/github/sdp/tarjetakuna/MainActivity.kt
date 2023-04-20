@@ -131,10 +131,6 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun hideKeyboard() {
-        Utils.hideKeyboard(this)
-    }
-
     fun onClick(item: MenuItem) {
         when (item.itemId) {
             R.id.action_export_collection -> {
