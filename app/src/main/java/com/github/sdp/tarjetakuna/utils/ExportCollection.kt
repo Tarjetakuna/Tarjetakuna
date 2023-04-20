@@ -34,7 +34,7 @@ object ExportCollection {
         val filePath: String
         try {
             filePath =
-                view.context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.absolutePath + "/" + fileName
+                view.context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)!!.absolutePath + "/" + fileName
         } catch (e: Exception) {
             Snackbar.make(
                 view,
