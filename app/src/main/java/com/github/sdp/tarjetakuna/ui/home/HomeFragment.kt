@@ -14,7 +14,6 @@ import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.google.gson.Gson
 
 class HomeFragment : Fragment() {
 
@@ -67,14 +66,6 @@ class HomeFragment : Fragment() {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.changeFragment(R.id.nav_browser)
 
-        }
-
-        val filterFragmentButton: Button = binding.filterFragmentButton
-        filterFragmentButton.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("cards", Gson().toJson(cards))
-            val mainActivity = requireActivity() as MainActivity
-            mainActivity.changeFragment(R.id.nav_filter, bundle)
         }
 
         val authenticationButton: Button = binding.authenticationButton
