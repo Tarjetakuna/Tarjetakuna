@@ -54,9 +54,13 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        homeViewModel.titleText.observe(viewLifecycleOwner) {
             textView.text = it
 
+        }
+        val descTextView: TextView = binding.textHomeText
+        homeViewModel.descriptionText.observe(viewLifecycleOwner) {
+            descTextView.text = it
         }
 
         //val plainText: EditText = binding.mainName2
@@ -65,7 +69,6 @@ class HomeFragment : Fragment() {
             // call changeFragment()
             val mainActivity = requireActivity() as MainActivity
             mainActivity.changeFragment(R.id.nav_browser)
-
         }
 
         val authenticationButton: Button = binding.authenticationButton

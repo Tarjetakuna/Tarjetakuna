@@ -16,7 +16,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:layout_margin="4dp" />
+            android:layout_margin="4dp"
+            android:editTextColor="@color/white" />
 
         <Button
             android:id="@+id/browser_filter_button"
@@ -35,10 +36,11 @@
 
         <ImageButton
             android:id="@+id/clear_filters"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="58dp"
             android:layout_margin="4dp"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="@color/blue_med2"
             android:contentDescription="@string/browserFragment_clear_filters" />
 
     </LinearLayout>
@@ -50,8 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:orientation="vertical"
-        android:visibility="gone"
-        android:background="#8321F3C2">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,7 +66,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="@string/browserFragment_filter_by_set" />
+                android:text="@string/browserFragment_filter_by_set"
+                android:textColor="@color/white" />
 
             <EditText
                 android:id="@+id/filter_by_set_edittext"
@@ -74,6 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_weight="2"
+                style="@style/SearchTextStyle"
                 android:hint="@string/browserFragment_enter_set_code"
                 android:autofillHints="@string/browserFragment_enter_set_code"
                 android:inputType="text" />
@@ -100,6 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:textColor="@color/white"
                 android:text="@string/browserFragment_filter_by_mana" />
 
             <EditText
@@ -109,6 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_weight="2"
+                style="@style/SearchTextStyle"
                 android:hint="@string/browserFragment_enter_manacost"
                 android:autofillHints="@string/browserFragment_enter_manacost"
                 android:inputType="text" />
@@ -133,8 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:visibility="gone"
-        android:orientation="horizontal"
-        android:background="#83F31B5F">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/sort_by_name_button"
@@ -143,7 +147,9 @@
             android:layout_weight="1"
             android:layout_margin="4dp"
             android:text="@string/browserFragment_sort_by_name"
-            style="?android:attr/buttonBarButtonStyle" />
+            style="?android:attr/buttonBarButtonStyle"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/sort_by_mana_button"
@@ -152,7 +158,9 @@
             android:layout_weight="1"
             android:layout_margin="4dp"
             android:text="@string/browserFragment_sort_by_mana"
-            style="?android:attr/buttonBarButtonStyle" />
+            style="?android:attr/buttonBarButtonStyle"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/sort_by_rarity_button"
@@ -161,7 +169,9 @@
             android:layout_weight="1"
             android:layout_margin="4dp"
             android:text="@string/browserFragment_sort_by_rarity"
-            style="?android:attr/buttonBarButtonStyle" />
+            style="?android:attr/buttonBarButtonStyle"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/sort_by_set_button"
@@ -170,7 +180,9 @@
             android:layout_weight="1"
             android:layout_margin="4dp"
             android:text="@string/browserFragment_sort_by_set"
-            style="?android:attr/buttonBarButtonStyle" />
+            style="?android:attr/buttonBarButtonStyle"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
 
     </LinearLayout>

@@ -103,7 +103,10 @@ class BrowserFragment : Fragment() {
                     val bundle = Bundle()
                     bundle.putString("card", Gson().toJson(adapter.cards[position]))
                     //TODO : Should be changed to remove the dependency on MainActivity
-                    (requireActivity() as MainActivity).changeFragment(R.id.nav_single_card, bundle)
+                    (requireActivity() as MainActivity).changeFragment(
+                        R.id.nav_single_card,
+                        bundle
+                    )
                 }
             }
     }
