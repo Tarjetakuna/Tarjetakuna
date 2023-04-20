@@ -1,6 +1,5 @@
 package com.github.sdp.tarjetakuna.ui
 
-/*
 @RunWith(AndroidJUnit4::class)
 class FilterCardsFragmentTest {
 
@@ -247,4 +246,3 @@ class FilterCardsFragmentTest {
 
     }
 }
-*/
