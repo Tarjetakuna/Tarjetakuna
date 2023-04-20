@@ -31,6 +31,7 @@ object ExportCollection {
      * Export the user's collection to an excel file
      */
     fun exportCollection(view: View, collectionToExport: List<MagicCard>) {
+        //TODO: Run this function in an another thread to avoid blocking the UI + change tests accordingly
         val filePath: String
         try {
             filePath =

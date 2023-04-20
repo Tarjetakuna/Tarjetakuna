@@ -27,7 +27,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -54,8 +53,7 @@ class ExportCollectionTest {
             MagicSet("MT15", "Magic 2015"),
             56,
             "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
-        ),
-        MagicCard(
+        ), MagicCard(
             "BestMagicCard",
             "An even more beautiful card",
             MagicLayout.Normal,
@@ -164,26 +162,15 @@ class ExportCollectionTest {
         assertEquals("Set", headerRow.getCell(3).stringCellValue)
         assertEquals("Image URL", headerRow.getCell(4).stringCellValue)
 
-        val dataRow1 = sheet.getRow(1)
-        assertNotNull(dataRow1)
-        assertEquals("MagicCard", dataRow1.getCell(0).stringCellValue)
-        assertEquals("A beautiful card", dataRow1.getCell(1).stringCellValue)
-        assertEquals("{5}{W}{W}", dataRow1.getCell(2).stringCellValue)
-        assertEquals("Magic 2015", dataRow1.getCell(3).stringCellValue)
-        assertEquals(
-            "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890",
-            dataRow1.getCell(4).stringCellValue
-        )
-
-        val dataRow2 = sheet.getRow(2)
-        assertNotNull(dataRow2)
-        assertEquals("BestMagicCard", dataRow2.getCell(0).stringCellValue)
-        assertEquals("An even more beautiful card", dataRow2.getCell(1).stringCellValue)
-        assertEquals("{7}{W}{W}", dataRow2.getCell(2).stringCellValue)
-        assertEquals("Magic 2015", dataRow2.getCell(3).stringCellValue)
-        assertEquals(
-            "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890",
-            dataRow2.getCell(4).stringCellValue
-        )
+        for (i in validCollection.indices) {
+            val dataRow = sheet.getRow(i + 1)
+            assertNotNull(dataRow)
+            val card = validCollection[i]
+            assertEquals(card.name, dataRow.getCell(0).stringCellValue)
+            assertEquals(card.text, dataRow.getCell(1).stringCellValue)
+            assertEquals(card.manaCost, dataRow.getCell(2).stringCellValue)
+            assertEquals(card.set.name, dataRow.getCell(3).stringCellValue)
+            assertEquals(card.imageUrl, dataRow.getCell(4).stringCellValue)
+        }
     }
 }
