@@ -16,7 +16,7 @@ class MagicCardTest {
     private val validImageUrl =
         "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card"
     private val validRarity = MagicRarity.Rare
-    private val validType = MagicType.Creature
+    private val validType = MagicCardType.CREATURE
     private val validSubtypes = listOf("Angel")
     private val validArtist = "Artist"
     private val validPower = "3"
@@ -412,14 +412,14 @@ class MagicCardTest {
         assertEquals(MagicLayout.Normal, card.layout)
         assertEquals(0, card.convertedManaCost)
         assertEquals("{0}", card.manaCost)
-        assertEquals(MagicSet("Unknown code", "Unknown name"), card.set)
+        assertEquals(MagicSet(), card.set)
         assertEquals(1, card.number)
         assertEquals(
             "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
             card.imageUrl
         )
         assertEquals(MagicRarity.Common, card.rarity)
-        assertEquals(MagicType.Creature, card.type)
+        assertEquals(MagicCardType.CREATURE, card.type)
         assertEquals(listOf<String>(), card.subtypes)
         assertEquals("0", card.power)
         assertEquals("0", card.toughness)

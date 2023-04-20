@@ -36,7 +36,7 @@ data class MagicCard(
      * The card set.
      * Example : MagicSet("M21", "Core Set 2021")
      */
-    val set: MagicSet = MagicSet("Unknown code", "Unknown name"),
+    val set: MagicSet = MagicSet(),
 
     /**
      * The card number of the set.
@@ -56,9 +56,9 @@ data class MagicCard(
 
     /**
      * The card type.
-     * Example : Creature
+     * Example : CREATURE
      */
-    val type: MagicType = MagicType.Creature,
+    val type: MagicCardType = MagicCardType.CREATURE,
 
     /**
      * The card subtypes.
