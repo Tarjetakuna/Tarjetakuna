@@ -17,25 +17,6 @@ import com.github.sdp.tarjetakuna.model.MagicSet
 
 class HomeFragment : Fragment() {
 
-    private val magicSet = MagicSet("MT15", "Magic 2015")
-    private val cmc = 5
-    private val magicLayout = MagicLayout.NORMAL
-    private val link = "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid="
-    private val cards: ArrayList<MagicCard> = arrayListOf(
-        MagicCard(
-            "Meandering Towershell", "Islandwalk",
-            magicLayout, cmc, "{3}{G}{G}",
-            magicSet, 141,
-            "${link}386602"
-        ),
-        MagicCard(
-            "Angel of Mercy", "Flying",
-            magicLayout, cmc, "{4}{W}",
-            magicSet, 1,
-            "${link}82992"
-        )
-    )
-
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
