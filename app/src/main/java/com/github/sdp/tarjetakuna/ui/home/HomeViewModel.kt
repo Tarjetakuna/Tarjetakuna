@@ -6,9 +6,14 @@ import androidx.lifecycle.ViewModel
 
 class HomeViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "Welcome to Tarjetakuna!\n Sign in to manage your collection"
+    private val _titleText = MutableLiveData<String>().apply {
+        value = "Welcome to Tarjetakuna!\n"
     }
-    val text: LiveData<String> = _text
+    private val _descriptionText = MutableLiveData<String>().apply {
+        value =
+            "Start browsing right away, or sign in to view and manage your Magic: The Gathering collection\n"
+    }
+    val titleText: LiveData<String> = _titleText
+    val descriptionText: LiveData<String> = _descriptionText
 
 }

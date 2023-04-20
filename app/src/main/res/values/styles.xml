@@ -11,9 +11,17 @@
     </style>
     -->
     <style name="TitleStyle">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/white_gold_light</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold|italic</item>
+    </style>
+
+    <style name="DescriptionStyle">
+        <item name="android:textColor">@color/white_blue</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">italic</item>
     </style>
 
     <style name="BrowserCardTitleStyle">
@@ -32,6 +40,40 @@
     <style name="BubbleStyle">
         <item name="android:background">@color/blue_med3</item>
         <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="IconStyle">
+
+    </style>
+
+
+    <style name="ButtonStyle">
+        <!--        <item name="android:background">@drawable/round_style</item>-->
+        <item name="android:textColor">@color/white_gold_light</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">16dp</item>
+    </style>
+
+    <style name="DropDownStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:background">@android:drawable/editbox_background</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <style name="SearchTextStyle">
+        <item name="android:textColor">@color/white_gold_light</item>
+        <item name="android:editTextColor">@color/white_gold_light</item>
+        <item name="android:textColorHint">@color/white_gold_light</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 
 </resources>

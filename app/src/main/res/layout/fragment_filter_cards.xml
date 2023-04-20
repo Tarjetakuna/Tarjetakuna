@@ -22,47 +22,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp" >
+            android:layout_marginBottom="20dp">
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <TextView
                     android:id="@+id/layoutTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:background="@android:drawable/editbox_background"
-                    android:drawablePadding="16dp"
+                    style="@style/DropDownStyle"
                     android:hint="@string/layout_name"
-                    android:padding="12dp"
                     app:drawableRightCompat="@android:drawable/arrow_down_float" />
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <TextView
                     android:id="@+id/cardNameTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:background="@android:drawable/editbox_background"
-                    android:drawablePadding="16dp"
+                    style="@style/DropDownStyle"
                     android:hint="@string/card_name"
-                    android:padding="12dp"
                     app:drawableRightCompat="@android:drawable/arrow_down_float" />
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <TextView
                     android:id="@+id/cmcTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:background="@android:drawable/editbox_background"
-                    android:drawablePadding="16dp"
+                    style="@style/DropDownStyle"
                     android:hint="@string/cmc"
-                    android:padding="12dp"
                     app:drawableRightCompat="@android:drawable/arrow_down_float" />
             </TableRow>
         </TableLayout>
@@ -70,9 +61,7 @@
 
     <Button
         android:id="@+id/filterButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        style="@style/ButtonStyle"
         android:text="@string/filter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +72,7 @@
         android:id="@+id/returnMainButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_margin="16dp"
         android:text="@string/go_back_to_home_page"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

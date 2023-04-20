@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="blue_placeholder">#737895</color>
+    <color name="dark_blue">#1D244C</color>
     <color name="blue_400">#374388</color>
     <color name="blue_med1">#4E5CA1</color>
     <color name="blue_med2">#7383CF</color>
     <color name="blue_med3">#A6B8FF</color>
     <color name="white_blue">#DDE1ED</color>
+    <color name="white_gold_light">#E2DCD4</color>
+    <color name="white_gold">#E1CFAC</color>
     <color name="white">#FFFFFFFF</color>
     <color name="pink_200">#9F308D</color>
     <color name="pink_900">#880E4F</color>
