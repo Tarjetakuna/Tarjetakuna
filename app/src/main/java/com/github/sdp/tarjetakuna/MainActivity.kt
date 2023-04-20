@@ -18,7 +18,7 @@ import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.github.sdp.tarjetakuna.ui.collectionexport.ExportCollection
+import com.github.sdp.tarjetakuna.utils.ExportCollection
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
 import com.github.sdp.tarjetakuna.utils.Utils
@@ -138,7 +138,10 @@ class MainActivity : AppCompatActivity() {
     fun onClick(item: MenuItem) {
         when (item.itemId) {
             R.id.action_export_collection -> {
-                ExportCollection.exportCollection(applicationContext, testCollection)
+                ExportCollection.exportCollection(
+                    findViewById(R.id.nav_host_fragment_content_drawer),
+                    testCollection
+                )
             }
         }
     }

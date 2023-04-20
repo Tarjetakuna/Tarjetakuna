@@ -1,15 +1,14 @@
-package com.github.sdp.tarjetakuna.ui.collectionexport
+package com.github.sdp.tarjetakuna.utils
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
-import android.os.StrictMode
-import android.widget.Toast
+import android.view.View
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
+import com.google.android.material.snackbar.Snackbar
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
@@ -17,7 +16,6 @@ import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.util.CellUtil
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
 
 /**
  * This class is used to export the user's collection to an excel file
@@ -32,20 +30,32 @@ object ExportCollection {
     /**
      * Export the user's collection to an excel file
      */
-    fun exportCollection(context: Context, collectionToExport: List<MagicCard>) {
-        val filePath =
-            context
-                .getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.absolutePath + "/" + fileName
-        val excelFile = File(filePath)
+    fun exportCollection(view: View, collectionToExport: List<MagicCard>) {
+        val filePath: String
+        try {
+            filePath =
+                view.context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.absolutePath + "/" + fileName
+        } catch (e: Exception) {
+            Snackbar.make(
+                view,
+                R.string.ExportCollection_fileDirectoryNotFound,
+                Snackbar.LENGTH_LONG
+            ).show()
+            return
+        }
 
-        if (writeDataToExcel(context, excelFile, collectionToExport)) openExcelFile(context, excelFile)
+        val excelFile = File(filePath)
+        if (writeDataToExcel(view, excelFile, collectionToExport)) openExcelFile(
+            view,
+            excelFile
+        )
     }
 
     /**
      * Write the collection to the excel file
      */
     private fun writeDataToExcel(
-        context: Context,
+        view: View,
         excelFile: File,
         collectionToExport: List<MagicCard>
     ): Boolean {
@@ -76,10 +86,10 @@ object ExportCollection {
             workbook.write(fileOutputStream)
             fileOutputStream.close()
         } catch (e: Exception) {
-            Toast.makeText(
-                context,
+            Snackbar.make(
+                view,
                 R.string.ExportCollection_fileCreationFailed,
-                Toast.LENGTH_SHORT
+                Snackbar.LENGTH_SHORT
             ).show()
             return false
         }
@@ -89,9 +99,9 @@ object ExportCollection {
     /**
      * Open the view to share the excel file
      */
-    private fun openExcelFile(context: Context, excelFile: File) {
+    private fun openExcelFile(view: View, excelFile: File) {
         val uri: Uri =
-            FileProvider.getUriForFile(context, fileProviderAuthority, excelFile)
+            FileProvider.getUriForFile(view.context, fileProviderAuthority, excelFile)
 
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = applicationType
@@ -99,12 +109,12 @@ object ExportCollection {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
         try {
-            startActivity(context, intent, null)
+            startActivity(view.context, intent, null)
         } catch (e: Exception) {
-            Toast.makeText(
-                context,
+            Snackbar.make(
+                view,
                 R.string.ExportCollection_appNotFound,
-                Toast.LENGTH_SHORT
+                Snackbar.LENGTH_SHORT
             ).show()
         }
     }

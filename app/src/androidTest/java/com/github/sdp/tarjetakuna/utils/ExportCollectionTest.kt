@@ -1,12 +1,9 @@
-package com.github.sdp.tarjetakuna.ui
+package com.github.sdp.tarjetakuna.utils
 
 import android.content.Context
 import android.content.Intent
 import android.os.Environment
 import android.os.StrictMode
-import android.view.View
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
@@ -15,28 +12,25 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.ui.collectionexport.ExportCollection
-import com.github.sdp.tarjetakuna.ui.scanner.ScannerFragment
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.File
 import java.io.FileInputStream
 
+/**
+ * This class is used to test the export collection function
+ */
 @RunWith(AndroidJUnit4::class)
 class ExportCollectionTest {
 
@@ -50,10 +44,34 @@ class ExportCollectionTest {
 
     @After
     fun after() {
-        activityScenarioRule.scenario.onActivity { StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build()) }
+        activityScenarioRule.scenario.onActivity {
+            StrictMode.setThreadPolicy(
+                StrictMode.ThreadPolicy.Builder().permitAll().build()
+            )
+        }
         Intents.release()
     }
 
+    /**
+     * This test checks that the function show a snackbar when the file path is not found
+     */
+    @Test
+    fun filePathProblemShouldShowSnackBar() {
+        activityScenarioRule.scenario.onActivity {
+            StrictMode.setThreadPolicy(
+                StrictMode.ThreadPolicy.Builder().detectDiskReads().penaltyDeath().build()
+            )
+        }
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
+        onView(withText(R.string.menu_exportcollection)).perform(click())
+
+        onView(withText(R.string.ExportCollection_fileDirectoryNotFound))
+            .check(matches(isDisplayed()))
+    }
+
+    /**
+     * This test checks that the function send an intent with the action send
+     */
     @Test
     fun clickExportButtonSendAnIntentWithActionSend() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
@@ -61,9 +79,16 @@ class ExportCollectionTest {
         intended(hasAction(Intent.ACTION_SEND))
     }
 
+    /**
+     * This test checks that the function show a snackbar when the file can't be created
+     */
     @Test
-    fun fileProblemSendToast() {
-        activityScenarioRule.scenario.onActivity { StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().detectDiskWrites().penaltyDeath().build()) }
+    fun fileProblemShowSnackBar() {
+        activityScenarioRule.scenario.onActivity {
+            StrictMode.setThreadPolicy(
+                StrictMode.ThreadPolicy.Builder().detectDiskWrites().penaltyDeath().build()
+            )
+        }
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText(R.string.menu_exportcollection)).perform(click())
 
@@ -71,6 +96,23 @@ class ExportCollectionTest {
             .check(matches(isDisplayed()))
     }
 
+    /**
+     * This test checks that the function show a snackbar when the intent fails
+     */
+    @Test
+    fun intentFailureShowSnackBar() {
+        Intents.intending(hasAction(Intent.ACTION_SEND)).respondWith(null)
+
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
+        onView(withText(R.string.menu_exportcollection)).perform(click())
+
+        onView(withText(R.string.ExportCollection_appNotFound))
+            .check(matches(isDisplayed()))
+    }
+
+    /**
+     * This test checks that the function write the right data into the excel file
+     */
     @Test
     fun testRightDataAreWrittenIntoExcelFile() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)

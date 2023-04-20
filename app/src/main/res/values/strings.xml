@@ -76,6 +76,7 @@
     <string name="ExportCollection_export_button">Export my collection</string>
     <string name="ExportCollection_appNotFound">No app found to share Excel file</string>
     <string name="ExportCollection_fileCreationFailed">Failed to write data to Excel file</string>
+    <string name="ExportCollection_fileDirectoryNotFound">Failed to access to the documents directory</string>
     <string name="save_button_text">Save</string>
     <string name="description_entry_hint">Enter a description here</string>
     <string name="name_entry_hint">Enter your name</string>
