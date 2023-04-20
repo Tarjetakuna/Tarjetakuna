@@ -16,6 +16,7 @@ class PermissionGranting {
                             Build.VERSION.SDK_INT == 23 -> "Allow"
                             Build.VERSION.SDK_INT <= 28 -> "ALLOW"
                             Build.VERSION.SDK_INT == 29 -> "Allow only while using the app"
+                            Build.VERSION.SDK_INT == 30 -> "WHILE USING THE APP"
                             else -> "While using the app"
                         }
                     )
