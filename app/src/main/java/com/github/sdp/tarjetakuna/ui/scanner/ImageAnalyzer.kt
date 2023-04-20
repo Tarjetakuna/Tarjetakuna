@@ -34,7 +34,7 @@ class ImageAnalyzer(
      * Detects objects in the image.
      */
     private fun detectObject(image: InputImage) {
-        // TODO("not implemented yet")
+        // TODO not implemented yet
     }
 
     /**
