@@ -19,7 +19,7 @@ class HomeFragment : Fragment() {
 
     private val magicSet = MagicSet("MT15", "Magic 2015")
     private val cmc = 5
-    private val magicLayout = MagicLayout.Normal
+    private val magicLayout = MagicLayout.NORMAL
     private val link = "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid="
     private val cards: ArrayList<MagicCard> = arrayListOf(
         MagicCard(
