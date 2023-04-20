@@ -47,7 +47,7 @@ class ExportCollectionTest {
         MagicCard(
             "MagicCard",
             "A beautiful card",
-            MagicLayout.Normal,
+            MagicLayout.NORMAL,
             7,
             "{5}{W}{W}",
             MagicSet("MT15", "Magic 2015"),
@@ -56,7 +56,7 @@ class ExportCollectionTest {
         ), MagicCard(
             "BestMagicCard",
             "An even more beautiful card",
-            MagicLayout.Normal,
+            MagicLayout.NORMAL,
             7,
             "{7}{W}{W}",
             MagicSet("MT15", "Magic 2015"),
