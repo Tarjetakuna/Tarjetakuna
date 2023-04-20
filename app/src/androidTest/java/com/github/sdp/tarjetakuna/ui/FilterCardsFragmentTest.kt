@@ -1,5 +1,25 @@
 package com.github.sdp.tarjetakuna.ui
 
+import android.os.Bundle
+import androidx.navigation.Navigation.findNavController
+import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers.isDialog
+import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.sdp.tarjetakuna.MainActivity
+import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.model.MagicLayout
+import com.github.sdp.tarjetakuna.model.MagicSet
+import com.google.gson.Gson
+import org.hamcrest.Matchers.equalTo
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+
 @RunWith(AndroidJUnit4::class)
 class FilterCardsFragmentTest {
 
