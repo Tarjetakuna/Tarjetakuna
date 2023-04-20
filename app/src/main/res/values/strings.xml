@@ -25,7 +25,6 @@
     <string name="menu_webapi">Webapi</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_exportcollection">Export Collection</string>
-    <string name="menu_filter">Filter</string>
     <string name="menu_authentication">Authentication</string>
     <string name="menu_authentication_button">Authentication button</string>
     <string name="menu_sign_out">Sign out</string>
@@ -97,6 +96,18 @@
     <string name="single_card_showing_add_to_wanted">add to wanted cards</string>
     <string name="single_card_showing_remove_wanted">remove from wanted cards</string>
     <string name="single_card_ask_connection">Please connect if you want to manage the card</string>
+    <string name="browserFragment_filter">Filter</string>
+    <string name="browserFragment_sort">Sort</string>
+    <string name="browserFragment_filter_by_set">By set:</string>
+    <string name="browserFragment_enter_set_code">Enter the set code</string>
+    <string name="browserFragment_apply">Apply</string>
+    <string name="browserFragment_filter_by_mana">By mana:</string>
+    <string name="browserFragment_enter_manacost">Enter the mana cost:</string>
+    <string name="browserFragment_sort_by_mana">Mana</string>
+    <string name="browserFragment_sort_by_name">Name</string>
+    <string name="browserFragment_sort_by_rarity">Rarity</string>
+    <string name="browserFragment_clear_filters">Clear all the filters</string>
+    <string name="browserFragment_sort_by_set">Set</string>
 
     <string name="single_set_code">(%1$s)</string>
     <string name="single_set_type">Type : %1$s</string>
