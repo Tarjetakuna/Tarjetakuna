@@ -30,6 +30,7 @@
     <string name="menu_sign_out">Sign out</string>
     <string name="menu_user_cards">User cards</string>
     <string name="menu_single_card">Card</string>
+    <string name="menu_single_set">Set</string>
 
     <string name="scanner_button">Scan a card</string>
     <string name="scanner_description">Here you can scan a card by clicking on the button below.</string>
@@ -107,5 +108,11 @@
     <string name="browserFragment_sort_by_rarity">Rarity</string>
     <string name="browserFragment_clear_filters">Clear all the filters</string>
     <string name="browserFragment_sort_by_set">Set</string>
+
+    <string name="single_set_code">(%1$s)</string>
+    <string name="single_set_type">Type : %1$s</string>
+    <string name="single_set_block">Block : %1$s</string>
+    <string name="single_set_release_date">Release date : %1$s</string>
+    <string name="single_set_error_loading">Error loading the set</string>
 
 </resources>

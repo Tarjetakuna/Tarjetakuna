@@ -64,4 +64,10 @@
         android:name="com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment"
         android:label="@string/menu_single_card"
         tools:layout="@layout/fragment_single_card" />
+
+    <fragment
+        android:id="@+id/nav_single_set"
+        android:name="com.github.sdp.tarjetakuna.ui.singleset.SingleSetFragment"
+        android:label="@string/menu_single_set"
+        tools:layout="@layout/fragment_single_set" />
 </navigation>

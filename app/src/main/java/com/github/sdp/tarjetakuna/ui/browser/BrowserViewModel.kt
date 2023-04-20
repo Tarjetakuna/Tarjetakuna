@@ -3,7 +3,12 @@ package com.github.sdp.tarjetakuna.ui.browser
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.sdp.tarjetakuna.model.*
+import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.model.MagicCardType
+import com.github.sdp.tarjetakuna.model.MagicLayout
+import com.github.sdp.tarjetakuna.model.MagicRarity
+import com.github.sdp.tarjetakuna.model.MagicSet
+import java.time.LocalDate
 
 class BrowserViewModel : ViewModel() {
 
@@ -83,11 +88,11 @@ class BrowserViewModel : ViewModel() {
                 MagicLayout.Normal,
                 2,
                 "{1}{W}",
-                MagicSet("BRO", name),
+                MagicSet("BRO", name, "Core", "Core Block", LocalDate.of(2019, 3, 10)),
                 1,
                 "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
                 MagicRarity.Rare,
-                MagicType.Creature,
+                MagicCardType.CREATURE,
                 listOf("Human", "Soldier"),
                 "1",
                 "2",
@@ -104,11 +109,11 @@ class BrowserViewModel : ViewModel() {
                 MagicLayout.Normal,
                 3,
                 "{1}{W}{W}",
-                MagicSet("M15", "Magic 2015"),
+                MagicSet("M15", "Magic 2015", "Core", "Core", LocalDate.now()),
                 1,
                 "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
                 MagicRarity.Common,
-                MagicType.Creature,
+                MagicCardType.CREATURE,
                 listOf("Pégase"),
                 "1",
                 "2",
