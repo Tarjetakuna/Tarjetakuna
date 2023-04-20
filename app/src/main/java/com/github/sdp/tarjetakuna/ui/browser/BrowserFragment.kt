@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +12,7 @@ import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentBrowserBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.utils.Utils.Companion.hideKeyboard
 import com.google.gson.Gson
 
 /**
@@ -87,7 +86,7 @@ class BrowserFragment : Fragment() {
         })
         //Close keyboard when the search bar is closed
         binding.browserSearchbar.setOnCloseListener {
-            hideKeyboard()
+            hideKeyboard(this)
             true
         }
     }
@@ -123,40 +122,34 @@ class BrowserFragment : Fragment() {
                 binding.sortBox.visibility = View.GONE
                 binding.filterBox.visibility = View.VISIBLE
             }
-            hideKeyboard()
+            hideKeyboard(this)
         }
 
         binding.filterBySetButton.setOnClickListener {
-            viewModel.setFilterState(
-                FilterState(
-                    FilterType.SET,
-                    binding.filterBySetEdittext.text.toString()
-                )
+            viewModel.setSetFilter(
+                binding.filterBySetEdittext.text.toString()
             )
-            hideKeyboard()
+            hideKeyboard(this)
         }
 
         binding.filterByManaButton.setOnClickListener {
             val value = binding.filterByManaEdittext.text.toString().toIntOrNull()
             if (value == null || value < 0) {
-                viewModel.setFilterState(FilterState(FilterType.NONE, ""))
+                viewModel.setManaFilter(null)
             } else {
-                viewModel.setFilterState(
-                    FilterState(
-                        FilterType.MANA,
-                        binding.filterByManaEdittext.text.toString()
-                    )
+                viewModel.setManaFilter(
+                    value
                 )
             }
-            hideKeyboard()
+            hideKeyboard(this)
         }
 
         binding.clearFilters.setOnClickListener {
-            viewModel.setFilterState(FilterState(FilterType.NONE, ""))
+            viewModel.clearFilters()
             viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
                 o1.name.compareTo(o2.name)
             }
-            hideKeyboard()
+            hideKeyboard(this)
         }
     }
 
@@ -172,7 +165,7 @@ class BrowserFragment : Fragment() {
                 binding.filterBox.visibility = View.GONE
                 binding.sortBox.visibility = View.VISIBLE
             }
-            hideKeyboard()
+            hideKeyboard(this)
         }
 
         binding.sortByNameButton.setOnClickListener {
@@ -208,11 +201,6 @@ class BrowserFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun hideKeyboard() {
-        val imm = getSystemService(requireContext(), InputMethodManager::class.java)
-        imm?.hideSoftInputFromWindow(binding.browserSearchbar.windowToken, 0)
     }
 
 }

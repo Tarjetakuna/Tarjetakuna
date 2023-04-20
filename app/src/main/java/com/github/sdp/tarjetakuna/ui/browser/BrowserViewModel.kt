@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna.ui.browser
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sdp.tarjetakuna.model.*
@@ -10,10 +11,10 @@ class BrowserViewModel : ViewModel() {
     private val _filterState = MutableLiveData<FilterState>()
     private val _sorterState = MutableLiveData<Comparator<MagicCard>>()
     private val _initialCards = MutableLiveData<ArrayList<MagicCard>>()
-    val searchState: MutableLiveData<String> = _searchState
-    val filterState: MutableLiveData<FilterState> = _filterState
-    val sorterState: MutableLiveData<Comparator<MagicCard>> = _sorterState
-    val initialCards: MutableLiveData<ArrayList<MagicCard>> = _initialCards
+    val searchState: LiveData<String> = _searchState
+    val filterState: LiveData<FilterState> = _filterState
+    val sorterState: LiveData<Comparator<MagicCard>> = _sorterState
+    val initialCards: LiveData<ArrayList<MagicCard>> = _initialCards
 
     init {
         _searchState.value = ""
@@ -30,10 +31,24 @@ class BrowserViewModel : ViewModel() {
     }
 
     /**
-     * Change the state of the filter
+     * Clear the filters
      */
-    fun setFilterState(filterState: FilterState) {
-        _filterState.value = filterState
+    fun clearFilters() {
+        _filterState.value = FilterState()
+    }
+
+    /**
+     * Apply the mana filter to the cards
+     */
+    fun setManaFilter(manaFilter: Int?) {
+        _filterState.value = _filterState.value!!.copy(manaFilter = manaFilter)
+    }
+
+    /**
+     * Apply the set filter to the cards
+     */
+    fun setSetFilter(setFilter: String?) {
+        _filterState.value = _filterState.value!!.copy(setFilter = setFilter)
     }
 
     /**
@@ -111,18 +126,7 @@ class BrowserViewModel : ViewModel() {
         val searchState = searchState.value!!
         val filterState = filterState.value!!
         val sorterState = sorterState.value!!
-        val filteredArray = when (filterState.filterType) {
-            FilterType.NONE -> cardsArray
-            FilterType.SET -> cardsArray.filter {
-                it.set.code.contains(
-                    filterState.filterValue,
-                    true
-                )
-            }
-            FilterType.MANA -> cardsArray.filter {
-                it.convertedManaCost == filterState.filterValue.toInt()
-            }
-        }
+        val filteredArray = filterState.filter(cardsArray)
 
         val nameFilteredArray = filteredArray.filter {
             it.name.contains(
@@ -132,4 +136,5 @@ class BrowserViewModel : ViewModel() {
         }
         return ArrayList(nameFilteredArray.sortedWith(sorterState))
     }
+
 }

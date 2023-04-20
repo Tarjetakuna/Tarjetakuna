@@ -1,18 +1,11 @@
 package com.github.sdp.tarjetakuna
 
-import android.os.Bundle
-import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.*
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.google.gson.Gson
-import org.hamcrest.Matchers
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -39,19 +32,8 @@ class HomeFragmentTest {
     public val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
-    fun testFilterButtonWorks() {
-        onView(withId(R.id.filterFragmentButton)).perform(click())
-        val bundle = Bundle()
-        bundle.putString("cards", Gson().toJson(cards))
-
-        activityRule.scenario.onActivity { activity ->
-            activity.changeFragment(R.id.nav_filter, bundle)
-            val navController =
-                Navigation.findNavController(activity, R.id.nav_host_fragment_content_drawer)
-            ViewMatchers.assertThat(
-                navController.currentDestination?.id,
-                Matchers.equalTo(R.id.nav_filter)
-            )
-        }
+    fun emptyTest() {
+        
     }
+
 }

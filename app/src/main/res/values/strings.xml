@@ -25,7 +25,6 @@
     <string name="menu_webapi">Webapi</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_exportcollection">Export Collection</string>
-    <string name="menu_filter">Filter</string>
     <string name="menu_authentication">Authentication</string>
     <string name="menu_authentication_button">Authentication button</string>
     <string name="menu_sign_out">Sign out</string>

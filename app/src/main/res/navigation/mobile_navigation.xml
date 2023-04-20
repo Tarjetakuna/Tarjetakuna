@@ -36,12 +36,6 @@
         tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/nav_filter"
-        android:name="com.github.sdp.tarjetakuna.ui.filter.FilterCardsFragment"
-        android:label="@string/menu_filter"
-        tools:layout="@layout/fragment_filter_cards" />
-
-    <fragment
         android:id="@+id/nav_authentication"
         android:name="com.github.sdp.tarjetakuna.ui.authentication.AuthenticationFragment"
         android:label="@string/menu_authentication"
