@@ -10,5 +10,28 @@
         <item name="windowNoTitle">true</item>
     </style>
     -->
+    <style name="TitleStyle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold|italic</item>
+    </style>
+
+    <style name="BrowserCardTitleStyle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BrowserCardDescriptionStyle">
+        <item name="android:textColor">@color/white_blue</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BubbleStyle">
+        <item name="android:background">@color/blue_med3</item>
+        <item name="android:padding">10dp</item>
+    </style>
 
 </resources>
