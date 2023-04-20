@@ -11,15 +11,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.camera.core.*
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.MainActivity
+import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentScannerBinding
-import com.google.mlkit.vision.text.Text
+import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -57,6 +61,7 @@ class ScannerFragment : Fragment() {
         _binding = FragmentScannerBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // bind the view model to the layout when text or object is detected in image
         scannerViewModel.textDetected.observe(viewLifecycleOwner) {
             binding.textInImage.text = it.text
         }
@@ -100,6 +105,7 @@ class ScannerFragment : Fragment() {
                     "Permissions not granted by the user.",
                     Toast.LENGTH_SHORT
                 ).show()
+                // TODO : should be independent of MainActivity
                 (this.activity as MainActivity).navigateUp()
             }
         }
@@ -109,10 +115,17 @@ class ScannerFragment : Fragment() {
      * Take a photo and save it to the device
      */
     private fun takePhoto() {
+        if (!takePicture()) {
+            binding.hiddenText.text = "Error taking picture"
+            Toast.makeText(this.context, "Error taking picture", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun takePicture(): Boolean {
         // Get a stable reference of the modifiable image capture use case
-        val imageCapture = imageCapture ?: return
-        val context = this.context ?: return
-        val contentResolver = this.activity?.contentResolver ?: return
+        val imageCapture = imageCapture ?: return false
+        val context = this.context ?: return false
+        val contentResolver = this.activity?.contentResolver ?: return false
 
         // Create time stamped name and MediaStore entry.
         val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
@@ -126,12 +139,11 @@ class ScannerFragment : Fragment() {
         }
 
         // Create output options object which contains file + metadata
-        val outputOptions = ImageCapture.OutputFileOptions
-            .Builder(
-                contentResolver,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues
-            ).build()
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(
+            contentResolver,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            contentValues
+        ).build()
 
         // Set up image capture listener, which is triggered after photo has been taken
         imageCapture.takePicture(
@@ -139,16 +151,21 @@ class ScannerFragment : Fragment() {
             ContextCompat.getMainExecutor(context),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
-                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                    val msg = getString(R.string.scanner_photo_failed, exc.message)
+                    binding.hiddenText.text = msg
+                    view?.let { Snackbar.make(it, msg, Snackbar.LENGTH_LONG).show() }
+                    Log.e(TAG, msg, exc)
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val msg = "Photo capture succeeded: ${output.savedUri}"
-                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                    val msg = getString(R.string.scanner_photo_saved, output.savedUri)
+                    binding.hiddenText.text = msg
+                    view?.let { Snackbar.make(it, msg, Snackbar.LENGTH_LONG).show() }
                     Log.d(TAG, msg)
                 }
             }
         )
+        return true
     }
 
     /**
@@ -178,9 +195,10 @@ class ScannerFragment : Fragment() {
             imageCapture = ImageCapture.Builder().build()
 
             // ImageAnalysis to detect text and objects
-            val imageAnalyzer = ImageAnalysis.Builder()
-                .build()
-                .also { it.setAnalyzer(cameraExecutor, setupImageAnalyzer()) }
+            // TODO finish the image analyzer
+//            val imageAnalyzer = ImageAnalysis.Builder()
+//                .build()
+//                .also { it.setAnalyzer(cameraExecutor, setupImageAnalyzer()) }
 
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -195,7 +213,8 @@ class ScannerFragment : Fragment() {
                     cameraSelector,
                     preview,
                     imageCapture,
-                    imageAnalyzer
+                    // TODO finish the image analyzer
+//                    imageAnalyzer
                 )
 
             } catch (exc: Exception) {
@@ -205,32 +224,33 @@ class ScannerFragment : Fragment() {
         }, ContextCompat.getMainExecutor(context))
     }
 
+    // TODO finish the image analyzer
     /**
      * Setup the image analyzer to detect text and objects with proper callbacks
      */
-    private fun setupImageAnalyzer(): ImageAnalyzer {
-        val textDetectedListener: TextDetectedListener = object : TextDetectedListener {
-            override fun callback(text: Text) {
-                scannerViewModel.detectTextSuccess(text)
-            }
-
-            override fun errorCallback(exception: Exception) {
-                scannerViewModel.detectTextError(exception)
-            }
-        }
-
-        val objectDetectedListener: ObjectDetectedListener = object : ObjectDetectedListener {
-            override fun callback(text: String) {
-                scannerViewModel.detectObjectSuccess(text)
-            }
-
-            override fun errorCallback(exception: Exception) {
-                scannerViewModel.detectObjectError(exception)
-            }
-        }
-
-        return ImageAnalyzer(textDetectedListener, objectDetectedListener)
-    }
+//    private fun setupImageAnalyzer(): ImageAnalyzer {
+//        val textDetectedListener: TextDetectedListener = object : TextDetectedListener {
+//            override fun callback(text: Text) {
+//                scannerViewModel.detectTextSuccess(text)
+//            }
+//
+//            override fun errorCallback(exception: Exception) {
+//                scannerViewModel.detectTextError(exception)
+//            }
+//        }
+//
+//        val objectDetectedListener: ObjectDetectedListener = object : ObjectDetectedListener {
+//            override fun callback(text: String) {
+//                scannerViewModel.detectObjectSuccess(text)
+//            }
+//
+//            override fun errorCallback(exception: Exception) {
+//                scannerViewModel.detectObjectError(exception)
+//            }
+//        }
+//
+//        return ImageAnalyzer(textDetectedListener, objectDetectedListener)
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -256,7 +276,6 @@ class ScannerFragment : Fragment() {
         private val REQUIRED_PERMISSIONS =
             mutableListOf(
                 Manifest.permission.CAMERA,
-                Manifest.permission.RECORD_AUDIO
             ).apply {
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
                     add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
