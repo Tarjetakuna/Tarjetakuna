@@ -83,7 +83,7 @@ class WaitForTextAction(
     }
 
     override fun getDescription(): String {
-        return "wait up to $timeout milliseconds for the view to have text $text"
+        return "wait up to $timeout milliseconds for the view to ${if (equality) "" else "not"} have text $text"
     }
 
     override fun perform(uiController: UiController, view: View) {

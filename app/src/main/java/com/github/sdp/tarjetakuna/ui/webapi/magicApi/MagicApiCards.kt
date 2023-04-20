@@ -1,9 +1,9 @@
 package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 
 /**
- * Legalities of a MagicCard (need to match the doc in api.magicthegathering.io/v1/)
+ * List of MagicCard (need to match the doc in api.magicthegathering.io/v1/)
  */
-class MagicCards(
+data class MagicApiCards(
     val cards: List<MagicCard>
 ) {
     override fun toString(): String {

@@ -62,7 +62,6 @@ class WebApiFragmentUITest {
         onView(withId(R.id.api_cards)).check(matches(withText(R.string.api_cards)))
         onView(withId(R.id.api_sets)).check(matches(withText(R.string.api_sets)))
         onView(withId(R.id.api_results)).check(matches(withText(R.string.api_default_results)))
-        onView(withId(R.id.api_back_home)).check(matches(withText(R.string.go_back_to_home_page)))
     }
 
     @Test

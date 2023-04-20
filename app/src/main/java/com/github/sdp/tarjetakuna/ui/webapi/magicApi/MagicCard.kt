@@ -23,7 +23,7 @@ data class MagicCard(
     val layout: String,
     val multiverseid: String,
     val imageUrl: String,
-    val variations: List<String>,
+    val variations: List<String>?,
     val foreignNames: List<ForeignName>,
     val printings: List<String>,
     val originalText: String,

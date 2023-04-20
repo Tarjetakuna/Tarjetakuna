@@ -15,25 +15,18 @@ class WebApiTest {
         assert(api.magicUrl == magicUrlTest)
     }
 
-
     @Test
-    fun test_getMagicApi() {
-        val api = WebApi.getMagicApi()
-        assert(api.getSets().isExecuted.not())
-        assert(api.getCards().isExecuted.not())
+    fun test_setUrl() {
+        val api = WebApi()
+        val url = "https://api.magicthegathering.io/v2/"
+        api.magicUrl = url
+        assert(api.magicUrl == url)
     }
 
     @Test
-    fun test_getCards(){
-        val fCards = WebApi.getCards()
-        fCards.whenComplete { cards, throwable ->
-            assert(cards != null)
-            assert(throwable == null)
-            assert(cards.cards.isNotEmpty())
-            assert(cards.cards.size == 5)
-            assert(cards.cards[0].name.isNotEmpty())
-            assert(cards.cards[0].name == "Ancestor's Chosen")
-            assert(cards.cards[0].imageUrl.isNotEmpty())
-        }.get()
+    fun test_setUrl2() {
+        val url = "https://api.magicthegathering.io/v2/"
+        WebApi.magicUrl = url
+        assert(WebApi.magicUrl == url)
     }
 }

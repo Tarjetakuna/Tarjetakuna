@@ -3,6 +3,10 @@ package com.github.sdp.tarjetakuna.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 
 class Utils {
     /**
@@ -84,5 +88,26 @@ class Utils {
             }
         }
 
+        /**
+         * Hide keyboard if it is visible, based on the context and the view
+         */
+        fun hideKeyboard(context: Context, view: View) {
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+        /**
+         * Hide keyboard if it is visible based on the activity
+         */
+        fun hideKeyboard(activity: AppCompatActivity) {
+            hideKeyboard(activity, activity.currentFocus ?: View(activity))
+        }
+
+        /**
+         * Hide keyboard if it is visible based on the fragment
+         */
+        fun hideKeyboard(fragment: Fragment) {
+            hideKeyboard(fragment.requireContext(), fragment.requireView())
+        }
     }
 }
