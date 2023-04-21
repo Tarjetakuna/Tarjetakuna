@@ -57,7 +57,6 @@
     <string name="api_default_results">No results yet…</string>
     <string name="api_waiting_results">Waiting for results…</string>
 
-
     <string name="meandering_towershell">Meandering Towershell</string>
     <string name="mt15">MT15</string>
     <string name="this_image_is_a_card">this image is a card</string>
@@ -82,8 +81,7 @@
     <string name="description_entry_hint">Enter a description here</string>
     <string name="name_entry_hint">Enter your name</string>
     <string name="profile_picture_content_description">Profile picture</string>
-
-
+    
     <string name="image_of_the_card">Image of the card</string>
     <string name="error_load_card">Error loading the card</string>
     <string name="single_card_showing_set">From %1$s (%2$s)</string>
