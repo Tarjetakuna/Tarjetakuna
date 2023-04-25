@@ -22,14 +22,14 @@
             android:id="@+id/browser_filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/browserFragment_filter"
+            android:text="@string/browser_filter"
             android:layout_margin="4dp" />
 
         <Button
             android:id="@+id/browser_sort_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/browserFragment_sort"
+            android:text="@string/browser_sort"
             android:layout_margin="4dp" />
 
 
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:contentDescription="@string/browserFragment_clear_filters" />
+            android:contentDescription="@string/browser_clear_filters" />
 
     </LinearLayout>
 
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="@string/browserFragment_filter_by_set" />
+                android:text="@string/browser_filter_by_set" />
 
             <EditText
                 android:id="@+id/filter_by_set_edittext"
@@ -74,8 +74,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_weight="2"
-                android:hint="@string/browserFragment_enter_set_code"
-                android:autofillHints="@string/browserFragment_enter_set_code"
+                android:hint="@string/browser_enter_set_code"
+                android:autofillHints="@string/browser_enter_set_code"
                 android:inputType="text" />
 
             <Button
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="8dp"
-                android:text="@string/browserFragment_apply" />
+                android:text="@string/browser_apply" />
 
         </LinearLayout>
 
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="@string/browserFragment_filter_by_mana" />
+                android:text="@string/browser_filter_by_mana" />
 
             <EditText
                 android:id="@+id/filter_by_mana_edittext"
@@ -109,8 +109,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_weight="2"
-                android:hint="@string/browserFragment_enter_manacost"
-                android:autofillHints="@string/browserFragment_enter_manacost"
+                android:hint="@string/browser_enter_manacost"
+                android:autofillHints="@string/browser_enter_manacost"
                 android:inputType="text" />
 
             <Button
@@ -119,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="8dp"
-                android:text="@string/browserFragment_apply" />
+                android:text="@string/browser_apply" />
 
         </LinearLayout>
 
@@ -142,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="@string/browserFragment_sort_by_name"
+            android:text="@string/browser_sort_by_name"
             style="?android:attr/buttonBarButtonStyle" />
 
         <Button
@@ -151,7 +151,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="@string/browserFragment_sort_by_mana"
+            android:text="@string/browser_sort_by_mana"
             style="?android:attr/buttonBarButtonStyle" />
 
         <Button
@@ -160,7 +160,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="@string/browserFragment_sort_by_rarity"
+            android:text="@string/browser_sort_by_rarity"
             style="?android:attr/buttonBarButtonStyle" />
 
         <Button
@@ -169,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="@string/browserFragment_sort_by_set"
+            android:text="@string/browser_sort_by_set"
             style="?android:attr/buttonBarButtonStyle" />
 
 

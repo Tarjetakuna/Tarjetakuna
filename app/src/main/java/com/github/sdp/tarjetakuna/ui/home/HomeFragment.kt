@@ -17,25 +17,6 @@ import com.github.sdp.tarjetakuna.model.MagicSet
 
 class HomeFragment : Fragment() {
 
-    private val magicSet = MagicSet("MT15", "Magic 2015")
-    private val cmc = 5
-    private val magicLayout = MagicLayout.Normal
-    private val link = "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid="
-    private val cards: ArrayList<MagicCard> = arrayListOf(
-        MagicCard(
-            "Meandering Towershell", "Islandwalk",
-            magicLayout, cmc, "{3}{G}{G}",
-            magicSet, 141,
-            "${link}386602"
-        ),
-        MagicCard(
-            "Angel of Mercy", "Flying",
-            magicLayout, cmc, "{4}{W}",
-            magicSet, 1,
-            "${link}82992"
-        )
-    )
-
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
@@ -47,8 +28,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        val homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -56,19 +36,9 @@ class HomeFragment : Fragment() {
         val textView: TextView = binding.textHome
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
-
         }
 
-        //val plainText: EditText = binding.mainName2
-        val button: Button = binding.mainGoButton2
-        button.setOnClickListener {
-            // call changeFragment()
-            val mainActivity = requireActivity() as MainActivity
-            mainActivity.changeFragment(R.id.nav_browser)
-
-        }
-
-        val authenticationButton: Button = binding.authenticationButton
+        val authenticationButton: Button = binding.homeAuthenticationButton
         authenticationButton.setOnClickListener {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.changeFragment(R.id.nav_authentication_button)

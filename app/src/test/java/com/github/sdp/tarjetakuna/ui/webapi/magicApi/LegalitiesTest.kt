@@ -1,6 +1,7 @@
 package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 
 import com.github.sdp.tarjetakuna.utils.TestHelperWebApi
+import junit.framework.TestCase.assertEquals
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.hasItem
 import org.junit.Test
@@ -28,5 +29,12 @@ class LegalitiesTest {
             assertThat("format is in the list", formatList, hasItem(it.format.lowercase()))
             assertThat("legality is in the list", legalityList, hasItem(it.legality.lowercase()))
         }
+    }
+
+    @Test
+    fun test_validLegality() {
+        val validLegality = Legalities("format", "legality")
+        assertEquals("format", validLegality.format)
+        assertEquals("legality", validLegality.legality)
     }
 }

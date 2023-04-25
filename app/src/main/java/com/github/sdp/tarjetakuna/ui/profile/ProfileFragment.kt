@@ -79,13 +79,6 @@ class ProfileFragment : Fragment() {
             getString(R.string.description_entry_hint)
         )
 
-        // Link the authentication button to the authentication activity
-        val authenticationButton: Button = binding.authenticationButton
-        authenticationButton.setOnClickListener {
-            val mainActivity = requireActivity() as MainActivity
-            mainActivity.changeFragment(R.id.nav_authentication_button)
-        }
-
         return root
     }
 

@@ -18,7 +18,7 @@ data class MagicCard(
     /**
      * The card layout.
      */
-    val layout: MagicLayout = MagicLayout.Normal,
+    val layout: MagicLayout = MagicLayout.NORMAL,
 
     /**
      * The total card mana cost.
@@ -52,7 +52,7 @@ data class MagicCard(
     /**
      * The card rarity.
      */
-    val rarity: MagicRarity = MagicRarity.Common,
+    val rarity: MagicRarity = MagicRarity.COMMON,
 
     /**
      * The card type.
