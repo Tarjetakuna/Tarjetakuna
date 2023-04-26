@@ -77,6 +77,8 @@ dependencies {
 
     //glide
     implementation 'com.github.bumptech.glide:glide:4.15.0'
+    implementation 'androidx.core:core-ktx:1.10.0'
+    androidTestImplementation project(path: ':app')
     kapt 'com.github.bumptech.glide:compiler:4.15.0'
 
     // webapi dependencies
