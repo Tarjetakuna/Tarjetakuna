@@ -6,4 +6,5 @@
     <dimen name="nav_header_height">176dp</dimen>
     <!-- fab_margin is not used by cirrus, but tests will fail if it is removed. -->
     <dimen name="fab_margin" tools:ignore="UnusedResources">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

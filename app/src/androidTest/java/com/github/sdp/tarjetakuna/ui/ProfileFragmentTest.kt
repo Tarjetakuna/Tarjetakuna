@@ -76,5 +76,4 @@ class ProfileFragmentTest {
             sharedPref.getString(SharedPreferencesKeys.user_description, "")
         )
     }
-
 }

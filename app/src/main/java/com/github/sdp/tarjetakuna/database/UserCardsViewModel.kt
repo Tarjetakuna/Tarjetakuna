@@ -29,14 +29,14 @@ class UserCardsViewModel : ViewModel() {
     //TODO Remove these hardcoded values and replace them with the web API callss
     val card1 = MagicCard(
         "Angel of Mercy", "Flying",
-        MagicLayout.Normal, 7, "{5}{W}{W}",
+        MagicLayout.NORMAL, 7, "{5}{W}{W}",
         MagicSet("MT15", "Magic 2015"), 56,
         "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card"
     )
 
     val card2 = MagicCard(
         "Meandering Towershell", "Islandwalk",
-        MagicLayout.DoubleFaced, 5, "{3}{G}{G}",
+        MagicLayout.DOUBLE_FACED, 5, "{3}{G}{G}",
         MagicSet("MT15", "Magic 2015"), 141,
         "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=386602"
     )

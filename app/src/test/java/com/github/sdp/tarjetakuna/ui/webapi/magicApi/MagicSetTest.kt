@@ -1,6 +1,7 @@
 package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 
 import com.github.sdp.tarjetakuna.utils.TestHelperWebApi
+import junit.framework.TestCase.assertEquals
 import org.hamcrest.CoreMatchers.isA
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -48,5 +49,26 @@ class MagicSetTest {
     @Test
     fun test_toString() {
         assertThat("toString not null", set.toString().isNotEmpty())
+    }
+
+    @Test
+    fun test_validSet() {
+        val validSet = MagicSet(
+            "code", "name", "type", "border", "mkm_id", "mkm_name", "gathererCode",
+            "magicCardsInfoCode", "releaseDate", "block", true, "mkm_idExpansion", "mkm_nameExpansion"
+        )
+        assertEquals("code", validSet.code)
+        assertEquals("name", validSet.name)
+        assertEquals("type", validSet.type)
+        assertEquals("border", validSet.border)
+        assertEquals("mkm_id", validSet.mkm_id)
+        assertEquals("mkm_name", validSet.mkm_name)
+        assertEquals("gathererCode", validSet.gathererCode)
+        assertEquals("magicCardsInfoCode", validSet.magicCardsInfoCode)
+        assertEquals("releaseDate", validSet.releaseDate)
+        assertEquals("block", validSet.block)
+        assertEquals(true, validSet.onlineOnly)
+        assertEquals("mkm_idExpansion", validSet.mkm_idExpansion)
+        assertEquals("mkm_nameExpansion", validSet.mkm_nameExpansion)
     }
 }

@@ -49,7 +49,7 @@ class DisplayCardsAdapter(val cards: ArrayList<MagicCard>) :
         holder.cardName.text = cards[position].name
         // TODO change the image directly from the url (when web API available)
         holder.cardImage.setImageResource(R.drawable.card)
-        holder.setInfo.text = cards[position].set.toString()
+        holder.setInfo.text = cards[position].set.name
         holder.itemView.setOnClickListener {
             onCardClickListener?.onCardClick(position)
         }

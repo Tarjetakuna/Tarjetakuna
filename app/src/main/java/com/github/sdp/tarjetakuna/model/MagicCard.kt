@@ -21,7 +21,7 @@ data class MagicCard(
     /**
      * The card layout.
      */
-    val layout: MagicLayout = MagicLayout.Normal,
+    val layout: MagicLayout = MagicLayout.NORMAL,
 
     /**
      * The total card mana cost.
@@ -39,7 +39,7 @@ data class MagicCard(
      * The card set.
      * Example : MagicSet("M21", "Core Set 2021")
      */
-    val set: MagicSet = MagicSet("Unknown code", "Unknown name"),
+    val set: MagicSet = MagicSet(),
 
     /**
      * The card number of the set.
@@ -55,13 +55,13 @@ data class MagicCard(
     /**
      * The card rarity.
      */
-    val rarity: MagicRarity = MagicRarity.Common,
+    val rarity: MagicRarity = MagicRarity.COMMON,
 
     /**
      * The card type.
-     * Example : Creature
+     * Example : CREATURE
      */
-    val type: MagicType = MagicType.Creature,
+    val type: MagicCardType = MagicCardType.CREATURE,
 
     /**
      * The card subtypes.
