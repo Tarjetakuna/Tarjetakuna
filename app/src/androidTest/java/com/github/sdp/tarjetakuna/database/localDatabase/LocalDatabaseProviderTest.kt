@@ -31,7 +31,9 @@ class LocalDatabaseProviderTest {
 
     @Test
     fun assignTestDatabaseWorks() {
-        LocalDatabaseProvider.setTestDatabase(ApplicationProvider.getApplicationContext())
+        LocalDatabaseProvider.setDatabase(
+            ApplicationProvider.getApplicationContext(), "", true
+        )
         assert(LocalDatabaseProvider.getDatabase() != null)
     }
 }

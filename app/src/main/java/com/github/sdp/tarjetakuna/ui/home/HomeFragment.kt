@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
 
@@ -36,7 +37,11 @@ class HomeFragment : Fragment() {
             textView.text = it
 
         }
-//        context?.deleteDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+        DatabaseSync.sync()
+//        LocalDatabaseProvider.deleteDatabases(
+//            requireContext(),
+//            arrayListOf(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+//        )
 
         // TODO remove when not owned card search is implemented
         homeViewModel.localDatabase = LocalDatabaseProvider.setDatabase(

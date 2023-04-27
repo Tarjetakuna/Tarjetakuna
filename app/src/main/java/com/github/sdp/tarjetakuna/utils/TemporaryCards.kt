@@ -9,13 +9,14 @@ object TemporaryCards {
     fun generateCards(): ArrayList<MagicCard> {
         val cardsArray = ArrayList<MagicCard>()
         for (i in 0..39) {
-            val name = if (i + 1 < 10) {
-                "Magic 190${i + 1}"
+            val number = if (i + 1 < 10) {
+                "0${i + 1}"
             } else {
-                "Magic 19${i + 1}"
+                "${i + 1}"
             }
+            val name = "Magic 19$number"
             val card = MagicCard(
-                "Ambush Paratrooper ${i + 1}",
+                "Ambush Paratrooper $number",
                 "Flash, Flying\n5: Creatures you control get +1/+1 until end of turn.",
                 MagicLayout.NORMAL,
                 2,

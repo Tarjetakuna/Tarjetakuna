@@ -1,7 +1,7 @@
 package com.github.sdp.tarjetakuna.model
 
-import com.github.sdp.tarjetakuna.database.FBCardPossession
-import com.github.sdp.tarjetakuna.database.local.MagicCardEntity
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBMagicCard
 
 /**
  * Represents a Magic card.
@@ -105,8 +105,8 @@ data class MagicCard(
     /**
      * Converts a MagicCard to a MagicCardEntity.
      */
-    fun toMagicCardEntity(possession: FBCardPossession): MagicCardEntity {
-        return MagicCardEntity(
+    fun toDBMagicCard(possession: CardPossession): DBMagicCard {
+        return DBMagicCard(
             this,
             possession
         )
@@ -115,7 +115,7 @@ data class MagicCard(
     /**
      * Converts a MagicCard to a MagicCardEntity with default posession none.
      */
-    fun toMagicCardEntity(): MagicCardEntity {
-        return toMagicCardEntity(FBCardPossession.NONE)
+    fun toDBMagicCard(): DBMagicCard {
+        return toDBMagicCard(CardPossession.NONE)
     }
 }

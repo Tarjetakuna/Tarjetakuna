@@ -31,7 +31,9 @@ class BrowserFragmentTest {
     fun setUp() {
         Intents.init()
 
-        LocalDatabaseProvider.setTestDatabase(ApplicationProvider.getApplicationContext())
+        LocalDatabaseProvider.setDatabase(
+            ApplicationProvider.getApplicationContext(), "", true
+        )
         runBlocking {
             withTimeout(5000) {
                 for (i in generateCards()) {

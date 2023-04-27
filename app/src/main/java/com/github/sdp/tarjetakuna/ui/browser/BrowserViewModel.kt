@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.model.MagicCard
-import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,8 +26,11 @@ class BrowserViewModel : ViewModel() {
     var localDatabase: AppDatabase? = null
 
     // The cards that are displayed in the recycler view
-    private val _cards: MutableLiveData<ArrayList<MagicCard>> = MutableLiveData()
+    private val _cards: MutableLiveData<ArrayList<MagicCard>> =
+        MutableLiveData<ArrayList<MagicCard>>()
     val cards: LiveData<ArrayList<MagicCard>> = _cards
+
+    var cardsArray: ArrayList<MagicCard> = arrayListOf()
 
     init {
         _searchState.value = ""
@@ -84,15 +87,18 @@ class BrowserViewModel : ViewModel() {
     fun getCardsFromDatabase() {
         val cardsArray = ArrayList<MagicCard>()
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
+            withContext(Dispatchers.Default) {
                 val cards = localDatabase?.magicCardDao()?.getAllCards()
                 if (cards != null) {
                     for (card in cards) {
-                        cardsArray.add(card.toMagicCard())
+                        if (card.possession == CardPossession.OWNED) {
+                            cardsArray.add(card.toMagicCard())
+                        }
                     }
                 }
             }
         }.invokeOnCompletion {
+            this.cardsArray = cardsArray
             _cards.value = cardsArray
         }
     }
@@ -101,7 +107,6 @@ class BrowserViewModel : ViewModel() {
      * Apply the filter and the sorter to the list of cards
      */
     private fun applyFilters(): ArrayList<MagicCard> {
-        val cardsArray = generateCards()
         val searchState = searchState.value!!
         val filterState = filterState.value!!
         val sorterState = sorterState.value!!

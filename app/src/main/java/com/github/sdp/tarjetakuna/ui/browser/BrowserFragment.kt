@@ -52,12 +52,7 @@ class BrowserFragment : Fragment() {
 
         // update the recycler view when the cards are retrieved from the database
         viewModel.getCardsFromDatabase()
-        viewModel.cards.observe(viewLifecycleOwner) {
-            val adapter = DisplayCardsAdapter(it)
-            binding.browserListCards.adapter = adapter
-            initOnCardClickListener(adapter)
 
-        }
         return root
     }
 
@@ -83,6 +78,16 @@ class BrowserFragment : Fragment() {
             val adapter = DisplayCardsAdapter(it)
             binding.browserListCards.adapter = adapter
             initOnCardClickListener(adapter)
+        }
+
+        viewModel.cards.observe(viewLifecycleOwner) {
+            val adapter = DisplayCardsAdapter(it)
+            binding.browserListCards.adapter = adapter
+            initOnCardClickListener(adapter)
+            // sort the cards
+            viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
+                o1.name.compareTo(o2.name)
+            }
         }
     }
 

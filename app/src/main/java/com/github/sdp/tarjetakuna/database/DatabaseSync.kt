@@ -1,5 +1,13 @@
 package com.github.sdp.tarjetakuna.database
 
+import android.util.Log
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
 /**
  * Represents a database sync.
  */
@@ -12,49 +20,78 @@ object DatabaseSync {
     @JvmStatic
     fun sync() {
         // TODO
+        val userRTDB = UserCardsRTDB()
+        if (!userRTDB.isConnected()) {
+            Log.i("DatabaseSync", "sync: Not connected to firebase")
+            return
+        }
+        val cards = userRTDB.getAllCardsFromCollection()
+        cards.thenAccept {
+            processSnapshot(it)
+        }.exceptionally {
+            Log.i("DatabaseSync", "no cards found in database}")
+            null
+        }
     }
-//        val userRTDB = UserCardsRTDB()
-//        val data = userRTDB.getAllCardsFromCollection()
-//        data.thenAccept {
-//            println("Cards from database: ${it.value.toString()}")
-//            val firebaseCards =
-//                Gson().fromJson(it.value.toString(), Array<FBMagicCard>::class.java)
-//                    .toCollection(ArrayList())
-//
-//            // define coroutine scope to run the database operations
-//            val scope = CoroutineScope(Dispatchers.IO)
-//
-//            scope.launch {
-//                val localCards = LocalDatabaseProvider.getDatabase()?.magicCardDao()?.getAllCards()
-//
-//            }
-//        }.exceptionally {
-//            println("Error: ${it.message}")
-//            null
-//        }
-//    }
-//
-//    /**
-//     * Check if the local database contains the firebase card.
-//     * @param fbCard the card to check
-//     * @param localCard the local database
-//     * @return true if the card is in the local database, false otherwise
-//     */
-//    private fun containsCard(fbCard: FBMagicCard, localCard: List<MagicCardEntity>): Boolean {
-//        for (card in localCard) {
-//            if (card.code == fbCard.card.set.code && card.number == fbCard.card.number) {
-//                return true
-//            }
-//        }
-//        return false
-//    }
-//
-//    private fun mergeCards(fbCard: FBMagicCard, localCard: MagicCardEntity): MagicCardEntity {
-//        // TODO
-//        if (fbCard.lastUpdate > localCard.lastUpdate) {
-//            // update local card
-//            return fbCard.toMagicCardEntity()
-//        }
-//        return localCard
-//    }
+
+    private fun processSnapshot(snapshot: DataSnapshot) {
+        // TODO
+        val map: Map<String, String> = snapshot.value!! as Map<String, String>
+        val fbCardsMap: Map<String, DBMagicCard> = map.mapValues { (_, value) ->
+            Gson().fromJson(value, DBMagicCard::class.java)
+        }
+
+        Log.i("DatabaseSync", "sync: ${fbCardsMap.size} cards found on firebase")
+
+        // retrieve local cards
+        val scope = CoroutineScope(Dispatchers.Default)
+        scope.launch {
+            val localCards =
+                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+                    .magicCardDao().getAllCards().associateBy { it.code + it.number.toString() }
+            Log.i("DatabaseSync", "sync: ${localCards.size} cards found on local database")
+            var updatedCards: MutableMap<String, DBMagicCard> = mutableMapOf()
+            updatedCards = mergeCards(localCards, fbCardsMap, updatedCards)
+            updatedCards = mergeCards(fbCardsMap, localCards, updatedCards)
+            Log.i("DatabaseSync", "sync: $updatedCards cards updated")
+            pushChanges(updatedCards.toList().map { it.second })
+        }
+    }
+
+    /**
+     * Merge two lists of cards so that it contains only the most updated cards.
+     */
+    private fun mergeCards(
+        map1: Map<String, DBMagicCard>,
+        map2: Map<String, DBMagicCard>,
+        currentCards: MutableMap<String, DBMagicCard>
+    ): MutableMap<String, DBMagicCard> {
+        for ((key, card1) in map1) {
+            if (!map2.contains(key) && !currentCards.contains(key)) {
+                currentCards[key] = card1
+            } else if (map2.contains(key) && !currentCards.contains(key)) {
+                val card2 = map2[key]!!
+
+                if (card2.lastUpdate > card1.lastUpdate) {
+                    currentCards[key] = card2
+                } else {
+                    currentCards[key] = card1
+                }
+            }
+        }
+        return currentCards
+    }
+
+    /**
+     * Push the changes to the local database and to the remote database.
+     * @param cards the cards to push
+     */
+    private suspend fun pushChanges(cards: List<DBMagicCard>) {
+        LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+            .magicCardDao().insertCards(cards)
+        val userRTDB = UserCardsRTDB()
+        userRTDB.addCardsToCollection(cards)
+        Log.i("DatabaseSync", "pushChanges: ${cards.size} cards updated")
+    }
+
 }
