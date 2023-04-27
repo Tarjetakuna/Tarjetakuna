@@ -34,7 +34,7 @@ class HomeFragmentTest {
     @Before
     fun setUp() {
         database =
-            LocalDatabaseProvider.setTestDatabase(ApplicationProvider.getApplicationContext())
+            LocalDatabaseProvider.setTestDatabase(ApplicationProvider.getApplicationContext())!!
         activityRule = ActivityScenario.launch(MainActivity::class.java)
 
     }

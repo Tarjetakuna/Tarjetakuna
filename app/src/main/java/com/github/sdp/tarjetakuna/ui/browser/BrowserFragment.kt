@@ -39,7 +39,10 @@ class BrowserFragment : Fragment() {
 
         // Set the local database
         browserViewModel.localDatabase =
-            LocalDatabaseProvider.setDatabase(requireContext(), "cards")
+            LocalDatabaseProvider.setDatabase(
+                requireContext(),
+                LocalDatabaseProvider.CARDS_DATABASE_NAME
+            )
 
         binding.browserListCards.layoutManager = LinearLayoutManager(context)
         initSearchBar(browserViewModel)

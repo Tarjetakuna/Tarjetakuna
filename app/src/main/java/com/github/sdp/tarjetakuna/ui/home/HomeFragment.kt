@@ -62,7 +62,10 @@ class HomeFragment : Fragment() {
         }
 
         // TODO remove when not owned card search is implemented
-        homeViewModel.localDatabase = LocalDatabaseProvider.setDatabase(requireContext(), "cards")
+        homeViewModel.localDatabase = LocalDatabaseProvider.setDatabase(
+            requireContext(),
+            LocalDatabaseProvider.CARDS_DATABASE_NAME
+        )
         //val plainText: EditText = binding.mainName2
         val button: Button = binding.mainGoButton2
         button.setOnClickListener {

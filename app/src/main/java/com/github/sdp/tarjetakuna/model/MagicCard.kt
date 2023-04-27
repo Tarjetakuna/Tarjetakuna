@@ -2,7 +2,6 @@ package com.github.sdp.tarjetakuna.model
 
 import com.github.sdp.tarjetakuna.database.FBCardPossession
 import com.github.sdp.tarjetakuna.database.local.MagicCardEntity
-import com.google.gson.Gson
 
 /**
  * Represents a Magic card.
@@ -108,8 +107,8 @@ data class MagicCard(
      */
     fun toMagicCardEntity(possession: FBCardPossession): MagicCardEntity {
         return MagicCardEntity(
-            magicCard = Gson().toJson(this),
-            possession = possession
+            this,
+            possession
         )
     }
 

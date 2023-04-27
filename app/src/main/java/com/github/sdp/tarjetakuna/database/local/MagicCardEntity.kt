@@ -6,8 +6,10 @@ import com.github.sdp.tarjetakuna.model.MagicCard
 import com.google.gson.Gson
 
 /**
+ * // TODO merge with "Firebase" MagicCard
  * Represents a Magic card.
  */
+
 @Entity(tableName = "magic_card", primaryKeys = ["code", "number"])
 data class MagicCardEntity(
     /**

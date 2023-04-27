@@ -60,4 +60,21 @@ class UserCardsRTDB {
         }
         return future
     }
+
+    /**
+     * Retrieves all the cards asynchronously from the database
+     */
+    fun getAllCardsFromCollection(): CompletableFuture<DataSnapshot> {
+        val future = CompletableFuture<DataSnapshot>()
+        userCardCollection?.get()?.addOnSuccessListener {
+            if (it.value == null) {
+                future.completeExceptionally(NoSuchFieldException("you don't have any card in your collection"))
+            } else {
+                future.complete(it)
+            }
+        }?.addOnFailureListener {
+            future.completeExceptionally(it)
+        }
+        return future
+    }
 }

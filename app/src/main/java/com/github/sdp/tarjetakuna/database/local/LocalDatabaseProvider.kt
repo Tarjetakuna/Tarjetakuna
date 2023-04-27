@@ -5,8 +5,13 @@ import androidx.room.Room
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+/**
+ * Provides a local database.
+ * TODO modify so that we can add more than one database
+ */
 object LocalDatabaseProvider {
     private var localDatabase: AppDatabase? = null
+    const val CARDS_DATABASE_NAME = "cards"
 
     /**
      * Set a local database

@@ -37,7 +37,10 @@ class SingleCardFragment : Fragment() {
 
         loadCardFromJson()
         // Initialize the local database
-        viewModel.localDatabase = LocalDatabaseProvider.setDatabase(requireContext(), "cards")
+        viewModel.localDatabase = LocalDatabaseProvider.setDatabase(
+            requireContext(),
+            LocalDatabaseProvider.CARDS_DATABASE_NAME
+        )
 
         viewModel.checkUserConnected()
         viewModel.isConnected.observe(viewLifecycleOwner) {
