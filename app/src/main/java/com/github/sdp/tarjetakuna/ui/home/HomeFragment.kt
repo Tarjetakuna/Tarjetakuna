@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
 
@@ -37,7 +36,6 @@ class HomeFragment : Fragment() {
             textView.text = it
 
         }
-        DatabaseSync.sync()
 //        LocalDatabaseProvider.deleteDatabases(
 //            requireContext(),
 //            arrayListOf(LocalDatabaseProvider.CARDS_DATABASE_NAME)

@@ -19,7 +19,6 @@ object DatabaseSync {
      */
     @JvmStatic
     fun sync() {
-        // TODO
         val userRTDB = UserCardsRTDB()
         if (!userRTDB.isConnected()) {
             Log.i("DatabaseSync", "sync: Not connected to firebase")
@@ -30,12 +29,16 @@ object DatabaseSync {
             processSnapshot(it)
         }.exceptionally {
             Log.i("DatabaseSync", "no cards found in database}")
+            addLocalDBToFirebase()
             null
         }
     }
 
+    /**
+     * Merge the cards from the local database with the cards from the remote database.
+     * @param snapshot the snapshot of the remote database (used to retrieve the remote cards
+     */
     private fun processSnapshot(snapshot: DataSnapshot) {
-        // TODO
         val map: Map<String, String> = snapshot.value!! as Map<String, String>
         val fbCardsMap: Map<String, DBMagicCard> = map.mapValues { (_, value) ->
             Gson().fromJson(value, DBMagicCard::class.java)
@@ -50,16 +53,20 @@ object DatabaseSync {
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
                     .magicCardDao().getAllCards().associateBy { it.code + it.number.toString() }
             Log.i("DatabaseSync", "sync: ${localCards.size} cards found on local database")
+            // merge cards so that we only have the most updated cards
             var updatedCards: MutableMap<String, DBMagicCard> = mutableMapOf()
             updatedCards = mergeCards(localCards, fbCardsMap, updatedCards)
             updatedCards = mergeCards(fbCardsMap, localCards, updatedCards)
-            Log.i("DatabaseSync", "sync: $updatedCards cards updated")
+
             pushChanges(updatedCards.toList().map { it.second })
         }
     }
 
     /**
-     * Merge two lists of cards so that it contains only the most updated cards.
+     * Merge two maps of cards so that it contains only the most updated cards.
+     * @param map1 the first map
+     * @param map2 the second map
+     * @param currentCards the current cards
      */
     private fun mergeCards(
         map1: Map<String, DBMagicCard>,
@@ -92,6 +99,20 @@ object DatabaseSync {
         val userRTDB = UserCardsRTDB()
         userRTDB.addCardsToCollection(cards)
         Log.i("DatabaseSync", "pushChanges: ${cards.size} cards updated")
+    }
+
+    /**
+     * Add the local database to the remote database.
+     */
+    private fun addLocalDBToFirebase() {
+        val scope = CoroutineScope(Dispatchers.Default)
+        scope.launch {
+            val localCards =
+                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+                    .magicCardDao().getAllCards()
+            val userRTDB = UserCardsRTDB()
+            userRTDB.addCardsToCollection(localCards)
+        }
     }
 
 }

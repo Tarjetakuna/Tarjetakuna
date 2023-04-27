@@ -10,8 +10,8 @@ import com.github.sdp.tarjetakuna.database.DBMagicCard
 @Dao
 interface MagicCardDao {
 
-    @Query("SELECT * FROM magic_card WHERE 'set' = :set AND 'number' = :number")
-    suspend fun getCard(set: String, number: String): DBMagicCard?
+    @Query("SELECT * FROM magic_card WHERE code = :code AND number = :number")
+    suspend fun getCard(code: String, number: String): DBMagicCard?
 
     @Query("SELECT * FROM magic_card")
     suspend fun getAllCards(): List<DBMagicCard>
