@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.*
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
-import com.github.sdp.tarjetakuna.utils.CommonMagicCard
+import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.CustomGlide
 import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
 import com.google.gson.Gson
@@ -32,7 +32,7 @@ class SingleCardFragmentTest {
     private lateinit var scenario: FragmentScenario<SingleCardFragment>
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
-    private val validMagicCard = CommonMagicCard().validCard
+    private val validMagicCard = CommonMagicCard.aeronautTinkererCard
 
     private val validJson = Gson().toJson(validMagicCard)
     private val invalidJson = "This is not a valid json string"

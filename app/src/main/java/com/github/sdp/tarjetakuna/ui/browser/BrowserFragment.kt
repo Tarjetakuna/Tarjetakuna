@@ -36,7 +36,6 @@ class BrowserFragment : Fragment() {
         val root: View = binding.root
 
         initObservers()
-
         initSearchBar(viewModel)
         initFilterButtonsListener()
         initSorterButtonsListener()
@@ -102,7 +101,6 @@ class BrowserFragment : Fragment() {
                 override fun onCardClick(position: Int) {
                     val bundle = Bundle()
                     bundle.putString("card", Gson().toJson(adapter.cards[position]))
-                    //TODO : Should be changed to remove the dependency on MainActivity
                     (requireActivity() as MainActivity).changeFragment(R.id.nav_single_card, bundle)
                 }
             }
