@@ -133,7 +133,7 @@ class SingleCardFragment : Fragment() {
             // so we use a placeholder for now.
             CustomGlide.loadDrawable(
                 this,
-                "https://cards.scryfall.io/large/front/c/f/cfa00c0e-163d-4f59-b8b9-3ee9143d27bb.jpg?1674420138"
+                "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386616&type=card"
             ) {
                 binding.singleCardImage.setImageDrawable(it)
             }
