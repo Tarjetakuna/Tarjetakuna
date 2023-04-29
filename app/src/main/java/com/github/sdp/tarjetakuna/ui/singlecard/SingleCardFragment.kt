@@ -133,7 +133,7 @@ class SingleCardFragment : Fragment() {
             // so we use a placeholder for now.
             CustomGlide.loadDrawable(
                 this,
-                "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386616&type=card"
+                card.imageUrl
             ) {
                 binding.singleCardImage.setImageDrawable(it)
             }
