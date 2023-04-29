@@ -193,7 +193,7 @@ class SingleCardFragmentTest {
     @Test
     fun testTypeTextWorkCorrectlyWithCreatureNoSubtype() {
         val anotherValidMagicCard =
-            validMagicCard.copy(type = MagicCardType.CREATURE, subtypes = listOf())
+            validMagicCard.copy(subtypes = listOf())
         val anotherValidJson = Gson().toJson(anotherValidMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
@@ -217,7 +217,7 @@ class SingleCardFragmentTest {
      */
     @Test
     fun testTypeTextWorkCorrectlyWithArtifactNoSubtype() {
-        val anotherValidMagicCard = validMagicCard.copy(subtypes = listOf())
+        val anotherValidMagicCard = validMagicCard.copy(type = MagicCardType.ARTIFACT, subtypes = listOf())
         val anotherValidJson = Gson().toJson(anotherValidMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
@@ -231,15 +231,14 @@ class SingleCardFragmentTest {
      */
     @Test
     fun testTypeTextWorkCorrectlyWithCreatureWithSubtype() {
-        val anotherValidMagicCard = validMagicCard.copy(type = MagicCardType.CREATURE)
-        val anotherValidJson = Gson().toJson(anotherValidMagicCard)
+        val anotherValidJson = Gson().toJson(validMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
 
         textCardType.check(
             matches(
                 withText(
-                    anotherValidMagicCard.type.toString()
+                    validMagicCard.type.toString()
                             + " " + context.getString(
                         R.string.single_card_showing_stats,
                         validMagicCard.power,
@@ -247,7 +246,7 @@ class SingleCardFragmentTest {
                     )
                             + " " + context.getString(
                         R.string.single_card_showing_subtypes,
-                        anotherValidMagicCard.subtypes.joinToString(", ")
+                        validMagicCard.subtypes.joinToString(", ")
                     )
                 )
             )
