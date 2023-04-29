@@ -55,41 +55,39 @@ class WebApiTest {
     }
 
     @Test
-    fun test_getCards() {
-        test_getCards_withRetry(5)
+    fun test_getRandomCard() {
+        test_getRandomCard_withRetry()
     }
 
-    private fun test_getCards_withRetry(retry: Int) {
+    private fun test_getRandomCard_withRetry(retry: Int = 5) {
         // setup the mock webserver to return a delayed response with the cards
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("magic_webapi_cards_response.json"))
+                    .setBody(FileReader.readStringFromFile("scryfall_api_cards_random.json"))
                     .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
             }
         }
 
         // call the api
-        val fCards = WebApi.getCards()
-        fCards.whenComplete { cards, throwable ->
+        val fCard = WebApi.getRandomCard()
+        fCard.whenComplete { card, throwable ->
             if (throwable != null && retry > 0) {
                 test_getCardsByName_withRetry(retry - 1)
             } else {
                 assertThat("retry is > 0", retry, `is`(greaterThan(0)))
-                assertThat("cards is not null", cards, `is`(notNullValue()))
+                assertThat("card is not null", card, `is`(notNullValue()))
                 assertThat("future complete without error", throwable, `is`(nullValue()))
-                assertThat("cards.cards not null", cards?.cards, `is`(notNullValue()))
-                assertThat("cards size bigger than 4", cards?.cards?.size!!, `is`(greaterThan(4)))
 
                 assertThat(
-                    "first card imageUrl not empty",
-                    cards.cards[0].imageUrl,
+                    "set not empty",
+                    card.set,
                     `is`(not(String()))
                 )
                 assertThat(
-                    "first card name is Ancestor's Chosen",
-                    cards.cards[0].name,
-                    `is`("Ancestor's Chosen")
+                    "card name is Marsh Goblins",
+                    card.name,
+                    `is`("Marsh Goblins")
                 )
             }
         }.get()
@@ -97,21 +95,21 @@ class WebApiTest {
 
     @Test
     fun test_getCardsByName() {
-        test_getCardsByName_withRetry(5)
+        test_getCardsByName_withRetry()
     }
 
-    private fun test_getCardsByName_withRetry(retry: Int) {
+    private fun test_getCardsByName_withRetry(retry: Int = 5) {
         // setup the mock webserver to return a delayed response with the cards
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("magic_webapi_cardByName_Ancester'sChosen_response.json"))
+                    .setBody(FileReader.readStringFromFile("scryfall_api_cards_search_name_ajani.json"))
                     .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
             }
         }
 
         // call the api
-        val fCards = WebApi.getCardsByName("Ancestor's Chosen")
+        val fCards = WebApi.getCardsByName("Ajani")
         fCards.whenComplete { cards, throwable ->
             if (throwable != null && retry > 0) {
                 test_getCardsByName_withRetry(retry - 1)
@@ -119,72 +117,34 @@ class WebApiTest {
                 assertThat("retry is > 0", retry, `is`(greaterThan(0)))
                 assertThat("cards is not null", cards, `is`(notNullValue()))
                 assertThat("future complete without error", throwable, `is`(nullValue()))
-                assertThat("cards.cards not null", cards?.cards, `is`(notNullValue()))
-                assertThat("cards size bigger than 1", cards?.cards?.size!!, greaterThan(1))
-
+                assertThat("cards.cards not null", cards?.data, `is`(notNullValue()))
+                assertThat("cards size bigger than 1", cards?.data?.size!!, greaterThan(1))
                 assertThat(
-                    "first card imageUrl not empty",
-                    cards.cards[0].imageUrl,
-                    `is`(not(String()))
+                    "first card name is Ajani's Aid",
+                    cards.data[0].name,
+                    `is`("Ajani's Aid")
                 )
-                assertThat(
-                    "first card name is Ancestor's Chosen",
-                    cards.cards[0].name,
-                    `is`("Ancestor's Chosen")
-                )
-            }
-        }.get()
-    }
-
-    @Test
-    fun test_getCardById() {
-        test_getCardById_withRetry(5)
-    }
-
-    private fun test_getCardById_withRetry(retry: Int) {
-        // setup the mock webserver to return a delayed response with the cards
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                return MockResponse().setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("magic_webapi_cardById_386616_response.json"))
-                    .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
-            }
-        }
-
-        // call the api
-        val fCard = WebApi.getCardById("386616")
-        fCard.whenComplete { card, throwable ->
-            if (throwable != null && retry > 0) {
-                test_getCardById_withRetry(retry - 1)
-            } else {
-                assertThat("retry is > 0", retry, `is`(greaterThan(0)))
-                assertThat("cards is not null", card, `is`(notNullValue()))
-                assertThat("future complete without error", throwable, `is`(nullValue()))
-
-                assertThat("imageUrl not empty", card.card.imageUrl, `is`(not(String())))
-                assertThat("name is", card.card.name, `is`("Narset, Enlightened Master"))
-                assertThat("id is", card.card.multiverseid, `is`("386616"))
             }
         }.get()
     }
 
     @Test
     fun test_getCardsBySet() {
-        test_getCardsBySet_withRetry(5)
+        test_getCardsBySet_withRetry()
     }
 
-    private fun test_getCardsBySet_withRetry(retry: Int) {
+    private fun test_getCardsBySet_withRetry(retry: Int = 5) {
         // setup the mock webserver to return a delayed response with the cards
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("magic_webapi_cardBySet_KTK_response.json"))
+                    .setBody(FileReader.readStringFromFile("scryfall_api_cards_search_set_m15.json"))
                     .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
             }
         }
 
         // call the api
-        val fCards = WebApi.getCardsBySet("KTK")
+        val fCards = WebApi.getCardsBySet("m15")
         fCards.whenComplete { cards, throwable ->
             if (throwable != null && retry > 0) {
                 test_getCardsBySet_withRetry(retry - 1)
@@ -192,12 +152,11 @@ class WebApiTest {
                 assertThat("retry is > 0", retry, `is`(greaterThan(0)))
                 assertThat("cards is not null", cards, `is`(notNullValue()))
                 assertThat("future complete without error", throwable, `is`(nullValue()))
-                assertThat("cards.cards not null", cards?.cards, `is`(notNullValue()))
-                assertThat("cards size bigger than 1", cards?.cards?.size!!, greaterThan(1))
+                assertThat("cards.cards not null", cards?.data, `is`(notNullValue()))
+                assertThat("cards size bigger than 1", cards?.data?.size!!, greaterThan(1))
 
-                for (card in cards.cards) {
-                    assertThat("card set is KTK", card.set, `is`("KTK"))
-                    assertThat("card imageUrl not empty", card.imageUrl, `is`(not(String())))
+                for (card in cards.data) {
+                    assertThat("card set is m15", card.set, `is`("m15"))
                 }
             }
         }.get()
@@ -205,15 +164,15 @@ class WebApiTest {
 
     @Test
     fun test_getSets() {
-        test_getSets_withRetry(5)
+        test_getSets_withRetry()
     }
 
-    private fun test_getSets_withRetry(retry: Int) {
+    private fun test_getSets_withRetry(retry: Int = 5) {
         // setup the mock webserver to return a delayed response with the cards
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("magic_webapi_sets_response.json"))
+                    .setBody(FileReader.readStringFromFile("scryfall_api_sets.json"))
                     .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
             }
         }
@@ -227,10 +186,10 @@ class WebApiTest {
                 assertThat("retry is > 0", retry, `is`(greaterThan(0)))
                 assertThat("sets is not null", sets, `is`(notNullValue()))
                 assertThat("future complete without error", throwable, `is`(nullValue()))
-                assertThat("sets.sets not null", sets?.sets, `is`(notNullValue()))
-                assertThat("sets size bigger than 1", sets?.sets?.size!!, greaterThan(1))
+                assertThat("sets.sets not null", sets?.data, `is`(notNullValue()))
+                assertThat("sets size bigger than 1", sets?.data?.size!!, greaterThan(1))
 
-                for (set in sets.sets) {
+                for (set in sets.data) {
                     assertThat("set code not empty", set.code, `is`(not(String())))
                     assertThat("set name not empty", set.name, `is`(not(String())))
                 }
@@ -240,21 +199,21 @@ class WebApiTest {
 
     @Test
     fun test_getSetByCode() {
-        test_getSetByCode_withRetry(5)
+        test_getSetByCode_withRetry()
     }
 
-    private fun test_getSetByCode_withRetry(retry: Int) {
+    private fun test_getSetByCode_withRetry(retry: Int = 5) {
         // setup the mock webserver to return a delayed response with the cards
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("magic_webapi_setBySet_KTK_response.json"))
+                    .setBody(FileReader.readStringFromFile("scryfall_api_sets_m15.json"))
                     .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
             }
         }
 
         // call the api
-        val fSet = WebApi.getSetByCode("KTK")
+        val fSet = WebApi.getSetByCode("m15")
         fSet.whenComplete { set, throwable ->
             if (throwable != null && retry > 0) {
                 test_getCardsBySet_withRetry(retry - 1)
@@ -263,8 +222,8 @@ class WebApiTest {
                 assertThat("set is not null", set, `is`(notNullValue()))
                 assertThat("future complete without error", throwable, `is`(nullValue()))
 
-                assertThat("set code is KTK", set.set.code, `is`("KTK"))
-                assertThat("set name is Khans of Tarkir", set.set.name, `is`("Khans of Tarkir"))
+                assertThat("set code is m15", set.code, `is`("m15"))
+                assertThat("set name is Magic 2015", set.name, `is`("Magic 2015"))
             }
         }.get()
     }

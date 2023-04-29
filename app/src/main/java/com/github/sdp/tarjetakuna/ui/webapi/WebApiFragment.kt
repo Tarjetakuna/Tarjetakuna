@@ -45,7 +45,7 @@ class WebApiFragment : Fragment() {
         binding.apiCards.setOnClickListener {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
-            viewModel.getCards(this.requireContext())
+            viewModel.getRandomCard(this.requireContext())
         }
 
         binding.apiCardsByName.setOnClickListener {
@@ -58,12 +58,6 @@ class WebApiFragment : Fragment() {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
             viewModel.getCardsBySet(this.requireContext(), binding.setIdForCards.text.toString())
-        }
-
-        binding.apiCardById.setOnClickListener {
-            hideKeyboard()
-            binding.apiResults.text = getString(R.string.api_waiting_results)
-            viewModel.getCardById(this.requireContext(), binding.cardId.text.toString())
         }
 
         binding.apiSets.setOnClickListener {

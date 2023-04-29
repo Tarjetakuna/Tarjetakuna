@@ -69,53 +69,6 @@ class WebApiViewModelTest {
 
     @OptIn(DelicateCoroutinesApi::class)
     @Test
-    fun test_getCards_success() {
-        // check initial values
-        val apiResults = viewModel.apiResults
-        assert(apiResults.value == null)
-
-        // setup the mock webserver to return a delayed response
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                return MockResponse().setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("magic_webapi_cards_response.json"))
-                    .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
-            }
-        }
-
-        // use global scope to observe the live data
-        GlobalScope.launch(Dispatchers.Main) {
-            apiResults.observeForever { }
-        }
-
-        // call the api to get the cards
-        viewModel.getCards()
-
-        // get the text displayed during the waiting time
-        val waitResult =
-            InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.api_waiting_results)
-
-        // wait for the response
-        Utils.waitWhileTrue(100, 10) { apiResults.value == null }
-        Utils.waitWhileTrue(100, 10) { apiResults.value == waitResult }
-
-        // check that the text change to the response
-        assertThat(
-            apiResults.value!!.toString(),
-            containsString("DataCard(name='Ancestor's Chosen', manaCost='{5}{W}{W}'")
-        )
-        assertThat(
-            apiResults.value!!.toString(),
-            containsString("DataCard(name='Angel of Mercy', manaCost='{4}{W}', colors=W")
-        )
-        assertThat(
-            apiResults.value!!.toString(),
-            containsString("DataCard(name='Angelic Blessing', manaCost='{2}{W}', colors=W")
-        )
-    }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    @Test
     fun test_getSets_success() {
         val apiResults = viewModel.apiResults
         assert(apiResults.value == null)
@@ -124,7 +77,7 @@ class WebApiViewModelTest {
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("magic_webapi_sets_response.json"))
+                    .setBody(FileReader.readStringFromFile("scryfall_api_sets.json"))
                     .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
             }
         }
@@ -147,23 +100,11 @@ class WebApiViewModelTest {
         // check that the text change to the response
         assertThat(
             apiResults.value!!.toString(),
-            containsString("DataSet(code='2ED', name='Unlimited Edition', type='core', releaseDate=1993-12-01")
+            containsString("Unlimited Edition")
         )
         assertThat(
             apiResults.value!!.toString(),
-            containsString("DataSet(code='2X2', name='Double Masters 2022', type='masters', releaseDate=2022-07-08")
-        )
-        assertThat(
-            apiResults.value!!.toString(),
-            containsString("DataSet(code='2XM', name='Double Masters', type='masters', releaseDate=2020-08-07")
-        )
-        assertThat(
-            apiResults.value!!.toString(),
-            containsString("DataSet(code='3ED', name='Revised Edition', type='core', releaseDate=1994-04-01")
-        )
-        assertThat(
-            apiResults.value!!.toString(),
-            containsString("DataSet(code='40K', name='Warhammer 40,000', type='commander', releaseDate=2022-08-12")
+            containsString("Double Masters 2022")
         )
     }
 
@@ -188,7 +129,7 @@ class WebApiViewModelTest {
         }
 
         // call the api
-        viewModel.getCards()
+        viewModel.getRandomCard()
 
         // wait for the response
         Utils.waitWhileTrue(100, 10) { apiError.value == null }
@@ -246,7 +187,7 @@ class WebApiViewModelTest {
         }
 
         // call the api
-        viewModel.getCards()
+        viewModel.getRandomCard()
 
         // wait for the response - timeout of 1s, wait 3 times to be sure
         Utils.waitWhileTrue(1000, 3) { apiError.value == null }

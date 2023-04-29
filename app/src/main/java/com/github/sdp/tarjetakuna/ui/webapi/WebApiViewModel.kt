@@ -7,8 +7,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiCards
-import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiSets
 import com.github.sdp.tarjetakuna.utils.Utils.Companion.isNetworkAvailable
 
 
@@ -33,20 +31,13 @@ open class WebApiViewModel : ViewModel() {
         _apiError.value = Pair(resId, s)
     }
 
-    // Cards and sets live data
-    private val _cards = MutableLiveData<MagicApiCards>()
-    val cards: LiveData<MagicApiCards> = _cards
-
-    private val _sets = MutableLiveData<MagicApiSets>()
-    val sets: LiveData<MagicApiSets> = _sets
-
     /**
      * Get all cards information
      */
-    fun getCards(context: Context) {
+    fun getRandomCard(context: Context) {
         // check if network is available
         if (isNetworkAvailable(context)) {
-            getCardsWeb()
+            getRandomCardWeb()
         }
         // TODO else get from cache
         else {
@@ -75,20 +66,6 @@ open class WebApiViewModel : ViewModel() {
         // check if network is available
         if (isNetworkAvailable(context)) {
             getCardsBySetWeb(setCode)
-        }
-        // TODO else get from cache
-        else {
-            Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    /**
-     * Search card by id
-     */
-    fun getCardById(context: Context, id: String) {
-        // check if network is available
-        if (isNetworkAvailable(context)) {
-            getCardByIdWeb(id)
         }
         // TODO else get from cache
         else {
@@ -127,10 +104,9 @@ open class WebApiViewModel : ViewModel() {
     /**
      * get cards from the web
      */
-    protected fun getCardsWeb() {
-        WebApi.getCards()
+    protected fun getRandomCardWeb() {
+        WebApi.getRandomCard()
             .thenAccept {
-                _cards.value = it
                 setApiResults(it.toString())
             }
             .exceptionally { e ->
@@ -146,7 +122,6 @@ open class WebApiViewModel : ViewModel() {
     protected fun getCardsByNameWeb(name: String) {
         WebApi.getCardsByName(name)
             .thenAccept {
-                _cards.value = it
                 setApiResults(it.toString())
             }
             .exceptionally { e ->
@@ -162,7 +137,6 @@ open class WebApiViewModel : ViewModel() {
     protected fun getCardsBySetWeb(set: String) {
         WebApi.getCardsBySet(set)
             .thenAccept {
-                _cards.value = it
                 setApiResults(it.toString())
             }
             .exceptionally { e ->
@@ -173,29 +147,11 @@ open class WebApiViewModel : ViewModel() {
     }
 
     /**
-     * get a single card by id from the web
-     */
-    protected fun getCardByIdWeb(id: String) {
-        WebApi.getCardById(id)
-            .thenAccept {
-                if (it != null) _cards.value = MagicApiCards(listOf(it.card))
-                else _cards.value = MagicApiCards(listOf())
-                setApiResults(it.toString())
-            }
-            .exceptionally { e ->
-                setError(R.string.txt_error_msg, e.message ?: "Unknown error")
-                Log.e("WebApiViewModel", "Error getting card by id", e)
-                null
-            }
-    }
-
-    /**
      * get sets from the web
      */
     protected fun getSetsWeb() {
         WebApi.getSets()
             .thenAccept {
-                _sets.value = it
                 setApiResults(it.toString())
             }
             .exceptionally { e ->
@@ -211,8 +167,6 @@ open class WebApiViewModel : ViewModel() {
     protected fun getSetByCodeWeb(code: String) {
         WebApi.getSetByCode(code)
             .thenAccept {
-                if (it != null) _sets.value = MagicApiSets(listOf(it.set))
-                else _sets.value = MagicApiSets(listOf())
                 setApiResults(it.toString())
             }
             .exceptionally { e ->

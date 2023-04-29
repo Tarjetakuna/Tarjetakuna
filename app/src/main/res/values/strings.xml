@@ -38,7 +38,7 @@
     <string name="txt_error_msg">Error: %s</string>
 
     <!--    web api texts-->
-    <string name="api_cards">/cards</string>
+    <string name="api_cards">Random Card</string>
     <string name="api_cardsBySet">/cards_By_Set</string>
     <string name="api_cardsByName">/cards_By_Name</string>
     <string name="api_cardName">card name</string>

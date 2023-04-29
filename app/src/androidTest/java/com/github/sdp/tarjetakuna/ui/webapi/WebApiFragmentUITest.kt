@@ -65,12 +65,12 @@ class WebApiFragmentUITest {
     }
 
     @Test
-    fun test_clickOnCardsButtonWithMockWebServer() {
+    fun test_clickOnRandomCardButtonWithMockWebServer() {
         // setup the mock webserver to return a delayed response
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("magic_webapi_cards_response.json"))
+                    .setBody(FileReader.readStringFromFile("scryfall_api_cards_random.json"))
                     .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
             }
         }
@@ -90,9 +90,7 @@ class WebApiFragmentUITest {
         onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 300))
 
         // check that the text change to the response
-        onView(withId(R.id.api_results)).check(matches(withSubstring("DataCard(name='Ancestor's Chosen', manaCost='{5}{W}{W}'")))
-        onView(withId(R.id.api_results)).check(matches(withSubstring("DataCard(name='Angel of Mercy', manaCost='{4}{W}', colors=W")))
-        onView(withId(R.id.api_results)).check(matches(withSubstring("DataCard(name='Angelic Blessing', manaCost='{2}{W}', colors=W")))
+        onView(withId(R.id.api_results)).check(matches(withSubstring("Marsh Goblins")))
     }
 
     @Test
@@ -101,7 +99,7 @@ class WebApiFragmentUITest {
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("magic_webapi_sets_response.json"))
+                    .setBody(FileReader.readStringFromFile("scryfall_api_sets.json"))
                     .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
             }
         }
@@ -121,10 +119,7 @@ class WebApiFragmentUITest {
         onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 300))
 
         // check that the text change to the response
-        onView(withId(R.id.api_results)).check(matches(withSubstring("DataSet(code='2ED', name='Unlimited Edition', type='core', releaseDate=1993-12-01")))
-        onView(withId(R.id.api_results)).check(matches(withSubstring("DataSet(code='2X2', name='Double Masters 2022', type='masters', releaseDate=2022-07-08")))
-        onView(withId(R.id.api_results)).check(matches(withSubstring("DataSet(code='2XM', name='Double Masters', type='masters', releaseDate=2020-08-07")))
-        onView(withId(R.id.api_results)).check(matches(withSubstring("DataSet(code='3ED', name='Revised Edition', type='core', releaseDate=1994-04-01")))
-        onView(withId(R.id.api_results)).check(matches(withSubstring("DataSet(code='40K', name='Warhammer 40,000', type='commander', releaseDate=2022-08-12")))
+        onView(withId(R.id.api_results)).check(matches(withSubstring("Unlimited Edition")))
+        onView(withId(R.id.api_results)).check(matches(withSubstring("Warhammer 40,000")))
     }
 }

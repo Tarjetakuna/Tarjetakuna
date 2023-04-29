@@ -22,7 +22,7 @@ class MagicApiTest {
      */
     @Test
     fun test_GetCards() {
-        val call = api.getCards()
+        val call = api.getRandomCard()
 
         assert(call.isExecuted.not())
     }

@@ -76,23 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/api_cardById"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/api_cardById"
-                tools:ignore="ButtonStyle" />
-
-            <EditText
-                android:id="@+id/cardId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/api_cardId"
-                android:inputType="textPersonName"
-                android:autofillHints="" />
-        </LinearLayout>
+            android:orientation="horizontal"/>
 
         <Button
             android:id="@+id/api_sets"
