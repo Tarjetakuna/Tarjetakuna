@@ -8,7 +8,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.utils.PermissionGranting.PermissionGranting.grantPermission
+import com.github.sdp.tarjetakuna.utils.PermissionGranting.PermissionGranting.grantPermissions
 import com.github.sdp.tarjetakuna.utils.getStringInTest
 import com.github.sdp.tarjetakuna.utils.waitForMatcher
 import com.github.sdp.tarjetakuna.utils.waitForText
@@ -22,25 +22,16 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ScannerFragmentTest {
 
-    //     this should be the correct way to do grant permissions, but it is not working, so using the workaround in PermissionGranting.kt
-//    @get:Rule
-//    val permissionRule: GrantPermissionRule =
-//        GrantPermissionRule.grant(
-//            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-//            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//        )
-
     @get:Rule
     val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun setUp() {
         Intents.init()
+        grantPermissions()
         activityScenarioRule.scenario.onActivity {
             it.changeFragment(R.id.nav_scanner)
         }
-
-        grantPermission()
     }
 
     @After

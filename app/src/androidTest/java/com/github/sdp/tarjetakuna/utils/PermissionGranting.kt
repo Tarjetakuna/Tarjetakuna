@@ -1,30 +1,33 @@
 package com.github.sdp.tarjetakuna.utils
 
+import android.Manifest
 import android.os.Build
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.UiSelector
 
 class PermissionGranting {
     object PermissionGranting {
-        fun grantPermission() {
-            val instrumentation = InstrumentationRegistry.getInstrumentation()
-            if (Build.VERSION.SDK_INT >= 23) {
-                val allowPermission = UiDevice.getInstance(instrumentation).findObject(
-                    UiSelector().text(
-                        when {
-                            Build.VERSION.SDK_INT == 23 -> "Allow"
-                            Build.VERSION.SDK_INT <= 28 -> "ALLOW"
-                            Build.VERSION.SDK_INT == 29 -> "Allow only while using the app"
-                            Build.VERSION.SDK_INT == 30 -> "WHILE USING THE APP"
-                            else -> "While using the app"
-                        }
-                    )
-                )
-                if (allowPermission.exists()) {
-                    allowPermission.click()
+        // Permissions required for the app to run
+        private val REQUIRED_PERMISSIONS =
+            mutableListOf(
+                Manifest.permission.CAMERA,
+            ).apply {
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                    add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 }
+            }.toTypedArray()
+
+        fun grantPermissions() {
+            REQUIRED_PERMISSIONS.forEach {
+                grantPermission(it)
             }
+        }
+
+        private fun grantPermission(permission: String) {
+            val instrumentation = InstrumentationRegistry.getInstrumentation()
+            instrumentation.uiAutomation.grantRuntimePermission(
+                instrumentation.targetContext.packageName,
+                permission
+            )
         }
     }
 }
