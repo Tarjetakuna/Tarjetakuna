@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Bootcamp"
+        android:theme="@style/Theme.Tarjetakuna"
         tools:targetApi="31">
 
         <meta-data
@@ -23,7 +23,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Bootcamp.NoActionBar">
+            android:theme="@style/Theme.Tarjetakuna.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -12,16 +12,37 @@
     -->
     <style name="TitleStyle">
         <item name="android:textColor">@color/white_gold_light</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">32sp</item>
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textStyle">bold|italic</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
-    <style name="DescriptionStyle">
+    <style name="LargeTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white_gold_light</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="DescriptionStyleItalic">
         <item name="android:textColor">@color/white_blue</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="DescriptionStyleNormal">
+        <item name="android:textColor">@color/white_blue</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
     <style name="BrowserCardTitleStyle">
@@ -42,20 +63,20 @@
         <item name="android:padding">10dp</item>
     </style>
 
-    <style name="IconStyle">
-
-    </style>
-
-
-    <style name="ButtonStyle">
-        <!--        <item name="android:background">@drawable/round_style</item>-->
+    <style name="ButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@color/white_gold_light</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:layout_margin">16dp</item>
+    </style>
+
+    <style name="HomeButtonStyle" parent="ButtonStyle">
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintHorizontal_bias">0.5</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
     </style>
 
     <style name="DropDownStyle">
@@ -67,11 +88,11 @@
         <item name="android:padding">12dp</item>
     </style>
 
-    <style name="SearchTextStyle">
+    <style name="EditTextStyle">
         <item name="android:textColor">@color/white_gold_light</item>
         <item name="android:editTextColor">@color/white_gold_light</item>
         <item name="android:textColorHint">@color/white_gold_light</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
         <item name="android:fontFamily">sans-serif</item>
     </style>
 

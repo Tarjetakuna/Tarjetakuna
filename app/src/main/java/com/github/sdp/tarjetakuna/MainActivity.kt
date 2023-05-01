@@ -15,10 +15,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
+import com.github.sdp.tarjetakuna.extra.ExportCollection
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.github.sdp.tarjetakuna.extra.ExportCollection
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
 import com.github.sdp.tarjetakuna.utils.Utils
@@ -110,9 +110,10 @@ class MainActivity : AppCompatActivity() {
     fun updateHeader() {
         val headerView = binding.navView.getHeaderView(0)
         val sharedPref = getSharedPreferences(shared_pref_name, Context.MODE_PRIVATE)
-        headerView.findViewById<TextView>(R.id.navHeaderNameText).text = sharedPref.getString(
-            SharedPreferencesKeys.user_name, getString(R.string.name_entry_hint)
-        )
+        headerView.findViewById<TextView>(R.id.nav_header_name_textview).text =
+            sharedPref.getString(
+                SharedPreferencesKeys.user_name, getString(R.string.name_entry_hint)
+            )
         headerView.findViewById<TextView>(R.id.navHeaderDescriptionText).text =
             sharedPref.getString(
                 SharedPreferencesKeys.user_description, getString(R.string.description_entry_hint)

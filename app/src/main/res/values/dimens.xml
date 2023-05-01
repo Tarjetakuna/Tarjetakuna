@@ -7,4 +7,10 @@
     <!-- fab_margin is not used by cirrus, but tests will fail if it is removed. -->
     <dimen name="fab_margin" tools:ignore="UnusedResources">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="bottom_margin">16dp</dimen>
+    <dimen name="bottom_button_linear_layout">89dp</dimen>
+    <dimen name="textbox_width">240dp</dimen>
+    <dimen name="button_width">180dp</dimen>
+    <dimen name="button_height">60dp</dimen>
 </resources>

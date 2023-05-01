@@ -56,7 +56,7 @@ class AuthenticationButtonFragmentTest {
 
     @Test
     fun testAuthenticationButtonActivityBackToHome() {
-        onView(withId(R.id.button_back_home)).perform(click())
+        onView(withId(R.id.signOut_home_button)).perform(click())
 
         // Verify that we've navigated back to the right destination
         activityRule.scenario.onActivity { activity ->

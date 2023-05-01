@@ -34,11 +34,11 @@ class SingleSetFragmentTest {
     private val invalidJson = "This is not a valid json string"
 
     //ViewMatchers of the fragment
-    private val textSetName = onView(withId(R.id.singleSet_set_name))
-    private val textSetCode = onView(withId(R.id.singleSet_set_code))
-    private val textSetType = onView(withId(R.id.singleSet_set_type))
-    private val textSetBlock = onView(withId(R.id.singleSet_set_block))
-    private val textSetReleaseDate = onView(withId(R.id.singleSet_set_release_date))
+    private val textSetName = onView(withId(R.id.singleSet_set_name_text))
+    private val textSetCode = onView(withId(R.id.singleSet_set_code_text))
+    private val textSetType = onView(withId(R.id.singleSet_set_type_text))
+    private val textSetBlock = onView(withId(R.id.singleSet_set_block_text))
+    private val textSetReleaseDate = onView(withId(R.id.singleSet_set_release_date_text))
 
     @After
     fun tearDown() {

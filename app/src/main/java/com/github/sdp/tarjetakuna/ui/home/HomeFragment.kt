@@ -53,12 +53,12 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
+        val textView: TextView = binding.homeWelcomeText
         homeViewModel.titleText.observe(viewLifecycleOwner) {
             textView.text = it
 
         }
-        val descTextView: TextView = binding.textHomeText
+        val descTextView: TextView = binding.homeWelcomeDescription
         homeViewModel.descriptionText.observe(viewLifecycleOwner) {
             descTextView.text = it
         }

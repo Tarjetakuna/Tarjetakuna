@@ -52,15 +52,15 @@ class SingleCardFragmentTest {
     private val invalidJson = "This is not a valid json string"
 
     //ViewMatchers of the fragment
-    private val textCardName = onView(withId(R.id.singleCard_text_cardName))
-    private val textCardSet = onView(withId(R.id.singleCard_text_cardSet))
-    private val textCardNumber = onView(withId(R.id.singleCard_text_cardNumber))
-    private val textCardText = onView(withId(R.id.singleCard_text_cardText))
-    private val textCardRarity = onView(withId(R.id.singleCard_text_cardRarity))
-    private val textCardType = onView(withId(R.id.singleCard_text_cardTypeSubtypesStats))
+    private val textCardName = onView(withId(R.id.singleCard_card_name_text))
+    private val textCardSet = onView(withId(R.id.singleCard_set_text))
+    private val textCardNumber = onView(withId(R.id.singleCard_card_number_text))
+    private val textCardText = onView(withId(R.id.singleCard_card_text_text))
+    private val textCardRarity = onView(withId(R.id.singleCard_rarity_text))
+    private val textCardType = onView(withId(R.id.singleCard_type_subtype_stats_text))
     private val imageCard = onView(withId(R.id.singleCard_image))
-    private val textCardArtist = onView(withId(R.id.singleCard_text_cardArtist))
-    private val textCardManaCost = onView(withId(R.id.singleCard_text_cardManaCost))
+    private val textCardArtist = onView(withId(R.id.singleCard_artist_text))
+    private val textCardManaCost = onView(withId(R.id.singleCard_mana_cost_text))
 
     @Before
     fun setup() {

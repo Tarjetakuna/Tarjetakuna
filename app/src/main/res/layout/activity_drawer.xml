@@ -16,11 +16,15 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
-        android:background="@color/blue_med3"
+        android:theme="@style/Theme.Tarjetakuna.NoActionBar"
+        android:outlineAmbientShadowColor="@color/white"
+        android:background="?attr/colorSecondaryVariant"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_drawer"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer"
+        app:itemTextColor="?attr/colorOnPrimary"
+        app:itemIconTint="?attr/colorOnPrimary" />
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -2,8 +2,9 @@
     android:shape="rectangle">
     <gradient
         android:angle="135"
-        android:centerColor="@color/blue_400"
-        android:endColor="@color/blue_400"
-        android:startColor="@color/blue_med2"
+        android:theme="@style/Theme.Tarjetakuna.NoActionBar"
+        android:centerColor="?attr/colorPrimary"
+        android:endColor="?attr/colorPrimary"
+        android:startColor="?attr/colorSecondaryVariant"
         android:type="linear" />
 </shape>

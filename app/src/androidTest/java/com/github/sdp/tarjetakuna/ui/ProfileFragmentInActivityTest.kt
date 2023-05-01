@@ -73,7 +73,7 @@ class ProfileFragmentInActivityTest {
                 apply()
             }
         }
-        onView(withId(R.id.navHeaderNameText)).check(matches(withText(user_name)))
+        onView(withId(R.id.nav_header_name_textview)).check(matches(withText(user_name)))
         onView(withId(R.id.navHeaderDescriptionText)).check(matches(withText(user_description)))
     }
 }

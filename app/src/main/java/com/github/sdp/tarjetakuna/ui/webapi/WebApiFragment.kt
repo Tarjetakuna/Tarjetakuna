@@ -42,40 +42,46 @@ class WebApiFragment : Fragment() {
         binding.apiResults.movementMethod = ScrollingMovementMethod()
 
         // set the buttons listeners for the webapi
-        binding.apiCards.setOnClickListener {
+        binding.apiCardsButton.setOnClickListener {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
             viewModel.getCards(this.requireContext())
         }
 
-        binding.apiCardsByName.setOnClickListener {
+        binding.apiCardsByNameButton.setOnClickListener {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
-            viewModel.getCardsByName(this.requireContext(), binding.cardName.text.toString())
+            viewModel.getCardsByName(
+                this.requireContext(),
+                binding.apiCardNameEdittext.text.toString()
+            )
         }
 
-        binding.apiCardsBySet.setOnClickListener {
+        binding.apiCardsBySetButton.setOnClickListener {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
-            viewModel.getCardsBySet(this.requireContext(), binding.setIdForCards.text.toString())
+            viewModel.getCardsBySet(this.requireContext(), binding.apiSetIdEdittext.text.toString())
         }
 
-        binding.apiCardById.setOnClickListener {
+        binding.apiCardByIdButton.setOnClickListener {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
-            viewModel.getCardById(this.requireContext(), binding.cardId.text.toString())
+            viewModel.getCardById(this.requireContext(), binding.apiCardIdEdittext.text.toString())
         }
 
-        binding.apiSets.setOnClickListener {
+        binding.apiSetsButton.setOnClickListener {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
             viewModel.getSets(this.requireContext())
         }
 
-        binding.apiSetByCode.setOnClickListener {
+        binding.apiSetByCodeButton.setOnClickListener {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
-            viewModel.getSetByCode(this.requireContext(), binding.setIdForSet.text.toString())
+            viewModel.getSetByCode(
+                this.requireContext(),
+                binding.apiSetIdCodeEdittext.text.toString()
+            )
         }
 
         return root
