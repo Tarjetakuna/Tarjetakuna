@@ -8,7 +8,7 @@
     tools:context=".ui.authentication.AuthenticationFragment">
 
     <ImageView
-        android:id="@+id/profileIcon"
+        android:id="@+id/authentication_profile_icon"
         android:layout_width="343dp"
         android:layout_height="512dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -14,7 +14,7 @@
         android:contentDescription="@string/profile_picture_content_description"
         android:scaleType="centerCrop"
         android:src="@drawable/profile_picture"
-        app:layout_constraintBottom_toTopOf="@+id/nameEntry"
+        app:layout_constraintBottom_toTopOf="@+id/profile_name_edittext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
         app:layout_constraintVertical_chainStyle="packed" />
 
     <EditText
-        android:id="@+id/nameEntry"
+        android:id="@+id/profile_name_edittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="@style/EditTextStyle"
@@ -39,7 +39,7 @@
         tools:ignore="VisualLintTextFieldSize" />
 
     <EditText
-        android:id="@+id/descriptionEntry"
+        android:id="@+id/profile_description_edittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:autofillHints="description"
@@ -53,11 +53,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameEntry"
+        app:layout_constraintTop_toBottomOf="@+id/profile_name_edittext"
         tools:ignore="VisualLintTextFieldSize" />
 
     <Button
-        android:id="@+id/authenticationButton"
+        android:id="@+id/profile_sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/HomeButtonStyle"

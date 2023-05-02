@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 
         // Display profile fragment when clicking on the profile icon
         val headerView = binding.navView.getHeaderView(0)
-        headerView.findViewById<ImageView>(R.id.profileIcon).setOnClickListener {
+        headerView.findViewById<ImageView>(R.id.authentication_profile_icon).setOnClickListener {
             changeFragment(R.id.nav_profile)
             binding.drawerLayout.closeDrawer(binding.navView)
         }

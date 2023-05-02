@@ -7,7 +7,7 @@
     tools:context=".ui.scanner.ScannerFragment">
 
     <Button
-        android:id="@+id/button_scan"
+        android:id="@+id/scanner_scan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -16,10 +16,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_description" />
+        app:layout_constraintTop_toBottomOf="@+id/scanner_description_text" />
 
     <TextView
-        android:id="@+id/text_description"
+        android:id="@+id/scanner_description_text"
         android:layout_width="354dp"
         android:layout_height="74dp"
         android:layout_marginTop="80dp"
@@ -33,17 +33,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_information"
+        android:id="@+id/scanner_information_text"
         android:layout_width="276dp"
         android:layout_height="59dp"
         android:layout_marginTop="32dp"
         style="@style/DescriptionStyleNormal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_scan" />
+        app:layout_constraintTop_toBottomOf="@+id/scanner_scan_button" />
 
     <ImageView
-        android:id="@+id/image_card"
+        android:id="@+id/scanner_image"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginTop="32dp"
@@ -52,7 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_information"
+        app:layout_constraintTop_toBottomOf="@+id/scanner_information_text"
         app:layout_constraintVertical_bias="0.318"
         tools:src="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

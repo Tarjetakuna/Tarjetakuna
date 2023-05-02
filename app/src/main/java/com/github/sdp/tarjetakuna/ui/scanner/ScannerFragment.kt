@@ -21,9 +21,9 @@ class ScannerFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         val scannerViewModel = ViewModelProvider(this)[ScannerViewModel::class.java]
 
@@ -31,15 +31,22 @@ class ScannerFragment : Fragment() {
         val root: View = binding.root
 
         scannerViewModel.textInformationId.observe(viewLifecycleOwner) {
-            binding.textInformation.text = getString(it)
+            binding.scannerInformationText.text = getString(it)
         }
 
-        val registerImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            scannerViewModel.setTextInformation(it.resultCode)
-            binding.imageCard.setImageBitmap(Compatibility.getDataActivityResult(it, "data", Bitmap::class.java))
-        }
+        val registerImage =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                scannerViewModel.setTextInformation(it.resultCode)
+                binding.scannerImage.setImageBitmap(
+                    Compatibility.getDataActivityResult(
+                        it,
+                        "data",
+                        Bitmap::class.java
+                    )
+                )
+            }
 
-        binding.buttonScan.setOnClickListener {
+        binding.scannerScanButton.setOnClickListener {
             registerImage.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
         }
 
