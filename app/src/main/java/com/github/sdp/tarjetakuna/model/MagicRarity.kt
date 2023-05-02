@@ -1,8 +1,3 @@
-// ====================
-// MagicRarity.kt
-// Tarjetakuna, 2023
-// ====================
-
 package com.github.sdp.tarjetakuna.model
 
 @Suppress("unused")
@@ -10,10 +5,10 @@ package com.github.sdp.tarjetakuna.model
  * Represents the rarity of a Magic card.
  */
 enum class MagicRarity {
-    Common,
-    Uncommon,
-    Rare,
-    MythicRare,
-    Special,
-    BasicLand
+    COMMON,
+    UNCOMMON,
+    RARE,
+    MYTHIC_RARE,
+    SPECIAL,
+    BASIC_LAND,
 }

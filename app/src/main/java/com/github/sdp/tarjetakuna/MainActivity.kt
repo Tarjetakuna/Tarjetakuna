@@ -21,7 +21,6 @@ import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
-import com.github.sdp.tarjetakuna.utils.Utils
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -39,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         MagicCard(
             "MagicCard",
             "A beautiful card",
-            MagicLayout.Normal,
+            MagicLayout.NORMAL,
             7,
             "{5}{W}{W}",
             MagicSet("MT15", "Magic 2015"),
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         MagicCard(
             "BestMagicCard",
             "An even more beautiful card",
-            MagicLayout.Normal,
+            MagicLayout.NORMAL,
             7,
             "{7}{W}{W}",
             MagicSet("MT15", "Magic 2015"),
@@ -130,10 +129,6 @@ class MainActivity : AppCompatActivity() {
         val navController =
             (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    fun hideKeyboard() {
-        Utils.hideKeyboard(this)
     }
 
     fun onClick(item: MenuItem) {
