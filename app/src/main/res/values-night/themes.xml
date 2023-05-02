@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Tarjetakuna" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
@@ -9,6 +9,9 @@
         <item name="colorSecondary">@color/blue_med3_night</item>
         <item name="colorSecondaryVariant">@color/blue_med2_night</item>
         <item name="colorOnSecondary">@color/dark_blue_night</item>
+
+        <item name="colorTertiary">@color/white_gold</item>
+        <item name="colorOnTertiary">@color/dark_blue_night</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
@@ -16,6 +19,7 @@
         <item name="android:textColorPrimary">@color/white_gold_light</item>
         <item name="android:textColorSecondary">@color/white_gold_light</item>
         <item name="android:textColorHint">@color/white_gold_light</item>
+        <item name="android:textColorTertiary">@color/white_blue</item>
 
     </style>
 </resources>
