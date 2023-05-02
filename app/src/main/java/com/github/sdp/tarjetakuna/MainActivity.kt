@@ -3,7 +3,6 @@ package com.github.sdp.tarjetakuna
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
@@ -20,13 +19,9 @@ import com.github.sdp.tarjetakuna.extra.ExportCollection
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.github.sdp.tarjetakuna.extra.ExportCollection
-import com.github.sdp.tarjetakuna.model.MagicCardType
-import com.github.sdp.tarjetakuna.model.MagicRarity
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
 import com.google.android.material.navigation.NavigationView
-import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
 
