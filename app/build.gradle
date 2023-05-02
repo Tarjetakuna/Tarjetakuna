@@ -129,6 +129,12 @@ dependencies {
     // Library to read and write Excel files
     implementation 'org.apache.poi:poi:5.2.2'
     implementation 'org.apache.poi:poi-ooxml:5.2.2'
+
+    // google sign in testing dependencies
+    androidTestImplementation 'org.mockito:mockito-core:3.12.4'
+    androidTestImplementation 'org.powermock:powermock-module-junit4:2.0.9'
+    androidTestImplementation 'org.powermock:powermock-api-mockito2:2.0.9'
+    androidTestImplementation 'org.mockito:mockito-core:3.2.4'
 }
 
 tasks.withType(Test) {

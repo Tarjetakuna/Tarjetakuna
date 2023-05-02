@@ -38,7 +38,7 @@ class SingleCardViewModel : ViewModel() {
     fun checkUserConnected() {
         _isConnected.value = userDB.isConnected()
     }
-    
+
 
     /**
      * Check if the card is in the collection of the user, either wanted or owned

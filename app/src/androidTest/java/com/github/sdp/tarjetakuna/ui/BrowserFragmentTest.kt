@@ -32,13 +32,13 @@ class BrowserFragmentTest {
         Intents.init()
 
         LocalDatabaseProvider.setDatabase(
-            ApplicationProvider.getApplicationContext(), "", true
+            ApplicationProvider.getApplicationContext(), "test", true
         )
         runBlocking {
             withTimeout(5000) {
                 for (i in generateCards()) {
-                    LocalDatabaseProvider.getDatabase()?.magicCardDao()
-                        ?.insertCard(i.toMagicCardEntity())
+                    LocalDatabaseProvider.getDatabase("test")?.magicCardDao()
+                        ?.insertCard(i.toDBMagicCard())
                 }
             }
         }
@@ -53,7 +53,7 @@ class BrowserFragmentTest {
 
     @After
     fun after() {
-        LocalDatabaseProvider.closeDatabase()
+        LocalDatabaseProvider.closeDatabase("test")
         activityRule.close()
         Intents.release()
     }

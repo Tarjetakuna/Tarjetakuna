@@ -11,8 +11,7 @@ import com.google.firebase.ktx.Firebase
  * TODO modify so that we can add more than one database
  */
 object LocalDatabaseProvider {
-    private var localDatabase: ArrayList<AppDatabase> = arrayListOf()
-    private var databaseNames: ArrayList<String> = arrayListOf()
+    private var localDatabases: HashMap<String, AppDatabase> = hashMapOf()
     const val CARDS_DATABASE_NAME = "cards"
 
     /**
@@ -25,16 +24,14 @@ object LocalDatabaseProvider {
         if (Firebase.auth.currentUser == null && !test) {
             return null
         }
-        if (!databaseNames.contains(name) && !test) {
-            localDatabase.add(Room.databaseBuilder(context, AppDatabase::class.java, name).build())
-            databaseNames.add(name)
-        } else if (!databaseNames.contains(name)) {
-            localDatabase.add(
+        if (!localDatabases.contains(name) && !test) {
+            localDatabases[name] =
+                Room.databaseBuilder(context, AppDatabase::class.java, name).build()
+        } else if (!localDatabases.contains(name)) {
+            localDatabases[name] =
                 Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
-            )
-            databaseNames.add(name)
         }
-        return localDatabase[databaseNames.indexOf(name)]
+        return localDatabases[name]
     }
 
     /**
@@ -42,9 +39,8 @@ object LocalDatabaseProvider {
      * @param name the name of the database to close
      */
     fun closeDatabase(name: String) {
-        localDatabase[databaseNames.indexOf(name)].close()
-        localDatabase.remove(localDatabase[databaseNames.indexOf(name)])
-        databaseNames.remove(name)
+        localDatabases[name]?.close()
+        localDatabases.remove(name)
     }
 
     /**
@@ -55,7 +51,7 @@ object LocalDatabaseProvider {
         if (Firebase.auth.currentUser == null) {
             return null
         }
-        return localDatabase[databaseNames.indexOf(name)]
+        return localDatabases[name]
     }
 
     /**
