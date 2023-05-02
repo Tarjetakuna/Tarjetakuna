@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Update the header of the navigation drawer to display the user's name and description
      */
-    fun updateHeader() {
+    private fun updateHeader() {
         val headerView = binding.navView.getHeaderView(0)
         val sharedPref = getSharedPreferences(shared_pref_name, Context.MODE_PRIVATE)
         headerView.findViewById<TextView>(R.id.navHeaderNameText).text = sharedPref.getString(
