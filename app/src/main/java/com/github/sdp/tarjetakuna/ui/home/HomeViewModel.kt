@@ -1,6 +1,5 @@
 package com.github.sdp.tarjetakuna.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,12 +23,15 @@ class HomeViewModel : ViewModel() {
     private val cards = generateCards()
 
     fun addRandomCard() {
-        val toInsert = cards.random()
+//        val toInsert = cards.random()
+        val toInsert = cards
         viewModelScope.launch {
+//            localDatabase?.magicCardDao()
+//                ?.insertCards(toInsert.toDBMagicCard(CardPossession.OWNED))
             localDatabase?.magicCardDao()
-                ?.insertCard(toInsert.toDBMagicCard(CardPossession.OWNED))
+                ?.insertCards(toInsert.map { it.toDBMagicCard(CardPossession.OWNED) })
         }.invokeOnCompletion {
-            Log.i("Database", "set: ${toInsert.set}, number: ${toInsert.number} added to database")
+//            Log.i("Database", "set: ${toInsert.set}, number: ${toInsert.number} added to database")
         }
     }
 }

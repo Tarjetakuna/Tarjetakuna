@@ -13,6 +13,7 @@ import com.google.firebase.ktx.Firebase
 object LocalDatabaseProvider {
     private var localDatabases: HashMap<String, AppDatabase> = hashMapOf()
     const val CARDS_DATABASE_NAME = "cards"
+    var debugging = false
 
     /**
      * Set a local database
@@ -21,7 +22,7 @@ object LocalDatabaseProvider {
      * @param test if the database is for testing purposes
      */
     fun setDatabase(context: Context, name: String, test: Boolean = false): AppDatabase? {
-        if (Firebase.auth.currentUser == null && !test) {
+        if (userIsNotConnected()) {
             return null
         }
         if (!localDatabases.contains(name) && !test) {
@@ -48,7 +49,7 @@ object LocalDatabaseProvider {
      * @param name the name of the database to get
      */
     fun getDatabase(name: String): AppDatabase? {
-        if (Firebase.auth.currentUser == null) {
+        if (userIsNotConnected()) {
             return null
         }
         return localDatabases[name]
@@ -64,5 +65,15 @@ object LocalDatabaseProvider {
             context.deleteDatabase(name)
             Log.i("Database", "Deleted database $name")
         }
+    }
+
+    /**
+     * Check if the user is connected to the database
+     */
+    private fun userIsNotConnected(): Boolean {
+        if (debugging) {
+            return false
+        }
+        return Firebase.auth.currentUser == null
     }
 }

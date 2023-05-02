@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import kotlinx.coroutines.runBlocking
@@ -32,14 +33,18 @@ class BrowserFragmentTest {
         Intents.init()
 
         LocalDatabaseProvider.setDatabase(
-            ApplicationProvider.getApplicationContext(), "test", true
+            ApplicationProvider.getApplicationContext(),
+            LocalDatabaseProvider.CARDS_DATABASE_NAME,
+            true
         )
+        LocalDatabaseProvider.debugging = true
+
         runBlocking {
             withTimeout(5000) {
-                for (i in generateCards()) {
-                    LocalDatabaseProvider.getDatabase("test")?.magicCardDao()
-                        ?.insertCard(i.toDBMagicCard())
-                }
+                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+                    ?.magicCardDao()?.insertCards(
+                        generateCards().map { it.toDBMagicCard(CardPossession.OWNED) }
+                    )
             }
         }
 
@@ -83,10 +88,10 @@ class BrowserFragmentTest {
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
-        ).check(matches(hasDescendant(withText("Ambush Paratrooper 1"))))
+        ).check(matches(hasDescendant(withText("Ambush Paratrooper 01"))))
         onView(withId(R.id.browser_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                1
+                9
             )
         ).check(matches(hasDescendant(withText("Ambush Paratrooper 10"))))
         onView(withId(R.id.browser_list_cards)).perform(
@@ -129,7 +134,7 @@ class BrowserFragmentTest {
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
-        ).check(matches(hasDescendant(withText("Ambush Paratrooper 1"))))
+        ).check(matches(hasDescendant(withText("Ambush Paratrooper 01"))))
         onView(withId(R.id.filter_by_mana_edittext)).perform(clearText())
         onView(withId(R.id.filter_by_mana_edittext)).perform(typeText("3"))
         onView(withId(R.id.filter_by_mana_button)).perform(click())
@@ -158,7 +163,7 @@ class BrowserFragmentTest {
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
-        ).check(matches(hasDescendant(withText("Ambush Paratrooper 1"))))
+        ).check(matches(hasDescendant(withText("Ambush Paratrooper 01"))))
     }
 
     @Test
@@ -182,7 +187,7 @@ class BrowserFragmentTest {
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
-        ).check(matches(hasDescendant(withText("Ambush Paratrooper 1"))))
+        ).check(matches(hasDescendant(withText("Ambush Paratrooper 01"))))
         onView(withId(R.id.browser_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 40
@@ -198,10 +203,10 @@ class BrowserFragmentTest {
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
-        ).check(matches(hasDescendant(withText("Ambush Paratrooper 1"))))
+        ).check(matches(hasDescendant(withText("Ambush Paratrooper 01"))))
         onView(withId(R.id.browser_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                2
+                10
             )
         ).check(matches(hasDescendant(withText("Ambush Paratrooper 11"))))
         onView(withId(R.id.browser_list_cards)).perform(
@@ -235,12 +240,12 @@ class BrowserFragmentTest {
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
-        ).check(matches(hasDescendant(withText("Ambush Paratrooper 1"))))
+        ).check(matches(hasDescendant(withText("Ambush Paratrooper 01"))))
         onView(withId(R.id.browser_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 2
             )
-        ).check(matches(hasDescendant(withText("Ambush Paratrooper 3"))))
+        ).check(matches(hasDescendant(withText("Ambush Paratrooper 03"))))
         onView(withId(R.id.browser_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 40

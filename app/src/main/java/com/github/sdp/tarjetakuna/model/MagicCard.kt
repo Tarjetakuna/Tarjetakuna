@@ -105,17 +105,10 @@ data class MagicCard(
     /**
      * Converts a MagicCard to a MagicCardEntity.
      */
-    fun toDBMagicCard(possession: CardPossession): DBMagicCard {
+    fun toDBMagicCard(possession: CardPossession = CardPossession.NONE): DBMagicCard {
         return DBMagicCard(
             this,
             possession
         )
-    }
-
-    /**
-     * Converts a MagicCard to a MagicCardEntity with default posession none.
-     */
-    fun toDBMagicCard(): DBMagicCard {
-        return toDBMagicCard(CardPossession.NONE)
     }
 }

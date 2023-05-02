@@ -24,7 +24,7 @@ object TemporaryCards {
                 MagicSet("BRO", name),
                 i + 1,
                 "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
-                MagicRarity.COMMON,
+                MagicRarity.RARE,
                 MagicCardType.CREATURE,
                 listOf("Human", "Soldier"),
                 "1",
@@ -33,6 +33,26 @@ object TemporaryCards {
             )
             cardsArray.add(card)
         }
+
+        //Example of an another card
+        cardsArray.add(
+            MagicCard(
+                "Pégase solgrâce",
+                "Vol\nLien de vie",
+                MagicLayout.NORMAL,
+                3,
+                "{1}{W}{W}",
+                MagicSet("M15", "Magic 2015"),
+                1,
+                "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
+                MagicRarity.COMMON,
+                MagicCardType.CREATURE,
+                listOf("Pégase"),
+                "1",
+                "2",
+                "Phill Simmer"
+            )
+        )
         return cardsArray
     }
 }

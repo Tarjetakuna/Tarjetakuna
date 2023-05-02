@@ -98,6 +98,9 @@ class BrowserViewModel : ViewModel() {
                 }
             }
         }.invokeOnCompletion {
+            cardsArray.sortedWith { o1: MagicCard, o2: MagicCard ->
+                o1.name.compareTo(o2.name)
+            }
             this.cardsArray = cardsArray
             _cards.value = cardsArray
         }
