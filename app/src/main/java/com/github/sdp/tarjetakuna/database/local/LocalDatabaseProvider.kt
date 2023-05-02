@@ -13,6 +13,8 @@ import com.google.firebase.ktx.Firebase
 object LocalDatabaseProvider {
     private var localDatabases: HashMap<String, AppDatabase> = hashMapOf()
     const val CARDS_DATABASE_NAME = "cards"
+
+    //TODO change this when we find another way to test the authentication of the firebase user
     var debugging = false
 
     /**
