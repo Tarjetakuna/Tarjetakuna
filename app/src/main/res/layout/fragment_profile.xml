@@ -56,12 +56,4 @@
         app:layout_constraintTop_toBottomOf="@+id/profile_name_edittext"
         tools:ignore="VisualLintTextFieldSize" />
 
-    <Button
-        android:id="@+id/profile_sign_in_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/HomeButtonStyle"
-        android:text="@string/sign_in_google"
-        tools:ignore="MissingConstraints" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
