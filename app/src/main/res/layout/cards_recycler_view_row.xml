@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -18,13 +17,16 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#B8B4B4">
+            android:theme="@style/Theme.Tarjetakuna.NoActionBar"
+            android:background="?attr/colorPrimaryVariant"
+            android:padding="8dp">
+
 
             <ImageView
                 android:id="@+id/cardImageView"
                 android:layout_width="43dp"
                 android:layout_height="61dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/standard_margin"
                 android:contentDescription="@string/this_image_is_a_card"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:fontFamily="sans-serif"
+                style="@style/BrowserCardTitleStyle"
                 android:text="@string/meandering_towershell"
                 app:layout_constraintStart_toEndOf="@+id/cardImageView"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -46,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="2dp"
+                style="@style/BrowserCardDescriptionStyle"
                 android:text="@string/mt15"
                 app:layout_constraintStart_toEndOf="@+id/cardImageView"
                 app:layout_constraintTop_toBottomOf="@+id/cardNameRecyclerViewTextView" />

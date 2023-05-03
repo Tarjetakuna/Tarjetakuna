@@ -31,21 +31,21 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.homeWelcomeText
+        homeViewModel.titleText.observe(viewLifecycleOwner) {
             textView.text = it
 
         }
-//        LocalDatabaseProvider.deleteDatabases(
-//            requireContext(),
-//            arrayListOf(LocalDatabaseProvider.CARDS_DATABASE_NAME)
-//        )
 
         // TODO remove when not owned card search is implemented
         homeViewModel.localDatabase = LocalDatabaseProvider.setDatabase(
             requireContext(),
             LocalDatabaseProvider.CARDS_DATABASE_NAME
         )
+        val descTextView: TextView = binding.homeWelcomeDescription
+        homeViewModel.descriptionText.observe(viewLifecycleOwner) {
+            descTextView.text = it
+        }
 
         val authenticationButton: Button = binding.homeAuthenticationButton
         authenticationButton.setOnClickListener {

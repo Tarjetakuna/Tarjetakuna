@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 
         // Display profile fragment when clicking on the profile icon
         val headerView = binding.navView.getHeaderView(0)
-        headerView.findViewById<ImageView>(R.id.profileIcon).setOnClickListener {
+        headerView.findViewById<ImageView>(R.id.authentication_profile_icon).setOnClickListener {
             changeFragment(R.id.nav_profile)
             binding.drawerLayout.closeDrawer(binding.navView)
         }
@@ -109,9 +109,10 @@ class MainActivity : AppCompatActivity() {
     private fun updateHeader() {
         val headerView = binding.navView.getHeaderView(0)
         val sharedPref = getSharedPreferences(shared_pref_name, Context.MODE_PRIVATE)
-        headerView.findViewById<TextView>(R.id.navHeaderNameText).text = sharedPref.getString(
-            SharedPreferencesKeys.user_name, getString(R.string.name_entry_hint)
-        )
+        headerView.findViewById<TextView>(R.id.nav_header_name_textview).text =
+            sharedPref.getString(
+                SharedPreferencesKeys.user_name, getString(R.string.name_entry_hint)
+            )
         headerView.findViewById<TextView>(R.id.navHeaderDescriptionText).text =
             sharedPref.getString(
                 SharedPreferencesKeys.user_description, getString(R.string.description_entry_hint)
