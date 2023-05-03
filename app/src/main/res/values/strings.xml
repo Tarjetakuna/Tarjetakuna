@@ -33,23 +33,23 @@
     <string name="operation_success">"Success"</string>
     <string name="operation_failed">"The operation has failed. Please try again."</string>
 
-    <string name="signIn">Sign in with Google</string>
+    <string name="sign_in_google">Sign in with Google</string>
+    <string name="sign_in">Sign in</string>
     <string name="go_back_to_home_page">Go back to home page</string>
     <string name="txt_error_msg">Error: %s</string>
 
     <!--    web api texts-->
-    <string name="api_cards">/cards</string>
-    <string name="api_cardsBySet">/cards_By_Set</string>
-    <string name="api_cardsByName">/cards_By_Name</string>
-    <string name="api_cardName">card name</string>
-    <string name="api_cardById">/cards_By_Id</string>
-    <string name="api_cardId">card id</string>
-    <string name="api_setId">set id</string>
-    <string name="api_sets">/sets</string>
-    <string name="api_setByCode">/set_By_Code</string>
-    <string name="api_default_results">no results yet</string>
-    <string name="api_waiting_results">waiting for results</string>
-
+    <string name="api_cards">Cards</string>
+    <string name="api_cardsBySet">Cards By Set</string>
+    <string name="api_cardsByName">Cards By Name</string>
+    <string name="api_cardName">Card Name</string>
+    <string name="api_cardById">Cards By Id</string>
+    <string name="api_cardId">Card Id</string>
+    <string name="api_setId">Set Id</string>
+    <string name="api_sets">Sets</string>
+    <string name="api_setByCode">Set By Code</string>
+    <string name="api_default_results">No results yet…</string>
+    <string name="api_waiting_results">Waiting for results…</string>
 
     <string name="meandering_towershell">Meandering Towershell</string>
     <string name="mt15">MT15</string>
@@ -75,7 +75,6 @@
     <string name="description_entry_hint">Enter a description here</string>
     <string name="name_entry_hint">Enter your name</string>
     <string name="profile_picture_content_description">Profile picture</string>
-
     <string name="image_of_the_card">Image of the card</string>
     <string name="error_load_card">Error loading the card</string>
     <string name="single_card_showing_set">From %1$s (%2$s)</string>
@@ -90,6 +89,7 @@
     <string name="single_card_showing_add_to_wanted">add to wanted cards</string>
     <string name="single_card_showing_remove_wanted">remove from wanted cards</string>
     <string name="single_card_ask_connection">Please connect if you want to manage the card</string>
+    
     <string name="browser_filter">Filter</string>
     <string name="browser_sort">Sort</string>
     <string name="browser_filter_by_set">By set:</string>

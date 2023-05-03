@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.singlecard.SingleCardFragment">
+    tools:context=".ui.singlecard.SingleCardFragment"
+    android:theme="@style/Theme.Tarjetakuna.NoActionBar">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,27 +16,26 @@
             android:layout_width="297dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
             android:contentDescription="@string/image_of_the_card"
             tools:src="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/singleCard_text_cardName"
+            android:id="@+id/singleCard_card_name_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/error_load_card"
-            android:textAlignment="center"
-            android:textSize="34sp"
+            style="@style/TitleStyle"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp"
-            android:background="#B99CDA"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="?attr/colorPrimary"
             android:orientation="vertical">
 
             <LinearLayout
@@ -44,116 +44,114 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/singleCard_text_cardSet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/singleCard_set_text"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:text=""
-                    android:textAlignment="center"
-                    android:textSize="20sp" />
+                    style="@style/LargeTextStyle"
+                    android:layout_marginStart="@dimen/standard_margin"
+                    android:textAlignment="textStart" />
 
                 <TextView
-                    android:id="@+id/singleCard_text_cardNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/singleCard_card_number_text"
+                    style="@style/LargeTextStyle"
                     android:layout_weight="1"
                     android:text=""
-                    android:textAlignment="center"
-                    android:textSize="20sp" />
+                    android:layout_marginEnd="@dimen/standard_margin"
+                    android:textAlignment="textEnd" />
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/singleCard_text_cardRarity"
+                android:id="@+id/singleCard_rarity_text"
+                style="@style/LargeTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="20sp" />
+                android:layout_weight="1" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp"
-            android:background="#DC66D6"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="?attr/colorPrimaryVariant"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/singleCard_text_cardTypeSubtypesStats"
+                android:id="@+id/singleCard_type_subtype_stats_text"
+                style="@style/LargeTextStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textAlignment="center"
-                android:textSize="20sp" />
+                android:text="" />
 
             <TextView
-                android:id="@+id/singleCard_text_cardManaCost"
+                android:id="@+id/singleCard_mana_cost_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textAlignment="center"
-                android:textSize="20sp" />
+                style="@style/LargeTextStyle"
+                android:text="" />
 
             <TextView
-                android:id="@+id/singleCard_text_cardText"
+                android:id="@+id/singleCard_card_text_text"
+                style="@style/LargeTextStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
+                android:layout_marginTop="@dimen/small_margin"
                 android:text=""
-                android:textAlignment="center"
-                android:textSize="20sp"
                 android:textStyle="italic" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp"
-            android:background="#5B88D5"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/singleCard_text_cardArtist"
+                android:id="@+id/singleCard_artist_text"
+                style="@style/LargeTextStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textAlignment="center"
-                android:textSize="20sp" />
+                android:text="" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp">
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/singleCard_button_addToDeck"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/single_card_showing_add_to_collection"
-                android:layout_marginEnd="10dp" />
-
-            <Button
-                android:id="@+id/singleCard_button_addToWanted"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/single_card_showing_add_to_wanted" />
-
-            <TextView
-                android:id="@+id/singleCard_text_askConnection"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/singleCard_add_owned_button"
+                    style="@style/ButtonStyle"
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_weight="0"
+                    android:text="@string/single_card_showing_add_to_collection" />
+
+                <Button
+                    android:id="@+id/singleCard_add_wanted_button"
+                    style="@style/ButtonStyle"
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_weight="0"
+                    android:text="@string/single_card_showing_add_to_wanted" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/singleCard_askConnection_text"
+                style="@style/DescriptionStyleItalic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/small_margin"
                 android:text="@string/single_card_ask_connection"
                 android:visibility="gone" />
         </LinearLayout>

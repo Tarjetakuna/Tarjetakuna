@@ -8,19 +8,18 @@
     tools:context=".ui.authentication.AuthenticationButtonFragment">
 
     <Button
-        android:id="@+id/connectionButton"
-        android:layout_width="176dp"
-        android:layout_height="62dp"
-        android:text="@string/signIn"
+        android:id="@+id/authentication_sign_in_button"
+        style="@style/ButtonStyle"
+        android:text="@string/sign_in_google"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
-        android:id="@+id/connexionErrorMsg"
+        android:id="@+id/authentication_connection_error_text"
         android:layout_width="309dp"
         android:layout_height="40dp"
         android:text="@string/device_is_not_connected_to_internet"
@@ -32,7 +31,7 @@
         app:layout_constraintVertical_bias="0.635" />
 
     <TextView
-        android:id="@+id/authFailedErrorMsg"
+        android:id="@+id/authentication_auth_failed_text"
         android:layout_width="251dp"
         android:layout_height="35dp"
         android:text="@string/authentication_failed_please_try_again"
@@ -44,14 +43,8 @@
         app:layout_constraintVertical_bias="0.637" />
 
     <Button
-        android:id="@+id/button_back_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/signOut_home_button"
+        style="@style/HomeButtonStyle"
         android:text="@string/go_back_to_home_page"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.802" />
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
