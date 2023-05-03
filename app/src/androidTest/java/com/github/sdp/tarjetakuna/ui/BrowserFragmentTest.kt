@@ -35,11 +35,17 @@ class BrowserFragmentTest {
     @Before
     fun setUp() {
         Intents.init()
+
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
         SignIn.setSignIn(mockedAuth)
 
+        // close the database that could have been opened because of the previous tests
+        LocalDatabaseProvider.closeDatabase("test")
+        LocalDatabaseProvider.closeDatabase("test2")
+        LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+        
         LocalDatabaseProvider.setDatabase(
             ApplicationProvider.getApplicationContext(),
             LocalDatabaseProvider.CARDS_DATABASE_NAME,
@@ -64,7 +70,7 @@ class BrowserFragmentTest {
 
     @After
     fun after() {
-        LocalDatabaseProvider.closeDatabase("test")
+        LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
         activityRule.close()
         Intents.release()
     }

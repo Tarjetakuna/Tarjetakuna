@@ -13,7 +13,6 @@ object LocalDatabaseProvider {
     private var localDatabases: HashMap<String, AppDatabase> = hashMapOf()
     const val CARDS_DATABASE_NAME = "cards"
 
-    private var authenticator = SignIn.getSignIn()
 
     /**
      * Set a local database
@@ -22,7 +21,7 @@ object LocalDatabaseProvider {
      * @param test if the database is for testing purposes
      */
     fun setDatabase(context: Context, name: String, test: Boolean = false): AppDatabase? {
-        if (!authenticator.isUserLoggedIn()) {
+        if (!SignIn.getSignIn().isUserLoggedIn()) {
             return null
         }
         if (!localDatabases.contains(name) && !test) {
@@ -49,7 +48,7 @@ object LocalDatabaseProvider {
      * @param name the name of the database to get
      */
     fun getDatabase(name: String): AppDatabase? {
-        if (!authenticator.isUserLoggedIn()) {
+        if (!SignIn.getSignIn().isUserLoggedIn()) {
             return null
         }
         return localDatabases[name]
