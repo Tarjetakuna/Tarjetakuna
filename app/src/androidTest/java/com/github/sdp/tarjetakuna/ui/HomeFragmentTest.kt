@@ -13,6 +13,8 @@ import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
+import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
+import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.hamcrest.Matchers.equalTo
@@ -20,6 +22,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 
 @RunWith(AndroidJUnit4::class)
 class HomeFragmentTest {
@@ -29,6 +32,11 @@ class HomeFragmentTest {
 
     @Before
     fun setUp() {
+        // mock the authentication
+        val mockedAuth = Mockito.mock(Authenticator::class.java)
+        Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
+        SignIn.setSignIn(mockedAuth)
+
         LocalDatabaseProvider.setDatabase(
             ApplicationProvider.getApplicationContext(),
             LocalDatabaseProvider.CARDS_DATABASE_NAME,
