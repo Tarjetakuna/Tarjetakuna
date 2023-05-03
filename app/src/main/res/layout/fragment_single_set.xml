@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/single_set_type"
-                android:layout_marginStart="@dimen/text_margin"
+                android:layout_marginStart="@dimen/standard_margin"
                 android:textAlignment="textStart" />
 
             <TextView
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/single_set_block"
-                android:layout_marginEnd="@dimen/text_margin"
+                android:layout_marginEnd="@dimen/standard_margin"
                 android:textAlignment="textEnd" />
         </LinearLayout>
 

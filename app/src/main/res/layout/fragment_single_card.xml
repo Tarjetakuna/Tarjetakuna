@@ -16,8 +16,8 @@
             android:layout_width="297dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
             android:contentDescription="@string/image_of_the_card"
             tools:src="@tools:sample/avatars" />
 
@@ -33,8 +33,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
             android:background="?attr/colorPrimary"
             android:orientation="vertical">
 
@@ -49,7 +49,7 @@
                     android:clickable="true"
                     android:text=""
                     style="@style/LargeTextStyle"
-                    android:layout_marginStart="@dimen/text_margin"
+                    android:layout_marginStart="@dimen/standard_margin"
                     android:textAlignment="textStart" />
 
                 <TextView
@@ -57,7 +57,7 @@
                     style="@style/LargeTextStyle"
                     android:layout_weight="1"
                     android:text=""
-                    android:layout_marginEnd="@dimen/text_margin"
+                    android:layout_marginEnd="@dimen/standard_margin"
                     android:textAlignment="textEnd" />
 
             </LinearLayout>
@@ -74,8 +74,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
             android:background="?attr/colorPrimaryVariant"
             android:orientation="vertical">
 
@@ -95,7 +95,7 @@
                 android:id="@+id/singleCard_card_text_text"
                 style="@style/LargeTextStyle"
                 android:layout_width="match_parent"
-                android:layout_marginTop="10sp"
+                android:layout_marginTop="@dimen/small_margin"
                 android:text=""
                 android:textStyle="italic" />
         </LinearLayout>
@@ -103,8 +103,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
             android:orientation="vertical">
 
             <TextView
@@ -118,8 +118,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
             android:orientation="vertical">
 
             <LinearLayout
@@ -150,8 +150,8 @@
                 style="@style/DescriptionStyleItalic"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/small_margin"
                 android:text="@string/single_card_ask_connection"
                 android:visibility="gone" />
         </LinearLayout>

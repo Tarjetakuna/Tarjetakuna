@@ -48,8 +48,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginStart="@dimen/text_margin"
-                android:layout_marginEnd="@dimen/text_margin">
+                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginEnd="@dimen/standard_margin">
 
                 <EditText
                     android:id="@+id/api_card_name_edittext"
@@ -75,8 +75,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginStart="@dimen/text_margin"
-                android:layout_marginEnd="@dimen/text_margin">
+                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginEnd="@dimen/standard_margin">
 
                 <EditText
                     android:id="@+id/api_set_id_edittext"
@@ -102,8 +102,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginStart="@dimen/text_margin"
-                android:layout_marginEnd="@dimen/text_margin">
+                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginEnd="@dimen/standard_margin">
 
                 <EditText
                     android:id="@+id/api_card_id_edittext"
@@ -128,8 +128,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginStart="@dimen/text_margin"
-                android:layout_marginEnd="@dimen/text_margin">
+                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginEnd="@dimen/standard_margin">
 
                 <EditText
                     android:id="@+id/api_set_id_code_edittext"
@@ -156,7 +156,7 @@
             android:id="@+id/api_results"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
+            android:layout_margin="@dimen/standard_margin"
             android:scrollbars="vertical"
             style="@style/DescriptionStyleItalic"
             android:text="@string/api_default_results"

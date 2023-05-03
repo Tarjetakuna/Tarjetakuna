@@ -11,8 +11,8 @@
         android:id="@+id/browser_searchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_margin"
-        android:layout_marginEnd="@dimen/text_margin"
+        android:layout_marginStart="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/standard_margin"
         android:queryHint="Search" />
 
     <LinearLayout
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/browser_filter"
-            android:layout_margin="@dimen/text_margin"
+            android:layout_margin="@dimen/standard_margin"
             android:layout_weight="1" />
 
         <Button
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/browser_sort"
-            android:layout_margin="@dimen/text_margin"
+            android:layout_margin="@dimen/standard_margin"
             android:layout_weight="1" />
 
 
@@ -42,7 +42,7 @@
             android:id="@+id/browser_clear_filters"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_margin="@dimen/text_margin"
+            android:layout_margin="@dimen/standard_margin"
             android:layout_marginTop="0dp"
             android:background="#00000000"
             android:contentDescription="@string/browser_clear_filters"
@@ -54,7 +54,7 @@
         android:id="@+id/browser_filter_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/standard_margin"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -140,7 +140,7 @@
         android:id="@+id/browser_sort_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/standard_margin"
         android:visibility="gone"
         android:orientation="horizontal">
 

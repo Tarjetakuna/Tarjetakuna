@@ -12,7 +12,7 @@
     -->
     <style name="TitleStyle">
         <item name="android:textColor">@color/white_gold_light</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">@dimen/text_size_32</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAlignment">center</item>
@@ -22,7 +22,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/white_gold_light</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/text_size_20</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textAlignment">center</item>
     </style>
@@ -55,12 +55,12 @@
     <style name="BrowserCardDescriptionStyle">
         <item name="android:textColor">@color/white_blue</item>
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
     </style>
 
     <style name="BubbleStyle">
         <item name="android:background">@color/blue_med3</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:padding">@dimen/small_margin</item>
     </style>
 
     <style name="ButtonStyle" parent="Widget.AppCompat.Button">
@@ -68,8 +68,8 @@
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:layout_margin">16dp</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:layout_margin">@dimen/standard_margin</item>
     </style>
 
     <style name="HomeButtonStyle" parent="ButtonStyle">
