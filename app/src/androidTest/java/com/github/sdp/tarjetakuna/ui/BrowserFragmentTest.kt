@@ -13,6 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import kotlinx.coroutines.runBlocking
@@ -43,7 +44,7 @@ class BrowserFragmentTest {
             withTimeout(5000) {
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
                     ?.magicCardDao()?.insertCards(
-                        generateCards().map { it.toDBMagicCard(CardPossession.OWNED) }
+                        generateCards().map { DBMagicCard.fromMagicCard(it, CardPossession.OWNED) }
                     )
             }
         }

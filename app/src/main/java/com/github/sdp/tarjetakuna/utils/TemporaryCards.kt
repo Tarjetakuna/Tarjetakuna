@@ -4,6 +4,7 @@ import com.github.sdp.tarjetakuna.model.*
 
 /**
  * Represents temporary cards that are generated with a loop
+ * TODO remove this class when the api search works
  */
 object TemporaryCards {
     fun generateCards(): ArrayList<MagicCard> {

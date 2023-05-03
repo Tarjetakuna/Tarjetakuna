@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import kotlinx.coroutines.launch
@@ -29,7 +30,7 @@ class HomeViewModel : ViewModel() {
 //            localDatabase?.magicCardDao()
 //                ?.insertCards(toInsert.toDBMagicCard(CardPossession.OWNED))
             localDatabase?.magicCardDao()
-                ?.insertCards(toInsert.map { it.toDBMagicCard(CardPossession.OWNED) })
+                ?.insertCards(toInsert.map { DBMagicCard.fromMagicCard(it, CardPossession.OWNED) })
         }.invokeOnCompletion {
 //            Log.i("Database", "set: ${toInsert.set}, number: ${toInsert.number} added to database")
         }

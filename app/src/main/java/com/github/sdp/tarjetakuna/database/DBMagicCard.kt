@@ -34,4 +34,16 @@ data class DBMagicCard(
     fun toMagicCard(): MagicCard {
         return Gson().fromJson(card, MagicCard::class.java)
     }
+
+    companion object {
+        /**
+         * Create a DBMagicCard from a MagicCard
+         */
+        fun fromMagicCard(
+            card: MagicCard,
+            possession: CardPossession = CardPossession.NONE
+        ): DBMagicCard {
+            return DBMagicCard(card, possession)
+        }
+    }
 }

@@ -2,16 +2,22 @@ package com.github.sdp.tarjetakuna.ui
 
 
 import androidx.navigation.Navigation.findNavController
+import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import org.hamcrest.Matchers.equalTo
-import org.junit.Rule
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -19,8 +25,23 @@ import org.junit.runner.RunWith
 class HomeFragmentTest {
 
 
-    @get:Rule
-    val activityRule = ActivityScenarioRule(MainActivity::class.java)
+    private lateinit var activityRule: ActivityScenario<MainActivity>
+
+    @Before
+    fun setUp() {
+        LocalDatabaseProvider.debugging = true
+        LocalDatabaseProvider.setDatabase(
+            ApplicationProvider.getApplicationContext(),
+            LocalDatabaseProvider.CARDS_DATABASE_NAME,
+            true
+        )
+        activityRule = ActivityScenario.launch(MainActivity::class.java)
+    }
+
+    @After
+    fun tearDown() {
+        LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+    }
 
     /**
      * Test that the authentication fragment is displayed when the corresponding button is clicked
@@ -29,7 +50,7 @@ class HomeFragmentTest {
     fun testClickOnSignInGoogle() {
         onView(withId(R.id.home_authenticationButton)).perform(click())
 
-        activityRule.scenario.onActivity { activity ->
+        activityRule.onActivity { activity ->
             val navController = findNavController(activity, R.id.nav_host_fragment_content_drawer)
             assertThat(
                 navController.currentDestination?.id,
@@ -39,16 +60,18 @@ class HomeFragmentTest {
 
     }
 
-//    @Test
-//    fun buttonAddRandomCardWorks() {
-//        val databaseCards: List<MagicCardEntity>
-//        onView(withId(R.id.addRandomCardButton)).perform(click())
-//        runBlocking {
-//            withTimeout(5000) {
-//                databaseCards = database.magicCardDao().getAllCards()
-//            }
-//        }
-//        assert(databaseCards.isNotEmpty())
-//    }
+    @Test
+    fun buttonAddRandomCardWorks() {
+        val databaseCards: List<DBMagicCard>
+        onView(withId(R.id.add_random_card_button)).perform(click())
+        runBlocking {
+            withTimeout(5000) {
+                databaseCards =
+                    LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+                        .magicCardDao().getAllCards()
+            }
+        }
+        assert(databaseCards.isNotEmpty())
+    }
 
 }

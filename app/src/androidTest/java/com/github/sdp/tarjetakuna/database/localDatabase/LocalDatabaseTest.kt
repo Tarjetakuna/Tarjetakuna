@@ -21,7 +21,7 @@ class LocalDatabaseTest {
     private lateinit var activityRule: ActivityScenario<MainActivity>
     private lateinit var database: AppDatabase
 
-    private var cards = generateCards().map { it.toDBMagicCard() }
+    private var cards = generateCards().map { DBMagicCard.fromMagicCard(it) }
 
 
     @Before
