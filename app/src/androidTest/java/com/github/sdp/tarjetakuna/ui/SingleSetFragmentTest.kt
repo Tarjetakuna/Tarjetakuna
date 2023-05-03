@@ -15,7 +15,7 @@ import com.google.gson.Gson
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.time.LocalDate
+import com.github.sdp.tarjetakuna.mockdata.CommonMagicSet
 
 /**
  * This class is used to test the SingleSetFragment.
@@ -26,19 +26,17 @@ class SingleSetFragmentTest {
     private lateinit var scenario: FragmentScenario<SingleSetFragment>
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
-    private val validMagicSet = MagicSet(
-        "M15", "Magic 2015", "core", "core block", LocalDate.of(2014, 7, 18)
-    )
+    private val validMagicSet = CommonMagicSet.magic2015Set
 
     private val validJson = Gson().toJson(validMagicSet, MagicSet::class.java)
     private val invalidJson = "This is not a valid json string"
 
     //ViewMatchers of the fragment
-    private val textSetName = onView(withId(R.id.singleSet_set_name))
-    private val textSetCode = onView(withId(R.id.singleSet_set_code))
-    private val textSetType = onView(withId(R.id.singleSet_set_type))
-    private val textSetBlock = onView(withId(R.id.singleSet_set_block))
-    private val textSetReleaseDate = onView(withId(R.id.singleSet_set_release_date))
+    private val textSetName = onView(withId(R.id.singleSet_set_name_text))
+    private val textSetCode = onView(withId(R.id.singleSet_set_code_text))
+    private val textSetType = onView(withId(R.id.singleSet_set_type_text))
+    private val textSetBlock = onView(withId(R.id.singleSet_set_block_text))
+    private val textSetReleaseDate = onView(withId(R.id.singleSet_set_release_date_text))
 
     @After
     fun tearDown() {

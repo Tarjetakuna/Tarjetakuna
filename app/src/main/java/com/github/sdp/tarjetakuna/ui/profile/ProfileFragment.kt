@@ -7,10 +7,8 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentProfileBinding
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
@@ -69,22 +67,15 @@ class ProfileFragment : Fragment() {
 
         // Link the user name and description to the sharedPref
         sharedPrefEntryInitiate(
-            binding.nameEntry,
+            binding.profileNameEdittext,
             SharedPreferencesKeys.user_name,
             getString(R.string.name_entry_hint)
         )
         sharedPrefEntryInitiate(
-            binding.descriptionEntry,
+            binding.profileDescriptionEdittext,
             SharedPreferencesKeys.user_description,
             getString(R.string.description_entry_hint)
         )
-
-        // Link the authentication button to the authentication activity
-        val authenticationButton: Button = binding.authenticationButton
-        authenticationButton.setOnClickListener {
-            val mainActivity = requireActivity() as MainActivity
-            mainActivity.changeFragment(R.id.nav_authentication_button)
-        }
 
         return root
     }

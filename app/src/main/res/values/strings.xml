@@ -3,16 +3,10 @@
     <string name="demo_button">Demo button: fragment switch </string>
     <string name="hello">Hello</string>
     <string name="filter_option_title">Filter options</string>
-    <string name="save_name_button">Save name</string>
-    <string name="enter_your_name">Enter your name:</string>
     <string name="filter">Filter</string>
-    <string name="card_name">Card name</string>
-    <string name="cmc">Converted mana cost</string>
-    <string name="layout_name">Layout</string>
     <string name="nav_header_title" />
     <string name="nav_header_subtitle" />
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <string name="testforauth">TestForAuth</string>
     <string name="sign_out">sign out</string>
@@ -45,23 +39,23 @@
     <string name="operation_success">"Success"</string>
     <string name="operation_failed">"The operation has failed. Please try again."</string>
 
-    <string name="signIn">Sign in with Google</string>
+    <string name="sign_in_google">Sign in with Google</string>
+    <string name="sign_in">Sign in</string>
     <string name="go_back_to_home_page">Go back to home page</string>
     <string name="txt_error_msg">Error: %s</string>
 
     <!--    web api texts-->
-    <string name="api_cards">/cards</string>
-    <string name="api_cardsBySet">/cards_By_Set</string>
-    <string name="api_cardsByName">/cards_By_Name</string>
-    <string name="api_cardName">card name</string>
-    <string name="api_cardById">/cards_By_Id</string>
-    <string name="api_cardId">card id</string>
-    <string name="api_setId">set id</string>
-    <string name="api_sets">/sets</string>
-    <string name="api_setByCode">/set_By_Code</string>
-    <string name="api_default_results">no results yet</string>
-    <string name="api_waiting_results">waiting for results</string>
-
+    <string name="api_cards">Cards</string>
+    <string name="api_cardsBySet">Cards By Set</string>
+    <string name="api_cardsByName">Cards By Name</string>
+    <string name="api_cardName">Card Name</string>
+    <string name="api_cardById">Cards By Id</string>
+    <string name="api_cardId">Card Id</string>
+    <string name="api_setId">Set Id</string>
+    <string name="api_sets">Sets</string>
+    <string name="api_setByCode">Set By Code</string>
+    <string name="api_default_results">No results yet…</string>
+    <string name="api_waiting_results">Waiting for results…</string>
 
     <string name="meandering_towershell">Meandering Towershell</string>
     <string name="mt15">MT15</string>
@@ -79,16 +73,14 @@
     <string name="text_get_success">Card %1$s was successfully retrieved from your collection</string>
     <string name="text_get_fail">Failed to retrieve card %1$s </string>
 
-    <string name="ExportCollection_export_button">Export my collection</string>
     <string name="ExportCollection_appNotFound">No app found to share Excel file</string>
     <string name="ExportCollection_fileCreationFailed">Failed to write data to Excel file</string>
     <string name="ExportCollection_fileDirectoryNotFound">Failed to access to the documents directory</string>
+
     <string name="save_button_text">Save</string>
     <string name="description_entry_hint">Enter a description here</string>
     <string name="name_entry_hint">Enter your name</string>
     <string name="profile_picture_content_description">Profile picture</string>
-
-
     <string name="image_of_the_card">Image of the card</string>
     <string name="error_load_card">Error loading the card</string>
     <string name="single_card_showing_set">From %1$s (%2$s)</string>
@@ -103,18 +95,19 @@
     <string name="single_card_showing_add_to_wanted">add to wanted cards</string>
     <string name="single_card_showing_remove_wanted">remove from wanted cards</string>
     <string name="single_card_ask_connection">Please connect if you want to manage the card</string>
-    <string name="browserFragment_filter">Filter</string>
-    <string name="browserFragment_sort">Sort</string>
-    <string name="browserFragment_filter_by_set">By set:</string>
-    <string name="browserFragment_enter_set_code">Enter the set code</string>
-    <string name="browserFragment_apply">Apply</string>
-    <string name="browserFragment_filter_by_mana">By mana:</string>
-    <string name="browserFragment_enter_manacost">Enter the mana cost:</string>
-    <string name="browserFragment_sort_by_mana">Mana</string>
-    <string name="browserFragment_sort_by_name">Name</string>
-    <string name="browserFragment_sort_by_rarity">Rarity</string>
-    <string name="browserFragment_clear_filters">Clear all the filters</string>
-    <string name="browserFragment_sort_by_set">Set</string>
+    
+    <string name="browser_filter">Filter</string>
+    <string name="browser_sort">Sort</string>
+    <string name="browser_filter_by_set">By set:</string>
+    <string name="browser_enter_set_code">Enter the set code</string>
+    <string name="browser_apply">Apply</string>
+    <string name="browser_filter_by_mana">By mana:</string>
+    <string name="browser_enter_manacost">Enter the mana cost:</string>
+    <string name="browser_sort_by_mana">Mana</string>
+    <string name="browser_sort_by_name">Name</string>
+    <string name="browser_sort_by_rarity">Rarity</string>
+    <string name="browser_clear_filters">Clear all the filters</string>
+    <string name="browser_sort_by_set">Set</string>
 
     <string name="single_set_code">(%1$s)</string>
     <string name="single_set_type">Type : %1$s</string>

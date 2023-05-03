@@ -40,21 +40,21 @@ class ProfileFragmentTest {
 
     @Test
     fun nameEntryDisplaysCorrectHint() {
-        onView(withId(R.id.nameEntry)).check(matches(withHint(R.string.name_entry_hint)))
+        onView(withId(R.id.profile_name_edittext)).check(matches(withHint(R.string.name_entry_hint)))
     }
 
     @Test
     fun descriptionEntryDisplaysCorrectHint() {
-        onView(withId(R.id.descriptionEntry)).check(matches(withHint(R.string.description_entry_hint)))
+        onView(withId(R.id.profile_description_edittext)).check(matches(withHint(R.string.description_entry_hint)))
     }
 
     @Test
     fun nameEntryChangesSharedPref() {
         val newName = "John"
-        onView(withId(R.id.nameEntry)).perform(ViewActions.clearText())
-        onView(withId(R.id.nameEntry)).perform(typeText(newName))
+        onView(withId(R.id.profile_name_edittext)).perform(ViewActions.clearText())
+        onView(withId(R.id.profile_name_edittext)).perform(typeText(newName))
         closeSoftKeyboard()
-        onView(withId(R.id.nameEntry)).check(matches(withText(newName)))
+        onView(withId(R.id.profile_name_edittext)).check(matches(withText(newName)))
 
         val sharedPref = ApplicationProvider.getApplicationContext<Context>()
             .getSharedPreferences(shared_pref_name, Context.MODE_PRIVATE)
@@ -64,10 +64,10 @@ class ProfileFragmentTest {
     @Test
     fun descriptionEntryChangesSharedPref() {
         val newDescription = "I like hiking"
-        onView(withId(R.id.descriptionEntry)).perform(ViewActions.clearText())
-        onView(withId(R.id.descriptionEntry)).perform(typeText(newDescription))
+        onView(withId(R.id.profile_description_edittext)).perform(ViewActions.clearText())
+        onView(withId(R.id.profile_description_edittext)).perform(typeText(newDescription))
         closeSoftKeyboard()
-        onView(withId(R.id.descriptionEntry)).check(matches(withText(newDescription)))
+        onView(withId(R.id.profile_description_edittext)).check(matches(withText(newDescription)))
 
         val sharedPref = ApplicationProvider.getApplicationContext<Context>()
             .getSharedPreferences(shared_pref_name, Context.MODE_PRIVATE)
@@ -76,5 +76,4 @@ class ProfileFragmentTest {
             sharedPref.getString(SharedPreferencesKeys.user_description, "")
         )
     }
-
 }

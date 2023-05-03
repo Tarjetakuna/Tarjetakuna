@@ -20,9 +20,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.model.MagicCard
-import com.github.sdp.tarjetakuna.model.MagicLayout
-import com.github.sdp.tarjetakuna.model.MagicSet
+import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.junit.After
 import org.junit.Assert.*
@@ -43,27 +41,7 @@ class ExportCollectionTest {
 
     private lateinit var view: View
 
-    private val validCollection = listOf(
-        MagicCard(
-            "MagicCard",
-            "A beautiful card",
-            MagicLayout.Normal,
-            7,
-            "{5}{W}{W}",
-            MagicSet("MT15", "Magic 2015"),
-            56,
-            "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
-        ), MagicCard(
-            "BestMagicCard",
-            "An even more beautiful card",
-            MagicLayout.Normal,
-            7,
-            "{7}{W}{W}",
-            MagicSet("MT15", "Magic 2015"),
-            56,
-            "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
-        )
-    )
+    private val validCollection = CommonMagicCard.validListOfCards
 
     @Before
     fun setUp() {

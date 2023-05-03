@@ -39,7 +39,7 @@ class SingleCardFragment : Fragment() {
 
         loadCardFromJson()
 
-        binding.singleCardTextCardSet.setOnClickListener {
+        binding.singleCardSetText.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("set", Gson().toJson(viewModel.card.set))
             //TODO : Should be changed to remove the dependency on MainActivity
@@ -52,30 +52,30 @@ class SingleCardFragment : Fragment() {
             viewModel.checkCardInCollection()
         }
 
-        binding.singleCardButtonAddToDeck.setOnClickListener {
+        binding.singleCardAddOwnedButton.setOnClickListener {
             viewModel.manageOwnedCollection()
         }
 
-        binding.singleCardButtonAddToWanted.setOnClickListener {
+        binding.singleCardAddWantedButton.setOnClickListener {
             viewModel.manageWantedCollection()
         }
 
         viewModel.buttonAddText.observe(viewLifecycleOwner) {
             if (it) {
-                binding.singleCardButtonAddToDeck.text =
+                binding.singleCardAddOwnedButton.text =
                     getString(R.string.single_card_showing_add_to_collection)
             } else {
-                binding.singleCardButtonAddToDeck.text =
+                binding.singleCardAddOwnedButton.text =
                     getString(R.string.single_card_showing_remove_collection)
             }
         }
 
         viewModel.buttonWantedText.observe(viewLifecycleOwner) {
             if (it) {
-                binding.singleCardButtonAddToWanted.text =
+                binding.singleCardAddWantedButton.text =
                     getString(R.string.single_card_showing_add_to_wanted)
             } else {
-                binding.singleCardButtonAddToWanted.text =
+                binding.singleCardAddWantedButton.text =
                     getString(R.string.single_card_showing_remove_wanted)
             }
         }
@@ -93,7 +93,7 @@ class SingleCardFragment : Fragment() {
             viewModel.card = card
 
             // display the card
-            binding.singleCardTextCardName.text = card.name
+            binding.singleCardCardNameText.text = card.name
             val spannableSet = SpannableString(
                 getString(
                     R.string.single_card_showing_set,
@@ -102,12 +102,12 @@ class SingleCardFragment : Fragment() {
                 )
             )
             spannableSet.setSpan(UnderlineSpan(), 0, spannableSet.length, 0)
-            binding.singleCardTextCardSet.text = spannableSet
-            binding.singleCardTextCardNumber.text =
+            binding.singleCardSetText.text = spannableSet
+            binding.singleCardCardNumberText.text =
                 getString(R.string.single_card_showing_number, card.number)
-            binding.singleCardTextCardText.text = card.text
-            binding.singleCardTextCardRarity.text = card.rarity.toString()
-            binding.singleCardTextCardManaCost.text =
+            binding.singleCardCardTextText.text = card.text
+            binding.singleCardRarityText.text = card.rarity.toString()
+            binding.singleCardManaCostText.text =
                 getString(R.string.single_card_showing_mana_cost, card.convertedManaCost.toString())
 
             val powerToughnessStr = if (card.type == MagicCardType.CREATURE) " " + getString(
@@ -119,26 +119,26 @@ class SingleCardFragment : Fragment() {
                 R.string.single_card_showing_subtypes,
                 card.subtypes.joinToString(", ")
             ) else ""
-            binding.singleCardTextCardTypeSubtypesStats.text = getString(
+            binding.singleCardTypeSubtypeStatsText.text = getString(
                 R.string.single_card_showing_type_subtypes_stats,
                 card.type.toString(),
                 powerToughnessStr,
                 subtypesStr
             )
 
-            binding.singleCardTextCardArtist.text =
+            binding.singleCardArtistText.text =
                 getString(R.string.single_card_showing_artist, card.artist)
 
             //The picture from the public API has a certificate problem,
             // so we use a placeholder for now.
             CustomGlide.loadDrawable(
                 this,
-                "https://cards.scryfall.io/large/front/c/f/cfa00c0e-163d-4f59-b8b9-3ee9143d27bb.jpg?1674420138"
+                card.imageUrl
             ) {
                 binding.singleCardImage.setImageDrawable(it)
             }
         } catch (e: Exception) {
-            binding.singleCardTextCardName.text = getString(R.string.error_load_card)
+            binding.singleCardCardNameText.text = getString(R.string.error_load_card)
         }
     }
 
@@ -148,13 +148,13 @@ class SingleCardFragment : Fragment() {
      */
     private fun displayButton(userIsConnected: Boolean) {
         if (userIsConnected) {
-            binding.singleCardButtonAddToDeck.visibility = View.VISIBLE
-            binding.singleCardButtonAddToWanted.visibility = View.VISIBLE
-            binding.singleCardTextAskConnection.visibility = View.GONE
+            binding.singleCardAddOwnedButton.visibility = View.VISIBLE
+            binding.singleCardAddWantedButton.visibility = View.VISIBLE
+            binding.singleCardAskConnectionText.visibility = View.GONE
         } else {
-            binding.singleCardButtonAddToDeck.visibility = View.GONE
-            binding.singleCardButtonAddToWanted.visibility = View.GONE
-            binding.singleCardTextAskConnection.visibility = View.VISIBLE
+            binding.singleCardAddOwnedButton.visibility = View.GONE
+            binding.singleCardAddWantedButton.visibility = View.GONE
+            binding.singleCardAskConnectionText.visibility = View.VISIBLE
         }
     }
 

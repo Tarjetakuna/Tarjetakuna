@@ -54,7 +54,11 @@ class ScannerFragment : Fragment() {
             startCamera()
         } else {
             this.activity?.let {
-                ActivityCompat.requestPermissions(it, REQUIRED_PERMISSIONS, RQUSTCODE_PERMISSIONS)
+                ActivityCompat.requestPermissions(
+                    it,
+                    REQUIRED_PERMISSIONS,
+                    REQUEST_CODE_PERMISSIONS
+                )
             }
         }
 
@@ -63,14 +67,14 @@ class ScannerFragment : Fragment() {
 
         // bind the view model to the layout when text or object is detected in image
         scannerViewModel.textDetected.observe(viewLifecycleOwner) {
-            binding.textInImage.text = it.text
+            binding.scannerTextInImageText.text = it.text
         }
 
         scannerViewModel.objectDetected.observe(viewLifecycleOwner) {
-            binding.objectInImage.text = it.text
+            binding.scannerObjectInImageText.text = it.text
         }
 
-        binding.buttonScan.setOnClickListener {
+        binding.scannerScanButton.setOnClickListener {
             takePhoto()
         }
 
@@ -94,7 +98,7 @@ class ScannerFragment : Fragment() {
      */
     fun requestPermissionsResult(requestCode: Int, perm: Array<String>, results: IntArray) {
         // check that permissions results is for scanner fragment
-        if (requestCode == RQUSTCODE_PERMISSIONS) {
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
             // check if all permissions are granted
             if (allPermissionsGranted()) {
                 startCamera()
@@ -116,7 +120,7 @@ class ScannerFragment : Fragment() {
      */
     private fun takePhoto() {
         if (!takePicture()) {
-            binding.hiddenText.text = "Error taking picture"
+            binding.scannerHiddenText.text = "Error taking picture"
             Toast.makeText(this.context, "Error taking picture", Toast.LENGTH_SHORT).show()
         }
     }
@@ -152,14 +156,14 @@ class ScannerFragment : Fragment() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
                     val msg = getString(R.string.scanner_photo_failed, exc.message)
-                    binding.hiddenText.text = msg
+                    binding.scannerHiddenText.text = msg
                     view?.let { Snackbar.make(it, msg, Snackbar.LENGTH_LONG).show() }
                     Log.e(TAG, msg, exc)
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val msg = getString(R.string.scanner_photo_saved, output.savedUri)
-                    binding.hiddenText.text = msg
+                    binding.scannerHiddenText.text = msg
                     view?.let { Snackbar.make(it, msg, Snackbar.LENGTH_LONG).show() }
                     Log.d(TAG, msg)
                 }
@@ -188,7 +192,7 @@ class ScannerFragment : Fragment() {
             val preview = Preview.Builder()
                 .build()
                 .also {
-                    it.setSurfaceProvider(binding.imagePreview.surfaceProvider)
+                    it.setSurfaceProvider(binding.scannerImagePreview.surfaceProvider)
                 }
 
             // ImageCapture to save photo on device
@@ -270,7 +274,7 @@ class ScannerFragment : Fragment() {
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
 
         // Request code for permissions
-        const val RQUSTCODE_PERMISSIONS = 10
+        const val REQUEST_CODE_PERMISSIONS = 10
 
         // Permissions required for the app to run
         private val REQUIRED_PERMISSIONS =

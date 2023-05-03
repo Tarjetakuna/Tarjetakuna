@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.singleset.SingleSetFragment">
+    tools:context=".ui.singleset.SingleSetFragment"
+    android:theme="@style/Theme.Tarjetakuna.NoActionBar">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,16 +12,16 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/singleSet_set_name"
+            android:id="@+id/singleSet_set_name_text"
+            style="@style/TitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/single_set_error_loading"
-            android:textAlignment="center"
-            android:textSize="34sp"
-            android:textStyle="bold" />
+            android:textAlignment="center" />
 
         <TextView
-            android:id="@+id/singleSet_set_code"
+            android:id="@+id/singleSet_set_code_text"
+            style="@style/DescriptionStyleNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/single_set_code"
@@ -32,24 +33,29 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/singleSet_set_type"
+                android:id="@+id/singleSet_set_type_text"
+                style="@style/DescriptionStyleNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/single_set_type"
-                android:textAlignment="center" />
+                android:layout_marginStart="@dimen/standard_margin"
+                android:textAlignment="textStart" />
 
             <TextView
-                android:id="@+id/singleSet_set_block"
+                android:id="@+id/singleSet_set_block_text"
+                style="@style/DescriptionStyleNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/single_set_block"
-                android:textAlignment="center" />
+                android:layout_marginEnd="@dimen/standard_margin"
+                android:textAlignment="textEnd" />
         </LinearLayout>
 
         <TextView
-            android:id="@+id/singleSet_set_release_date"
+            android:id="@+id/singleSet_set_release_date_text"
+            style="@style/DescriptionStyleNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/single_set_release_date"

@@ -16,11 +16,11 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
-import com.github.sdp.tarjetakuna.ui.scanner.ScannerFragment
+import com.github.sdp.tarjetakuna.extra.ExportCollection
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.github.sdp.tarjetakuna.extra.ExportCollection
+import com.github.sdp.tarjetakuna.ui.scanner.ScannerFragment
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
 import com.github.sdp.tarjetakuna.utils.Utils
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         MagicCard(
             "MagicCard",
             "A beautiful card",
-            MagicLayout.Normal,
+            MagicLayout.NORMAL,
             7,
             "{5}{W}{W}",
             MagicSet("MT15", "Magic 2015"),
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         MagicCard(
             "BestMagicCard",
             "An even more beautiful card",
-            MagicLayout.Normal,
+            MagicLayout.NORMAL,
             7,
             "{7}{W}{W}",
             MagicSet("MT15", "Magic 2015"),
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
         // Display profile fragment when clicking on the profile icon
         val headerView = binding.navView.getHeaderView(0)
-        headerView.findViewById<ImageView>(R.id.profileIcon).setOnClickListener {
+        headerView.findViewById<ImageView>(R.id.authentication_profile_icon).setOnClickListener {
             changeFragment(R.id.nav_profile)
             binding.drawerLayout.closeDrawer(binding.navView)
         }
@@ -110,12 +110,13 @@ class MainActivity : AppCompatActivity() {
     /**
      * Update the header of the navigation drawer to display the user's name and description
      */
-    fun updateHeader() {
+    private fun updateHeader() {
         val headerView = binding.navView.getHeaderView(0)
         val sharedPref = getSharedPreferences(shared_pref_name, Context.MODE_PRIVATE)
-        headerView.findViewById<TextView>(R.id.navHeaderNameText).text = sharedPref.getString(
-            SharedPreferencesKeys.user_name, getString(R.string.name_entry_hint)
-        )
+        headerView.findViewById<TextView>(R.id.nav_header_name_textview).text =
+            sharedPref.getString(
+                SharedPreferencesKeys.user_name, getString(R.string.name_entry_hint)
+            )
         headerView.findViewById<TextView>(R.id.navHeaderDescriptionText).text =
             sharedPref.getString(
                 SharedPreferencesKeys.user_description, getString(R.string.description_entry_hint)
@@ -158,7 +159,7 @@ class MainActivity : AppCompatActivity() {
         IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == ScannerFragment.RQUSTCODE_PERMISSIONS) {
+        if (requestCode == ScannerFragment.REQUEST_CODE_PERMISSIONS) {
             supportFragmentManager.fragments.forEach {
                 it.childFragmentManager.fragments.forEach { it2 ->
                     if (it2 is ScannerFragment) {

@@ -1,8 +1,3 @@
-// ====================
-// MagicDeck.kt
-// Tarjetakuna, 2023
-// ====================
-
 package com.github.sdp.tarjetakuna.model
 
 /**

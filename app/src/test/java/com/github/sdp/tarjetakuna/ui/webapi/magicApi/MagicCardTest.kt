@@ -1,6 +1,7 @@
 package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 
 import com.github.sdp.tarjetakuna.utils.TestHelperWebApi
+import junit.framework.TestCase.assertEquals
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -49,5 +50,46 @@ class MagicCardTest {
     @Test
     fun test_toString() {
         assertThat("toString not null", card.toString().isNotEmpty())
+    }
+
+    @Test
+    fun test_validMagicCard() {
+        val validForeignName = ForeignName(
+            "name", "text", "type", null, "imageUrl", "language", 1
+        )
+        val validLegalities = Legalities("Format", "Legality")
+        val validMagicCard = MagicCard(
+            "name", "manaCost", 1, listOf("colors"), listOf("colorIdentity"), "type", listOf("types"),
+            listOf("subtypes"), "rarity", "set", "setName", "text", "artist", "number", "power",
+            "toughness", "layout", "multiverseid", "imageUrl", listOf("variations"), listOf(validForeignName),
+            listOf("printings"), "originalText", "originalType", listOf(validLegalities), "id"
+        )
+
+        assertEquals("name", validMagicCard.name)
+        assertEquals("manaCost", validMagicCard.manaCost)
+        assertEquals(1, validMagicCard.cmc)
+        assertEquals(listOf("colors"), validMagicCard.colors)
+        assertEquals(listOf("colorIdentity"), validMagicCard.colorIdentity)
+        assertEquals("type", validMagicCard.type)
+        assertEquals(listOf("types"), validMagicCard.types)
+        assertEquals(listOf("subtypes"), validMagicCard.subtypes)
+        assertEquals("rarity", validMagicCard.rarity)
+        assertEquals("set", validMagicCard.set)
+        assertEquals("setName", validMagicCard.setName)
+        assertEquals("text", validMagicCard.text)
+        assertEquals("artist", validMagicCard.artist)
+        assertEquals("number", validMagicCard.number)
+        assertEquals("power", validMagicCard.power)
+        assertEquals("toughness", validMagicCard.toughness)
+        assertEquals("layout", validMagicCard.layout)
+        assertEquals("multiverseid", validMagicCard.multiverseid)
+        assertEquals("imageUrl", validMagicCard.imageUrl)
+        assertEquals(listOf("variations"), validMagicCard.variations)
+        assertEquals(listOf(validForeignName), validMagicCard.foreignNames)
+        assertEquals(listOf("printings"), validMagicCard.printings)
+        assertEquals("originalText", validMagicCard.originalText)
+        assertEquals("originalType", validMagicCard.originalType)
+        assertEquals(listOf(validLegalities), validMagicCard.legalities)
+        assertEquals("id", validMagicCard.id)
     }
 }

@@ -7,16 +7,16 @@
     tools:context=".ui.scanner.ScannerFragment">
 
     <TextView
-        android:id="@+id/hidden_text"
+        android:id="@+id/scanner_hidden_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_description" />
+        app:layout_constraintTop_toTopOf="@+id/scanner_description_text" />
 
     <TextView
-        android:id="@+id/text_description"
+        android:id="@+id/scanner_description_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -24,36 +24,37 @@
         android:layout_marginEnd="10dp"
         android:text="@string/scanner_description"
         android:textAlignment="center"
-        android:textSize="20sp"
+        style="@style/LargeTextStyle"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.camera.view.PreviewView
-        android:id="@+id/imagePreview"
+        android:id="@+id/scanner_imagePreview"
         android:layout_width="310dp"
         android:layout_height="471dp"
         android:layout_marginTop="10dp"
         android:contentDescription="@string/scanner_content_description_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_description"
+        app:layout_constraintTop_toBottomOf="@+id/scanner_description_text"
         tools:src="@tools:sample/avatars">
 
     </androidx.camera.view.PreviewView>
 
     <Button
-        android:id="@+id/button_scan"
+        android:id="@+id/scanner_scan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/scanner_button"
-        app:layout_constraintBottom_toBottomOf="@+id/imagePreview"
-        app:layout_constraintEnd_toEndOf="@+id/imagePreview"
-        app:layout_constraintStart_toStartOf="@+id/imagePreview" />
+        app:layout_constraintBottom_toBottomOf="@+id/scanner_imagePreview"
+        app:layout_constraintEnd_toEndOf="@+id/scanner_imagePreview"
+        app:layout_constraintStart_toStartOf="@+id/scanner_imagePreview" />
 
     <TextView
-        android:id="@+id/textInImage"
+        android:id="@+id/scanner_textInImage_text"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
@@ -61,19 +62,21 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/scanner_no_text_detected_yet"
+        style="@style/DescriptionStyleNormal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imagePreview" />
+        app:layout_constraintTop_toBottomOf="@+id/scanner_imagePreview" />
 
     <TextView
-        android:id="@+id/objectInImage"
+        android:id="@+id/scanner_objectInImage_text"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/scanner_no_object_detected_yet"
+        style="@style/DescriptionStyleNormal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
