@@ -18,30 +18,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/browser_filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/browser_filter"
             android:layout_margin="@dimen/standard_margin"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="@string/browser_filter" />
 
         <Button
             android:id="@+id/browser_sort_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/browser_sort"
             android:layout_margin="@dimen/standard_margin"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="@string/browser_sort" />
 
 
         <ImageButton
             android:id="@+id/browser_clear_filters"
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="48dp"
             android:layout_margin="@dimen/standard_margin"
             android:layout_marginTop="0dp"
             android:background="#00000000"
@@ -54,7 +54,6 @@
         android:id="@+id/browser_filter_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/standard_margin"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -140,7 +139,7 @@
         android:id="@+id/browser_sort_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/standard_margin"
+        android:layout_margin="@dimen/small_margin"
         android:visibility="gone"
         android:orientation="horizontal">
 
@@ -152,7 +151,7 @@
             android:layout_margin="4dp"
             android:text="@string/browser_sort_by_name"
             style="?android:attr/buttonBarButtonStyle"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="?android:textColorTertiary"
             android:textStyle="bold" />
 
         <Button
@@ -163,7 +162,7 @@
             android:layout_margin="4dp"
             android:text="@string/browser_sort_by_mana"
             style="?android:attr/buttonBarButtonStyle"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="?android:textColorTertiary"
             android:textStyle="bold" />
 
         <Button
@@ -174,7 +173,7 @@
             android:layout_margin="4dp"
             android:text="@string/browser_sort_by_rarity"
             style="?android:attr/buttonBarButtonStyle"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="?android:textColorTertiary"
             android:textStyle="bold" />
 
         <Button
@@ -185,7 +184,7 @@
             android:layout_margin="4dp"
             android:text="@string/browser_sort_by_set"
             style="?android:attr/buttonBarButtonStyle"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="?android:textColorTertiary"
             android:textStyle="bold" />
 
     </LinearLayout>
