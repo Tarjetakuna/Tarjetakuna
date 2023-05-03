@@ -3,8 +3,7 @@ package com.github.sdp.tarjetakuna.database.local
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 
 /**
  * Provides a local database.
@@ -14,8 +13,7 @@ object LocalDatabaseProvider {
     private var localDatabases: HashMap<String, AppDatabase> = hashMapOf()
     const val CARDS_DATABASE_NAME = "cards"
 
-    //TODO change this when we find another way to test the authentication of the firebase user
-    var debugging = false
+    private var authenticator = SignIn.getSignIn()
 
     /**
      * Set a local database
@@ -24,7 +22,7 @@ object LocalDatabaseProvider {
      * @param test if the database is for testing purposes
      */
     fun setDatabase(context: Context, name: String, test: Boolean = false): AppDatabase? {
-        if (userIsNotConnected()) {
+        if (!authenticator.isUserLoggedIn()) {
             return null
         }
         if (!localDatabases.contains(name) && !test) {
@@ -51,7 +49,7 @@ object LocalDatabaseProvider {
      * @param name the name of the database to get
      */
     fun getDatabase(name: String): AppDatabase? {
-        if (userIsNotConnected()) {
+        if (!authenticator.isUserLoggedIn()) {
             return null
         }
         return localDatabases[name]
@@ -67,15 +65,5 @@ object LocalDatabaseProvider {
             context.deleteDatabase(name)
             Log.i("Database", "Deleted database $name")
         }
-    }
-
-    /**
-     * Check if the user is connected to the database
-     */
-    private fun userIsNotConnected(): Boolean {
-        if (debugging) {
-            return false
-        }
-        return Firebase.auth.currentUser == null
     }
 }

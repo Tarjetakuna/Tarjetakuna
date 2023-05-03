@@ -29,7 +29,6 @@ class HomeFragmentTest {
 
     @Before
     fun setUp() {
-        LocalDatabaseProvider.debugging = true
         LocalDatabaseProvider.setDatabase(
             ApplicationProvider.getApplicationContext(),
             LocalDatabaseProvider.CARDS_DATABASE_NAME,

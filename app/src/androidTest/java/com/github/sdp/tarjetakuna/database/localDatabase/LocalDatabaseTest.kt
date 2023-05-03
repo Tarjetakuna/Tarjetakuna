@@ -7,6 +7,8 @@ import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
+import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
+import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -14,6 +16,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 
 @RunWith(AndroidJUnit4::class)
 class LocalDatabaseTest {
@@ -26,8 +29,11 @@ class LocalDatabaseTest {
 
     @Before
     fun setUp() {
-        // database that will disappear after the end of the test
-        LocalDatabaseProvider.debugging = true
+        // mock the authentication
+        val mockedAuth = Mockito.mock(Authenticator::class.java)
+        Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
+        SignIn.setSignIn(mockedAuth)
+        
         database =
             LocalDatabaseProvider.setDatabase(
                 ApplicationProvider.getApplicationContext(), "test", true

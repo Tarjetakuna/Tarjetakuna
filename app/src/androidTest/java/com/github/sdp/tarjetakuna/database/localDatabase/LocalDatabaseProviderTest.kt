@@ -3,26 +3,29 @@ package com.github.sdp.tarjetakuna.database.localDatabase
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
+import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
+import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import java.util.*
 
 
 @RunWith(AndroidJUnit4::class)
 class LocalDatabaseProviderTest {
 
-//    @Before
-//    fun setUp() {
-//        PowerMockito.mockStatic(FirebaseAuth::class.java)
-//        val mockedAuth = Mockito.mock(FirebaseAuth::class.java)
-//        Mockito.`when`(FirebaseAuth.getInstance()).thenReturn(mockedAuth)
-//        Mockito.`when`(mockedAuth.currentUser).thenReturn(null)
-//    }
+    @Before
+    fun setUp() {
+        val mockedAuth = mock(Authenticator::class.java)
+        `when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
+        SignIn.setSignIn(mockedAuth)
+    }
 
     @Test
     fun addDatabaseToProviderWorks() {
-        LocalDatabaseProvider.debugging = true
         LocalDatabaseProvider.setDatabase(ApplicationProvider.getApplicationContext(), "test")
         assertEquals("test", LocalDatabaseProvider.getDatabase("test")?.openHelper?.databaseName)
         LocalDatabaseProvider.closeDatabase("test")
@@ -30,7 +33,6 @@ class LocalDatabaseProviderTest {
 
     @Test
     fun assignTwoDatabaseWorks() {
-        LocalDatabaseProvider.debugging = true
         LocalDatabaseProvider.setDatabase(ApplicationProvider.getApplicationContext(), "test")
         LocalDatabaseProvider.setDatabase(ApplicationProvider.getApplicationContext(), "test2")
         assertEquals(LocalDatabaseProvider.getDatabase("test2")?.openHelper?.databaseName, "test2")
@@ -41,7 +43,6 @@ class LocalDatabaseProviderTest {
 
     @Test
     fun assignTestDatabaseWorks() {
-        LocalDatabaseProvider.debugging = true
         LocalDatabaseProvider.setDatabase(
             ApplicationProvider.getApplicationContext(), "test", true
         )
