@@ -58,6 +58,8 @@ class ImageAnalyzerTest {
         while (!callbackCalled) {
             Thread.sleep(100)
         }
+
+        // TODO should be true, but auto download of model is not working
         assert(!detectTextSuccess)
     }
 }
