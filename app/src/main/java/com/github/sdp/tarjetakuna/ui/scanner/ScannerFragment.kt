@@ -63,7 +63,7 @@ class ScannerFragment : Fragment() {
                 )
             }
         }
-        
+
         // bind the view model to the layout when text or object is detected in image
         scannerViewModel.textDetected.observe(viewLifecycleOwner) {
             binding.scannerTextInImageText.text = it.text
@@ -191,6 +191,10 @@ class ScannerFragment : Fragment() {
             val preview = Preview.Builder()
                 .build()
                 .also {
+                    while (_binding == null) {
+                        Thread.sleep(50)
+                        Log.d(TAG, "Waiting for binding to be initialized")
+                    };
                     it.setSurfaceProvider(binding.scannerImagePreview.surfaceProvider)
                 }
 
