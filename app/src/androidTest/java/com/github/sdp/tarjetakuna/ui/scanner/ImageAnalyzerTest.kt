@@ -9,7 +9,6 @@ class ImageAnalyzerTest {
 
     private var callbackCalled = false
     private var detectTextSuccess = false
-    private var detectObjectSuccess = false
 
     private fun mockTextDetectedListener(): TextDetectedListener {
         return object : TextDetectedListener {
@@ -27,18 +26,6 @@ class ImageAnalyzerTest {
         }
     }
 
-    private fun mockObjectDetectedListener(): ObjectDetectedListener {
-        return object : ObjectDetectedListener {
-            override fun callback(text: String) {
-                detectObjectSuccess = true
-            }
-
-            override fun errorCallback(exception: Exception) {
-                detectObjectSuccess = false
-            }
-        }
-    }
-
     private val img = loadImage("tpr-12-exalted-dragon-normal.jpg")
 
     @Before
@@ -49,7 +36,7 @@ class ImageAnalyzerTest {
 
     @Test
     fun test_textDetected() {
-        val imageAnalyzer = ImageAnalyzer(mockTextDetectedListener(), mockObjectDetectedListener())
+        val imageAnalyzer = ImageAnalyzer(mockTextDetectedListener())
 
         callbackCalled = false
         imageAnalyzer.analyze(img)

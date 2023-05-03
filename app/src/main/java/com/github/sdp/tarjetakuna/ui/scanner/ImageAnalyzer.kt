@@ -13,8 +13,7 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions
  * Analyzing is doing text recognition and object detection.
  */
 class ImageAnalyzer(
-    private val textDetectedListener: TextDetectedListener,
-    private val objectDetectedListener: ObjectDetectedListener
+    private val textDetectedListener: TextDetectedListener
 ) : ImageAnalysis.Analyzer {
 
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
@@ -31,13 +30,6 @@ class ImageAnalyzer(
     }
 
     /**
-     * Detects objects in the image.
-     */
-    private fun detectObject(image: InputImage) {
-        // TODO not implemented yet
-    }
-
-    /**
      * Analyzes the image, called by the camera.
      */
     @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
@@ -50,7 +42,6 @@ class ImageAnalyzer(
     }
 
     fun analyze(image: InputImage) {
-//        detectObject(image)
         detectText(image)
     }
 }
