@@ -7,15 +7,6 @@
     tools:context=".ui.scanner.ScannerFragment">
 
     <TextView
-        android:id="@+id/scanner_hidden_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scanner_description_text" />
-
-    <TextView
         android:id="@+id/scanner_description_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -2,6 +2,7 @@ package com.github.sdp.tarjetakuna.ui.scanner
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -9,10 +10,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.PermissionGranting.PermissionGranting.grantPermissions
-import com.github.sdp.tarjetakuna.utils.getStringInTest
-import com.github.sdp.tarjetakuna.utils.waitForMatcher
 import com.github.sdp.tarjetakuna.utils.waitForText
-import org.hamcrest.CoreMatchers.startsWith
 import org.junit.*
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
@@ -61,8 +59,8 @@ class ScannerFragmentTest {
         // click on the button
         onView(withId(R.id.scanner_scan_button)).perform(click())
 
-        // check that the image is saved
-        val msg = getStringInTest(R.string.scanner_photo_saved, "")
-        waitForMatcher(R.id.scanner_hidden_text, withText(startsWith(msg)), 1000)
+        // find all snackbars and check that the text is the default one
+        onView(withId(com.google.android.material.R.id.snackbar_text))
+            .check(matches(withText(R.string.scanner_photo_saved)))
     }
 }

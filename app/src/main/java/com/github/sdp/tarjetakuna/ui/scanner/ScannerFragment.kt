@@ -41,6 +41,9 @@ class ScannerFragment : Fragment() {
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
 
+    private var _takingPicture: Boolean = false
+    val isTakingPicture get() = _takingPicture
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -118,9 +121,22 @@ class ScannerFragment : Fragment() {
      * Take a photo and save it to the device
      */
     private fun takePhoto() {
-        if (!takePicture()) {
-            binding.scannerHiddenText.text = "Error taking picture"
-            Toast.makeText(this.context, "Error taking picture", Toast.LENGTH_SHORT).show()
+        // allow only one photo to be taken at a time
+        if (_takingPicture) {
+            view?.let {
+                Snackbar.make(
+                    it,
+                    "Error: cannot take 2 pictures at the same time",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+            return
+        } else {
+            _takingPicture = true
+            if (!takePicture()) {
+                view?.let { Snackbar.make(it, "Error taking picture", Snackbar.LENGTH_LONG).show() }
+                _takingPicture = false
+            }
         }
     }
 
@@ -154,17 +170,20 @@ class ScannerFragment : Fragment() {
             ContextCompat.getMainExecutor(context),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
-                    val msg = getString(R.string.scanner_photo_failed, exc.message)
-                    binding.scannerHiddenText.text = msg
-                    view?.let { Snackbar.make(it, msg, Snackbar.LENGTH_LONG).show() }
-                    Log.e(TAG, msg, exc)
+                    view?.let {
+                        Snackbar.make(it, R.string.scanner_photo_failed, Snackbar.LENGTH_LONG)
+                            .show()
+                    }
+                    Log.e(TAG, getString(R.string.scanner_photo_failed), exc)
+                    _takingPicture = false
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val msg = getString(R.string.scanner_photo_saved, output.savedUri)
-                    binding.scannerHiddenText.text = msg
-                    view?.let { Snackbar.make(it, msg, Snackbar.LENGTH_LONG).show() }
-                    Log.d(TAG, msg)
+                    view?.let {
+                        Snackbar.make(it, R.string.scanner_photo_saved, Snackbar.LENGTH_LONG).show()
+                    }
+                    Log.d(TAG, getString(R.string.scanner_photo_saved) + output.savedUri)
+                    _takingPicture = false
                 }
             }
         )
