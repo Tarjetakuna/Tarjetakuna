@@ -13,13 +13,12 @@ import com.github.sdp.tarjetakuna.utils.getStringInTest
 import com.github.sdp.tarjetakuna.utils.waitForMatcher
 import com.github.sdp.tarjetakuna.utils.waitForText
 import org.hamcrest.CoreMatchers.startsWith
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
+import org.junit.runners.MethodSorters
 
 @RunWith(AndroidJUnit4::class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class ScannerFragmentTest {
 
     @get:Rule
@@ -37,10 +36,16 @@ class ScannerFragmentTest {
     @After
     fun after() {
         Intents.release()
+        println("after done")
     }
 
     @Test
-    fun test_defaultTextValues() {
+    fun test_0_grantPermissions() {
+        assert(true)
+    }
+
+    @Test
+    fun test_1_defaultTextValues() {
         // check that the texts are the default ones
         waitForText(R.id.scanner_description_text, R.string.scanner_description, 100)
         waitForText(R.id.scanner_textInImage_text, R.string.scanner_no_text_detected_yet, 100)
@@ -49,7 +54,7 @@ class ScannerFragmentTest {
     }
 
     @Test
-    fun test_clickScan() {
+    fun test_2_clickScan() {
         // wait for view to be displayed
         waitForText(R.id.scanner_description_text, R.string.scanner_description, 100)
 

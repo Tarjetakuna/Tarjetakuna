@@ -47,6 +47,8 @@ class ScannerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         scannerViewModel = ViewModelProvider(this)[ScannerViewModel::class.java]
+        _binding = FragmentScannerBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
         // Code adapted from https://developer.android.com/training/camerax
         // Request camera permissions
@@ -61,10 +63,7 @@ class ScannerFragment : Fragment() {
                 )
             }
         }
-
-        _binding = FragmentScannerBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
+        
         // bind the view model to the layout when text or object is detected in image
         scannerViewModel.textDetected.observe(viewLifecycleOwner) {
             binding.scannerTextInImageText.text = it.text
