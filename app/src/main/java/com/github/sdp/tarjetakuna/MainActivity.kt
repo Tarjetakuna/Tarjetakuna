@@ -37,6 +37,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //to be removed
+    private val mockSet = MagicSet(
+        "m15",
+        "Magic 2015",
+        "core",
+        LocalDate.parse("2014-07-18"),
+        "https://svgs.scryfall.io/sets/m15.svg?1682913600",
+        284,
+        "",
+        "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Am15&unique=prints"
+    )
     //To be removed
     private val testCollection = listOf(
         MagicCard(
@@ -45,9 +56,15 @@ class MainActivity : AppCompatActivity() {
             MagicLayout.NORMAL,
             7,
             "{5}{W}{W}",
-            MagicSet("MT15", "Magic 2015"),
+            mockSet,
             56,
-            "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
+            "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890",
+            MagicRarity.COMMON,
+            MagicCardType.ARTIFACT,
+            listOf("Artifact", "Creature"),
+            "3",
+            "2",
+            "The artist"
         ),
         MagicCard(
             "BestMagicCard",
@@ -55,9 +72,15 @@ class MainActivity : AppCompatActivity() {
             MagicLayout.NORMAL,
             7,
             "{7}{W}{W}",
-            MagicSet("MT15", "Magic 2015"),
+            mockSet,
             56,
-            "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
+            "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890",
+            MagicRarity.COMMON,
+            MagicCardType.ARTIFACT,
+            listOf("Artifact", "Creature"),
+            "3",
+            "2",
+            "The artist"
         )
     )
 

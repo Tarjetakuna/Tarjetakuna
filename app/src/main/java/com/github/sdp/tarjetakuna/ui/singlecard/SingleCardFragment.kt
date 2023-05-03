@@ -8,12 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import coil.load
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentSingleCardBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicCardType
-import com.github.sdp.tarjetakuna.utils.CustomGlide
 import com.google.gson.Gson
 
 /**
@@ -129,14 +129,10 @@ class SingleCardFragment : Fragment() {
             binding.singleCardTextCardArtist.text =
                 getString(R.string.single_card_showing_artist, card.artist)
 
-            //The picture from the public API has a certificate problem,
-            // so we use a placeholder for now.
-            CustomGlide.loadDrawable(
-                this,
-                card.imageUrl
-            ) {
-                binding.singleCardImage.setImageDrawable(it)
+            binding.singleCardImage.load(card.imageUrl) {
+                crossfade(true)
             }
+
         } catch (e: Exception) {
             binding.singleCardTextCardName.text = getString(R.string.error_load_card)
         }

@@ -14,7 +14,6 @@ import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.*
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
-import com.github.sdp.tarjetakuna.utils.CustomGlide
 import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
 import com.google.gson.Gson
 import org.hamcrest.Matchers.not

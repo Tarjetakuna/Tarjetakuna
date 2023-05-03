@@ -39,7 +39,7 @@ object CommonMagicCard {
         MagicLayout.NORMAL,
         4,
         "{3}{B}",
-        CommonMagicSet.therosBeyondDeathSet,
+        CommonMagicSet.promoMagic2015Set,
         122,
         "https://cards.scryfall.io/large/front/9/d/9dc2b661-2f42-419d-837f-bbf097c1153c.jpg?1581480034",
         MagicRarity.COMMON,

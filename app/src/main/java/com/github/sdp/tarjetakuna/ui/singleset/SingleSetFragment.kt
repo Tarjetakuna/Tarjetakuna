@@ -1,10 +1,14 @@
 package com.github.sdp.tarjetakuna.ui.singleset
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import coil.ImageLoader
+import coil.load
+import coil.request.ImageRequest
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentSingleSetBinding
 import com.github.sdp.tarjetakuna.model.MagicSet
@@ -26,7 +30,7 @@ class SingleSetFragment : Fragment() {
         _binding = FragmentSingleSetBinding.inflate(inflater, container, false)
 
         loadSetFromJson()
-
+6
         return binding.root
     }
 
@@ -39,15 +43,18 @@ class SingleSetFragment : Fragment() {
             binding.singleSetSetName.text = set.name
             binding.singleSetSetCode.text = getString(R.string.single_set_code, set.code)
             binding.singleSetSetType.text = getString(R.string.single_set_type, set.type)
-            binding.singleSetSetBlock.text = getString(R.string.single_set_block, set.block)
             binding.singleSetSetReleaseDate.text =
                 getString(R.string.single_set_release_date, set.releaseDate.toString())
+
+            binding.singleSetSetImage.load(set.iconUri) {
+                crossfade(true)
+            }
+
 
         } catch (e: Exception) {
             binding.singleSetSetName.text = getString(R.string.single_set_error_loading)
             binding.singleSetSetCode.text = ""
             binding.singleSetSetType.text = ""
-            binding.singleSetSetBlock.text = ""
             binding.singleSetSetReleaseDate.text = ""
         }
     }

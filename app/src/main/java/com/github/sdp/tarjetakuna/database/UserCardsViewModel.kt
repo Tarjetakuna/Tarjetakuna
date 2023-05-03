@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.model.MagicCardType
 import com.github.sdp.tarjetakuna.model.MagicLayout
+import com.github.sdp.tarjetakuna.model.MagicRarity
 import com.github.sdp.tarjetakuna.model.MagicSet
+import java.time.LocalDate
 
 /**
  * View model of the user's collection of cards.
@@ -27,18 +30,35 @@ class UserCardsViewModel : ViewModel() {
 
 
     //TODO Remove these hardcoded values and replace them with the web API callss
+    private val mockSet = MagicSet(
+        "MT15", "Magic 2015", "Core Set",
+        LocalDate.parse("2014-07-18"), "Icon",
+        269, "", "Cards"
+    )
     val card1 = MagicCard(
         "Angel of Mercy", "Flying",
         MagicLayout.NORMAL, 7, "{5}{W}{W}",
-        MagicSet("MT15", "Magic 2015"), 56,
-        "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card"
+        mockSet, 56,
+        "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
+        MagicRarity.MYTHIC_RARE,
+        MagicCardType.ENCHANTMENT,
+        listOf(),
+        "3",
+        "5",
+        "The artist 1"
     )
 
     val card2 = MagicCard(
         "Meandering Towershell", "Islandwalk",
         MagicLayout.DOUBLE_FACED, 5, "{3}{G}{G}",
-        MagicSet("MT15", "Magic 2015"), 141,
-        "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=386602"
+        mockSet, 141,
+        "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=386602",
+        MagicRarity.RARE,
+        MagicCardType.LAND,
+        listOf("Soldier"),
+        "4",
+        "2",
+        "The artist 2"
     )
     val usc = UserCardsRTDB()
 

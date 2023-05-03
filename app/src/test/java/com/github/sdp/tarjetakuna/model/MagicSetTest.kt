@@ -15,66 +15,69 @@ class MagicSetTest {
     private val validCode = "MT15"
     private val validName = "Magic 2015"
     private val validType = "Core"
-    private val validBlock = "Core"
     private val validReleaseDate = LocalDate.parse("2014-07-18")
+    private val validIconUri = "https://svgs.scryfall.io/sets/m15.svg?1682913600"
+    private val validCardCount = 13
+    private val validParentSetCode = "m15"
+    private val validCardsInSetUri = "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Apm15&unique=prints"
 
     @Test
     fun blankCodeIsInvalid() {
         assertThrows(IllegalArgumentException::class.java) {
-            MagicSet("", validName, validType, validBlock, validReleaseDate)
+            MagicSet("", validName, validType, validReleaseDate, validIconUri, validCardCount, validParentSetCode, validCardsInSetUri)
         }
         assertThrows(IllegalArgumentException::class.java) {
-            MagicSet(" ", validName, validType, validBlock, validReleaseDate)
+            MagicSet(" ", validName, validType, validReleaseDate, validIconUri, validCardCount, validParentSetCode, validCardsInSetUri)
         }
     }
 
     @Test
     fun blankNameIsInvalid() {
         assertThrows(IllegalArgumentException::class.java) {
-            MagicSet(validCode, "", validType, validBlock, validReleaseDate)
+            MagicSet(validCode, "", validType, validReleaseDate, validIconUri, validCardCount, validParentSetCode, validCardsInSetUri)
         }
         assertThrows(IllegalArgumentException::class.java) {
-            MagicSet(validCode, " ", validType, validBlock, validReleaseDate)
+            MagicSet(validCode, " ", validType, validReleaseDate, validIconUri, validCardCount, validParentSetCode, validCardsInSetUri)
         }
     }
 
     @Test
     fun blankTypeIsInvalid() {
         assertThrows(IllegalArgumentException::class.java) {
-            MagicSet(validCode, validName, "", validBlock, validReleaseDate)
+            MagicSet(validCode, validName, "", validReleaseDate, validIconUri, validCardCount, validParentSetCode, validCardsInSetUri)
         }
         assertThrows(IllegalArgumentException::class.java) {
-            MagicSet(validCode, validName, " ", validBlock, validReleaseDate)
+            MagicSet(validCode, validName, " ", validReleaseDate, validIconUri, validCardCount, validParentSetCode, validCardsInSetUri)
         }
     }
 
     @Test
-    fun blankBlockIsInvalid() {
+    fun blankIconUriIsInvalid() {
         assertThrows(IllegalArgumentException::class.java) {
-            MagicSet(validCode, validName, validType, "", validReleaseDate)
+            MagicSet(validCode, validName, validType, validReleaseDate, "", validCardCount, validParentSetCode, validCardsInSetUri)
         }
         assertThrows(IllegalArgumentException::class.java) {
-            MagicSet(validCode, validName, validType, " ", validReleaseDate)
+            MagicSet(validCode, validName, validType, validReleaseDate, " ", validCardCount, validParentSetCode, validCardsInSetUri)
         }
     }
 
     @Test
-    fun validSetWithDefaultConstructor() {
-        val set = MagicSet()
-        assertEquals("Unknown code", set.code)
-        assertEquals("Unknown name", set.name)
-        assertEquals("Unknown type", set.type)
-        assertEquals("Unknown block", set.block)
-        assertEquals(LocalDate.parse("1970-01-01"), set.releaseDate)
+    fun negativeValidCardCountIsInvalid() {
+        assertThrows(IllegalArgumentException::class.java) {
+            MagicSet(validCode, validName, validType, validReleaseDate, validIconUri, -1, validParentSetCode, validCardsInSetUri)
+        }
     }
 
     @Test
     fun validSet() {
-        val set = MagicSet(validCode, validName, validType, validBlock, validReleaseDate)
+        val set = MagicSet(validCode, validName, validType, validReleaseDate, validIconUri, validCardCount, validParentSetCode, validCardsInSetUri)
         assertEquals(validCode, set.code)
         assertEquals(validName, set.name)
         assertEquals(validType, set.type)
-        assertEquals(validBlock, set.block)
         assertEquals(validReleaseDate, set.releaseDate)
+        assertEquals(validIconUri, set.iconUri)
+        assertEquals(validCardCount, set.cardCount)
+        assertEquals(validParentSetCode, set.parentSetCode)
+        assertEquals(validCardsInSetUri, set.cardsInSetUri)
     }
 }

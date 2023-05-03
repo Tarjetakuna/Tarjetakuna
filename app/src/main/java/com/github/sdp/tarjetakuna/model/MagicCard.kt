@@ -7,81 +7,80 @@ data class MagicCard(
     /**
      * The card name.
      */
-    val name: String = "Unknown name",
+    val name: String,
 
     /**
      * The card text.
      * Example : "Flying"
      */
-    val text: String = "Unknown text",
+    val text: String,
 
     /**
      * The card layout.
      */
-    val layout: MagicLayout = MagicLayout.NORMAL,
+    val layout: MagicLayout,
 
     /**
      * The total card mana cost.
      * Example : 7
      */
-    val convertedManaCost: Int = 0,
+    val convertedManaCost: Int,
 
     /**
      * The card mana cost.
      * Example : {5}{W}{W}
      */
-    val manaCost: String = "{0}",
+    val manaCost: String,
 
     /**
      * The card set.
-     * Example : MagicSet("M21", "Core Set 2021")
      */
-    val set: MagicSet = MagicSet(),
+    val set: MagicSet,
 
     /**
      * The card number of the set.
      * Example : 56
      */
-    val number: Int = 1,
+    val number: Int,
 
     /**
      * the image url for the card.
      */
-    val imageUrl: String = "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
+    val imageUrl: String,
 
     /**
      * The card rarity.
      */
-    val rarity: MagicRarity = MagicRarity.COMMON,
+    val rarity: MagicRarity,
 
     /**
      * The card type.
      * Example : CREATURE
      */
-    val type: MagicCardType = MagicCardType.CREATURE,
+    val type: MagicCardType,
 
     /**
      * The card subtypes.
      * Example : Angel, Soldier
      */
-    val subtypes: List<String> = listOf(),
+    val subtypes: List<String>,
 
     /**
      * The card power.
      * Only for creatures.
      */
-    val power: String = "0",
+    val power: String,
 
     /**
      * The card toughness.
      * Only for creatures.
      */
-    val toughness: String = "0",
+    val toughness: String,
 
     /**
      * The card artist.
      */
-    val artist: String = "Unknown artist",
+    val artist: String,
 ) {
     init {
         require(name.isNotBlank()) { "Name cannot be blank" }

@@ -3,6 +3,7 @@ package com.github.sdp.tarjetakuna.model
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
+import java.time.LocalDate
 
 class MagicCardTest {
 
@@ -11,7 +12,7 @@ class MagicCardTest {
     private val validLayout = MagicLayout.NORMAL
     private val validCMC = 7
     private val validManaCost = "{5}{W}{W}"
-    private val validSet = MagicSet("MT15", "Magic 2015")
+    private val validSet = MagicSet("MT15", "Magic 2015", "Core", LocalDate.parse("2014-07-18"), "iconUriBlabla", 13, "m15", "cardsInSetUriBlabla")
     private val validNumber = 56
     private val validImageUrl =
         "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card"
@@ -402,28 +403,6 @@ class MagicCardTest {
                 validArtist
             )
         }
-    }
-
-    @Test
-    fun validMagicCardDefault() {
-        val card = MagicCard()
-        assertEquals("Unknown name", card.name)
-        assertEquals("Unknown text", card.text)
-        assertEquals(MagicLayout.NORMAL, card.layout)
-        assertEquals(0, card.convertedManaCost)
-        assertEquals("{0}", card.manaCost)
-        assertEquals(MagicSet(), card.set)
-        assertEquals(1, card.number)
-        assertEquals(
-            "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
-            card.imageUrl
-        )
-        assertEquals(MagicRarity.COMMON, card.rarity)
-        assertEquals(MagicCardType.CREATURE, card.type)
-        assertEquals(listOf<String>(), card.subtypes)
-        assertEquals("0", card.power)
-        assertEquals("0", card.toughness)
-        assertEquals("Unknown artist", card.artist)
     }
 
     @Test
