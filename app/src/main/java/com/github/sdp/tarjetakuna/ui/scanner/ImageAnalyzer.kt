@@ -45,8 +45,12 @@ class ImageAnalyzer(
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-            detectObject(image)
-//            detectText(image)
+            analyze(image)
         }
+    }
+
+    fun analyze(image: InputImage) {
+//        detectObject(image)
+        detectText(image)
     }
 }

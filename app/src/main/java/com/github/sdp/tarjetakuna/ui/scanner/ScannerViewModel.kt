@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.Text.TextBlock
 
-class ScannerViewModel : ViewModel() {
+open class ScannerViewModel : ViewModel() {
 
     private val _textDetected = MutableLiveData<Text>()
     val textDetected: LiveData<Text> = _textDetected
@@ -18,28 +18,27 @@ class ScannerViewModel : ViewModel() {
      * Callback for object detection errors. Should be safe, and not called often at all.
      */
     fun detectObjectError(exception: Exception) {
-        _objectDetected.value = Text("Error $exception", emptyList<TextBlock>())
+        _objectDetected.postValue(Text("Error $exception", emptyList<TextBlock>()))
     }
 
     /**
      * Callback for object detection success.
      */
     fun detectObjectSuccess(text: String) {
-        _objectDetected.value = Text("Success $text", emptyList<TextBlock>())
-//        TODO("Not yet implemented")
+        _objectDetected.postValue(Text("Success $text", emptyList<TextBlock>()))
     }
 
     /**
      * Callback for text detection success.
      */
     fun detectTextSuccess(text: Text) {
-        _textDetected.value = text
+        _textDetected.postValue(text)
     }
 
     /**
      * Callback for text detection errors. Should be safe, and not called often at all.
      */
     fun detectTextError(exception: Exception) {
-        _textDetected.value = Text("Error $exception", emptyList<TextBlock>())
+        _textDetected.postValue(Text("Error $exception", emptyList<TextBlock>()))
     }
 }

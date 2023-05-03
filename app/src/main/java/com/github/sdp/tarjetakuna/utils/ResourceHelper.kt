@@ -1,5 +1,8 @@
 package com.github.sdp.tarjetakuna.utils
 
+import android.graphics.BitmapFactory
+import androidx.test.platform.app.InstrumentationRegistry
+import com.google.mlkit.vision.common.InputImage
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
@@ -9,6 +12,15 @@ import java.io.InputStream
  */
 class ResourceHelper {
     object ResourceHelper {
+
+        fun loadImage(name: String): InputImage {
+            val context =
+                InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
+            val istr = context.assets.open(name)
+            val bitmap = BitmapFactory.decodeStream(istr)
+            return InputImage.fromBitmap(bitmap, 0)
+        }
+
         /**
          * Load the file [name] as a string
          */
@@ -19,7 +31,7 @@ class ResourceHelper {
         /**
          * Load the file [name] as a string using the class loader
          */
-        fun loadString( loader: ClassLoader?, name: String?): String? {
+        fun loadString(loader: ClassLoader?, name: String?): String? {
             if (loader == null) {
                 return null
             }
@@ -39,7 +51,7 @@ class ResourceHelper {
         /**
          * Read the input stream into a string
          */
-        fun loadString( inputStream: InputStream?): String? {
+        fun loadString(inputStream: InputStream?): String? {
             if (inputStream == null) {
                 return null
             }
