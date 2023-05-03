@@ -24,10 +24,14 @@
 
     <androidx.camera.view.PreviewView
         android:id="@+id/scanner_imagePreview"
-        android:layout_width="310dp"
-        android:layout_height="471dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:contentDescription="@string/scanner_content_description_image"
+        app:layout_constraintBottom_toTopOf="@+id/scanner_textInImage_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scanner_description_text"
@@ -46,18 +50,17 @@
 
     <TextView
         android:id="@+id/scanner_textInImage_text"
+        style="@style/DescriptionStyleNormal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/scanner_no_text_detected_yet"
-        style="@style/DescriptionStyleNormal"
+        app:layout_constraintBottom_toTopOf="@+id/scanner_objectInImage_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scanner_imagePreview" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/scanner_objectInImage_text"

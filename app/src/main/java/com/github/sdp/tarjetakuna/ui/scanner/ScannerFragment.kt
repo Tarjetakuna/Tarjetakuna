@@ -204,7 +204,7 @@ class ScannerFragment : Fragment() {
 
         cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+            val processCameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
             // Preview to show the camera preview on screen
             val preview = Preview.Builder()
@@ -231,10 +231,10 @@ class ScannerFragment : Fragment() {
 
             try {
                 // Unbind use cases before rebinding
-                cameraProvider.unbindAll()
+                processCameraProvider.unbindAll()
 
                 // Bind use cases to camera
-                cameraProvider.bindToLifecycle(
+                processCameraProvider.bindToLifecycle(
                     this,
                     cameraSelector,
                     preview,
