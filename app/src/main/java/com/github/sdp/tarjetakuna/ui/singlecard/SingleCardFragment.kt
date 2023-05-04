@@ -135,8 +135,6 @@ class SingleCardFragment : Fragment() {
             binding.singleCardArtistText.text =
                 getString(R.string.single_card_showing_artist, card.artist)
 
-            //The picture from the public API has a certificate problem,
-            // so we use a placeholder for now.
             CustomGlide.loadDrawable(
                 this,
                 card.imageUrl

@@ -5,14 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.utils.CustomGlide
 
 /**
  * Adapter for the recycler view that displays the cards.
  */
-class DisplayCardsAdapter(val cards: ArrayList<MagicCard>) :
+class DisplayCardsAdapter(private val contextFragment: Fragment, val cards: ArrayList<MagicCard>) :
     RecyclerView.Adapter<DisplayCardsAdapter.ViewHolder>() {
 
     /**
@@ -47,8 +49,12 @@ class DisplayCardsAdapter(val cards: ArrayList<MagicCard>) :
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.cardName.text = cards[position].name
-        // TODO change the image directly from the url (when web API available)
-        holder.cardImage.setImageResource(R.drawable.card)
+        CustomGlide.loadDrawable(
+            contextFragment,
+            cards[position].imageUrl
+        ) {
+            holder.cardImage.setImageDrawable(it)
+        }
         holder.setInfo.text = cards[position].set.name
         holder.itemView.setOnClickListener {
             onCardClickListener?.onCardClick(position)
