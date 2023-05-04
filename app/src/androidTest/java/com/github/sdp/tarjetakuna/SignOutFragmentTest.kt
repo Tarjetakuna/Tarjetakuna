@@ -28,7 +28,7 @@ class SignOutFragmentTest {
 
     @Test
     fun testGreetingFragmentSignOut() {
-        onView(withId(R.id.signOutButton)).perform(click())
+        onView(withId(R.id.signOut_sign_out_button)).perform(click())
         activityRule.scenario.onActivity { activity ->
             val navController =
                 Navigation.findNavController(activity, R.id.nav_host_fragment_content_drawer)
@@ -43,7 +43,7 @@ class SignOutFragmentTest {
 
     @Test
     fun testGreetingFragmentBackToHome() {
-        onView(withId(R.id.button_back_home)).perform(click())
+        onView(withId(R.id.signOut_home_button)).perform(click())
         activityRule.scenario.onActivity { activity ->
             val navController =
                 Navigation.findNavController(activity, R.id.nav_host_fragment_content_drawer)

@@ -1,5 +1,8 @@
 package com.github.sdp.tarjetakuna.model
 
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBMagicCard
+
 /**
  * Represents a Magic card.
  */
@@ -97,5 +100,15 @@ data class MagicCard(
         for (subtype in subtypes) {
             require(subtype.isNotBlank()) { "Subtype cannot be blank" }
         }
+    }
+
+    /**
+     * Converts a MagicCard to a MagicCardEntity.
+     */
+    fun toDBMagicCard(possession: CardPossession = CardPossession.NONE): DBMagicCard {
+        return DBMagicCard(
+            this,
+            possession
+        )
     }
 }

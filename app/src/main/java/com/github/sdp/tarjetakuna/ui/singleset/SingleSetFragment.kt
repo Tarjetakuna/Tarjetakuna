@@ -36,19 +36,19 @@ class SingleSetFragment : Fragment() {
     private fun loadSetFromJson() {
         try {
             val set = Gson().fromJson(arguments?.getString("set"), MagicSet::class.java)
-            binding.singleSetSetName.text = set.name
-            binding.singleSetSetCode.text = getString(R.string.single_set_code, set.code)
-            binding.singleSetSetType.text = getString(R.string.single_set_type, set.type)
-            binding.singleSetSetBlock.text = getString(R.string.single_set_block, set.block)
-            binding.singleSetSetReleaseDate.text =
+            binding.singleSetSetNameText.text = set.name
+            binding.singleSetSetCodeText.text = getString(R.string.single_set_code, set.code)
+            binding.singleSetSetTypeText.text = getString(R.string.single_set_type, set.type)
+            binding.singleSetSetBlockText.text = getString(R.string.single_set_block, set.block)
+            binding.singleSetSetReleaseDateText.text =
                 getString(R.string.single_set_release_date, set.releaseDate.toString())
 
         } catch (e: Exception) {
-            binding.singleSetSetName.text = getString(R.string.single_set_error_loading)
-            binding.singleSetSetCode.text = ""
-            binding.singleSetSetType.text = ""
-            binding.singleSetSetBlock.text = ""
-            binding.singleSetSetReleaseDate.text = ""
+            binding.singleSetSetNameText.text = getString(R.string.single_set_error_loading)
+            binding.singleSetSetCodeText.text = ""
+            binding.singleSetSetTypeText.text = ""
+            binding.singleSetSetBlockText.text = ""
+            binding.singleSetSetReleaseDateText.text = ""
         }
     }
 }

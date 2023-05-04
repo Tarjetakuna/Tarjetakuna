@@ -29,34 +29,34 @@ class UserCardsFragment : Fragment() {
         _binding = FragmentUserCardsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val setMessage: TextView = binding.textSetCard
+        val setMessage: TextView = binding.userCardsSetCardText
         setMessage.text = ""
-        val getMessage: TextView = binding.textGetCard
+        val getMessage: TextView = binding.userCardsGetCardText
         getMessage.text = ""
-        val removeMessage: TextView = binding.textRemoveCard
+        val removeMessage: TextView = binding.userCardsRemoveCardText
         removeMessage.text = ""
 
         //go back to home fragment
-        val backButton = binding.homeButton
+        val backButton = binding.userCardsHomeButton
         backButton.setOnClickListener {
             val mainActivity = activity as MainActivity
             mainActivity.changeFragment(R.id.nav_home)
         }
 
         // Adding a card to the user's collection (database)
-        val setButton = binding.setCardButton
+        val setButton = binding.userCardsSetCardButton
         setButton.setOnClickListener {
             //TODO replace this with a function call
             viewModel.onSetButtonClick(viewModel.card1)
         }
         // Retrieving card from the user's collection (database)
-        val getButton = binding.getCardButton
+        val getButton = binding.userCardsGetCardButton
         getButton.setOnClickListener {
             //TODO replace this with a function call
             viewModel.onGetButtonClick(viewModel.card1)
         }
         //Removing card from user's collection (database)
-        val removeButton = binding.removeCardButton
+        val removeButton = binding.userCardsRemoveCardButton
         removeButton.setOnClickListener {
             //TODO replace this with a function call
             viewModel.onRemoveButtonClick(viewModel.card1)
@@ -85,7 +85,7 @@ class UserCardsFragment : Fragment() {
      * @param msg the message to be displayed
      */
     private fun putGetMessage(msg: String) {
-        val getMessage: TextView = binding.textGetCard
+        val getMessage: TextView = binding.userCardsGetCardText
         getMessage.text = msg
     }
 
@@ -94,7 +94,7 @@ class UserCardsFragment : Fragment() {
      * @param msg the message to be displayed
      */
     private fun putSetMessage(msg: String) {
-        val setMessage: TextView = binding.textSetCard
+        val setMessage: TextView = binding.userCardsSetCardText
         setMessage.text = msg
     }
 
@@ -103,7 +103,7 @@ class UserCardsFragment : Fragment() {
      * @param msg the message to be displayed
      */
     private fun putRemoveMessage(msg: String) {
-        val removeMessage: TextView = binding.textRemoveCard
+        val removeMessage: TextView = binding.userCardsRemoveCardText
         removeMessage.text = msg
     }
 }

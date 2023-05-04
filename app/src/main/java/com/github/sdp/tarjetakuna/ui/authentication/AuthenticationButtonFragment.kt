@@ -34,7 +34,7 @@ class AuthenticationButtonFragment : Fragment() {
         } else {
             setupErrorMsg()
 
-            val button = binding.connectionButton
+            val button = binding.authenticationSignInButton
             button.setOnClickListener {
                 val mainActivity = requireActivity() as MainActivity
                 val bundle = Bundle()
@@ -42,7 +42,7 @@ class AuthenticationButtonFragment : Fragment() {
                 mainActivity.changeFragment(R.id.nav_authentication, bundle)
             }
 
-            val backButton = binding.buttonBackHome
+            val backButton = binding.signOutHomeButton
             backButton.setOnClickListener {
                 val mainActivity = requireActivity() as MainActivity
                 mainActivity.changeFragment(R.id.nav_home)
@@ -58,8 +58,8 @@ class AuthenticationButtonFragment : Fragment() {
      */
     private fun setupErrorMsg() {
         val errorCode = arguments?.getString("errorCode")
-        val connexionErrorMsg = binding.connexionErrorMsg
-        val authFailedErrorMsg = binding.authFailedErrorMsg
+        val connexionErrorMsg = binding.authenticationConnectionErrorText
+        val authFailedErrorMsg = binding.authenticationAuthFailedText
         connexionErrorMsg.visibility = View.INVISIBLE
         authFailedErrorMsg.visibility = View.INVISIBLE
         if (errorCode == "authFailed") {

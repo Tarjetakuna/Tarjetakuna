@@ -50,15 +50,15 @@ class ScannerFragmentTest {
         val result = Instrumentation.ActivityResult(RESULT_OK, resultData)
         intending(hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(result)
 
-        onView(withId(R.id.button_scan)).perform(click())
-        onView(withId(R.id.image_card)).check(
+        onView(withId(R.id.scanner_scan_button)).perform(click())
+        onView(withId(R.id.scanner_image)).check(
             matches(
                 WithDrawableSafeMatcher.withDrawable(
                     imageBitmap
                 )
             )
         )
-        onView(withId(R.id.text_information)).check(matches(withText(R.string.operation_success)))
+        onView(withId(R.id.scanner_information_text)).check(matches(withText(R.string.operation_success)))
     }
 
     @Test
@@ -67,7 +67,7 @@ class ScannerFragmentTest {
         val result = Instrumentation.ActivityResult(RESULT_CANCELED, resultData)
         intending(hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(result)
 
-        onView(withId(R.id.button_scan)).perform(click())
-        onView(withId(R.id.text_information)).check(matches(withText(R.string.operation_failed)))
+        onView(withId(R.id.scanner_scan_button)).perform(click())
+        onView(withId(R.id.scanner_information_text)).check(matches(withText(R.string.operation_failed)))
     }
 }

@@ -41,7 +41,7 @@ class ProfileFragmentInActivityTest {
     @Test
     fun navigatingToProfileFragment() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
-        onView(withId(R.id.profileIcon)).perform(ViewActions.click())
+        onView(withId(R.id.authentication_profile_icon)).perform(ViewActions.click())
         val id = navController.currentDestination?.id
         if (id != null) {
             assertEquals(R.id.nav_profile, id)
@@ -70,7 +70,7 @@ class ProfileFragmentInActivityTest {
                 apply()
             }
         }
-        onView(withId(R.id.navHeaderNameText)).check(matches(withText(username)))
+        onView(withId(R.id.nav_header_name_textview)).check(matches(withText(username)))
         onView(withId(R.id.navHeaderDescriptionText)).check(matches(withText(userDescription)))
     }
 }

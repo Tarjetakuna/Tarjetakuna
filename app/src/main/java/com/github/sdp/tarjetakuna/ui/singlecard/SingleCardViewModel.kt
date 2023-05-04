@@ -1,19 +1,24 @@
 package com.github.sdp.tarjetakuna.ui.singlecard
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.sdp.tarjetakuna.database.FBCardPossession
-import com.github.sdp.tarjetakuna.database.FBMagicCard
+import androidx.lifecycle.viewModelScope
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.database.UserCardsRTDB
+import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.model.MagicCard
-import com.google.gson.Gson
+import kotlinx.coroutines.launch
 
 /**
  * ViewModel for the SingleCardFragment
  */
 class SingleCardViewModel : ViewModel() {
 
+    var localDatabase: AppDatabase? = null
     lateinit var card: MagicCard
 
     private val _isConnected = MutableLiveData<Boolean>()
@@ -34,13 +39,6 @@ class SingleCardViewModel : ViewModel() {
         _isConnected.value = userDB.isConnected()
     }
 
-    /**
-     * Convert a json string to a FBMagicCard
-     * @param json the json string to convert
-     */
-    private fun convertJsonToFBMagicCard(json: String): FBMagicCard {
-        return Gson().fromJson(json, FBMagicCard::class.java)
-    }
 
     /**
      * Check if the card is in the collection of the user, either wanted or owned
@@ -49,15 +47,15 @@ class SingleCardViewModel : ViewModel() {
         if (!userDB.isConnected()) {
             return
         }
-        val data = userDB.getCardFromCollection(FBMagicCard(card))
-        data.thenAccept {
-            val fbCard = convertJsonToFBMagicCard(it.value as String)
-            _buttonAddText.value = fbCard.possession != FBCardPossession.OWNED
-            _buttonWantedText.value = fbCard.possession != FBCardPossession.WANTED
-        }.exceptionally {
-            _buttonAddText.value = true
-            _buttonWantedText.value = true
-            null
+        DatabaseSync.sync()
+        viewModelScope.launch {
+            val lCard =
+                localDatabase?.magicCardDao()?.getCard(card.set.code, card.number.toString())
+            if (lCard != null) {
+                _buttonAddText.value = lCard.possession != CardPossession.OWNED
+                _buttonWantedText.value = lCard.possession != CardPossession.WANTED
+                Log.i("SingleCardViewModel", "checkCardInCollection: card found in local database")
+            }
         }
     }
 
@@ -67,15 +65,27 @@ class SingleCardViewModel : ViewModel() {
      * remove it only if it's not owned
      */
     fun manageWantedCollection() {
-        val data = userDB.getCardFromCollection(FBMagicCard(card))
-        data.thenAccept {
-            val fbCard = convertJsonToFBMagicCard(it.value as String)
-            if (fbCard.possession == FBCardPossession.WANTED) {
-                removeCardFromFirebase()
+
+        viewModelScope.launch {
+            val lCard =
+                localDatabase?.magicCardDao()?.getCard(card.set.code, card.number.toString())
+            if (lCard != null) {
+                // card not wanted -> make it unwanted from the collection
+                if (lCard.possession == CardPossession.WANTED) {
+                    manageCardsInDatabase(card, CardPossession.NONE)
+                    updateButtons(CardPossession.NONE)
+                } else {
+                    // card wanted -> make it wanted in the collection
+                    manageCardsInDatabase(card, CardPossession.WANTED)
+                    updateButtons(CardPossession.WANTED)
+                }
+            } else {
+                // card not in the database -> add it as wanted in the local database
+                manageCardsInDatabase(card, CardPossession.WANTED)
+                updateButtons(CardPossession.WANTED)
             }
-        }.exceptionally {
-            addCardToFirebase(FBCardPossession.WANTED)
-            null
+            // sync the local database with the firebase if possible
+            DatabaseSync.sync()
         }
     }
 
@@ -85,50 +95,55 @@ class SingleCardViewModel : ViewModel() {
      * remove it if it's in the collection
      */
     fun manageOwnedCollection() {
-        val data = userDB.getCardFromCollection(FBMagicCard(card))
-        data.thenAccept {
-            val fbCard = convertJsonToFBMagicCard(it.value as String)
-            if (fbCard.possession == FBCardPossession.OWNED) {
-                removeCardFromFirebase()
+        viewModelScope.launch {
+            val lCard =
+                localDatabase?.magicCardDao()?.getCard(card.set.code, card.number.toString())
+            if (lCard != null) {
+                // card owned -> make it not owned from the collection
+                if (lCard.possession == CardPossession.OWNED) {
+                    manageCardsInDatabase(card, CardPossession.NONE)
+                    updateButtons(CardPossession.NONE)
+                } else {
+                    // card not owned -> make it owned in the collection
+                    manageCardsInDatabase(card, CardPossession.OWNED)
+                    updateButtons(CardPossession.OWNED)
+                }
             } else {
-                addCardToFirebase(FBCardPossession.OWNED)
+                // card not in the database -> add it as owned in the local database
+                manageCardsInDatabase(card, CardPossession.OWNED)
+                updateButtons(CardPossession.OWNED)
             }
-        }.exceptionally {
-            addCardToFirebase(FBCardPossession.OWNED)
-            null
+            // sync the local database with the firebase if possible
+            DatabaseSync.sync()
         }
     }
 
     /**
-     * Add the card to the collection of the user
+     * Manage the cards in the local database
+     * @param card the card to manage
      * @param p the possession of the card (owned or wanted)
      */
-    private fun addCardToFirebase(p: FBCardPossession) {
-        val fbCard = FBMagicCard(card, p)
-        userDB.addCardToCollection(fbCard)
-        val data = userDB.getCardFromCollection(fbCard)
-        data.thenAccept {
-            if (p == FBCardPossession.OWNED) {
-                _buttonAddText.value = false
-                _buttonWantedText.value = true
-            } else {
-                _buttonWantedText.value = false
-
-            }
-        }
+    private suspend fun manageCardsInDatabase(card: MagicCard, p: CardPossession) {
+        localDatabase?.magicCardDao()?.insertCard(DBMagicCard(card, p))
     }
 
     /**
-     * Remove the card from the collection of the user
+     * Updates the wanted button text
      */
-    private fun removeCardFromFirebase() {
-        val fbCard = FBMagicCard(card)
-        userDB.removeCardFromCollection(fbCard)
-        val data = userDB.getCardFromCollection(fbCard)
-        data.exceptionally {
-            _buttonAddText.value = true
-            _buttonWantedText.value = true
-            null
+    private fun updateButtons(p: CardPossession) {
+        when (p) {
+            CardPossession.WANTED -> {
+                _buttonAddText.value = true
+                _buttonWantedText.value = false
+            }
+            CardPossession.OWNED -> {
+                _buttonWantedText.value = true
+                _buttonAddText.value = false
+            }
+            else -> {
+                _buttonWantedText.value = true
+                _buttonAddText.value = true
+            }
         }
     }
 }

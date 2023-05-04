@@ -33,23 +33,23 @@ class SignOutFragment : Fragment() {
 
         val user = Firebase.auth.currentUser
         val newMessage = user?.displayName
-        val greetingMessage: TextView = binding.greetingMessage
+        val greetingMessage: TextView = binding.signOutGreetingText
         greetingMessage.text = "Hello $newMessage!"
 
-        val signOutButton = binding.signOutButton
+        val signOutButton = binding.signOutSignOutButton
         signOutButton.setOnClickListener {
             val mainActivity = requireActivity() as MainActivity
             val bundle = Bundle()
             bundle.putBoolean("signIn", false)
             mainActivity.changeFragment(R.id.nav_authentication, bundle)
         }
-        val backButton = binding.buttonBackHome
+        val backButton = binding.signOutHomeButton
         backButton.setOnClickListener {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.changeFragment(R.id.nav_home)
         }
 
-        val configureCollectionButton = binding.manageCollectionButton
+        val configureCollectionButton = binding.signOutManageCollectionButton
         configureCollectionButton.setOnClickListener {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.changeFragment(R.id.nav_user_cards)

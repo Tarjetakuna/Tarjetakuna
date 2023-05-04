@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentBrowserBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.utils.Utils.Companion.hideKeyboard
@@ -35,11 +36,21 @@ class BrowserFragment : Fragment() {
         _binding = FragmentBrowserBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        initObservers()
+        // Set the local database
+        viewModel.localDatabase =
+            LocalDatabaseProvider.setDatabase(
+                requireContext(),
+                LocalDatabaseProvider.CARDS_DATABASE_NAME
+            )
 
+        binding.browserListCards.layoutManager = LinearLayoutManager(context)
+        initObservers()
         initSearchBar(viewModel)
         initFilterButtonsListener()
         initSorterButtonsListener()
+
+        // update the recycler view when the cards are retrieved from the database
+        viewModel.getCardsFromDatabase()
 
         return root
     }
@@ -67,6 +78,13 @@ class BrowserFragment : Fragment() {
             binding.browserListCards.adapter = adapter
             initOnCardClickListener(adapter)
         }
+
+        viewModel.cards.observe(viewLifecycleOwner) {
+            val adapter = DisplayCardsAdapter(it)
+            binding.browserListCards.adapter = adapter
+            initOnCardClickListener(adapter)
+        }
+
     }
 
     /**
@@ -102,7 +120,6 @@ class BrowserFragment : Fragment() {
                 override fun onCardClick(position: Int) {
                     val bundle = Bundle()
                     bundle.putString("card", Gson().toJson(adapter.cards[position]))
-                    //TODO : Should be changed to remove the dependency on MainActivity
                     (requireActivity() as MainActivity).changeFragment(R.id.nav_single_card, bundle)
                 }
             }
@@ -115,25 +132,25 @@ class BrowserFragment : Fragment() {
     private fun initFilterButtonsListener() {
 
         binding.browserFilterButton.setOnClickListener {
-            val currentState = binding.filterBox.visibility
+            val currentState = binding.browserFilterBox.visibility
             if (currentState == View.VISIBLE) {
-                binding.filterBox.visibility = View.GONE
+                binding.browserFilterBox.visibility = View.GONE
             } else {
-                binding.sortBox.visibility = View.GONE
-                binding.filterBox.visibility = View.VISIBLE
+                binding.browserSortBox.visibility = View.GONE
+                binding.browserFilterBox.visibility = View.VISIBLE
             }
             hideKeyboard(this)
         }
 
-        binding.filterBySetButton.setOnClickListener {
+        binding.browserFilterBySetButton.setOnClickListener {
             viewModel.setSetFilter(
-                binding.filterBySetEdittext.text.toString()
+                binding.browserFilterBySetEdittext.text.toString()
             )
             hideKeyboard(this)
         }
 
-        binding.filterByManaButton.setOnClickListener {
-            val value = binding.filterByManaEdittext.text.toString().toIntOrNull()
+        binding.browserFilterByManaButton.setOnClickListener {
+            val value = binding.browserFilterByManaEdittext.text.toString().toIntOrNull()
             if (value == null || value < 0) {
                 viewModel.setManaFilter(null)
             } else {
@@ -144,7 +161,7 @@ class BrowserFragment : Fragment() {
             hideKeyboard(this)
         }
 
-        binding.clearFilters.setOnClickListener {
+        binding.browserClearFilters.setOnClickListener {
             viewModel.clearFilters()
             viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
                 o1.name.compareTo(o2.name)
@@ -158,35 +175,35 @@ class BrowserFragment : Fragment() {
      */
     private fun initSorterButtonsListener() {
         binding.browserSortButton.setOnClickListener {
-            val currentState = binding.sortBox.visibility
+            val currentState = binding.browserSortBox.visibility
             if (currentState == View.VISIBLE) {
-                binding.sortBox.visibility = View.GONE
+                binding.browserSortBox.visibility = View.GONE
             } else {
-                binding.filterBox.visibility = View.GONE
-                binding.sortBox.visibility = View.VISIBLE
+                binding.browserFilterBox.visibility = View.GONE
+                binding.browserSortBox.visibility = View.VISIBLE
             }
             hideKeyboard(this)
         }
 
-        binding.sortByNameButton.setOnClickListener {
+        binding.browserSortByNameButton.setOnClickListener {
             viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
                 o1.name.compareTo(o2.name)
             }
         }
 
-        binding.sortByManaButton.setOnClickListener {
+        binding.browserSortByManaButton.setOnClickListener {
             viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
                 o1.manaCost.compareTo(o2.manaCost)
             }
         }
 
-        binding.sortByRarityButton.setOnClickListener {
+        binding.browserSortByRarityButton.setOnClickListener {
             viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
                 o1.rarity.ordinal.compareTo(o2.rarity.ordinal)
             }
         }
 
-        binding.sortBySetButton.setOnClickListener {
+        binding.browserSortBySetButton.setOnClickListener {
             viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
                 val result = o1.set.name.compareTo(o2.set.name)
                 if (result == 0) {
