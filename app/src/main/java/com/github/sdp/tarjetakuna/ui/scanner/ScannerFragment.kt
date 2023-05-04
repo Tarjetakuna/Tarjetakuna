@@ -74,8 +74,8 @@ class ScannerFragment : Fragment() {
             binding.scannerObjectInImageText.text = it.text
         }
 
-        binding.scannerScanButton.setOnClickListener {
-            takePhoto()
+        binding.scannerSaveButton.setOnClickListener {
+            savePicture()
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -116,9 +116,9 @@ class ScannerFragment : Fragment() {
     }
 
     /**
-     * Take a photo and save it to the device
+     * Take a picture and save it to the device
      */
-    private fun takePhoto() {
+    private fun savePicture() {
         // allow only one photo to be taken at a time
         if (_takingPicture) {
             view?.let {
@@ -189,7 +189,7 @@ class ScannerFragment : Fragment() {
     }
 
     /**
-     * Start the camera and bind the "preview" = live preview on screen, "takePicture" = save the
+     * Start the camera and bind the "preview" = live preview on screen, "imageCapture" = save the
      * picture on the device, and "analysis" = text recognition and object detection to be done correctly
      * Bound to the lifecycle of the fragment, so it will be automatically unbound when the fragment is
      * destroyed.

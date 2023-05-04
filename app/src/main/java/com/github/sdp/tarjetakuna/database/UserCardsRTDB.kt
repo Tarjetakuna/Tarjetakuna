@@ -28,17 +28,26 @@ class UserCardsRTDB {
     /**
      * Adds a card to the user's collection.
      */
-    fun addCardToCollection(fbCard: FBMagicCard) {
-        val cardUID = fbCard.card.set.code + fbCard.card.number
+    fun addCardToCollection(fbCard: DBMagicCard) {
+        val cardUID = fbCard.code + fbCard.number
         val data = Gson().toJson(fbCard)
         userCardCollection?.child(cardUID)?.setValue(data)
     }
 
     /**
+     * Adds a list of cards to the user's collection.
+     */
+    fun addCardsToCollection(fbCards: List<DBMagicCard>) {
+        for (fbCard in fbCards) {
+            addCardToCollection(fbCard)
+        }
+    }
+
+    /**
      * Removes a card from the user's collection.
      */
-    fun removeCardFromCollection(fbCard: FBMagicCard) {
-        val cardUID = fbCard.card.set.code + fbCard.card.number
+    fun removeCardFromCollection(fbCard: DBMagicCard) {
+        val cardUID = fbCard.code + fbCard.number
         userCardCollection?.child(cardUID)?.removeValue()
     }
 
@@ -46,12 +55,29 @@ class UserCardsRTDB {
      * Retrieves a card asynchronously from the database
      * The card is identified by only its set code and its number
      */
-    fun getCardFromCollection(fbCard: FBMagicCard): CompletableFuture<DataSnapshot> {
-        val cardUID = fbCard.card.set.code + fbCard.card.number
+    fun getCardFromCollection(fbCard: DBMagicCard): CompletableFuture<DataSnapshot> {
+        val cardUID = fbCard.code + fbCard.number
         val future = CompletableFuture<DataSnapshot>()
         userCardCollection?.child(cardUID)?.get()?.addOnSuccessListener {
             if (it.value == null) {
                 future.completeExceptionally(NoSuchFieldException("card $cardUID is not in your collection"))
+            } else {
+                future.complete(it)
+            }
+        }?.addOnFailureListener {
+            future.completeExceptionally(it)
+        }
+        return future
+    }
+
+    /**
+     * Retrieves all the cards asynchronously from the database
+     */
+    fun getAllCardsFromCollection(): CompletableFuture<DataSnapshot> {
+        val future = CompletableFuture<DataSnapshot>()
+        userCardCollection?.get()?.addOnSuccessListener {
+            if (it.value == null) {
+                future.completeExceptionally(NoSuchFieldException("you don't have any card in your collection"))
             } else {
                 future.complete(it)
             }
