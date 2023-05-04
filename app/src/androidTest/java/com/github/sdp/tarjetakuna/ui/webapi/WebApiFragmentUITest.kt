@@ -59,7 +59,7 @@ class WebApiFragmentUITest {
 
     @Test
     fun test_initialText() {
-        onView(withId(R.id.api_cards)).check(matches(withText(R.string.api_cards)))
+        onView(withId(R.id.api_random_card)).check(matches(withText(R.string.api_cards)))
         onView(withId(R.id.api_sets)).check(matches(withText(R.string.api_sets)))
         onView(withId(R.id.api_results)).check(matches(withText(R.string.api_default_results)))
     }
@@ -79,8 +79,8 @@ class WebApiFragmentUITest {
         onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 100))
 
         // click on the button
-        onView(withId(R.id.api_cards)).perform(waitForText(R.string.api_cards, 100))
-        onView(withId(R.id.api_cards)).perform(click())
+        onView(withId(R.id.api_random_card)).perform(waitForText(R.string.api_cards, 100))
+        onView(withId(R.id.api_random_card)).perform(click())
 
         // check that the text change to "waiting results" after the click
         onView(withId(R.id.api_results)).perform(waitForText(R.string.api_waiting_results, 200))

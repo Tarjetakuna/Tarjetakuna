@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiCards
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiSets
 import com.github.sdp.tarjetakuna.utils.Utils.Companion.isNetworkAvailable
 
 
@@ -18,6 +20,13 @@ open class WebApiViewModel : ViewModel() {
     // api results
     private val _apiResults = MutableLiveData<String>()
     val apiResults: LiveData<String> = _apiResults
+
+    // Cards and sets live data
+    private val _cards = MutableLiveData<MagicApiCards>()
+    val cards: LiveData<MagicApiCards> = _cards
+
+    private val _sets = MutableLiveData<MagicApiSets>()
+    val sets: LiveData<MagicApiSets> = _sets
 
     private fun setApiResults(s: String) {
         _apiResults.value = s
@@ -107,6 +116,8 @@ open class WebApiViewModel : ViewModel() {
     protected fun getRandomCardWeb() {
         WebApi.getRandomCard()
             .thenAccept {
+                if (it != null) _cards.value = MagicApiCards(1, false, "", listOf(it))
+                else _cards.value = MagicApiCards(0, false, "", listOf())
                 setApiResults(it.toString())
             }
             .exceptionally { e ->
@@ -122,6 +133,8 @@ open class WebApiViewModel : ViewModel() {
     protected fun getCardsByNameWeb(name: String) {
         WebApi.getCardsByName(name)
             .thenAccept {
+                if (it != null) _cards.value = it
+                else _cards.value = MagicApiCards(0, false, "", listOf())
                 setApiResults(it.toString())
             }
             .exceptionally { e ->
@@ -137,6 +150,8 @@ open class WebApiViewModel : ViewModel() {
     protected fun getCardsBySetWeb(set: String) {
         WebApi.getCardsBySet(set)
             .thenAccept {
+                if (it != null) _cards.value = it
+                else _cards.value = MagicApiCards(0, false, "", listOf())
                 setApiResults(it.toString())
             }
             .exceptionally { e ->
@@ -167,6 +182,8 @@ open class WebApiViewModel : ViewModel() {
     protected fun getSetByCodeWeb(code: String) {
         WebApi.getSetByCode(code)
             .thenAccept {
+                if (it != null) _sets.value = MagicApiSets(listOf(it))
+                else _sets.value = MagicApiSets(listOf())
                 setApiResults(it.toString())
             }
             .exceptionally { e ->

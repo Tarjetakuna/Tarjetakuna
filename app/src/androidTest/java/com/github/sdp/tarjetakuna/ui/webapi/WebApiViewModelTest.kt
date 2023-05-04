@@ -110,7 +110,7 @@ class WebApiViewModelTest {
 
     @OptIn(DelicateCoroutinesApi::class)
     @Test
-    fun test_getCards_failure() {
+    fun test_getRandomCard_failure() {
         val apiError = viewModel.apiError
         assert(apiError.value == null)
 
@@ -174,7 +174,7 @@ class WebApiViewModelTest {
 
     @OptIn(DelicateCoroutinesApi::class)
     @Test
-    fun test_getCards_noResponse() {
+    fun test_getRandomCard_noResponse() {
         val apiError = viewModel.apiError
         assert(apiError.value == null)
 

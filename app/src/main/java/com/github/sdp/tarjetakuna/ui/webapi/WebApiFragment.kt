@@ -42,7 +42,7 @@ class WebApiFragment : Fragment() {
         binding.apiResults.movementMethod = ScrollingMovementMethod()
 
         // set the buttons listeners for the webapi
-        binding.apiCards.setOnClickListener {
+        binding.apiRandomCard.setOnClickListener {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
             viewModel.getRandomCard(this.requireContext())
