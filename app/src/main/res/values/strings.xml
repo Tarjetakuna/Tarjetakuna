@@ -26,14 +26,9 @@
     <string name="menu_single_card">Card</string>
     <string name="menu_single_set">Set</string>
 
-    <string name="scanner_save_button">Save the card picture</string>
-    <string name="scanner_description">Here you can save a card, and checking that the text is recognized correctly</string>
+    <string name="scanner_button">Scan a card</string>
+    <string name="scanner_description">Here you can scan a card by clicking on the button below.</string>
     <string name="scanner_content_description_image">Picture of a card</string>
-    <string name="scanner_analyse_image">Analyse</string>
-    <string name="scanner_no_text_detected_yet">no Text detected yet</string>
-    <string name="scanner_no_object_detected_yet">no Object detected yet</string>
-    <string name="scanner_photo_saved">Photo capture succeeded</string>
-    <string name="scanner_photo_failed">Photo capture failed</string>
 
     <string name="operation_success">"Success"</string>
     <string name="operation_failed">"The operation has failed. Please try again."</string>
@@ -114,5 +109,6 @@
     <string name="single_set_release_date">Release date : %1$s</string>
     <string name="single_set_error_loading">Error loading the set</string>
 
+    <string name="home_add_a_random_card">add a random card</string>
 
 </resources>
