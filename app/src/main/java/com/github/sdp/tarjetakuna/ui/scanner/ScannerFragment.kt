@@ -54,7 +54,11 @@ class ScannerFragment : Fragment() {
 
         // bind the view model to the layout when text or object is detected in image
         scannerViewModel.textDetected.observe(viewLifecycleOwner) {
-            binding.scannerTextInImageText.text = analyseText(it)
+            val toDisplay = StringBuilder()
+            toDisplay.append(MagicCardMatcher.match(it).toString())
+            toDisplay.append(it.text)
+
+            binding.scannerTextInImageText.text = toDisplay.toString()
         }
 
         binding.scannerSaveButton.setOnClickListener {
@@ -80,29 +84,6 @@ class ScannerFragment : Fragment() {
         return root
     }
 
-    /**
-     * Analyse the text in the image and return the likely card information based on position
-     * of the text in image
-     */
-    private fun analyseText(text: Text): String {
-        // TODO : analyse text and return card information
-        for (block in text.textBlocks) {
-            val blockText = block.text
-            val blockCornerPoints = block.cornerPoints
-            val blockFrame = block.boundingBox
-            for (line in block.lines) {
-                val lineText = line.text
-                val lineCornerPoints = line.cornerPoints
-                val lineFrame = line.boundingBox
-                for (element in line.elements) {
-                    val elementText = element.text
-                    val elementCornerPoints = element.cornerPoints
-                    val elementFrame = element.boundingBox
-                }
-            }
-        }
-        return text.text
-    }
 
     // Code adapted from https://developer.android.com/training/camerax
     /**

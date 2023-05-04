@@ -17,6 +17,7 @@ open class ScannerViewModel : ViewModel() {
      */
     fun detectTextSuccess(text: Text) {
         _textDetected.postValue(text)
+        MagicCardMatcher.match(text)
         Log.d("ScannerViewModel detectTextSuccess", "Success ${text.text}")
     }
 
