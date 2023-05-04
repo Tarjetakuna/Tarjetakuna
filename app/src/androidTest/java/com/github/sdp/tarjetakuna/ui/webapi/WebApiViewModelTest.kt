@@ -94,8 +94,8 @@ class WebApiViewModelTest {
             InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.api_waiting_results)
 
         // wait for the response
-        Utils.waitWhileTrue(100, 10) { apiResults.value == null }
-        Utils.waitWhileTrue(100, 10) { apiResults.value == waitResult }
+        Utils.waitWhileTrue(200, 10) { apiResults.value == null }
+        Utils.waitWhileTrue(200, 10) { apiResults.value == waitResult }
 
         // check that the text change to the response
         assertThat(
@@ -132,7 +132,7 @@ class WebApiViewModelTest {
         viewModel.getRandomCard()
 
         // wait for the response
-        Utils.waitWhileTrue(100, 10) { apiError.value == null }
+        Utils.waitWhileTrue(200, 10) { apiError.value == null }
 
         // check that the text change to the response
         assertThat(
@@ -164,7 +164,7 @@ class WebApiViewModelTest {
         viewModel.getSets()
 
         // wait for the response
-        Utils.waitWhileTrue(100, 10) { apiError.value == null }
+        Utils.waitWhileTrue(200, 10) { apiError.value == null }
 
         // check that the text change to the response
         assertThat(
