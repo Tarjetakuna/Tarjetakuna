@@ -2,8 +2,10 @@ package com.github.sdp.tarjetakuna.ui.webapi
 
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.platform.app.InstrumentationRegistry
+import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.FileReader
 import com.github.sdp.tarjetakuna.utils.OkHttp3IdlingResource
@@ -28,7 +30,7 @@ import org.junit.Test
  */
 class WebApiViewModelTest {
     private val viewModel = WebApiViewModelTester()
-    private lateinit var scenario: FragmentScenario<WebApiFragment>
+    private lateinit var scenario: ActivityScenario<MainActivity>
 
     private val mockWebServer = MockWebServer()
     private lateinit var okHttp3IdlingResource: OkHttp3IdlingResource
@@ -36,7 +38,7 @@ class WebApiViewModelTest {
     @Before
     fun setUp() {
 
-        scenario = launchFragmentInContainer()
+        scenario = ActivityScenario.launch(MainActivity::class.java)
 
         // setup mock webserver
         okHttp3IdlingResource = OkHttp3IdlingResource.create(

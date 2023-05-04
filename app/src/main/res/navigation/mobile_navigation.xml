@@ -24,12 +24,6 @@
         tools:layout="@layout/fragment_scanner" />
 
     <fragment
-        android:id="@+id/nav_webapi"
-        android:name="com.github.sdp.tarjetakuna.ui.webapi.WebApiFragment"
-        android:label="@string/menu_webapi"
-        tools:layout="@layout/fragment_web_api" />
-
-    <fragment
         android:id="@+id/nav_profile"
         android:name="com.github.sdp.tarjetakuna.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"

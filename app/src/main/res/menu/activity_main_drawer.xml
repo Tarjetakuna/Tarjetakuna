@@ -17,9 +17,5 @@
             android:id="@+id/nav_scanner"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_scanner" />
-        <item
-            android:id="@+id/nav_webapi"
-            android:icon="@drawable/baseline_language_24"
-            android:title="@string/menu_webapi" />
     </group>
 </menu>
