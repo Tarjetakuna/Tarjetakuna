@@ -37,12 +37,12 @@ class ScannerFragmentTest {
         println("after done")
     }
 
-    @Test
+    @Test(timeout = 5000)
     fun test_0_grantPermissions() {
         assert(true)
     }
 
-    @Test
+    @Test(timeout = 5000)
     fun test_1_defaultTextValues() {
         // check that the texts are the default ones
         waitForText(R.id.scanner_description_text, R.string.scanner_description, 100)
@@ -50,9 +50,9 @@ class ScannerFragmentTest {
         waitForText(R.id.scanner_save_button, R.string.scanner_save_button, 100)
     }
 
-    // TODO doesnt work on cirrus ci and hard to debug, but works locally
-    @Ignore
-    @Test
+
+    //    @Ignore("This test case is not working on cirrus-ci, but it works locally.")
+    @Test(timeout = 5000)
     fun test_2_clickSave() {
         // wait for view to be displayed
         waitForText(R.id.scanner_description_text, R.string.scanner_description, 100)

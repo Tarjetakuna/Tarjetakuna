@@ -64,7 +64,7 @@ class ImageAnalyzerTest {
         imageAnalyzer.analyze(img)
 
         // Wait for the callback to be called
-        Utils.waitUntilTrue(100, 20) { _callbackCalled }
+        Utils.waitUntilTrue(100, 50) { _callbackCalled }
 
         // if text detected, check it, else check that it failed with exception
         if (_detectTextSuccess) {
