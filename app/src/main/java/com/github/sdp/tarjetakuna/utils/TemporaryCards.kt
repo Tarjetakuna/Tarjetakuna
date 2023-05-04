@@ -24,7 +24,7 @@ object TemporaryCards {
                 "{1}{W}",
                 MagicSet("BRO", name),
                 i + 1,
-                "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
+                "https://cards.scryfall.io/normal/front/8/7/87352716-4cf6-4b2f-bb0a-b7aafae64478.jpg?1562650023",
                 MagicRarity.RARE,
                 MagicCardType.CREATURE,
                 listOf("Human", "Soldier"),

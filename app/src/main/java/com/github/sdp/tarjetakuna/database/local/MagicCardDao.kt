@@ -4,7 +4,7 @@ import androidx.room.*
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 
 /**
- * Represents a Magic card data access object.
+ * Contains the methods to access the database for the MagicCard
  */
 
 @Dao

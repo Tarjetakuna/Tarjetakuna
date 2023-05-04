@@ -6,4 +6,13 @@ package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 data class Legalities(
     val format: String,
     val legality: String
-)
+) {
+    companion object {
+        /**
+         * Convert from Json
+         */
+        fun fromJsonToList(json: String): List<Legalities> {
+            return com.google.gson.Gson().fromJson(json, Array<Legalities>::class.java).toList()
+        }
+    }
+}

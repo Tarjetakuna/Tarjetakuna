@@ -6,10 +6,13 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiCards
 import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiSets
 import com.github.sdp.tarjetakuna.utils.Utils.Companion.isNetworkAvailable
+import kotlinx.coroutines.launch
 
 
 /**
@@ -50,7 +53,23 @@ open class WebApiViewModel : ViewModel() {
         }
         // TODO else get from cache
         else {
-            Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                "No network available, retrieving from cache",
+                Toast.LENGTH_SHORT
+            ).show()
+            viewModelScope.launch {
+                val cards =
+                    LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+                        ?.apiMagicCardDao()?.getAllCards()
+                if (cards != null)
+                    _cards.value = MagicApiCards(cards)
+                else {
+                    setError(R.string.txt_error_msg, "Cache is empty")
+                }
+            }
+
+
         }
     }
 
@@ -64,7 +83,22 @@ open class WebApiViewModel : ViewModel() {
         }
         // TODO else get from cache
         else {
-            Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                "No network available, retrieving from cache",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            viewModelScope.launch {
+                val cards =
+                    LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+                        ?.apiMagicCardDao()?.getCardsByName(cardName)
+                if (cards != null)
+                    _cards.value = MagicApiCards(cards)
+                else {
+                    setError(R.string.txt_error_msg, "Cache is empty")
+                }
+            }
         }
     }
 
@@ -78,7 +112,23 @@ open class WebApiViewModel : ViewModel() {
         }
         // TODO else get from cache
         else {
-            Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                "No network available, retrieving from cache",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            viewModelScope.launch {
+                val cards =
+                    LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+                        ?.apiMagicCardDao()?.getCardsBySet(setCode)
+                if (cards != null)
+                    _cards.value = MagicApiCards(cards)
+                else {
+                    setError(R.string.txt_error_msg, "Cache is empty")
+                }
+            }
+
         }
     }
 
@@ -92,7 +142,22 @@ open class WebApiViewModel : ViewModel() {
         }
         // TODO else get from cache
         else {
-            Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                "No network available, retrieving from cache",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            viewModelScope.launch {
+                val card =
+                    LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+                        ?.apiMagicCardDao()?.getCardById(id)
+                if (card != null)
+                    _cards.value = MagicApiCards(listOf(card))
+                else {
+                    setError(R.string.txt_error_msg, "Cache is empty")
+                }
+            }
         }
     }
 
@@ -106,7 +171,22 @@ open class WebApiViewModel : ViewModel() {
         }
         // TODO else get from cache
         else {
-            Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                "No network available, retrieving from cache",
+                Toast.LENGTH_SHORT
+            ).show()
+
+//            viewModelScope.launch {
+//                val sets =
+//                    LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.API_CARDS_DATABASE_NAME)
+//                        ?.apiMagicCardDao()?.getAllSets()
+//                if (sets != null)
+//                    _sets.value = MagicApiSets(sets)
+//                else {
+//                    setError(R.string.txt_error_msg, "Cache is empty")
+//                }
+//            }
         }
     }
 
@@ -130,6 +210,12 @@ open class WebApiViewModel : ViewModel() {
     protected fun getCardsWeb() {
         WebApi.getCards()
             .thenAccept {
+//                if (it.cards.isNotEmpty()) {
+//                    viewModelScope.launch {
+//                        LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+//                            ?.apiMagicCardDao()?.insertCards(it.cards)
+//                    }
+//                }
                 _cards.value = it
                 setApiResults(it.toString())
             }

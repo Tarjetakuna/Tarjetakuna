@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentWebApiBinding
 import com.github.sdp.tarjetakuna.utils.Utils
 
@@ -26,6 +27,10 @@ class WebApiFragment : Fragment() {
         _binding = FragmentWebApiBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        LocalDatabaseProvider.setDatabase(
+            this.requireContext(),
+            LocalDatabaseProvider.CARDS_DATABASE_NAME
+        )
         // observe the apiResults and apiError LiveData
         viewModel.apiResults.observe(viewLifecycleOwner) {
             if (it != null) {
