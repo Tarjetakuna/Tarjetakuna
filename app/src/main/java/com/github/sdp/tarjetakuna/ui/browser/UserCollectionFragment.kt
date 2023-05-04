@@ -55,6 +55,11 @@ class UserCollectionFragment : Fragment() {
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCardsFromDatabase()
+    }
+
     /**
      * Initialize the different observers to apply the different filters and sorters
      */
