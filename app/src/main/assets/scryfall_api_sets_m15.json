@@ -1,0 +1,22 @@
+{
+  "object": "set",
+  "id": "6ce49890-3b37-42a5-8932-dbeef1d7b62c",
+  "code": "m15",
+  "mtgo_code": "m15",
+  "arena_code": "m15",
+  "tcgplayer_id": 1293,
+  "name": "Magic 2015",
+  "uri": "https://api.scryfall.com/sets/6ce49890-3b37-42a5-8932-dbeef1d7b62c",
+  "scryfall_uri": "https://scryfall.com/sets/m15",
+  "search_uri": "https://api.scryfall.com/cards/search?include_extras=true&include_variations=true&order=set&q=e%3Am15&unique=prints",
+  "released_at": "2014-07-18",
+  "set_type": "core",
+  "card_count": 284,
+  "printed_size": 269,
+  "digital": false,
+  "nonfoil_only": false,
+  "foil_only": false,
+  "block_code": "lea",
+  "block": "Core Set",
+  "icon_svg_uri": "https://svgs.scryfall.io/sets/m15.svg?1682308800"
+}

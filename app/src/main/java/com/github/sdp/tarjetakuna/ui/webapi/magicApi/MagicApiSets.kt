@@ -1,12 +1,9 @@
 package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 
 /**
- * List of MagicSets (need to match the doc in api.magicthegathering.io/v1/)
+ * List of [MagicApiSet] (need to match the doc in https://api.scryfall.com)
+ * This data class is mandatory to receive the data from the api (a list of [MagicApiSet] is not enough)
  */
 data class MagicApiSets(
-    val sets: List<MagicSet>
-) {
-    override fun toString(): String {
-        return sets.joinToString(separator = "\n\n")
-    }
-}
+    val data: List<MagicApiSet>
+)

@@ -43,7 +43,7 @@
     <string name="txt_error_msg">Error: %s</string>
 
     <!--    web api texts-->
-    <string name="api_cards">Cards</string>
+    <string name="api_random_card">Random Card</string>
     <string name="api_cardsBySet">Cards By Set</string>
     <string name="api_cardsByName">Cards By Name</string>
     <string name="api_cardName">Card Name</string>
