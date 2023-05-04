@@ -99,18 +99,29 @@ data class MagicApiCard(
     val security_stamp: String?,
     val watermark: String?,
 ) {
+    /**
+     * Convert this [MagicApiCard] to a [MagicCard]
+     */
     fun toMagicCard(): MagicCard {
         return MagicCard(
             name = name,
-            text = oracle_text ?: "",
+            text = if (oracle_text == null || oracle_text == "") {
+                "None"
+            } else {
+                oracle_text
+            },
             layout = MagicLayout.fromApiString(layout ?: ""),
             convertedManaCost = cmc ?: 0.0,
-            manaCost = mana_cost ?: "{0}",
+            manaCost = if (mana_cost == null || mana_cost == "") {
+                "None"
+            } else {
+                mana_cost
+            },
             set = MagicSet(
                 code = set,
                 name = set_name,
                 type = set_type,
-                block = "?", //todo get block from set
+                block = "Unknown", //todo get block from set
                 releaseDate = LocalDate.parse(released_at),
             ),
             number = collector_number.toIntOrNull() ?: 1,

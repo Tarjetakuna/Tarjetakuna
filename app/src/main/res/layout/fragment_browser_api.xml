@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/api_cards"
+            android:id="@+id/api_random_card_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -35,14 +35,14 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/api_cardsByName"
+                android:id="@+id/api_cards_by_name_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/api_cardsByName"
                 tools:ignore="ButtonStyle" />
 
             <EditText
-                android:id="@+id/cardName"
+                android:id="@+id/api_card_name_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/api_cardName"
@@ -57,14 +57,14 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/api_cardsBySet"
+                android:id="@+id/api_cards_by_set_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/api_cardsBySet"
                 tools:ignore="ButtonStyle" />
 
             <EditText
-                android:id="@+id/setIdForCards"
+                android:id="@+id/api_set_id_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/api_setId"
@@ -72,26 +72,13 @@
                 android:autofillHints="" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/browser_api_list_cards"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingBottom="30dp" />
-
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/api_results"
-        android:layout_width="371dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="15dp"
-        android:scrollbars="vertical"
-        android:text="@string/api_default_results"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/browser_api_list_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        android:paddingBottom="30dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

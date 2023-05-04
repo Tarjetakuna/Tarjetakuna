@@ -19,17 +19,11 @@ class BrowserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_browser, container, false)
-
-        // 1. Create an instance of the ViewPager2
+        
         val viewPager: ViewPager2 = view.findViewById(R.id.viewPager)
-
-        // 2. Create an instance of the CardCollectionPagerAdapter
         val pagerAdapter = CardCollectionPagerAdapter(requireActivity())
-
-        // 3. Set the adapter on the ViewPager2
         viewPager.adapter = pagerAdapter
 
-        // Set up the tab layout
         val tabLayout: TabLayout = view.findViewById(R.id.tabLayout)
         pagerAdapter.setupTabLayout(tabLayout, viewPager)
 

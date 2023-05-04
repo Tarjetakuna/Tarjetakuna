@@ -6,32 +6,19 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.ui.webapi.WebApi
 import com.github.sdp.tarjetakuna.utils.Utils
 
 class BrowserApiViewModel : ViewModel() {
 
-    // api results
-    private val _apiResults = MutableLiveData<String>()
-    val apiResults: LiveData<String> = _apiResults
-
-    private val cardList = MutableLiveData<ArrayList<MagicCard>>()
-    val cardListLiveData: LiveData<ArrayList<MagicCard>> = cardList
+    private val _cardList = MutableLiveData<ArrayList<MagicCard>>()
+    val cardList: LiveData<ArrayList<MagicCard>> = _cardList
 
     private fun setCardList(list: ArrayList<MagicCard>) {
-        cardList.value = list
+        _cardList.value = list
     }
 
-
-    // error code
-    private val _apiError = MutableLiveData<Pair<Int, String>>()
-    val apiError: LiveData<Pair<Int, String>> = _apiError
-
-    private fun setError(resId: Int, s: String) {
-        _apiError.value = Pair(resId, s)
-    }
 
     /**
      * Get all cards information
@@ -39,7 +26,7 @@ class BrowserApiViewModel : ViewModel() {
     fun getRandomCard(context: Context) {
         // check if network is available
         if (Utils.isNetworkAvailable(context)) {
-            getRandomCardWeb()
+            getRandomCardWeb(context)
         }
         // TODO else get from cache
         else {
@@ -53,7 +40,7 @@ class BrowserApiViewModel : ViewModel() {
     fun getCardsByName(context: Context, cardName: String) {
         // check if network is available
         if (Utils.isNetworkAvailable(context)) {
-            getCardsByNameWeb(cardName)
+            getCardsByNameWeb(context, cardName)
         }
         // TODO else get from cache
         else {
@@ -67,7 +54,7 @@ class BrowserApiViewModel : ViewModel() {
     fun getCardsBySet(context: Context, setCode: String) {
         // check if network is available
         if (Utils.isNetworkAvailable(context)) {
-            getCardsBySetWeb(setCode)
+            getCardsBySetWeb(context, setCode)
         }
         // TODO else get from cache
         else {
@@ -78,13 +65,13 @@ class BrowserApiViewModel : ViewModel() {
     /**
      * get cards from the web
      */
-    private fun getRandomCardWeb() {
+    private fun getRandomCardWeb(context: Context) {
         WebApi.getRandomCard()
             .thenAccept {
                 setCardList(arrayListOf(it.toMagicCard()))
             }
             .exceptionally { e ->
-                setError(R.string.txt_error_msg, e.message ?: "Unknown error")
+                Toast.makeText(context, "No card found", Toast.LENGTH_SHORT).show()
                 Log.e("WebApiViewModel", "Error getting cards", e)
                 null
             }
@@ -93,13 +80,13 @@ class BrowserApiViewModel : ViewModel() {
     /**
      * search cards by name from the web
      */
-    private fun getCardsByNameWeb(name: String) {
+    private fun getCardsByNameWeb(context: Context, name: String) {
         WebApi.getCardsByName(name)
             .thenAccept {
                 setCardList(ArrayList(it.data.map { magicApiCard -> magicApiCard.toMagicCard() }))
             }
             .exceptionally { e ->
-                setError(R.string.txt_error_msg, e.message ?: "Unknown error")
+                Toast.makeText(context, "No card found", Toast.LENGTH_SHORT).show()
                 Log.e("WebApiViewModel", "Error getting cards by name", e)
                 null
             }
@@ -108,13 +95,13 @@ class BrowserApiViewModel : ViewModel() {
     /**
      * search cards by set code from the web
      */
-    private fun getCardsBySetWeb(set: String) {
+    private fun getCardsBySetWeb(context: Context, set: String) {
         WebApi.getCardsBySet(set)
             .thenAccept {
                 setCardList(ArrayList(it.data.map { magicApiCard -> magicApiCard.toMagicCard() }))
             }
             .exceptionally { e ->
-                setError(R.string.txt_error_msg, e.message ?: "Unknown error")
+                Toast.makeText(context, "No card found", Toast.LENGTH_SHORT).show()
                 Log.e("WebApiViewModel", "Error getting cards by set", e)
                 null
             }

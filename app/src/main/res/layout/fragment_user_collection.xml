@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.browser.UserCollectionFragment">
+    tools:context=".ui.browser.UserCollectionFragment"
+    android:theme="@style/Theme.Tarjetakuna.NoActionBar">
 
     <LinearLayout
         android:layout_width="match_parent"

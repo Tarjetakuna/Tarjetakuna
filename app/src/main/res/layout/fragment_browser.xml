@@ -4,21 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.browser.BrowserFragment">
+    tools:context=".ui.browser.BrowserFragment"
+    android:theme="@style/Theme.Tarjetakuna.NoActionBar">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="#1db995" />
+        android:background="#1db995"
+        android:theme="@style/Theme.Tarjetakuna.NoActionBar" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tabLayout"
-        tools:layout_editor_absoluteX="8dp" />
+        tools:layout_editor_absoluteX="8dp"
+        android:theme="@style/Theme.Tarjetakuna.NoActionBar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

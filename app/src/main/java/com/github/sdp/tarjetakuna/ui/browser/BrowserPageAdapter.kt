@@ -7,6 +7,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
+/**
+ * Adapter for the view pager
+ */
 class CardCollectionPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
     private val fragments = listOf(UserCollectionFragment(), BrowserApiFragment())
 
@@ -14,6 +17,9 @@ class CardCollectionPagerAdapter(activity: FragmentActivity) : FragmentStateAdap
 
     override fun createFragment(position: Int): Fragment = fragments[position]
 
+    /**
+     * Setup the tab layout
+     */
     fun setupTabLayout(tabLayout: TabLayout, viewPager: ViewPager2) {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
