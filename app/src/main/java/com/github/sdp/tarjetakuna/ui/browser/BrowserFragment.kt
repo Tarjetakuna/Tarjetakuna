@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentBrowserBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.utils.Utils.Companion.hideKeyboard
@@ -35,10 +36,21 @@ class BrowserFragment : Fragment() {
         _binding = FragmentBrowserBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // Set the local database
+        viewModel.localDatabase =
+            LocalDatabaseProvider.setDatabase(
+                requireContext(),
+                LocalDatabaseProvider.CARDS_DATABASE_NAME
+            )
+
+        binding.browserListCards.layoutManager = LinearLayoutManager(context)
         initObservers()
         initSearchBar(viewModel)
         initFilterButtonsListener()
         initSorterButtonsListener()
+
+        // update the recycler view when the cards are retrieved from the database
+        viewModel.getCardsFromDatabase()
 
         return root
     }
@@ -66,6 +78,13 @@ class BrowserFragment : Fragment() {
             binding.browserListCards.adapter = adapter
             initOnCardClickListener(adapter)
         }
+
+        viewModel.cards.observe(viewLifecycleOwner) {
+            val adapter = DisplayCardsAdapter(it)
+            binding.browserListCards.adapter = adapter
+            initOnCardClickListener(adapter)
+        }
+
     }
 
     /**

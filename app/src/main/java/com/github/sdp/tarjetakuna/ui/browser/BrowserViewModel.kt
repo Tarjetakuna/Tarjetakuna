@@ -3,12 +3,13 @@ package com.github.sdp.tarjetakuna.ui.browser
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.model.MagicCard
-import com.github.sdp.tarjetakuna.model.MagicCardType
-import com.github.sdp.tarjetakuna.model.MagicLayout
-import com.github.sdp.tarjetakuna.model.MagicRarity
-import com.github.sdp.tarjetakuna.model.MagicSet
-import java.time.LocalDate
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class BrowserViewModel : ViewModel() {
 
@@ -20,6 +21,16 @@ class BrowserViewModel : ViewModel() {
     val filterState: LiveData<FilterState> = _filterState
     val sorterState: LiveData<Comparator<MagicCard>> = _sorterState
     val initialCards: LiveData<ArrayList<MagicCard>> = _initialCards
+
+
+    var localDatabase: AppDatabase? = null
+
+    // The cards that are displayed in the recycler view
+    private val _cards: MutableLiveData<ArrayList<MagicCard>> =
+        MutableLiveData<ArrayList<MagicCard>>()
+    val cards: LiveData<ArrayList<MagicCard>> = _cards
+
+    var cardsArray: ArrayList<MagicCard> = arrayListOf()
 
     init {
         _searchState.value = ""
@@ -71,63 +82,34 @@ class BrowserViewModel : ViewModel() {
     }
 
     /**
-     * TODO change it when we have the web api to get the cards
-     * Generate cards in order to simulate the display of the cards
+     * Get the cards from the local database
      */
-    private fun generateCards(): ArrayList<MagicCard> {
+    fun getCardsFromDatabase() {
         val cardsArray = ArrayList<MagicCard>()
-        for (i in 0..39) {
-            val name = if (i + 1 < 10) {
-                "Magic 190${i + 1}"
-            } else {
-                "Magic 19${i + 1}"
+        viewModelScope.launch {
+            withContext(Dispatchers.Default) {
+                val cards = localDatabase?.magicCardDao()?.getAllCards()
+                if (cards != null) {
+                    for (card in cards) {
+                        if (card.possession == CardPossession.OWNED) {
+                            cardsArray.add(card.toMagicCard())
+                        }
+                    }
+                }
             }
-            val card = MagicCard(
-                "Ambush Paratrooper ${i + 1}",
-                "Flash, Flying\n5: Creatures you control get +1/+1 until end of turn.",
-                MagicLayout.NORMAL,
-                2,
-                "{1}{W}",
-                MagicSet("BRO", name, "Core", "Core Block", LocalDate.of(2019, 3, 10)),
-                1,
-                "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
-                MagicRarity.RARE,
-                MagicCardType.CREATURE,
-                listOf("Human", "Soldier"),
-                "1",
-                "2",
-                "Vladimir Krisetskiy"
-            )
-            cardsArray.add(card)
+        }.invokeOnCompletion {
+            cardsArray.sortedWith { o1: MagicCard, o2: MagicCard ->
+                o1.name.compareTo(o2.name)
+            }
+            this.cardsArray = cardsArray
+            _cards.value = cardsArray
         }
-
-        //Example of an another card
-        cardsArray.add(
-            MagicCard(
-                "Pégase solgrâce",
-                "Vol\nLien de vie",
-                MagicLayout.NORMAL,
-                3,
-                "{1}{W}{W}",
-                MagicSet("M15", "Magic 2015", "Core", "Core", LocalDate.now()),
-                1,
-                "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card",
-                MagicRarity.COMMON,
-                MagicCardType.CREATURE,
-                listOf("Pégase"),
-                "1",
-                "2",
-                "Phill Simmer"
-            )
-        )
-        return cardsArray
     }
 
     /**
      * Apply the filter and the sorter to the list of cards
      */
     private fun applyFilters(): ArrayList<MagicCard> {
-        val cardsArray = generateCards()
         val searchState = searchState.value!!
         val filterState = filterState.value!!
         val sorterState = sorterState.value!!

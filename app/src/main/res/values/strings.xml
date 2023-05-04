@@ -89,7 +89,7 @@
     <string name="single_card_showing_add_to_wanted">add to wanted cards</string>
     <string name="single_card_showing_remove_wanted">remove from wanted cards</string>
     <string name="single_card_ask_connection">Please connect if you want to manage the card</string>
-    
+
     <string name="browser_filter">Filter</string>
     <string name="browser_sort">Sort</string>
     <string name="browser_filter_by_set">By set:</string>
@@ -108,5 +108,7 @@
     <string name="single_set_block">Block : %1$s</string>
     <string name="single_set_release_date">Release date : %1$s</string>
     <string name="single_set_error_loading">Error loading the set</string>
+
+    <string name="home_add_a_random_card">add a random card</string>
 
 </resources>
