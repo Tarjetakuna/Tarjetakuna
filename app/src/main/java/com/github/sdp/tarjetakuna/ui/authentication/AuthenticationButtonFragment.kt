@@ -42,7 +42,7 @@ class AuthenticationButtonFragment : Fragment() {
                 mainActivity.changeFragment(R.id.nav_authentication, bundle)
             }
 
-            val backButton = binding.authenticationButtonSignOutButton
+            val backButton = binding.authenticationButtonHomeButton
             backButton.setOnClickListener {
                 val mainActivity = requireActivity() as MainActivity
                 mainActivity.changeFragment(R.id.nav_home)

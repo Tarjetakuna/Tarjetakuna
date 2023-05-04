@@ -52,7 +52,7 @@ class AuthenticationViewModel : ViewModel() {
     }
 
     /**
-     * Check if the authentication was successful and start the SignOutActivity if it was.
+     * Check if the authentication was successful and start the signed in Home fragment if it was.
      * Otherwise, return to the AuthenticationButtonActivity with the appropriate error.
      */
     fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {

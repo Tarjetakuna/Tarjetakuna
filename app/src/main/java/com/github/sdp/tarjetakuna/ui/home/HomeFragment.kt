@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -40,8 +41,17 @@ class HomeFragment : Fragment() {
         val textView: TextView = binding.homeWelcomeText
         homeViewModel.titleText.observe(viewLifecycleOwner) {
             textView.text = it
+
         }
+
+        // TODO remove when not owned card search is implemented
+        homeViewModel.localDatabase = LocalDatabaseProvider.setDatabase(
+            requireContext(),
+            LocalDatabaseProvider.CARDS_DATABASE_NAME
+        )
+        
         val descTextView: TextView = binding.homeWelcomeDescriptionText
+
         homeViewModel.descriptionText.observe(viewLifecycleOwner) {
             descTextView.text = it
         }
@@ -63,6 +73,11 @@ class HomeFragment : Fragment() {
             val bundle = Bundle()
             bundle.putBoolean("signIn", false)
             mainActivity.changeFragment(R.id.nav_authentication, bundle)
+
+        }
+        val addRandomCardButton: Button = binding.addRandomCardButton
+        addRandomCardButton.setOnClickListener {
+            homeViewModel.addRandomCard()
         }
 
         return root

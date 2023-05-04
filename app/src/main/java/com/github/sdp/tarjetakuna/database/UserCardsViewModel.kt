@@ -46,7 +46,7 @@ class UserCardsViewModel : ViewModel() {
      * Add the card to the user's collection
      */
     fun onSetButtonClick(card: MagicCard) {
-        usc.addCardToCollection(FBMagicCard(card, FBCardPossession.OWNED))
+        usc.addCardToCollection(DBMagicCard(card, CardPossession.OWNED))
         _setMessage.value = Pair(R.string.text_add_success, card.name)
 
     }
@@ -55,7 +55,7 @@ class UserCardsViewModel : ViewModel() {
      * Remove the card from the user's collection
      */
     fun onRemoveButtonClick(card: MagicCard) {
-        usc.removeCardFromCollection(FBMagicCard(card, FBCardPossession.NONE))
+        usc.removeCardFromCollection(DBMagicCard(card, CardPossession.NONE))
         _removeMessage.value = Pair(R.string.text_remove_success, card.name)
     }
 
@@ -63,7 +63,7 @@ class UserCardsViewModel : ViewModel() {
      * Get the card from the user's collection if it exists
      */
     fun onGetButtonClick(card: MagicCard) {
-        val data = usc.getCardFromCollection(FBMagicCard(card, FBCardPossession.NONE))
+        val data = usc.getCardFromCollection(DBMagicCard(card, CardPossession.NONE))
         data
             .thenAccept {
                 retrievedCardJson = it.value.toString()
