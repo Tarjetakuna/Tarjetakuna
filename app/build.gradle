@@ -149,7 +149,7 @@ dependencies {
     implementation "androidx.camera:camera-extensions:${camerax_version}"
 
     // dependency for vision api
-    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.2'
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.0'
     implementation 'com.google.mlkit:object-detection:17.0.0'
 
     // google sign in testing dependencies

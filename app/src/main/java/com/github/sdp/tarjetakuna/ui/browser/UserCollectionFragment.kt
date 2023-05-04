@@ -221,4 +221,8 @@ class UserCollectionFragment : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCardsFromDatabase()
+    }
 }
