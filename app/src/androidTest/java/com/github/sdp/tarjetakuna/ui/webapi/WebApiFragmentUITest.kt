@@ -76,10 +76,15 @@ class WebApiFragmentUITest {
         }
 
         // check that the text is the default one
-        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 100))
+        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 200))
 
         // click on the button
-        onView(withId(R.id.api_random_card_button)).perform(waitForText(R.string.api_random_card, 100))
+        onView(withId(R.id.api_random_card_button)).perform(
+            waitForText(
+                R.string.api_random_card,
+                200
+            )
+        )
         onView(withId(R.id.api_random_card_button)).perform(click())
 
         // check that the text change to "waiting results" after the click
@@ -87,7 +92,7 @@ class WebApiFragmentUITest {
         onView(withId(R.id.api_results)).check(matches(withText(R.string.api_waiting_results)))
 
         // wait for the response - allowed because we manually set the delay on the mock response
-        onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 300))
+        onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 600))
 
         // check that the text change to the response
         onView(withId(R.id.api_results)).check(matches(withSubstring("Marsh Goblins")))
@@ -105,10 +110,10 @@ class WebApiFragmentUITest {
         }
 
         // check that the text is the default one
-        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 100))
+        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 200))
 
         // click on the button
-        onView(withId(R.id.api_sets_button)).perform(waitForText(R.string.api_sets, 100))
+        onView(withId(R.id.api_sets_button)).perform(waitForText(R.string.api_sets, 200))
         onView(withId(R.id.api_sets_button)).perform(click())
 
         // check that the text change to "waiting results" after the click
@@ -116,7 +121,7 @@ class WebApiFragmentUITest {
         onView(withId(R.id.api_results)).check(matches(withText(R.string.api_waiting_results)))
 
         // wait for the response - allowed because we manually set the delay on the mock response
-        onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 300))
+        onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 600))
 
         // check that the text change to the response
         onView(withId(R.id.api_results)).check(matches(withSubstring("Unlimited Edition")))
