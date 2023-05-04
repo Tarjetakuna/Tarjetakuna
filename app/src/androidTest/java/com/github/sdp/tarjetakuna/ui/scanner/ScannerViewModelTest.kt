@@ -5,6 +5,7 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import com.github.sdp.tarjetakuna.utils.PermissionGranting.PermissionGranting.grantPermissions
 import com.github.sdp.tarjetakuna.utils.Utils
 import com.google.mlkit.vision.text.Text
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ class ScannerViewModelTest {
     private val textDetected = viewModel.textDetected
     private lateinit var scenario: FragmentScenario<ScannerFragment>
 
+    @OptIn(DelicateCoroutinesApi::class)
     @Before
     fun setUp() {
         grantPermissions()
