@@ -23,7 +23,7 @@ import org.junit.runners.MethodSorters
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class ScannerViewModelTest {
 
-    private val viewModel = ScannerViewModelTester()
+    private val viewModel = ScannerViewModel()
     private val objectDetected = viewModel.objectDetected
     private val textDetected = viewModel.textDetected
 
