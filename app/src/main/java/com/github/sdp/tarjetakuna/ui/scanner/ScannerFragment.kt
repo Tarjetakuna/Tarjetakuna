@@ -70,10 +70,6 @@ class ScannerFragment : Fragment() {
             binding.scannerTextInImageText.text = it.text
         }
 
-        scannerViewModel.objectDetected.observe(viewLifecycleOwner) {
-            binding.scannerObjectInImageText.text = it.text
-        }
-
         binding.scannerSaveButton.setOnClickListener {
             savePicture()
         }

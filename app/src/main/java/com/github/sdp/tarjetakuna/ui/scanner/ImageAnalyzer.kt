@@ -17,6 +17,7 @@ class ImageAnalyzer(
 ) : ImageAnalysis.Analyzer {
 
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+    private var _imageProxy: ImageProxy? = null
 
     /**
      * Detects text in the image.
@@ -25,8 +26,8 @@ class ImageAnalyzer(
         image: InputImage
     ): Task<Text> {
         return recognizer.process(image)
-            .addOnSuccessListener { visionText -> textDetectedListener.callback(visionText) }
-            .addOnFailureListener { e -> textDetectedListener.errorCallback(e) }
+            .addOnSuccessListener { visionText -> textDetectedListener.callback(visionText); _imageProxy?.close() }
+            .addOnFailureListener { e -> textDetectedListener.errorCallback(e); _imageProxy?.close() }
     }
 
     /**
@@ -34,6 +35,7 @@ class ImageAnalyzer(
      */
     @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
     override fun analyze(imageProxy: ImageProxy) {
+        _imageProxy = imageProxy
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)

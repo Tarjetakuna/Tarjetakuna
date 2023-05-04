@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna.ui.scanner
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,28 +12,12 @@ open class ScannerViewModel : ViewModel() {
     private val _textDetected = MutableLiveData<Text>()
     val textDetected: LiveData<Text> = _textDetected
 
-    private val _objectDetected = MutableLiveData<Text>()
-    val objectDetected: LiveData<Text> = _objectDetected
-
-    /**
-     * Callback for object detection errors. Should be safe, and not called often at all.
-     */
-    fun detectObjectError(exception: Exception) {
-        _objectDetected.postValue(Text("Error $exception", emptyList<TextBlock>()))
-    }
-
-    /**
-     * Callback for object detection success.
-     */
-    fun detectObjectSuccess(text: String) {
-        _objectDetected.postValue(Text("Success $text", emptyList<TextBlock>()))
-    }
-
     /**
      * Callback for text detection success.
      */
     fun detectTextSuccess(text: Text) {
         _textDetected.postValue(text)
+        Log.d("ScannerViewModel detectTextSuccess", "Success ${text.text}")
     }
 
     /**
@@ -40,5 +25,6 @@ open class ScannerViewModel : ViewModel() {
      */
     fun detectTextError(exception: Exception) {
         _textDetected.postValue(Text("Error $exception", emptyList<TextBlock>()))
+        Log.d("ScannerViewModel detectTextError", "Error $exception")
     }
 }

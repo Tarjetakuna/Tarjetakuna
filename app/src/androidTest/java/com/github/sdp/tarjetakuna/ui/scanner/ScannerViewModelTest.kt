@@ -17,7 +17,6 @@ import org.junit.Test
 class ScannerViewModelTest {
 
     private val viewModel = ScannerViewModelTester()
-    private val objectDetected = viewModel.objectDetected
     private val textDetected = viewModel.textDetected
     private lateinit var scenario: FragmentScenario<ScannerFragment>
 
@@ -28,7 +27,6 @@ class ScannerViewModelTest {
 
         // use global scope to observe the live data
         GlobalScope.launch(Dispatchers.Main) {
-            objectDetected.observeForever { }
             textDetected.observeForever { }
         }
 
@@ -48,43 +46,6 @@ class ScannerViewModelTest {
     @Test
     fun test_initialValues() {
         assert(textDetected.value == null)
-        assert(objectDetected.value == null)
-    }
-
-    @Test
-    fun test_detectObjectError() {
-        val textError = "Error_test"
-        val exception = Exception(textError)
-
-        // call the callback
-        viewModel.detectObjectError(exception)
-
-        // wait for the data to change
-        Utils.waitWhileTrue(100, 10) { objectDetected.value == null }
-
-        // check the data
-        assertThat(
-            "match error text",
-            objectDetected.value!!.text,
-            containsString(textError)
-        )
-    }
-
-    @Test
-    fun test_detectObjectSuccess() {
-        val textSuccess = "Success_test"
-
-        // call the callback
-        viewModel.detectObjectSuccess(textSuccess)
-
-        // wait for the data to change
-        Utils.waitWhileTrue(100, 10) { objectDetected.value == null }
-
-        assertThat(
-            "match success text",
-            objectDetected.value!!.text,
-            containsString(textSuccess)
-        )
     }
 
     @Test

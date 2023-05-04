@@ -47,28 +47,15 @@
         app:layout_constraintEnd_toEndOf="@+id/scanner_imagePreview"
         app:layout_constraintStart_toStartOf="@+id/scanner_imagePreview" />
 
+
     <TextView
         android:id="@+id/scanner_textInImage_text"
-        style="@style/DescriptionStyleNormal"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="80dp"
         android:layout_marginStart="@dimen/small_margin"
         android:layout_marginEnd="@dimen/small_margin"
         android:layout_marginBottom="@dimen/small_margin"
         android:text="@string/scanner_no_text_detected_yet"
-        app:layout_constraintBottom_toTopOf="@+id/scanner_objectInImage_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/scanner_objectInImage_text"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/small_margin"
-        android:layout_marginEnd="@dimen/small_margin"
-        android:layout_marginBottom="@dimen/small_margin"
-        android:text="@string/scanner_no_object_detected_yet"
         style="@style/DescriptionStyleNormal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
