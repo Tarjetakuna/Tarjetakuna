@@ -57,10 +57,10 @@ class AuthenticationFragment : Fragment() {
             }
         }
 
-        viewModel.changeToSignOutFragment.observe(viewLifecycleOwner) {
+        viewModel.changeToSignedInHomeFragment.observe(viewLifecycleOwner) {
             if (it) {
                 val mainActivity = requireActivity() as MainActivity
-                mainActivity.changeFragment(R.id.nav_sign_out)
+                mainActivity.changeFragment(R.id.nav_home)
             }
         }
 

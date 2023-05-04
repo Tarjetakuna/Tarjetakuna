@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.home.HomeFragment"
+    android:theme="@style/Theme.Tarjetakuna.NoActionBar">
 
     <TextView
         android:id="@+id/home_welcome_text"
@@ -14,7 +15,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:textAlignment="center" 
+        android:textAlignment="center"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +25,7 @@
         app:layout_constraintVertical_bias="0.255" />
 
     <TextView
-        android:id="@+id/home_welcome_description"
+        android:id="@+id/home_welcomeDescription_text"
         style="@style/DescriptionStyleItalic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,9 +40,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.403" />
 
+    <LinearLayout
+        android:id="@+id/home_userContent_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/home_userGreeting_text"
+            style="@style/TitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/standard_margin"
+            android:gravity="center|center_horizontal"
+            android:text="@string/home_hello"
+            android:layout_weight="1" />
+        <!--insert content here-->
+        <Button
+            android:id="@+id/home_signOut_button"
+            style="@style/HomeButtonStyle"
+            android:text="@string/sign_out" />
+    </LinearLayout>
 
     <Button
-        android:id="@+id/home_authenticationButton"
+        android:id="@+id/home_authentication_button"
         style="@style/ButtonStyle"
         android:text="@string/sign_in_google"
         app:layout_constraintBottom_toBottomOf="parent"

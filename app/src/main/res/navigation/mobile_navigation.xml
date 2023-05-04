@@ -48,12 +48,6 @@
         tools:layout="@layout/fragment_authentication_button" />
 
     <fragment
-        android:id="@+id/nav_sign_out"
-        android:name="com.github.sdp.tarjetakuna.ui.authentication.SignOutFragment"
-        android:label="@string/menu_sign_out"
-        tools:layout="@layout/fragment_sign_out" />
-
-    <fragment
         android:id="@+id/nav_user_cards"
         android:name="com.github.sdp.tarjetakuna.database.UserCardsFragment"
         android:label="@string/menu_user_cards"

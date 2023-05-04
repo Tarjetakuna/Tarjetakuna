@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Tarjetakuna</string>
     <string name="demo_button">Demo button: fragment switch </string>
-    <string name="hello">Hello</string>
+    <string name="home_hello">Hello %1$s</string>
     <string name="filter_option_title">Filter options</string>
     <string name="filter">Filter</string>
     <string name="nav_header_title" />
@@ -9,7 +9,7 @@
     <string name="nav_header_desc">Navigation header</string>
 
     <string name="testforauth">TestForAuth</string>
-    <string name="sign_out">sign out</string>
+    <string name="sign_out">Sign Out</string>
     <string name="device_is_not_connected_to_internet">Device is not connected to internet</string>
     <string name="authentication_failed_please_try_again">Authentication failed, please try again</string>
 
@@ -22,13 +22,13 @@
     <string name="menu_authentication">Authentication</string>
     <string name="menu_authentication_button">Authentication button</string>
     <string name="menu_sign_out">Sign out</string>
-    <string name="menu_user_cards">User cards</string>
+    <string name="menu_user_cards">User Cards</string>
     <string name="menu_single_card">Card</string>
     <string name="menu_single_set">Set</string>
 
-    <string name="scanner_button">Scan a card</string>
+    <string name="scanner_button">Scan a Card</string>
     <string name="scanner_description">Here you can scan a card by clicking on the button below.</string>
-    <string name="scanner_content_description_image">Picture of a card</string>
+    <string name="scanner_content_description_image">Picture of a Card</string>
 
     <string name="operation_success">"Success"</string>
     <string name="operation_failed">"The operation has failed. Please try again."</string>
@@ -55,6 +55,7 @@
     <string name="mt15">MT15</string>
     <string name="this_image_is_a_card">this image is a card</string>
 
+    <!--  user cards texts-->
     <string name="text_set_card">set</string>
     <string name="text_get_card">get</string>
     <string name="text_remove_card">remove</string>
@@ -89,7 +90,7 @@
     <string name="single_card_showing_add_to_wanted">add to wanted cards</string>
     <string name="single_card_showing_remove_wanted">remove from wanted cards</string>
     <string name="single_card_ask_connection">Please connect if you want to manage the card</string>
-    
+
     <string name="browser_filter">Filter</string>
     <string name="browser_sort">Sort</string>
     <string name="browser_filter_by_set">By set:</string>

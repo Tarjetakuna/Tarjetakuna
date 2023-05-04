@@ -11,9 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
-import com.github.sdp.tarjetakuna.model.MagicCard
-import com.github.sdp.tarjetakuna.model.MagicLayout
-import com.github.sdp.tarjetakuna.model.MagicSet
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment() {
 
@@ -33,11 +32,16 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        homeViewModel.checkUserConnected()
+        homeViewModel.isConnected.observe(viewLifecycleOwner) {
+            displayUserHome(it)
+        }
+
         val textView: TextView = binding.homeWelcomeText
         homeViewModel.titleText.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        val descTextView: TextView = binding.homeWelcomeDescription
+        val descTextView: TextView = binding.homeWelcomeDescriptionText
         homeViewModel.descriptionText.observe(viewLifecycleOwner) {
             descTextView.text = it
         }
@@ -48,9 +52,35 @@ class HomeFragment : Fragment() {
             mainActivity.changeFragment(R.id.nav_authentication_button)
         }
 
+        val user = Firebase.auth.currentUser
+        val newMessage = user?.displayName
+        val greetingMessage: TextView = binding.homeUserGreetingText
+        greetingMessage.text = getString(R.string.home_hello, newMessage)
+
+        val signOutButton = binding.homeSignOutButton
+        signOutButton.setOnClickListener {
+            val mainActivity = requireActivity() as MainActivity
+            val bundle = Bundle()
+            bundle.putBoolean("signIn", false)
+            mainActivity.changeFragment(R.id.nav_authentication, bundle)
+        }
+
         return root
     }
 
+    private fun displayUserHome(userIsConnected: Boolean) {
+        if (userIsConnected) {
+            binding.homeWelcomeText.visibility = View.GONE
+            binding.homeWelcomeDescriptionText.visibility = View.GONE
+            binding.homeAuthenticationButton.visibility = View.GONE
+            binding.homeUserContentLayout.visibility = View.VISIBLE
+        } else {
+            binding.homeWelcomeText.visibility = View.VISIBLE
+            binding.homeWelcomeDescriptionText.visibility = View.VISIBLE
+            binding.homeAuthenticationButton.visibility = View.VISIBLE
+            binding.homeUserContentLayout.visibility = View.GONE
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

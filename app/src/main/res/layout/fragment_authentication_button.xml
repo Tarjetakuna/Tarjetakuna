@@ -8,7 +8,7 @@
     tools:context=".ui.authentication.AuthenticationButtonFragment">
 
     <Button
-        android:id="@+id/authentication_sign_in_button"
+        android:id="@+id/authenticationButton_sign_in_button"
         style="@style/ButtonStyle"
         android:text="@string/sign_in_google"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.5" />
 
     <TextView
-        android:id="@+id/authentication_connection_error_text"
+        android:id="@+id/authenticationButton_connection_error_text"
         android:layout_width="309dp"
         android:layout_height="40dp"
         android:text="@string/device_is_not_connected_to_internet"
@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="0.635" />
 
     <TextView
-        android:id="@+id/authentication_auth_failed_text"
+        android:id="@+id/authenticationButton_auth_failed_text"
         android:layout_width="251dp"
         android:layout_height="35dp"
         android:text="@string/authentication_failed_please_try_again"
@@ -43,7 +43,7 @@
         app:layout_constraintVertical_bias="0.637" />
 
     <Button
-        android:id="@+id/signOut_home_button"
+        android:id="@+id/authenticationButton_signOut_button"
         style="@style/HomeButtonStyle"
         android:text="@string/go_back_to_home_page"
         tools:ignore="MissingConstraints" />
