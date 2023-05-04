@@ -1,6 +1,8 @@
 package com.github.sdp.tarjetakuna.ui.scanner
 
+import androidx.test.espresso.intent.Intents
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.PermissionGranting.PermissionGranting.grantPermissions
@@ -12,11 +14,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
+import org.junit.runner.RunWith
+import org.junit.runners.MethodSorters
 
+@RunWith(AndroidJUnit4::class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class ScannerViewModelTest {
 
     private val viewModel = ScannerViewModelTester()
@@ -28,6 +31,7 @@ class ScannerViewModelTest {
     @OptIn(DelicateCoroutinesApi::class)
     @Before
     fun setUp() {
+        Intents.init()
         grantPermissions()
         activityScenarioRule.scenario.onActivity {
             it.changeFragment(R.id.nav_scanner)
@@ -48,21 +52,22 @@ class ScannerViewModelTest {
         activityScenarioRule.scenario.onActivity {
             it.changeFragment(R.id.nav_home)
         }
+        Intents.release()
     }
 
 
     @Test
-    fun test_viewModelStart() {
+    fun test_0_viewModelStart() {
         assert(true)
     }
 
     @Test
-    fun test_initialValues() {
+    fun test_1_initialValues() {
         assert(textDetected.value == null)
     }
 
     @Test
-    fun test_detectTextSuccess() {
+    fun test_2_detectTextSuccess() {
         val textSuccess = "Success_test"
 
         // call the callback
@@ -79,7 +84,7 @@ class ScannerViewModelTest {
     }
 
     @Test
-    fun test_detectTextError() {
+    fun test_3_detectTextError() {
         val textError = "Error_test"
         val exception = Exception(textError)
 
