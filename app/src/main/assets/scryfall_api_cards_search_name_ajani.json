@@ -1,0 +1,1242 @@
+{
+  "object": "list",
+  "total_cards": 9,
+  "has_more": false,
+  "data": [
+    {
+      "object": "card",
+      "id": "7026c374-0776-403b-86fd-5092677fd5c9",
+      "oracle_id": "b3779fbe-7701-433b-afad-bebd6096a3c8",
+      "multiverse_ids": [
+        425695
+      ],
+      "mtgo_id": 63028,
+      "mtgo_foil_id": 63029,
+      "tcgplayer_id": 126544,
+      "cardmarket_id": 294812,
+      "name": "Ajani's Aid",
+      "lang": "en",
+      "released_at": "2017-01-20",
+      "uri": "https://api.scryfall.com/cards/7026c374-0776-403b-86fd-5092677fd5c9",
+      "scryfall_uri": "https://scryfall.com/card/aer/188/ajanis-aid?utm_source=api",
+      "layout": "normal",
+      "highres_image": true,
+      "image_status": "highres_scan",
+      "image_uris": {
+        "small": "https://cards.scryfall.io/small/front/7/0/7026c374-0776-403b-86fd-5092677fd5c9.jpg?1562921390",
+        "normal": "https://cards.scryfall.io/normal/front/7/0/7026c374-0776-403b-86fd-5092677fd5c9.jpg?1562921390",
+        "large": "https://cards.scryfall.io/large/front/7/0/7026c374-0776-403b-86fd-5092677fd5c9.jpg?1562921390",
+        "png": "https://cards.scryfall.io/png/front/7/0/7026c374-0776-403b-86fd-5092677fd5c9.png?1562921390",
+        "art_crop": "https://cards.scryfall.io/art_crop/front/7/0/7026c374-0776-403b-86fd-5092677fd5c9.jpg?1562921390",
+        "border_crop": "https://cards.scryfall.io/border_crop/front/7/0/7026c374-0776-403b-86fd-5092677fd5c9.jpg?1562921390"
+      },
+      "mana_cost": "{2}{G}{W}",
+      "cmc": 4.0,
+      "type_line": "Enchantment",
+      "oracle_text": "When Ajani's Aid enters the battlefield, you may search your library and/or graveyard for a card named Ajani, Valiant Protector, reveal it, and put it into your hand. If you search your library this way, shuffle.\nSacrifice Ajani's Aid: Prevent all combat damage a creature of your choice would deal this turn.",
+      "colors": [
+        "G",
+        "W"
+      ],
+      "color_identity": [
+        "G",
+        "W"
+      ],
+      "keywords": [
+
+      ],
+      "all_parts": [
+        {
+          "object": "related_card",
+          "id": "791fdd9a-0ab6-4db9-84f9-859d2d862518",
+          "component": "combo_piece",
+          "name": "Ajani, Valiant Protector",
+          "type_line": "Legendary Planeswalker — Ajani",
+          "uri": "https://api.scryfall.com/cards/791fdd9a-0ab6-4db9-84f9-859d2d862518"
+        },
+        {
+          "object": "related_card",
+          "id": "7026c374-0776-403b-86fd-5092677fd5c9",
+          "component": "combo_piece",
+          "name": "Ajani's Aid",
+          "type_line": "Enchantment",
+          "uri": "https://api.scryfall.com/cards/7026c374-0776-403b-86fd-5092677fd5c9"
+        }
+      ],
+      "legalities": {
+        "standard": "not_legal",
+        "future": "not_legal",
+        "historic": "not_legal",
+        "gladiator": "not_legal",
+        "pioneer": "legal",
+        "explorer": "not_legal",
+        "modern": "legal",
+        "legacy": "legal",
+        "pauper": "not_legal",
+        "vintage": "legal",
+        "penny": "not_legal",
+        "commander": "legal",
+        "oathbreaker": "legal",
+        "brawl": "not_legal",
+        "historicbrawl": "not_legal",
+        "alchemy": "not_legal",
+        "paupercommander": "not_legal",
+        "duel": "legal",
+        "oldschool": "not_legal",
+        "premodern": "not_legal",
+        "predh": "not_legal"
+      },
+      "games": [
+        "paper",
+        "mtgo"
+      ],
+      "reserved": false,
+      "foil": false,
+      "nonfoil": true,
+      "finishes": [
+        "nonfoil"
+      ],
+      "oversized": false,
+      "promo": false,
+      "reprint": false,
+      "variation": false,
+      "set_id": "a4a0db50-8826-4e73-833c-3fd934375f96",
+      "set": "aer",
+      "set_name": "Aether Revolt",
+      "set_type": "expansion",
+      "set_uri": "https://api.scryfall.com/sets/a4a0db50-8826-4e73-833c-3fd934375f96",
+      "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Aaer&unique=prints",
+      "scryfall_set_uri": "https://scryfall.com/sets/aer?utm_source=api",
+      "rulings_uri": "https://api.scryfall.com/cards/7026c374-0776-403b-86fd-5092677fd5c9/rulings",
+      "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3Ab3779fbe-7701-433b-afad-bebd6096a3c8&unique=prints",
+      "collector_number": "188",
+      "digital": false,
+      "rarity": "rare",
+      "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+      "artist": "Terese Nielsen",
+      "artist_ids": [
+        "eb55171c-2342-45f4-a503-2d5a75baf752"
+      ],
+      "illustration_id": "ea4b48b2-bfbc-4a55-9d2d-01405b959932",
+      "border_color": "black",
+      "frame": "2015",
+      "security_stamp": "oval",
+      "full_art": false,
+      "textless": false,
+      "booster": false,
+      "story_spotlight": false,
+      "promo_types": [
+        "planeswalkerdeck"
+      ],
+      "edhrec_rank": 18550,
+      "prices": {
+        "usd": "0.17",
+        "usd_foil": null,
+        "usd_etched": null,
+        "eur": "0.10",
+        "eur_foil": null,
+        "tix": "0.68"
+      },
+      "related_uris": {
+        "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=425695",
+        "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Ajani%27s+Aid&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Ajani%27s+Aid&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "edhrec": "https://edhrec.com/route/?cc=Ajani%27s+Aid"
+      },
+      "purchase_uris": {
+        "tcgplayer": "https://www.tcgplayer.com/product/126544?page=1&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Ajani%27s+Aid&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+        "cardhoarder": "https://www.cardhoarder.com/cards/63028?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+      }
+    },
+    {
+      "object": "card",
+      "id": "5bebef1c-2f03-4e0a-b3ba-861546ebf8a6",
+      "oracle_id": "15b86440-2040-47ae-ab4e-8445b3e24462",
+      "multiverse_ids": [
+        425694
+      ],
+      "mtgo_id": 63014,
+      "mtgo_foil_id": 63015,
+      "tcgplayer_id": 126545,
+      "cardmarket_id": 294813,
+      "name": "Ajani's Comrade",
+      "lang": "en",
+      "released_at": "2017-01-20",
+      "uri": "https://api.scryfall.com/cards/5bebef1c-2f03-4e0a-b3ba-861546ebf8a6",
+      "scryfall_uri": "https://scryfall.com/card/aer/187/ajanis-comrade?utm_source=api",
+      "layout": "normal",
+      "highres_image": true,
+      "image_status": "highres_scan",
+      "image_uris": {
+        "small": "https://cards.scryfall.io/small/front/5/b/5bebef1c-2f03-4e0a-b3ba-861546ebf8a6.jpg?1562916660",
+        "normal": "https://cards.scryfall.io/normal/front/5/b/5bebef1c-2f03-4e0a-b3ba-861546ebf8a6.jpg?1562916660",
+        "large": "https://cards.scryfall.io/large/front/5/b/5bebef1c-2f03-4e0a-b3ba-861546ebf8a6.jpg?1562916660",
+        "png": "https://cards.scryfall.io/png/front/5/b/5bebef1c-2f03-4e0a-b3ba-861546ebf8a6.png?1562916660",
+        "art_crop": "https://cards.scryfall.io/art_crop/front/5/b/5bebef1c-2f03-4e0a-b3ba-861546ebf8a6.jpg?1562916660",
+        "border_crop": "https://cards.scryfall.io/border_crop/front/5/b/5bebef1c-2f03-4e0a-b3ba-861546ebf8a6.jpg?1562916660"
+      },
+      "mana_cost": "{1}{G}",
+      "cmc": 2.0,
+      "type_line": "Creature — Elf Soldier",
+      "oracle_text": "Trample\nAt the beginning of combat on your turn, if you control an Ajani planeswalker, put a +1/+1 counter on Ajani's Comrade.",
+      "power": "2",
+      "toughness": "2",
+      "colors": [
+        "G"
+      ],
+      "color_identity": [
+        "G"
+      ],
+      "keywords": [
+        "Trample"
+      ],
+      "legalities": {
+        "standard": "not_legal",
+        "future": "not_legal",
+        "historic": "not_legal",
+        "gladiator": "not_legal",
+        "pioneer": "legal",
+        "explorer": "not_legal",
+        "modern": "legal",
+        "legacy": "legal",
+        "pauper": "not_legal",
+        "vintage": "legal",
+        "penny": "not_legal",
+        "commander": "legal",
+        "oathbreaker": "legal",
+        "brawl": "not_legal",
+        "historicbrawl": "not_legal",
+        "alchemy": "not_legal",
+        "paupercommander": "restricted",
+        "duel": "legal",
+        "oldschool": "not_legal",
+        "premodern": "not_legal",
+        "predh": "not_legal"
+      },
+      "games": [
+        "paper",
+        "mtgo"
+      ],
+      "reserved": false,
+      "foil": false,
+      "nonfoil": true,
+      "finishes": [
+        "nonfoil"
+      ],
+      "oversized": false,
+      "promo": false,
+      "reprint": false,
+      "variation": false,
+      "set_id": "a4a0db50-8826-4e73-833c-3fd934375f96",
+      "set": "aer",
+      "set_name": "Aether Revolt",
+      "set_type": "expansion",
+      "set_uri": "https://api.scryfall.com/sets/a4a0db50-8826-4e73-833c-3fd934375f96",
+      "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Aaer&unique=prints",
+      "scryfall_set_uri": "https://scryfall.com/sets/aer?utm_source=api",
+      "rulings_uri": "https://api.scryfall.com/cards/5bebef1c-2f03-4e0a-b3ba-861546ebf8a6/rulings",
+      "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3A15b86440-2040-47ae-ab4e-8445b3e24462&unique=prints",
+      "collector_number": "187",
+      "digital": false,
+      "rarity": "uncommon",
+      "flavor_text": "\"I will go where the lion-man leads.\"",
+      "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+      "artist": "James Ryman",
+      "artist_ids": [
+        "3852bbc9-11c0-4fe3-8722-a06ad7e2bcc5"
+      ],
+      "illustration_id": "c7192db2-725f-434d-8351-2d1ad8035ac3",
+      "border_color": "black",
+      "frame": "2015",
+      "full_art": false,
+      "textless": false,
+      "booster": false,
+      "story_spotlight": false,
+      "promo_types": [
+        "planeswalkerdeck"
+      ],
+      "edhrec_rank": 19643,
+      "prices": {
+        "usd": "0.15",
+        "usd_foil": null,
+        "usd_etched": null,
+        "eur": "0.05",
+        "eur_foil": null,
+        "tix": "0.30"
+      },
+      "related_uris": {
+        "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=425694",
+        "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Ajani%27s+Comrade&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Ajani%27s+Comrade&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "edhrec": "https://edhrec.com/route/?cc=Ajani%27s+Comrade"
+      },
+      "purchase_uris": {
+        "tcgplayer": "https://www.tcgplayer.com/product/126545?page=1&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Ajani%27s+Comrade&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+        "cardhoarder": "https://www.cardhoarder.com/cards/63014?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+      }
+    },
+    {
+      "object": "card",
+      "id": "1aebbb57-31b3-4289-815e-4f529e29f3ea",
+      "oracle_id": "17c4807c-158e-4a86-90f1-d8fb2ebe892a",
+      "multiverse_ids": [
+        447140
+      ],
+      "mtgo_id": 68169,
+      "arena_id": 67688,
+      "tcgplayer_id": 169065,
+      "cardmarket_id": 359998,
+      "name": "Ajani's Last Stand",
+      "lang": "en",
+      "released_at": "2018-07-13",
+      "uri": "https://api.scryfall.com/cards/1aebbb57-31b3-4289-815e-4f529e29f3ea",
+      "scryfall_uri": "https://scryfall.com/card/m19/4/ajanis-last-stand?utm_source=api",
+      "layout": "normal",
+      "highres_image": true,
+      "image_status": "highres_scan",
+      "image_uris": {
+        "small": "https://cards.scryfall.io/small/front/1/a/1aebbb57-31b3-4289-815e-4f529e29f3ea.jpg?1562300738",
+        "normal": "https://cards.scryfall.io/normal/front/1/a/1aebbb57-31b3-4289-815e-4f529e29f3ea.jpg?1562300738",
+        "large": "https://cards.scryfall.io/large/front/1/a/1aebbb57-31b3-4289-815e-4f529e29f3ea.jpg?1562300738",
+        "png": "https://cards.scryfall.io/png/front/1/a/1aebbb57-31b3-4289-815e-4f529e29f3ea.png?1562300738",
+        "art_crop": "https://cards.scryfall.io/art_crop/front/1/a/1aebbb57-31b3-4289-815e-4f529e29f3ea.jpg?1562300738",
+        "border_crop": "https://cards.scryfall.io/border_crop/front/1/a/1aebbb57-31b3-4289-815e-4f529e29f3ea.jpg?1562300738"
+      },
+      "mana_cost": "{2}{W}{W}",
+      "cmc": 4.0,
+      "type_line": "Enchantment",
+      "oracle_text": "Whenever a creature or planeswalker you control dies, you may sacrifice Ajani's Last Stand. If you do, create a 4/4 white Avatar creature token with flying.\nWhen a spell or ability an opponent controls causes you to discard this card, if you control a Plains, create a 4/4 white Avatar creature token with flying.",
+      "colors": [
+        "W"
+      ],
+      "color_identity": [
+        "W"
+      ],
+      "keywords": [
+
+      ],
+      "all_parts": [
+        {
+          "object": "related_card",
+          "id": "1aebbb57-31b3-4289-815e-4f529e29f3ea",
+          "component": "combo_piece",
+          "name": "Ajani's Last Stand",
+          "type_line": "Enchantment",
+          "uri": "https://api.scryfall.com/cards/1aebbb57-31b3-4289-815e-4f529e29f3ea"
+        },
+        {
+          "object": "related_card",
+          "id": "5f3f8f97-0c27-49d6-ae9a-a0fe2a7ce38b",
+          "component": "token",
+          "name": "Avatar",
+          "type_line": "Token Creature — Avatar",
+          "uri": "https://api.scryfall.com/cards/5f3f8f97-0c27-49d6-ae9a-a0fe2a7ce38b"
+        }
+      ],
+      "legalities": {
+        "standard": "not_legal",
+        "future": "not_legal",
+        "historic": "legal",
+        "gladiator": "legal",
+        "pioneer": "legal",
+        "explorer": "legal",
+        "modern": "legal",
+        "legacy": "legal",
+        "pauper": "not_legal",
+        "vintage": "legal",
+        "penny": "legal",
+        "commander": "legal",
+        "oathbreaker": "legal",
+        "brawl": "not_legal",
+        "historicbrawl": "legal",
+        "alchemy": "not_legal",
+        "paupercommander": "not_legal",
+        "duel": "legal",
+        "oldschool": "not_legal",
+        "premodern": "not_legal",
+        "predh": "not_legal"
+      },
+      "games": [
+        "arena",
+        "paper",
+        "mtgo"
+      ],
+      "reserved": false,
+      "foil": true,
+      "nonfoil": true,
+      "finishes": [
+        "nonfoil",
+        "foil"
+      ],
+      "oversized": false,
+      "promo": false,
+      "reprint": false,
+      "variation": false,
+      "set_id": "2f5f2509-56db-414d-9a7e-6e312ec3760c",
+      "set": "m19",
+      "set_name": "Core Set 2019",
+      "set_type": "core",
+      "set_uri": "https://api.scryfall.com/sets/2f5f2509-56db-414d-9a7e-6e312ec3760c",
+      "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Am19&unique=prints",
+      "scryfall_set_uri": "https://scryfall.com/sets/m19?utm_source=api",
+      "rulings_uri": "https://api.scryfall.com/cards/1aebbb57-31b3-4289-815e-4f529e29f3ea/rulings",
+      "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3A17c4807c-158e-4a86-90f1-d8fb2ebe892a&unique=prints",
+      "collector_number": "4",
+      "digital": false,
+      "rarity": "rare",
+      "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+      "artist": "Slawomir Maniak",
+      "artist_ids": [
+        "d887bc66-2779-416c-a1ff-d8720242063e"
+      ],
+      "illustration_id": "84f3209a-bd72-4899-a492-d285b956dd84",
+      "border_color": "black",
+      "frame": "2015",
+      "security_stamp": "oval",
+      "full_art": false,
+      "textless": false,
+      "booster": true,
+      "story_spotlight": false,
+      "edhrec_rank": 17091,
+      "penny_rank": 12145,
+      "prices": {
+        "usd": "0.09",
+        "usd_foil": "0.22",
+        "usd_etched": null,
+        "eur": "0.05",
+        "eur_foil": "0.20",
+        "tix": "0.02"
+      },
+      "related_uris": {
+        "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=447140",
+        "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Ajani%27s+Last+Stand&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Ajani%27s+Last+Stand&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "edhrec": "https://edhrec.com/route/?cc=Ajani%27s+Last+Stand"
+      },
+      "purchase_uris": {
+        "tcgplayer": "https://www.tcgplayer.com/product/169065?page=1&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Ajani%27s+Last+Stand&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+        "cardhoarder": "https://www.cardhoarder.com/cards/68169?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+      }
+    },
+    {
+      "object": "card",
+      "id": "b3656310-093d-4724-a399-7f7010843b1f",
+      "oracle_id": "95e94dea-5ac0-4d6f-adec-ca147aee861f",
+      "multiverse_ids": [
+        460931
+      ],
+      "mtgo_id": 71614,
+      "arena_id": 69455,
+      "tcgplayer_id": 187127,
+      "cardmarket_id": 371810,
+      "name": "Ajani's Pridemate",
+      "lang": "en",
+      "released_at": "2019-05-03",
+      "uri": "https://api.scryfall.com/cards/b3656310-093d-4724-a399-7f7010843b1f",
+      "scryfall_uri": "https://scryfall.com/card/war/4/ajanis-pridemate?utm_source=api",
+      "layout": "normal",
+      "highres_image": true,
+      "image_status": "highres_scan",
+      "image_uris": {
+        "small": "https://cards.scryfall.io/small/front/b/3/b3656310-093d-4724-a399-7f7010843b1f.jpg?1557575878",
+        "normal": "https://cards.scryfall.io/normal/front/b/3/b3656310-093d-4724-a399-7f7010843b1f.jpg?1557575878",
+        "large": "https://cards.scryfall.io/large/front/b/3/b3656310-093d-4724-a399-7f7010843b1f.jpg?1557575878",
+        "png": "https://cards.scryfall.io/png/front/b/3/b3656310-093d-4724-a399-7f7010843b1f.png?1557575878",
+        "art_crop": "https://cards.scryfall.io/art_crop/front/b/3/b3656310-093d-4724-a399-7f7010843b1f.jpg?1557575878",
+        "border_crop": "https://cards.scryfall.io/border_crop/front/b/3/b3656310-093d-4724-a399-7f7010843b1f.jpg?1557575878"
+      },
+      "mana_cost": "{1}{W}",
+      "cmc": 2.0,
+      "type_line": "Creature — Cat Soldier",
+      "oracle_text": "Whenever you gain life, put a +1/+1 counter on Ajani's Pridemate.",
+      "power": "2",
+      "toughness": "2",
+      "colors": [
+        "W"
+      ],
+      "color_identity": [
+        "W"
+      ],
+      "keywords": [
+
+      ],
+      "legalities": {
+        "standard": "not_legal",
+        "future": "not_legal",
+        "historic": "legal",
+        "gladiator": "legal",
+        "pioneer": "legal",
+        "explorer": "legal",
+        "modern": "legal",
+        "legacy": "legal",
+        "pauper": "not_legal",
+        "vintage": "legal",
+        "penny": "legal",
+        "commander": "legal",
+        "oathbreaker": "legal",
+        "brawl": "not_legal",
+        "historicbrawl": "legal",
+        "alchemy": "not_legal",
+        "paupercommander": "restricted",
+        "duel": "legal",
+        "oldschool": "not_legal",
+        "premodern": "not_legal",
+        "predh": "legal"
+      },
+      "games": [
+        "arena",
+        "paper",
+        "mtgo"
+      ],
+      "reserved": false,
+      "foil": true,
+      "nonfoil": true,
+      "finishes": [
+        "nonfoil",
+        "foil"
+      ],
+      "oversized": false,
+      "promo": false,
+      "reprint": true,
+      "variation": false,
+      "set_id": "ee044f0b-e101-4ead-8d0e-aa510aad4277",
+      "set": "war",
+      "set_name": "War of the Spark",
+      "set_type": "expansion",
+      "set_uri": "https://api.scryfall.com/sets/ee044f0b-e101-4ead-8d0e-aa510aad4277",
+      "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Awar&unique=prints",
+      "scryfall_set_uri": "https://scryfall.com/sets/war?utm_source=api",
+      "rulings_uri": "https://api.scryfall.com/cards/b3656310-093d-4724-a399-7f7010843b1f/rulings",
+      "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3A95e94dea-5ac0-4d6f-adec-ca147aee861f&unique=prints",
+      "collector_number": "4",
+      "digital": false,
+      "rarity": "uncommon",
+      "flavor_text": "Planeswalkers conjured replicas of old allies, reminders of the homeworlds that would fall next if Bolas prevailed.",
+      "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+      "artist": "Sidharth Chaturvedi",
+      "artist_ids": [
+        "55e6d846-2f73-4fba-9b88-441686bb8dcb"
+      ],
+      "illustration_id": "9731242a-018f-4c7b-bd58-5df3a273bc7d",
+      "border_color": "black",
+      "frame": "2015",
+      "full_art": false,
+      "textless": false,
+      "booster": true,
+      "story_spotlight": false,
+      "edhrec_rank": 2305,
+      "penny_rank": 1666,
+      "preview": {
+        "source": "Wizards of the Coast",
+        "source_uri": "https://www.twitch.tv/videos/404095372",
+        "previewed_at": "2019-03-31"
+      },
+      "prices": {
+        "usd": "0.17",
+        "usd_foil": "1.53",
+        "usd_etched": null,
+        "eur": "0.09",
+        "eur_foil": "0.50",
+        "tix": "0.03"
+      },
+      "related_uris": {
+        "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=460931",
+        "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Ajani%27s+Pridemate&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Ajani%27s+Pridemate&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "edhrec": "https://edhrec.com/route/?cc=Ajani%27s+Pridemate"
+      },
+      "purchase_uris": {
+        "tcgplayer": "https://www.tcgplayer.com/product/187127?page=1&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Ajani%27s+Pridemate&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+        "cardhoarder": "https://www.cardhoarder.com/cards/71614?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+      }
+    },
+    {
+      "object": "card",
+      "id": "79883468-a37c-4894-8d05-6a4d150b7d59",
+      "oracle_id": "c3974ec7-7af0-4b65-baf6-4c1c4fe8a5c4",
+      "multiverse_ids": [
+        466756
+      ],
+      "mtgo_id": 72903,
+      "arena_id": 69787,
+      "tcgplayer_id": 192523,
+      "cardmarket_id": 378336,
+      "name": "Ajani, Strength of the Pride",
+      "lang": "en",
+      "released_at": "2019-07-12",
+      "uri": "https://api.scryfall.com/cards/79883468-a37c-4894-8d05-6a4d150b7d59",
+      "scryfall_uri": "https://scryfall.com/card/m20/2/ajani-strength-of-the-pride?utm_source=api",
+      "layout": "normal",
+      "highres_image": true,
+      "image_status": "highres_scan",
+      "image_uris": {
+        "small": "https://cards.scryfall.io/small/front/7/9/79883468-a37c-4894-8d05-6a4d150b7d59.jpg?1592515934",
+        "normal": "https://cards.scryfall.io/normal/front/7/9/79883468-a37c-4894-8d05-6a4d150b7d59.jpg?1592515934",
+        "large": "https://cards.scryfall.io/large/front/7/9/79883468-a37c-4894-8d05-6a4d150b7d59.jpg?1592515934",
+        "png": "https://cards.scryfall.io/png/front/7/9/79883468-a37c-4894-8d05-6a4d150b7d59.png?1592515934",
+        "art_crop": "https://cards.scryfall.io/art_crop/front/7/9/79883468-a37c-4894-8d05-6a4d150b7d59.jpg?1592515934",
+        "border_crop": "https://cards.scryfall.io/border_crop/front/7/9/79883468-a37c-4894-8d05-6a4d150b7d59.jpg?1592515934"
+      },
+      "mana_cost": "{2}{W}{W}",
+      "cmc": 4.0,
+      "type_line": "Legendary Planeswalker — Ajani",
+      "oracle_text": "+1: You gain life equal to the number of creatures you control plus the number of planeswalkers you control.\n−2: Create a 2/2 white Cat Soldier creature token named Ajani's Pridemate with \"Whenever you gain life, put a +1/+1 counter on Ajani's Pridemate.\"\n0: If you have at least 15 life more than your starting life total, exile Ajani, Strength of the Pride and each artifact and creature your opponents control.",
+      "loyalty": "5",
+      "colors": [
+        "W"
+      ],
+      "color_identity": [
+        "W"
+      ],
+      "keywords": [
+
+      ],
+      "all_parts": [
+        {
+          "object": "related_card",
+          "id": "b0819e8e-fb7e-43c7-a7cf-d768f43193ac",
+          "component": "token",
+          "name": "Ajani's Pridemate",
+          "type_line": "Token Creature — Cat Soldier",
+          "uri": "https://api.scryfall.com/cards/b0819e8e-fb7e-43c7-a7cf-d768f43193ac"
+        },
+        {
+          "object": "related_card",
+          "id": "79883468-a37c-4894-8d05-6a4d150b7d59",
+          "component": "combo_piece",
+          "name": "Ajani, Strength of the Pride",
+          "type_line": "Legendary Planeswalker — Ajani",
+          "uri": "https://api.scryfall.com/cards/79883468-a37c-4894-8d05-6a4d150b7d59"
+        }
+      ],
+      "legalities": {
+        "standard": "not_legal",
+        "future": "not_legal",
+        "historic": "legal",
+        "gladiator": "legal",
+        "pioneer": "legal",
+        "explorer": "legal",
+        "modern": "legal",
+        "legacy": "legal",
+        "pauper": "not_legal",
+        "vintage": "legal",
+        "penny": "not_legal",
+        "commander": "legal",
+        "oathbreaker": "legal",
+        "brawl": "not_legal",
+        "historicbrawl": "legal",
+        "alchemy": "not_legal",
+        "paupercommander": "not_legal",
+        "duel": "legal",
+        "oldschool": "not_legal",
+        "premodern": "not_legal",
+        "predh": "not_legal"
+      },
+      "games": [
+        "arena",
+        "paper",
+        "mtgo"
+      ],
+      "reserved": false,
+      "foil": true,
+      "nonfoil": true,
+      "finishes": [
+        "nonfoil",
+        "foil"
+      ],
+      "oversized": false,
+      "promo": false,
+      "reprint": false,
+      "variation": false,
+      "set_id": "4a787360-9767-4f44-80b1-2405dc5e39c7",
+      "set": "m20",
+      "set_name": "Core Set 2020",
+      "set_type": "core",
+      "set_uri": "https://api.scryfall.com/sets/4a787360-9767-4f44-80b1-2405dc5e39c7",
+      "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Am20&unique=prints",
+      "scryfall_set_uri": "https://scryfall.com/sets/m20?utm_source=api",
+      "rulings_uri": "https://api.scryfall.com/cards/79883468-a37c-4894-8d05-6a4d150b7d59/rulings",
+      "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3Ac3974ec7-7af0-4b65-baf6-4c1c4fe8a5c4&unique=prints",
+      "collector_number": "2",
+      "digital": false,
+      "rarity": "mythic",
+      "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+      "artist": "Chris Rallis",
+      "artist_ids": [
+        "a8e7b854-b15a-421a-b66d-6e68187ae285"
+      ],
+      "illustration_id": "f10e3c2b-cb58-40fb-87b9-5e7ced8a42b1",
+      "border_color": "black",
+      "frame": "2015",
+      "security_stamp": "oval",
+      "full_art": false,
+      "textless": false,
+      "booster": true,
+      "story_spotlight": false,
+      "edhrec_rank": 2881,
+      "preview": {
+        "source": "Wizards of the Coast",
+        "source_uri": "",
+        "previewed_at": "2019-06-17"
+      },
+      "prices": {
+        "usd": "2.54",
+        "usd_foil": "15.11",
+        "usd_etched": null,
+        "eur": "4.56",
+        "eur_foil": "10.00",
+        "tix": "1.75"
+      },
+      "related_uris": {
+        "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=466756",
+        "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Ajani%2C+Strength+of+the+Pride&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Ajani%2C+Strength+of+the+Pride&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "edhrec": "https://edhrec.com/route/?cc=Ajani%2C+Strength+of+the+Pride"
+      },
+      "purchase_uris": {
+        "tcgplayer": "https://www.tcgplayer.com/product/192523?page=1&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Ajani%2C+Strength+of+the+Pride&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+        "cardhoarder": "https://www.cardhoarder.com/cards/72903?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+      }
+    },
+    {
+      "object": "card",
+      "id": "f3bf1867-aab4-4935-b891-45489ebeb231",
+      "oracle_id": "f953afdf-96f7-4851-994c-1617e8f5e5c9",
+      "multiverse_ids": [
+        266299
+      ],
+      "mtgo_id": 42174,
+      "mtgo_foil_id": 42175,
+      "tcgplayer_id": 52109,
+      "cardmarket_id": 250463,
+      "name": "Ajani Vengeant",
+      "lang": "en",
+      "released_at": "2011-09-02",
+      "uri": "https://api.scryfall.com/cards/f3bf1867-aab4-4935-b891-45489ebeb231",
+      "scryfall_uri": "https://scryfall.com/card/ddh/1/ajani-vengeant?utm_source=api",
+      "layout": "normal",
+      "highres_image": true,
+      "image_status": "highres_scan",
+      "image_uris": {
+        "small": "https://cards.scryfall.io/small/front/f/3/f3bf1867-aab4-4935-b891-45489ebeb231.jpg?1562952828",
+        "normal": "https://cards.scryfall.io/normal/front/f/3/f3bf1867-aab4-4935-b891-45489ebeb231.jpg?1562952828",
+        "large": "https://cards.scryfall.io/large/front/f/3/f3bf1867-aab4-4935-b891-45489ebeb231.jpg?1562952828",
+        "png": "https://cards.scryfall.io/png/front/f/3/f3bf1867-aab4-4935-b891-45489ebeb231.png?1562952828",
+        "art_crop": "https://cards.scryfall.io/art_crop/front/f/3/f3bf1867-aab4-4935-b891-45489ebeb231.jpg?1562952828",
+        "border_crop": "https://cards.scryfall.io/border_crop/front/f/3/f3bf1867-aab4-4935-b891-45489ebeb231.jpg?1562952828"
+      },
+      "mana_cost": "{2}{R}{W}",
+      "cmc": 4.0,
+      "type_line": "Legendary Planeswalker — Ajani",
+      "oracle_text": "+1: Target permanent doesn't untap during its controller's next untap step.\n−2: Ajani Vengeant deals 3 damage to any target and you gain 3 life.\n−7: Destroy all lands target player controls.",
+      "loyalty": "3",
+      "colors": [
+        "R",
+        "W"
+      ],
+      "color_identity": [
+        "R",
+        "W"
+      ],
+      "keywords": [
+
+      ],
+      "legalities": {
+        "standard": "not_legal",
+        "future": "not_legal",
+        "historic": "not_legal",
+        "gladiator": "not_legal",
+        "pioneer": "not_legal",
+        "explorer": "not_legal",
+        "modern": "legal",
+        "legacy": "legal",
+        "pauper": "not_legal",
+        "vintage": "legal",
+        "penny": "not_legal",
+        "commander": "legal",
+        "oathbreaker": "legal",
+        "brawl": "not_legal",
+        "historicbrawl": "not_legal",
+        "alchemy": "not_legal",
+        "paupercommander": "not_legal",
+        "duel": "legal",
+        "oldschool": "not_legal",
+        "premodern": "not_legal",
+        "predh": "legal"
+      },
+      "games": [
+        "paper",
+        "mtgo"
+      ],
+      "reserved": false,
+      "foil": true,
+      "nonfoil": false,
+      "finishes": [
+        "foil"
+      ],
+      "oversized": false,
+      "promo": false,
+      "reprint": true,
+      "variation": false,
+      "set_id": "bad1fe7e-27df-4999-821b-d477c2ec658d",
+      "set": "ddh",
+      "set_name": "Duel Decks: Ajani vs. Nicol Bolas",
+      "set_type": "duel_deck",
+      "set_uri": "https://api.scryfall.com/sets/bad1fe7e-27df-4999-821b-d477c2ec658d",
+      "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Addh&unique=prints",
+      "scryfall_set_uri": "https://scryfall.com/sets/ddh?utm_source=api",
+      "rulings_uri": "https://api.scryfall.com/cards/f3bf1867-aab4-4935-b891-45489ebeb231/rulings",
+      "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3Af953afdf-96f7-4851-994c-1617e8f5e5c9&unique=prints",
+      "collector_number": "1",
+      "digital": false,
+      "rarity": "mythic",
+      "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+      "artist": "Izzy",
+      "artist_ids": [
+        "2c3d2473-ff5d-4309-8194-e0b2def2ab65"
+      ],
+      "illustration_id": "042b3d48-5b64-44bb-a4f4-151c6dd4df84",
+      "border_color": "black",
+      "frame": "2003",
+      "full_art": false,
+      "textless": false,
+      "booster": false,
+      "story_spotlight": false,
+      "edhrec_rank": 9095,
+      "prices": {
+        "usd": null,
+        "usd_foil": "2.02",
+        "usd_etched": null,
+        "eur": null,
+        "eur_foil": "1.20",
+        "tix": "0.16"
+      },
+      "related_uris": {
+        "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=266299",
+        "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Ajani+Vengeant&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Ajani+Vengeant&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "edhrec": "https://edhrec.com/route/?cc=Ajani+Vengeant"
+      },
+      "purchase_uris": {
+        "tcgplayer": "https://www.tcgplayer.com/product/52109?page=1&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Ajani+Vengeant&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+        "cardhoarder": "https://www.cardhoarder.com/cards/42174?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+      }
+    },
+    {
+      "object": "card",
+      "id": "dc2e1a93-4b5c-4f89-9e11-1693dee64b63",
+      "oracle_id": "dec9edbb-677b-4773-8bc4-b388d7592276",
+      "multiverse_ids": [
+        450230
+      ],
+      "mtgo_id": 68099,
+      "arena_id": 68248,
+      "tcgplayer_id": 168624,
+      "cardmarket_id": 359832,
+      "name": "Court Cleric",
+      "lang": "en",
+      "released_at": "2018-07-13",
+      "uri": "https://api.scryfall.com/cards/dc2e1a93-4b5c-4f89-9e11-1693dee64b63",
+      "scryfall_uri": "https://scryfall.com/card/m19/283/court-cleric?utm_source=api",
+      "layout": "normal",
+      "highres_image": true,
+      "image_status": "highres_scan",
+      "image_uris": {
+        "small": "https://cards.scryfall.io/small/front/d/c/dc2e1a93-4b5c-4f89-9e11-1693dee64b63.jpg?1562304781",
+        "normal": "https://cards.scryfall.io/normal/front/d/c/dc2e1a93-4b5c-4f89-9e11-1693dee64b63.jpg?1562304781",
+        "large": "https://cards.scryfall.io/large/front/d/c/dc2e1a93-4b5c-4f89-9e11-1693dee64b63.jpg?1562304781",
+        "png": "https://cards.scryfall.io/png/front/d/c/dc2e1a93-4b5c-4f89-9e11-1693dee64b63.png?1562304781",
+        "art_crop": "https://cards.scryfall.io/art_crop/front/d/c/dc2e1a93-4b5c-4f89-9e11-1693dee64b63.jpg?1562304781",
+        "border_crop": "https://cards.scryfall.io/border_crop/front/d/c/dc2e1a93-4b5c-4f89-9e11-1693dee64b63.jpg?1562304781"
+      },
+      "mana_cost": "{W}",
+      "cmc": 1.0,
+      "type_line": "Creature — Human Cleric",
+      "oracle_text": "Lifelink (Damage dealt by this creature also causes you to gain that much life.)\nCourt Cleric gets +1/+1 as long as you control an Ajani planeswalker.",
+      "power": "1",
+      "toughness": "1",
+      "colors": [
+        "W"
+      ],
+      "color_identity": [
+        "W"
+      ],
+      "keywords": [
+        "Lifelink"
+      ],
+      "legalities": {
+        "standard": "not_legal",
+        "future": "not_legal",
+        "historic": "legal",
+        "gladiator": "legal",
+        "pioneer": "legal",
+        "explorer": "legal",
+        "modern": "legal",
+        "legacy": "legal",
+        "pauper": "not_legal",
+        "vintage": "legal",
+        "penny": "not_legal",
+        "commander": "legal",
+        "oathbreaker": "legal",
+        "brawl": "not_legal",
+        "historicbrawl": "legal",
+        "alchemy": "not_legal",
+        "paupercommander": "restricted",
+        "duel": "legal",
+        "oldschool": "not_legal",
+        "premodern": "not_legal",
+        "predh": "not_legal"
+      },
+      "games": [
+        "arena",
+        "paper",
+        "mtgo"
+      ],
+      "reserved": false,
+      "foil": false,
+      "nonfoil": true,
+      "finishes": [
+        "nonfoil"
+      ],
+      "oversized": false,
+      "promo": false,
+      "reprint": false,
+      "variation": false,
+      "set_id": "2f5f2509-56db-414d-9a7e-6e312ec3760c",
+      "set": "m19",
+      "set_name": "Core Set 2019",
+      "set_type": "core",
+      "set_uri": "https://api.scryfall.com/sets/2f5f2509-56db-414d-9a7e-6e312ec3760c",
+      "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Am19&unique=prints",
+      "scryfall_set_uri": "https://scryfall.com/sets/m19?utm_source=api",
+      "rulings_uri": "https://api.scryfall.com/cards/dc2e1a93-4b5c-4f89-9e11-1693dee64b63/rulings",
+      "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3Adec9edbb-677b-4773-8bc4-b388d7592276&unique=prints",
+      "collector_number": "283",
+      "digital": false,
+      "rarity": "uncommon",
+      "flavor_text": "\"The healers of Bant are second to none. I owe then a great deal for their tutelage.\"\n—Ajani Goldmane",
+      "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+      "artist": "Mark Behm",
+      "artist_ids": [
+        "ccf77963-723f-4137-b364-7417079e8ab9"
+      ],
+      "illustration_id": "3e70e07b-143d-426e-8128-ba0714cafd88",
+      "border_color": "black",
+      "frame": "2015",
+      "full_art": false,
+      "textless": false,
+      "booster": false,
+      "story_spotlight": false,
+      "promo_types": [
+        "planeswalkerdeck"
+      ],
+      "edhrec_rank": 21202,
+      "prices": {
+        "usd": "0.19",
+        "usd_foil": null,
+        "usd_etched": null,
+        "eur": "0.02",
+        "eur_foil": null,
+        "tix": "1.39"
+      },
+      "related_uris": {
+        "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=450230",
+        "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Court+Cleric&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Court+Cleric&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "edhrec": "https://edhrec.com/route/?cc=Court+Cleric"
+      },
+      "purchase_uris": {
+        "tcgplayer": "https://www.tcgplayer.com/product/168624?page=1&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Court+Cleric&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+        "cardhoarder": "https://www.cardhoarder.com/cards/68099?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+      }
+    },
+    {
+      "object": "card",
+      "id": "67edcb9b-f56b-4a34-b4bd-d22ee929041a",
+      "oracle_id": "e32573e8-91a8-438b-966f-1c6d098d54ae",
+      "multiverse_ids": [
+        469836
+      ],
+      "mtgo_id": 73483,
+      "arena_id": 70067,
+      "tcgplayer_id": 192749,
+      "cardmarket_id": 379185,
+      "name": "Goldmane Griffin",
+      "lang": "en",
+      "released_at": "2019-07-12",
+      "uri": "https://api.scryfall.com/cards/67edcb9b-f56b-4a34-b4bd-d22ee929041a",
+      "scryfall_uri": "https://scryfall.com/card/m20/283/goldmane-griffin?utm_source=api",
+      "layout": "normal",
+      "highres_image": true,
+      "image_status": "highres_scan",
+      "image_uris": {
+        "small": "https://cards.scryfall.io/small/front/6/7/67edcb9b-f56b-4a34-b4bd-d22ee929041a.jpg?1592518068",
+        "normal": "https://cards.scryfall.io/normal/front/6/7/67edcb9b-f56b-4a34-b4bd-d22ee929041a.jpg?1592518068",
+        "large": "https://cards.scryfall.io/large/front/6/7/67edcb9b-f56b-4a34-b4bd-d22ee929041a.jpg?1592518068",
+        "png": "https://cards.scryfall.io/png/front/6/7/67edcb9b-f56b-4a34-b4bd-d22ee929041a.png?1592518068",
+        "art_crop": "https://cards.scryfall.io/art_crop/front/6/7/67edcb9b-f56b-4a34-b4bd-d22ee929041a.jpg?1592518068",
+        "border_crop": "https://cards.scryfall.io/border_crop/front/6/7/67edcb9b-f56b-4a34-b4bd-d22ee929041a.jpg?1592518068"
+      },
+      "mana_cost": "{3}{W}{W}",
+      "cmc": 5.0,
+      "type_line": "Creature — Griffin",
+      "oracle_text": "Flying, vigilance\nWhen Goldmane Griffin enters the battlefield, you may search your library and/or graveyard for a card named Ajani, Inspiring Leader, reveal it, and put it into your hand. If you search your library this way, shuffle.",
+      "power": "3",
+      "toughness": "2",
+      "colors": [
+        "W"
+      ],
+      "color_identity": [
+        "W"
+      ],
+      "keywords": [
+        "Flying",
+        "Vigilance"
+      ],
+      "all_parts": [
+        {
+          "object": "related_card",
+          "id": "dba41e5f-66b8-4459-8a07-bbe893216f1e",
+          "component": "combo_piece",
+          "name": "Ajani, Inspiring Leader",
+          "type_line": "Legendary Planeswalker — Ajani",
+          "uri": "https://api.scryfall.com/cards/dba41e5f-66b8-4459-8a07-bbe893216f1e"
+        },
+        {
+          "object": "related_card",
+          "id": "67edcb9b-f56b-4a34-b4bd-d22ee929041a",
+          "component": "combo_piece",
+          "name": "Goldmane Griffin",
+          "type_line": "Creature — Griffin",
+          "uri": "https://api.scryfall.com/cards/67edcb9b-f56b-4a34-b4bd-d22ee929041a"
+        }
+      ],
+      "legalities": {
+        "standard": "not_legal",
+        "future": "not_legal",
+        "historic": "legal",
+        "gladiator": "legal",
+        "pioneer": "legal",
+        "explorer": "legal",
+        "modern": "legal",
+        "legacy": "legal",
+        "pauper": "not_legal",
+        "vintage": "legal",
+        "penny": "legal",
+        "commander": "legal",
+        "oathbreaker": "legal",
+        "brawl": "not_legal",
+        "historicbrawl": "legal",
+        "alchemy": "not_legal",
+        "paupercommander": "not_legal",
+        "duel": "legal",
+        "oldschool": "not_legal",
+        "premodern": "not_legal",
+        "predh": "not_legal"
+      },
+      "games": [
+        "arena",
+        "paper",
+        "mtgo"
+      ],
+      "reserved": false,
+      "foil": false,
+      "nonfoil": true,
+      "finishes": [
+        "nonfoil"
+      ],
+      "oversized": false,
+      "promo": false,
+      "reprint": false,
+      "variation": false,
+      "set_id": "4a787360-9767-4f44-80b1-2405dc5e39c7",
+      "set": "m20",
+      "set_name": "Core Set 2020",
+      "set_type": "core",
+      "set_uri": "https://api.scryfall.com/sets/4a787360-9767-4f44-80b1-2405dc5e39c7",
+      "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Am20&unique=prints",
+      "scryfall_set_uri": "https://scryfall.com/sets/m20?utm_source=api",
+      "rulings_uri": "https://api.scryfall.com/cards/67edcb9b-f56b-4a34-b4bd-d22ee929041a/rulings",
+      "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3Ae32573e8-91a8-438b-966f-1c6d098d54ae&unique=prints",
+      "collector_number": "283",
+      "digital": false,
+      "rarity": "rare",
+      "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+      "artist": "Paul Scott Canavan",
+      "artist_ids": [
+        "c19bfb77-5099-4f7c-8585-6eaf367712c9"
+      ],
+      "illustration_id": "48e330d8-952b-4003-b319-5711ddd4964e",
+      "border_color": "black",
+      "frame": "2015",
+      "security_stamp": "oval",
+      "full_art": false,
+      "textless": false,
+      "booster": false,
+      "story_spotlight": false,
+      "promo_types": [
+        "planeswalkerdeck"
+      ],
+      "edhrec_rank": 19127,
+      "preview": {
+        "source": "Wizards of the Coast",
+        "source_uri": "https://magic.wizards.com/en/articles/archive/card-preview/core-set-2020-planeswalker-decks-and-spellslinger-starter-kit",
+        "previewed_at": "2019-06-25"
+      },
+      "prices": {
+        "usd": "0.24",
+        "usd_foil": null,
+        "usd_etched": null,
+        "eur": "0.20",
+        "eur_foil": null,
+        "tix": "0.02"
+      },
+      "related_uris": {
+        "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=469836",
+        "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Goldmane+Griffin&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Goldmane+Griffin&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "edhrec": "https://edhrec.com/route/?cc=Goldmane+Griffin"
+      },
+      "purchase_uris": {
+        "tcgplayer": "https://www.tcgplayer.com/product/192749?page=1&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Goldmane+Griffin&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+        "cardhoarder": "https://www.cardhoarder.com/cards/73483?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+      }
+    },
+    {
+      "object": "card",
+      "id": "968c7d5a-b037-4ff7-b6d2-df00adf5691b",
+      "oracle_id": "1ec39c8f-eb1e-4881-a749-0c188788b612",
+      "multiverse_ids": [
+        423798
+      ],
+      "mtgo_id": 62829,
+      "mtgo_foil_id": 62830,
+      "tcgplayer_id": 126033,
+      "cardmarket_id": 294696,
+      "name": "Oath of Ajani",
+      "lang": "en",
+      "released_at": "2017-01-20",
+      "uri": "https://api.scryfall.com/cards/968c7d5a-b037-4ff7-b6d2-df00adf5691b",
+      "scryfall_uri": "https://scryfall.com/card/aer/131/oath-of-ajani?utm_source=api",
+      "layout": "normal",
+      "highres_image": true,
+      "image_status": "highres_scan",
+      "image_uris": {
+        "small": "https://cards.scryfall.io/small/front/9/6/968c7d5a-b037-4ff7-b6d2-df00adf5691b.jpg?1576382123",
+        "normal": "https://cards.scryfall.io/normal/front/9/6/968c7d5a-b037-4ff7-b6d2-df00adf5691b.jpg?1576382123",
+        "large": "https://cards.scryfall.io/large/front/9/6/968c7d5a-b037-4ff7-b6d2-df00adf5691b.jpg?1576382123",
+        "png": "https://cards.scryfall.io/png/front/9/6/968c7d5a-b037-4ff7-b6d2-df00adf5691b.png?1576382123",
+        "art_crop": "https://cards.scryfall.io/art_crop/front/9/6/968c7d5a-b037-4ff7-b6d2-df00adf5691b.jpg?1576382123",
+        "border_crop": "https://cards.scryfall.io/border_crop/front/9/6/968c7d5a-b037-4ff7-b6d2-df00adf5691b.jpg?1576382123"
+      },
+      "mana_cost": "{G}{W}",
+      "cmc": 2.0,
+      "type_line": "Legendary Enchantment",
+      "oracle_text": "When Oath of Ajani enters the battlefield, put a +1/+1 counter on each creature you control.\nPlaneswalker spells you cast cost {1} less to cast.",
+      "colors": [
+        "G",
+        "W"
+      ],
+      "color_identity": [
+        "G",
+        "W"
+      ],
+      "keywords": [
+
+      ],
+      "legalities": {
+        "standard": "not_legal",
+        "future": "not_legal",
+        "historic": "legal",
+        "gladiator": "legal",
+        "pioneer": "legal",
+        "explorer": "legal",
+        "modern": "legal",
+        "legacy": "legal",
+        "pauper": "not_legal",
+        "vintage": "legal",
+        "penny": "legal",
+        "commander": "legal",
+        "oathbreaker": "legal",
+        "brawl": "not_legal",
+        "historicbrawl": "legal",
+        "alchemy": "not_legal",
+        "paupercommander": "not_legal",
+        "duel": "legal",
+        "oldschool": "not_legal",
+        "premodern": "not_legal",
+        "predh": "not_legal"
+      },
+      "games": [
+        "paper",
+        "mtgo"
+      ],
+      "reserved": false,
+      "foil": true,
+      "nonfoil": true,
+      "finishes": [
+        "nonfoil",
+        "foil"
+      ],
+      "oversized": false,
+      "promo": false,
+      "reprint": false,
+      "variation": false,
+      "set_id": "a4a0db50-8826-4e73-833c-3fd934375f96",
+      "set": "aer",
+      "set_name": "Aether Revolt",
+      "set_type": "expansion",
+      "set_uri": "https://api.scryfall.com/sets/a4a0db50-8826-4e73-833c-3fd934375f96",
+      "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Aaer&unique=prints",
+      "scryfall_set_uri": "https://scryfall.com/sets/aer?utm_source=api",
+      "rulings_uri": "https://api.scryfall.com/cards/968c7d5a-b037-4ff7-b6d2-df00adf5691b/rulings",
+      "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3A1ec39c8f-eb1e-4881-a749-0c188788b612&unique=prints",
+      "collector_number": "131",
+      "digital": false,
+      "rarity": "rare",
+      "flavor_text": "\"Until all have found their place, I will keep watch.\"",
+      "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+      "artist": "Wesley Burt",
+      "artist_ids": [
+        "b98c9d94-8bdb-49af-871d-7bac92274535"
+      ],
+      "illustration_id": "a5073ad4-766f-495a-bf05-8f8e5898d889",
+      "border_color": "black",
+      "frame": "2015",
+      "security_stamp": "oval",
+      "full_art": false,
+      "textless": false,
+      "booster": true,
+      "story_spotlight": false,
+      "edhrec_rank": 5144,
+      "penny_rank": 8099,
+      "prices": {
+        "usd": "0.55",
+        "usd_foil": "1.52",
+        "usd_etched": null,
+        "eur": "0.60",
+        "eur_foil": "1.02",
+        "tix": "0.02"
+      },
+      "related_uris": {
+        "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423798",
+        "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Oath+of+Ajani&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Oath+of+Ajani&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "edhrec": "https://edhrec.com/route/?cc=Oath+of+Ajani"
+      },
+      "purchase_uris": {
+        "tcgplayer": "https://www.tcgplayer.com/product/126033?page=1&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+        "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Oath+of+Ajani&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+        "cardhoarder": "https://www.cardhoarder.com/cards/62829?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+      }
+    }
+  ]
+}

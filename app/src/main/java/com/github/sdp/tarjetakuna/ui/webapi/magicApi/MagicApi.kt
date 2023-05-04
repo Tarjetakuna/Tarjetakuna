@@ -9,17 +9,11 @@ import retrofit2.http.Query
  * Interface for the MagicApi
  */
 interface MagicApi {
-    @GET("cards")
-    fun getCards(): Call<MagicApiCards>
+    @GET("cards/random")
+    fun getRandomCard(): Call<MagicApiCard>
 
-    @GET("cards")
-    fun getCardsBySet(@Query("set") setCode: String): Call<MagicApiCards>
-
-    @GET("cards")
-    fun getCardsByName(@Query("name") name: String): Call<MagicApiCards>
-
-    @GET("cards/{multiverseId}")
-    fun getCardById(@Path("multiverseId") multiverseId: String): Call<MagicApiCard>
+    @GET("cards/search")
+    fun getCardsBySearch(@Query("q") search: String, @Query("order") order: String): Call<MagicApiCards>
 
     @GET("sets")
     fun getSets(): Call<MagicApiSets>
