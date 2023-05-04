@@ -48,7 +48,7 @@ class ScannerFragmentTest {
         waitForText(R.id.scanner_description_text, R.string.scanner_description, 100)
         waitForText(R.id.scanner_textInImage_text, R.string.scanner_no_text_detected_yet, 100)
         waitForText(R.id.scanner_objectInImage_text, R.string.scanner_no_object_detected_yet, 100)
-        waitForText(R.id.scanner_scan_button, R.string.scanner_button, 100)
+        waitForText(R.id.scanner_save_button, R.string.scanner_save_button, 100)
     }
 
     @Test
@@ -57,7 +57,7 @@ class ScannerFragmentTest {
         waitForText(R.id.scanner_description_text, R.string.scanner_description, 100)
 
         // click on the button
-        onView(withId(R.id.scanner_scan_button)).perform(click())
+        onView(withId(R.id.scanner_save_button)).perform(click())
 
         // find all snackbars and check that the text is the default one
         onView(withId(com.google.android.material.R.id.snackbar_text))

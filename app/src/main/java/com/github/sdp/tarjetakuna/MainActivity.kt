@@ -98,11 +98,16 @@ class MainActivity : AppCompatActivity() {
         updateHeader()
     }
 
-    // Change fragment
+    /**
+     * Change the fragment displayed in the drawer
+     */
     fun changeFragment(fragment: Int, args: Bundle? = null) {
         getNavController().navigate(fragment, args)
     }
 
+    /**
+     * Navigate up in the navigation drawer
+     */
     fun navigateUp() {
         getNavController().navigateUp()
     }
@@ -133,9 +138,15 @@ class MainActivity : AppCompatActivity() {
         return getNavController().navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    /**
+     * Get the navigation controller of the drawer
+     */
     private fun getNavController(): NavController =
         (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
 
+    /**
+     * Hide the keyboard if it is visible
+     */
     fun hideKeyboard() {
         Utils.hideKeyboard(this)
     }
@@ -174,7 +185,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Companion for static variables
+     */
     companion object {
+        /**
+         * Tag for logging
+         */
         private const val TAG = "MainActivity"
     }
 }
