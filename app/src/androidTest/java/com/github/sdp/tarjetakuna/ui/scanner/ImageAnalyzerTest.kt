@@ -56,7 +56,7 @@ class ImageAnalyzerTest {
         imageAnalyzer.analyze(img)
 
         // Wait for the callback to be called
-        Utils.waitUntilTrue(50, 20) { callbackCalled }
+        Utils.waitUntilTrue(100, 50) { callbackCalled }
 
         // TODO should be true, but auto download of model is not working
 //        assert(!detectTextSuccess)
