@@ -1,54 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.webapi.WebApiFragment">
+    tools:context=".ui.singlecard.SingleCardFragment"
+    android:theme="@style/Theme.Tarjetakuna.NoActionBar">
 
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/api_random_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/api_cards"
-            tools:ignore="ButtonStyle" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/api_cardsByName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/api_cardsByName"
-                tools:ignore="ButtonStyle" />
-
-            <EditText
-                android:id="@+id/cardName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/api_cardName"
-                android:inputType="textPersonName"
-                android:autofillHints="" />
-        </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,10 +32,10 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/api_cards_button"
+                    android:id="@+id/api_random_card_button"
                     style="@style/ButtonStyle"
                     android:layout_weight="1"
-                    android:text="@string/api_cards" />
+                    android:text="@string/api_random_card" />
 
                 <Button
                     android:id="@+id/api_sets_button"
@@ -137,32 +96,6 @@
                     tools:ignore="ButtonStyle"
                     android:textColor="@color/white_gold_light" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="@dimen/standard_margin"
-                android:layout_marginEnd="@dimen/standard_margin">
-
-                <EditText
-                    android:id="@+id/api_card_id_edittext"
-                    style="@style/EditTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:autofillHints=""
-                    android:hint="@string/api_cardId"
-                    android:inputType="textPersonName" />
-
-                <Button
-                    android:id="@+id/api_card_by_id_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/api_cardById"
-                    tools:ignore="ButtonStyle"
-                    android:textColor="@color/white_gold_light" />
             </LinearLayout>
 
             <LinearLayout
