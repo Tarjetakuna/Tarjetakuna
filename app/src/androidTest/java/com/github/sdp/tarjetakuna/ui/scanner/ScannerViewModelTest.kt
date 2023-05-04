@@ -1,7 +1,8 @@
 package com.github.sdp.tarjetakuna.ui.scanner
 
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.github.sdp.tarjetakuna.MainActivity
+import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.PermissionGranting.PermissionGranting.grantPermissions
 import com.github.sdp.tarjetakuna.utils.Utils
 import com.google.mlkit.vision.text.Text
@@ -12,6 +13,7 @@ import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 class ScannerViewModelTest {
@@ -19,12 +21,16 @@ class ScannerViewModelTest {
     private val viewModel = ScannerViewModelTester()
     private val objectDetected = viewModel.objectDetected
     private val textDetected = viewModel.textDetected
-    private lateinit var scenario: FragmentScenario<ScannerFragment>
+
+    @get:Rule
+    val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun setUp() {
         grantPermissions()
-        scenario = launchFragmentInContainer()
+        activityScenarioRule.scenario.onActivity {
+            it.changeFragment(R.id.nav_scanner)
+        }
 
         // use global scope to observe the live data
         GlobalScope.launch(Dispatchers.Main) {
@@ -32,11 +38,16 @@ class ScannerViewModelTest {
             textDetected.observeForever { }
         }
 
+        // TODO not the best way, but no other way for now
+        // wait for camera to be ready
+        Thread.sleep(1000);
     }
 
     @After
     fun after() {
-        scenario.close()
+        activityScenarioRule.scenario.onActivity {
+            it.changeFragment(R.id.nav_home)
+        }
     }
 
 
