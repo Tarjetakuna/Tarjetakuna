@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -19,8 +20,10 @@ import com.github.sdp.tarjetakuna.extra.ExportCollection
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
+import com.github.sdp.tarjetakuna.ui.scanner.ScannerFragment
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
+import com.github.sdp.tarjetakuna.utils.Utils
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -68,8 +71,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        val navController =
-            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
+        val navController = getNavController()
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home,
@@ -96,11 +98,18 @@ class MainActivity : AppCompatActivity() {
         updateHeader()
     }
 
-    // Change fragment
+    /**
+     * Change the fragment displayed in the drawer
+     */
     fun changeFragment(fragment: Int, args: Bundle? = null) {
-        val navController =
-            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
-        navController.navigate(fragment, args)
+        getNavController().navigate(fragment, args)
+    }
+
+    /**
+     * Navigate up in the navigation drawer
+     */
+    fun navigateUp() {
+        getNavController().navigateUp()
     }
 
     /**
@@ -126,9 +135,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController =
-            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return getNavController().navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    /**
+     * Get the navigation controller of the drawer
+     */
+    private fun getNavController(): NavController =
+        (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_drawer) as NavHostFragment).navController
+
+    /**
+     * Hide the keyboard if it is visible
+     */
+    fun hideKeyboard() {
+        Utils.hideKeyboard(this)
     }
 
     fun onClick(item: MenuItem) {
@@ -140,5 +160,38 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    /**
+     * When the user grants or denies permissions, the result is passed to the fragment that might have requested them
+     */
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == ScannerFragment.REQUEST_CODE_PERMISSIONS) {
+            supportFragmentManager.fragments.forEach {
+                it.childFragmentManager.fragments.forEach { it2 ->
+                    if (it2 is ScannerFragment) {
+                        it2.requestPermissionsResult(
+                            requestCode,
+                            permissions,
+                            grantResults
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Companion for static variables
+     */
+    companion object {
+        /**
+         * Tag for logging
+         */
+        private const val TAG = "MainActivity"
     }
 }

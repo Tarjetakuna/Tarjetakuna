@@ -6,53 +6,59 @@
     android:layout_height="match_parent"
     tools:context=".ui.scanner.ScannerFragment">
 
-    <Button
-        android:id="@+id/scanner_scan_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        style="@style/ButtonStyle"
-        android:text="@string/scanner_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scanner_description_text" />
-
     <TextView
         android:id="@+id/scanner_description_text"
-        android:layout_width="354dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="80dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/small_margin"
         android:text="@string/scanner_description"
         android:textAlignment="center"
         style="@style/LargeTextStyle"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/scanner_information_text"
-        android:layout_width="276dp"
-        android:layout_height="59dp"
-        android:layout_marginTop="32dp"
-        style="@style/DescriptionStyleNormal"
+    <androidx.camera.view.PreviewView
+        android:id="@+id/scanner_imagePreview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:layout_marginBottom="@dimen/small_margin"
+        android:contentDescription="@string/scanner_content_description_image"
+        app:layout_constraintBottom_toTopOf="@+id/scanner_textInImage_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scanner_scan_button" />
+        app:layout_constraintTop_toBottomOf="@+id/scanner_description_text"
+        tools:src="@tools:sample/avatars">
 
-    <ImageView
-        android:id="@+id/scanner_image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="32dp"
-        android:contentDescription="@string/scanner_content_description_image"
+    </androidx.camera.view.PreviewView>
+
+    <Button
+        android:id="@+id/scanner_save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scanner_save_button"
+        app:layout_constraintBottom_toBottomOf="@+id/scanner_imagePreview"
+        app:layout_constraintEnd_toEndOf="@+id/scanner_imagePreview"
+        app:layout_constraintStart_toStartOf="@+id/scanner_imagePreview" />
+
+
+    <TextView
+        android:id="@+id/scanner_textInImage_text"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:layout_marginBottom="@dimen/small_margin"
+        android:text="@string/scanner_no_text_detected_yet"
+        style="@style/DescriptionStyleNormal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scanner_information_text"
-        app:layout_constraintVertical_bias="0.318"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
