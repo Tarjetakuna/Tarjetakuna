@@ -6,8 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import coil.ComponentRegistry
 import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.decode.SvgDecoder
+import coil.imageLoader
 import coil.load
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentSingleSetBinding
@@ -46,9 +51,15 @@ class SingleSetFragment : Fragment() {
             binding.singleSetSetReleaseDate.text =
                 getString(R.string.single_set_release_date, set.releaseDate.toString())
 
-            binding.singleSetSetImage.load(set.iconUri) {
-                crossfade(true)
-            }
+            ImageLoader.Builder(requireContext())
+                .components {
+                    add(SvgDecoder.Factory())
+                }
+                .build()
+                .enqueue(ImageRequest.Builder(requireContext())
+                    .data(set.iconUri)
+                    .target(binding.singleSetSetImage)
+                    .build())
 
 
         } catch (e: Exception) {

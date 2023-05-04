@@ -108,5 +108,6 @@
     <string name="single_set_block">Block : %1$s</string>
     <string name="single_set_release_date">Release date : %1$s</string>
     <string name="single_set_error_loading">Error loading the set</string>
+    <string name="single_set_cards_number_in_possession">You have %1$s card(s) of this set</string>
 
 </resources>
