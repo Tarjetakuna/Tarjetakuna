@@ -42,6 +42,7 @@ class ScannerFragment : Fragment() {
     private var _takingPicture: Boolean = false
     val isTakingPicture get() = _takingPicture
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,6 +51,15 @@ class ScannerFragment : Fragment() {
         scannerViewModel = ViewModelProvider(this)[ScannerViewModel::class.java]
         _binding = FragmentScannerBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        // bind the view model to the layout when text or object is detected in image
+        scannerViewModel.textDetected.observe(viewLifecycleOwner) {
+            binding.scannerTextInImageText.text = analyseText(it)
+        }
+
+        binding.scannerSaveButton.setOnClickListener {
+            savePicture()
+        }
 
         // Code adapted from https://developer.android.com/training/camerax
         // Request camera permissions
@@ -65,18 +75,33 @@ class ScannerFragment : Fragment() {
             }
         }
 
-        // bind the view model to the layout when text or object is detected in image
-        scannerViewModel.textDetected.observe(viewLifecycleOwner) {
-            binding.scannerTextInImageText.text = it.text
-        }
-
-        binding.scannerSaveButton.setOnClickListener {
-            savePicture()
-        }
-
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         return root
+    }
+
+    /**
+     * Analyse the text in the image and return the likely card information based on position
+     * of the text in image
+     */
+    private fun analyseText(text: Text): String {
+        // TODO : analyse text and return card information
+        for (block in text.textBlocks) {
+            val blockText = block.text
+            val blockCornerPoints = block.cornerPoints
+            val blockFrame = block.boundingBox
+            for (line in block.lines) {
+                val lineText = line.text
+                val lineCornerPoints = line.cornerPoints
+                val lineFrame = line.boundingBox
+                for (element in line.elements) {
+                    val elementText = element.text
+                    val elementCornerPoints = element.cornerPoints
+                    val elementFrame = element.boundingBox
+                }
+            }
+        }
+        return text.text
     }
 
     // Code adapted from https://developer.android.com/training/camerax
