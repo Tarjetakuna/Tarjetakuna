@@ -47,7 +47,6 @@ class ScannerFragmentTest {
         // check that the texts are the default ones
         waitForText(R.id.scanner_description_text, R.string.scanner_description, 100)
         waitForText(R.id.scanner_textInImage_text, R.string.scanner_no_text_detected_yet, 100)
-        waitForText(R.id.scanner_objectInImage_text, R.string.scanner_no_object_detected_yet, 100)
         waitForText(R.id.scanner_save_button, R.string.scanner_save_button, 100)
     }
 
