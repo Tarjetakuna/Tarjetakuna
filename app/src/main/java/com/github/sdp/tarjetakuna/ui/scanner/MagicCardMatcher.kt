@@ -27,21 +27,29 @@ class MagicCardMatcher(
 //        }
 //        Log.w(TAG, "Bounding box is: " + bb)
 
-        //
-        val name = text.textBlocks[0].text
-        Log.w(TAG, "name is: " + name)
-
-        val type = text.textBlocks[1].text
-        Log.w(TAG, "type is: " + type)
-
-        val power = findPower(text)
-        Log.w(TAG, "Power is: " + power)
-        val card =
-            MagicCard(
-                text.textBlocks[0].text,
-                power = power[0].first,
-                toughness = power[0].second,
-            )
+        var card = MagicCard()
+        // get the name of the card
+        if (text.textBlocks.size < 1) {
+            Log.w(TAG, "No text blocks found for name")
+        } else {
+            val powerToughness = findPowerToughness(text)
+            if (text.textBlocks.size < 2) {
+                card = MagicCard(
+                    name = text.textBlocks[0].text,
+                    power = powerToughness.first,
+                    toughness = powerToughness.second
+                )
+                Log.w(TAG, "No text blocks found for type")
+            } else {
+                val type = text.textBlocks[1].text
+                Log.d(TAG, "type is: " + type)
+                card = MagicCard(
+                    name = text.textBlocks[0].text,
+                    power = powerToughness.first,
+                    toughness = powerToughness.second
+                )
+            }
+        }
 
 //        for (textBlock in text.textBlocks) {
 //            Log.w(TAG, "TextBlock text is: " + textBlock.text)
@@ -68,8 +76,8 @@ class MagicCardMatcher(
         return card
     }
 
-    private fun findPower(text: Text): List<Pair<String, String>> {
-        val power = emptyList<Pair<String, String>>().toMutableList()
+    private fun findPowerToughness(text: Text): Pair<String, String> {
+        var power = Pair("0", "0")
         for (textBlock in text.textBlocks) {
             for (line in textBlock.lines) {
                 for (element in line.elements) {
@@ -78,7 +86,7 @@ class MagicCardMatcher(
                         if (split.size != 2) {
                             continue
                         }
-                        power.add(Pair(split[0], split[1]))
+                        power = (Pair(split[0], split[1]))
                     }
                 }
             }
