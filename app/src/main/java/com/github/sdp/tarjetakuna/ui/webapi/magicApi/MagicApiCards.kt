@@ -1,12 +1,12 @@
 package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 
 /**
- * List of MagicCard (need to match the doc in api.magicthegathering.io/v1/)
+ * List of [MagicApiCard] (need to match the doc in https://api.scryfall.com)
+ * This data class is mandatory to receive the data from the api (a list of [MagicApiCard] is not enough)
  */
 data class MagicApiCards(
-    val cards: List<MagicCard>
-) {
-    override fun toString(): String {
-        return cards.joinToString(separator = "\n\n")
-    }
-}
+    val total_cards: Int,
+    val has_more: Boolean,
+    val next_page: String?,
+    val data: List<MagicApiCard>
+)

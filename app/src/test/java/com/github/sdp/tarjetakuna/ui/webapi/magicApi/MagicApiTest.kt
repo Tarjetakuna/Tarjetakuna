@@ -21,8 +21,8 @@ class MagicApiTest {
      * Test that the call is not executed but that the call is created
      */
     @Test
-    fun test_GetCards() {
-        val call = api.getCards()
+    fun test_GetRandomCard() {
+        val call = api.getRandomCard()
 
         assert(call.isExecuted.not())
     }

@@ -7,7 +7,7 @@ import org.junit.Test
  */
 class WebApiTest {
 
-    private val magicUrlTest = "https://api.magicthegathering.io/v1/"
+    private val magicUrlTest = "https://api.scryfall.com"
 
     @Test
     fun test_url() {

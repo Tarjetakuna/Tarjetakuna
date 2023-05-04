@@ -42,10 +42,10 @@ class WebApiFragment : Fragment() {
         binding.apiResults.movementMethod = ScrollingMovementMethod()
 
         // set the buttons listeners for the webapi
-        binding.apiCardsButton.setOnClickListener {
+        binding.apiRandomCardButton.setOnClickListener {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
-            viewModel.getCards(this.requireContext())
+            viewModel.getRandomCard(this.requireContext())
         }
 
         binding.apiCardsByNameButton.setOnClickListener {
@@ -61,12 +61,6 @@ class WebApiFragment : Fragment() {
             hideKeyboard()
             binding.apiResults.text = getString(R.string.api_waiting_results)
             viewModel.getCardsBySet(this.requireContext(), binding.apiSetIdEdittext.text.toString())
-        }
-
-        binding.apiCardByIdButton.setOnClickListener {
-            hideKeyboard()
-            binding.apiResults.text = getString(R.string.api_waiting_results)
-            viewModel.getCardById(this.requireContext(), binding.apiCardIdEdittext.text.toString())
         }
 
         binding.apiSetsButton.setOnClickListener {

@@ -1,25 +1,26 @@
 package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 
-import com.github.sdp.tarjetakuna.utils.TestHelperWebApi
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
+import com.github.sdp.tarjetakuna.mockdata.CommonMagicApiCard
 import org.junit.Test
 
 class MagicApiCardsTest {
-    @Test
-    fun test_ConstructorWithCards() {
-        val cards = TestHelperWebApi.getCardsResponse()
-        val testCards = MagicApiCards(cards)
-
-        assertThat("cards not empty", testCards.cards.isNotEmpty())
-        assertThat("cards are equal", testCards.cards, equalTo(cards))
-    }
+    private val validTotalCards = 1
+    private val validHasMore = false
+    private val validNextPage = "fake valid next page"
+    private val validCards = listOf(CommonMagicApiCard.mockCard)
 
     @Test
-    fun test_callToString() {
-        val cards = TestHelperWebApi.getCardsResponse()
-        val testCards = MagicApiCards(cards)
+    fun validMagicApiCards() {
+        val cards = MagicApiCards(
+            total_cards = validTotalCards,
+            has_more = validHasMore,
+            next_page = validNextPage,
+            data = validCards
+        )
 
-        assertThat("toString not empty", testCards.toString().isNotEmpty())
+        assert(cards.total_cards == validTotalCards)
+        assert(cards.has_more == validHasMore)
+        assert(cards.next_page == validNextPage)
+        assert(cards.data == validCards)
     }
 }
