@@ -49,12 +49,6 @@ class SignOutFragment : Fragment() {
             mainActivity.changeFragment(R.id.nav_home)
         }
 
-        val configureCollectionButton = binding.signOutManageCollectionButton
-        configureCollectionButton.setOnClickListener {
-            val mainActivity = requireActivity() as MainActivity
-            mainActivity.changeFragment(R.id.nav_user_cards)
-        }
-
         return root
     }
 

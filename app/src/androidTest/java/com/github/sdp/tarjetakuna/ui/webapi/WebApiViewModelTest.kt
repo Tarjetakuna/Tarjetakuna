@@ -3,6 +3,7 @@ package com.github.sdp.tarjetakuna.ui.webapi
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.FileReader
@@ -18,7 +19,6 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.hamcrest.CoreMatchers.containsString
-import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
