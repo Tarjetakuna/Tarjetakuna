@@ -16,7 +16,7 @@ data class User(
         require(
             email.matches(
                 Regex(
-                    "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$"
+                    "^[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*\$"
                 )
             )
         ) { "Email is not valid" }

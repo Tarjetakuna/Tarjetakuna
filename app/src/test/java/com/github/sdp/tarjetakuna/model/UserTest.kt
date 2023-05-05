@@ -11,7 +11,9 @@ import org.junit.Test
 class UserTest {
 
     private val validEmail = "validEmail@google.com"
-    private val invalidEmail = "invalidEmail"
+    private val invalidEmail1 = "invalidEmail"
+    private val invalidEmail2 = "invalidEmail@"
+    private val invalidEmail3 = "invalidEmail@google."
     private val validUsername = "validUsername"
     private val validListOfCards = listOf<DBMagicCard>()
     private val validCoordinates = Coordinates(45.0f, 75.0f)
@@ -26,7 +28,15 @@ class UserTest {
     @Test
     fun notAnEmailIsInvalid() {
         Assert.assertThrows(IllegalArgumentException::class.java) {
-            User(invalidEmail, validUsername, validListOfCards, validCoordinates)
+            User(invalidEmail1, validUsername, validListOfCards, validCoordinates)
+        }
+
+        Assert.assertThrows(IllegalArgumentException::class.java) {
+            User(invalidEmail2, validUsername, validListOfCards, validCoordinates)
+        }
+
+        Assert.assertThrows(IllegalArgumentException::class.java) {
+            User(invalidEmail3, validUsername, validListOfCards, validCoordinates)
         }
     }
 
