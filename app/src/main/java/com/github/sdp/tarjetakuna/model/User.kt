@@ -12,7 +12,7 @@ data class User(
     val location: Coordinates
 ) {
     init {
-        require(email.isNotBlank()) { "Username cannot be blank" }
+        require(email.isNotBlank()) { "Email cannot be blank" }
         require(
             email.matches(
                 Regex(
@@ -20,6 +20,6 @@ data class User(
                 )
             )
         ) { "Email is not valid" }
-        require(username.isNotBlank()) { "Username cannot be blank" }
+        require(username.isNotBlank()) { "username cannot be blank" }
     }
 }

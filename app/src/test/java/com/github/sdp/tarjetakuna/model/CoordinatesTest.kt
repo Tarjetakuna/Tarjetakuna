@@ -12,7 +12,7 @@ class CoordinatesTest {
     private val validLongitude = 42.0f
     private val latitudeOutOfRange = 91.0f
     private val longitudeOutOfRange = 181.0f
-    
+
     @Test
     fun latitudeMustBeInRange() {
         val coordinatesLatitudeLower = Coordinates(-latitudeOutOfRange, validLongitude)

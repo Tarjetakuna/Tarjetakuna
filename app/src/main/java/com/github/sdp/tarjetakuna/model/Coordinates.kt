@@ -2,6 +2,7 @@ package com.github.sdp.tarjetakuna.model
 
 /**
  * Represents a pair of coordinates.
+ * It is used to represent a location for a user.
  */
 data class Coordinates(
     var latitude: Float,
