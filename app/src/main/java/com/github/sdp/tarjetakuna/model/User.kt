@@ -20,6 +20,6 @@ data class User(
                 )
             )
         ) { "Email is not valid" }
-        require(username.isNotBlank()) { "username cannot be blank" }
+        require(username.isNotBlank()) { "Username cannot be blank" }
     }
 }
