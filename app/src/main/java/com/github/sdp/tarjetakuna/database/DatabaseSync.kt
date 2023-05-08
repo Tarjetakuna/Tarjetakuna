@@ -19,12 +19,12 @@ object DatabaseSync {
      */
     @JvmStatic
     fun sync() {
-        val userRTDB = UserCardsRTDB()
+        val userRTDB = UserRTDB()
         if (!userRTDB.isConnected()) {
             Log.i("DatabaseSync", "sync: Not connected to firebase")
             return
         }
-        val cards = userRTDB.getAllCardsFromCollection()
+        val cards = userRTDB.getAllCards()
         cards.thenAccept {
             processSnapshot(it)
         }.exceptionally {
@@ -94,25 +94,25 @@ object DatabaseSync {
      * @param cards the cards to push
      */
     private suspend fun pushChanges(cards: List<DBMagicCard>) {
-        LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
-            .magicCardDao().insertCards(cards)
-        val userRTDB = UserCardsRTDB()
-        userRTDB.addCardsToCollection(cards)
-        Log.i("DatabaseSync", "pushChanges: ${cards.size} cards updated")
+//        LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+//            .magicCardDao().insertCards(cards)
+//        val userRTDB = CardsRTDB()
+//        userRTDB.addCardsToCollection(cards)
+//        Log.i("DatabaseSync", "pushChanges: ${cards.size} cards updated")
     }
 
     /**
      * Add the local database to the remote database.
      */
     private fun addLocalDBToFirebase() {
-        val scope = CoroutineScope(Dispatchers.Default)
-        scope.launch {
-            val localCards =
-                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
-                    .magicCardDao().getAllCards()
-            val userRTDB = UserCardsRTDB()
-            userRTDB.addCardsToCollection(localCards)
-        }
+//        val scope = CoroutineScope(Dispatchers.Default)
+//        scope.launch {
+//            val localCards =
+//                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+//                    .magicCardDao().getAllCards()
+//            val userRTDB = CardsRTDB()
+//            userRTDB.addCardsToCollection(localCards)
+//        }
     }
 
 }

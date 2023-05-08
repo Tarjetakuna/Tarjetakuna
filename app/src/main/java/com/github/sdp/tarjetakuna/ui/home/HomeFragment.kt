@@ -36,7 +36,6 @@ class HomeFragment : Fragment() {
             textView.text = it
 
         }
-
         // TODO remove when not owned card search is implemented
         homeViewModel.localDatabase = LocalDatabaseProvider.setDatabase(
             requireContext(),
@@ -55,7 +54,7 @@ class HomeFragment : Fragment() {
 
         val addRandomCardButton: Button = binding.addRandomCardButton
         addRandomCardButton.setOnClickListener {
-            homeViewModel.addRandomCard()
+            //homeViewModel.addRandomCard()
         }
 
         return root

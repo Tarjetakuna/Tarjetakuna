@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.DatabaseSync
-import com.github.sdp.tarjetakuna.database.UserCardsRTDB
+import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.model.MagicCard
 import kotlinx.coroutines.launch
@@ -30,7 +30,7 @@ class SingleCardViewModel : ViewModel() {
     private val _buttonWantedText = MutableLiveData<Boolean>()
     val buttonWantedText: LiveData<Boolean> = _buttonWantedText
 
-    private var userDB = UserCardsRTDB()
+    private var userDB = UserRTDB()
 
     /**
      * Check if the user is connected to the app with a google account

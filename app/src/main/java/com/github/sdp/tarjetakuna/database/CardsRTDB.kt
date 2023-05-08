@@ -1,6 +1,5 @@
 package com.github.sdp.tarjetakuna.database
 
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -9,79 +8,74 @@ import java.util.concurrent.CompletableFuture
 
 
 /**
- * This class is used to manage the user's collection of cards.
+ * This class is used to manage the global collection of cards contained by all users (no duplicates).
  */
 
-class UserCardsRTDB {
+class CardsRTDB {
     private val db = Firebase.database.reference
-    private val user = Firebase.auth.currentUser
-    private val userCardCollection = if (user != null) db.child(user.uid) else null
-
+    private val cards = db.child("cards")
 
     /**
-     * Checks if the user is connected.
-     */
-    fun isConnected(): Boolean {
-        return user != null
-    }
-
-    /**
-     * Adds a card to the user's collection.
+     * Add a card to the global card collection.
      */
     fun addCardToCollection(fbCard: DBMagicCard) {
         val cardUID = fbCard.code + fbCard.number
         val data = Gson().toJson(fbCard)
-        userCardCollection?.child(cardUID)?.setValue(data)
+        cards.child(cardUID).setValue(data)
     }
 
     /**
-     * Adds a list of cards to the user's collection.
+     * Add a list of cards to the global collection.
      */
-    fun addCardsToCollection(fbCards: List<DBMagicCard>) {
+    fun addMultipleCardsToCollection(fbCards: List<DBMagicCard>) {
         for (fbCard in fbCards) {
             addCardToCollection(fbCard)
         }
     }
 
     /**
-     * Removes a card from the user's collection.
+     * Remove a card from the global collection.
      */
     fun removeCardFromCollection(fbCard: DBMagicCard) {
         val cardUID = fbCard.code + fbCard.number
-        userCardCollection?.child(cardUID)?.removeValue()
+        cards.child(cardUID).removeValue()
     }
+
+    //todo:verfiy the card doesn't exist in another user's collection before removing from global collection
 
     /**
      * Retrieves a card asynchronously from the database
      * The card is identified by only its set code and its number
      */
-    fun getCardFromCollection(fbCard: DBMagicCard): CompletableFuture<DataSnapshot> {
+    fun getCardFromCollection(
+        fbCard: DBMagicCard
+    ): CompletableFuture<DataSnapshot> {
         val cardUID = fbCard.code + fbCard.number
         val future = CompletableFuture<DataSnapshot>()
-        userCardCollection?.child(cardUID)?.get()?.addOnSuccessListener {
+        cards.child(cardUID).get().addOnSuccessListener {
             if (it.value == null) {
-                future.completeExceptionally(NoSuchFieldException("card $cardUID is not in your collection"))
+                future.completeExceptionally(NoSuchFieldException("card $cardUID is not in global collection"))
             } else {
                 future.complete(it)
             }
-        }?.addOnFailureListener {
+        }.addOnFailureListener {
             future.completeExceptionally(it)
         }
         return future
     }
 
     /**
-     * Retrieves all the cards asynchronously from the database
+     * Retrieve all the cards asynchronously from the database
      */
     fun getAllCardsFromCollection(): CompletableFuture<DataSnapshot> {
         val future = CompletableFuture<DataSnapshot>()
-        userCardCollection?.get()?.addOnSuccessListener {
+        cards.get().addOnSuccessListener {
             if (it.value == null) {
-                future.completeExceptionally(NoSuchFieldException("you don't have any card in your collection"))
+                future.completeExceptionally(NoSuchFieldException("no cards in global collection"))
             } else {
                 future.complete(it)
             }
-        }?.addOnFailureListener {
+        }.addOnFailureListener {
             future.completeExceptionally(it)
         }
         return future
