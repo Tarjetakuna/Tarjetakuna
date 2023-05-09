@@ -16,10 +16,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
 import com.github.sdp.tarjetakuna.extra.ExportCollection
+import com.github.sdp.tarjetakuna.location.Location
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
-import com.github.sdp.tarjetakuna.permissions.Location
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
 import com.google.android.material.navigation.NavigationView
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         updateHeader()
 
         // ask for location permission
-        Location.askForLocationPermission(this)
+        Location.captureCurrentLocation(this)
     }
 
     // Change fragment
@@ -153,6 +153,6 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // Handle location permission result, if granted, get current location
-        Location.getCurrentLocation(this)
+        Location.captureCurrentLocation(this)
     }
 }

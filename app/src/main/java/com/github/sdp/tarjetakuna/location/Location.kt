@@ -1,20 +1,24 @@
-package com.github.sdp.tarjetakuna.permissions
+package com.github.sdp.tarjetakuna.location
 
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationListener
 import android.location.LocationManager
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.github.sdp.tarjetakuna.model.Coordinates
 
 object Location {
+
+
+    private var currentLocation: Coordinates = Coordinates(0.0, 0.0)
 
     /**
      * Check if the location permission is granted, and if not, request it
      */
     fun askForLocationPermission(context: AppCompatActivity): Boolean {
-        val requestcode = 1
         return if (ActivityCompat.checkSelfPermission(
                 context,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION
@@ -33,8 +37,7 @@ object Location {
     /**
      * Get the current location of the user if the permission is granted
      */
-    fun getCurrentLocation(context: AppCompatActivity) {
-        val requestcode = 1
+    fun captureCurrentLocation(context: AppCompatActivity) {
         // Check if the location permission is granted, and if not, request it
         if (ActivityCompat.checkSelfPermission(
                 context,
@@ -44,6 +47,7 @@ object Location {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            Log.i("Location", "Permission not granted")
             // Do nothing since the user rejected the permission
         } else {
             val locationManager =
@@ -60,8 +64,10 @@ object Location {
 
     // What to do when the location changes
     private val locationListener: LocationListener = LocationListener { location ->
-        println(location.latitude)
-        println(location.longitude)
+        val newLocation = Coordinates(location.latitude, location.longitude)
+        if (!currentLocation.isSameCoordAs(newLocation)) {
+            currentLocation = newLocation
+        }
     }
 
     /**
@@ -77,5 +83,12 @@ object Location {
             ),
             requestcode
         )
+    }
+
+    /**
+     * Getter for the current location
+     */
+    fun getCurrentLocation(): Coordinates {
+        return currentLocation
     }
 }
