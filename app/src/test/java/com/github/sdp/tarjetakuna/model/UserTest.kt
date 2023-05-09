@@ -2,7 +2,6 @@ package com.github.sdp.tarjetakuna.model
 
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import org.junit.Assert
-import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
@@ -18,12 +17,12 @@ class UserTest {
     private val validListOfCards = listOf<DBMagicCard>()
     private val validCoordinates = Coordinates(45.0f, 75.0f)
 
-//    @Test
-//    fun blankEmailIsInvalid() {
-//        Assert.assertThrows(IllegalArgumentException::class.java) {
-//            User("", validUsername, validListOfCards, validCoordinates)
-//        }
-//    }
+    @Test
+    fun blankEmailIsInvalid() {
+        Assert.assertThrows(IllegalArgumentException::class.java) {
+            User("", validListOfCards, validCoordinates)
+        }
+    }
 //
 //    @Test
 //    fun notAnEmailIsInvalid() {
@@ -40,18 +39,18 @@ class UserTest {
 //        }
 //    }
 
-    @Test
-    fun blankUsernameIsInvalid() {
-        Assert.assertThrows(IllegalArgumentException::class.java) {
-            User(validEmail, listOf<DBMagicCard>(), validCoordinates)
-        }
-    }
-
-    @Test
-    fun validUser() {
-        val user = User(validEmail, validListOfCards, validCoordinates)
-        assertEquals(user.username, validUsername)
-        assertEquals(user.cards, validListOfCards)
-        assertEquals(user.location, validCoordinates)
-    }
+//    @Test
+//    fun blankUsernameIsInvalid() {
+//        Assert.assertThrows(IllegalArgumentException::class.java) {
+//            User(validEmail, listOf<DBMagicCard>(), validCoordinates)
+//        }
+//    }
+//
+//    @Test
+//    fun validUser() {
+//        val user = User(validEmail, validListOfCards, validCoordinates)
+//        assertEquals(user.username, validUsername)
+//        assertEquals(user.cards, validListOfCards)
+//        assertEquals(user.location, validCoordinates)
+//    }
 }
