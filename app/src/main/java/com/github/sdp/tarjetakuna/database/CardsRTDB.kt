@@ -59,10 +59,20 @@ class CardsRTDB {
         return future
     }
 
+    fun getMultipleCardsFromGlobalCollection(cardUIDs: List<String>): CompletableFuture<DataSnapshot>? {
+        val cards = ArrayList<CompletableFuture<DataSnapshot>>()
+        for (cardUID in cardUIDs) {
+            getCardFromGlobalCollection(cardUID).thenAccept {
+
+            }
+        }
+        return null
+    }
+
     /**
      * Retrieve all the cards asynchronously from the database
      */
-    fun getAllCardsFromCollection(): CompletableFuture<DataSnapshot> {
+    fun getAllCardsFromGlobalCollection(): CompletableFuture<DataSnapshot> {
         val future = CompletableFuture<DataSnapshot>()
         cards.get().addOnSuccessListener {
             if (it.value == null) {

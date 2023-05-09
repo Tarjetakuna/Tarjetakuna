@@ -20,18 +20,20 @@ object DatabaseSync {
     @JvmStatic
     fun sync() {
         val userRTDB = UserRTDB()
+        val cardsRTDB = CardsRTDB()
         if (!userRTDB.isConnected()) {
             Log.i("DatabaseSync", "sync: Not connected to firebase")
             return
         }
-        val cards = userRTDB.getAllCards()
-        cards.thenAccept {
-            processSnapshot(it)
-        }.exceptionally {
-            Log.i("DatabaseSync", "no cards found in database}")
-            addLocalDBToFirebase()
-            null
-        }
+        val cardsUIDs = userRTDB.getAllCardsFromUserCollection()
+        //todo: fix this
+//        cards.thenAccept {
+//            processSnapshot(it)
+//        }.exceptionally {
+//            Log.i("DatabaseSync", "no cards found in database}")
+//            addLocalDBToFirebase()
+//            null
+//        }
     }
 
     /**

@@ -12,7 +12,6 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
@@ -55,7 +54,7 @@ class BrowserFragmentTest {
             withTimeout(5000) {
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
                     ?.magicCardDao()?.insertCards(
-                        generateCards().map { DBMagicCard.fromMagicCard(it, CardPossession.OWNED) }
+                        generateCards().map { DBMagicCard.fromMagicCard(it) }
                     )
             }
         }
