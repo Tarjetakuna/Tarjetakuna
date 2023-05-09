@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         updateHeader()
 
         // ask for location permission
-        Location.getCurrentLocation(this)
+        Location.askForLocationPermission(this)
     }
 
     // Change fragment
@@ -144,5 +144,15 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // Handle location permission result, if granted, get current location
+        Location.getCurrentLocation(this)
     }
 }
