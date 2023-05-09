@@ -19,6 +19,7 @@ import com.github.sdp.tarjetakuna.extra.ExportCollection
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
+import com.github.sdp.tarjetakuna.permissions.Location
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
 import com.google.android.material.navigation.NavigationView
@@ -94,6 +95,9 @@ class MainActivity : AppCompatActivity() {
         sharedPref.registerOnSharedPreferenceChangeListener(sharedPrefListener)
 
         updateHeader()
+
+        // ask for location permission
+        Location.getCurrentLocation(this)
     }
 
     // Change fragment
