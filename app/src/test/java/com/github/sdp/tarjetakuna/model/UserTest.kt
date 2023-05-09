@@ -18,39 +18,38 @@ class UserTest {
     private val validListOfCards = listOf<DBMagicCard>()
     private val validCoordinates = Coordinates(45.0f, 75.0f)
 
-    @Test
-    fun blankEmailIsInvalid() {
-        Assert.assertThrows(IllegalArgumentException::class.java) {
-            User("", validUsername, validListOfCards, validCoordinates)
-        }
-    }
-
-    @Test
-    fun notAnEmailIsInvalid() {
-        Assert.assertThrows(IllegalArgumentException::class.java) {
-            User(invalidEmail1, validUsername, validListOfCards, validCoordinates)
-        }
-
-        Assert.assertThrows(IllegalArgumentException::class.java) {
-            User(invalidEmail2, validUsername, validListOfCards, validCoordinates)
-        }
-
-        Assert.assertThrows(IllegalArgumentException::class.java) {
-            User(invalidEmail3, validUsername, validListOfCards, validCoordinates)
-        }
-    }
+//    @Test
+//    fun blankEmailIsInvalid() {
+//        Assert.assertThrows(IllegalArgumentException::class.java) {
+//            User("", validUsername, validListOfCards, validCoordinates)
+//        }
+//    }
+//
+//    @Test
+//    fun notAnEmailIsInvalid() {
+//        Assert.assertThrows(IllegalArgumentException::class.java) {
+//            User(invalidEmail1, validUsername, validListOfCards, validCoordinates)
+//        }
+//
+//        Assert.assertThrows(IllegalArgumentException::class.java) {
+//            User(invalidEmail2, validUsername, validListOfCards, validCoordinates)
+//        }
+//
+//        Assert.assertThrows(IllegalArgumentException::class.java) {
+//            User(invalidEmail3, validUsername, validListOfCards, validCoordinates)
+//        }
+//    }
 
     @Test
     fun blankUsernameIsInvalid() {
         Assert.assertThrows(IllegalArgumentException::class.java) {
-            User(validEmail, "", validListOfCards, validCoordinates)
+            User(validEmail, listOf<DBMagicCard>(), validCoordinates)
         }
     }
 
     @Test
     fun validUser() {
-        val user = User(validEmail, validUsername, validListOfCards, validCoordinates)
-        assertEquals(user.email, validEmail)
+        val user = User(validEmail, validListOfCards, validCoordinates)
         assertEquals(user.username, validUsername)
         assertEquals(user.cards, validListOfCards)
         assertEquals(user.location, validCoordinates)
