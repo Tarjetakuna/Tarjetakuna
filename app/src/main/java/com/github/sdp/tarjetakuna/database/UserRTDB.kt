@@ -2,6 +2,7 @@ package com.github.sdp.tarjetakuna.database
 
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.concurrent.CompletableFuture
@@ -79,30 +80,92 @@ class UserRTDB {
      * Adds a card to the users "owned" collection.
      */
     fun addOwnedCard(card: DBMagicCard) {
-        userOwnedCardCollection?.child(card.code + card.number)?.setValue(card)
-        cardsRTDB.addCardToCollection(card)
+        userOwnedCardCollection?.child(card.code + card.number)?.setValue(1) //todo:quantity
+        cardsRTDB.addCardToGlobalCollection(card)
     }
 
     /**
      * Adds a card to the users "wanted" collection.
      */
     fun addWantedCard(card: DBMagicCard) {
-        userWantedCardCollection?.child(card.code + card.number)?.setValue(card)
-        cardsRTDB.addCardToCollection(card)
+        userWantedCardCollection?.child(card.code + card.number)?.setValue(1) //todo:quantity
+        cardsRTDB.addCardToGlobalCollection(card)
     }
 
     /**
      * Adds a card to the users "trade" collection.
      */
     fun addTradeCard(card: DBMagicCard) {
-        userTradeCardCollection?.child(card.code + card.number)?.setValue(card)
-        cardsRTDB.addCardToCollection(card)
+        userTradeCardCollection?.child(card.code + card.number)?.setValue(1) //todo:quantity
+        cardsRTDB.addCardToGlobalCollection(card)
+    }
+
+    //todo:remove method: verify the card doesn't exist in another user's collection, or user doesn't have multiple cards before removing from global collection
+
+    /**
+     * Get the unique card code from the user's collection asynchronously from the database (based on possession category)
+     */
+    fun getCardCodeFromUserCollection(
+        card: DBMagicCard,
+        possession: CardPossession
+    ): CompletableFuture<DataSnapshot> {
+        val future = CompletableFuture<DataSnapshot>()
+        val db: DatabaseReference? = when (possession) {
+            CardPossession.OWNED -> {
+                userOwnedCardCollection
+            }
+            CardPossession.WANTED -> {
+                userWantedCardCollection
+            }
+            CardPossession.TRADE -> {
+                userTradeCardCollection
+            }
+            else -> {
+                null
+            }
+        }
+        db?.child(card.code + card.number)?.get()
+            ?.addOnSuccessListener {
+                if (it.value == null) {
+                    future.completeExceptionally(NoSuchFieldException("card is not in collection"))
+                } else {
+                    future.complete(it)
+                }
+            }?.addOnFailureListener {
+                future.completeExceptionally(it)
+            }
+        return future
+    }
+
+    /**
+     * Get the card from the user's collection asynchronously from the database (based on possession category)
+     */
+    fun getCardFromUserCollection(
+        card: DBMagicCard,
+        possession: CardPossession
+    ): String {
+        val code = getCardCodeFromUserCollection(card, possession).thenAccept {
+            it.key.toString() //the card code in the user's collection
+
+        }.exceptionally {
+            return@exceptionally null //todo: not sure if this is correct
+        }
+
+        var dbCard = ""
+        cardsRTDB.getCardFromGlobalCollection(code.toString()).thenAccept {
+            dbCard = it.value.toString() //the card in the global collection
+        }.exceptionally { null }
+        return dbCard
     }
 
 
-    fun getAllCards(): CompletableFuture<DataSnapshot> {
-        val c = CardsRTDB()
-        return c.getAllCardsFromCollection()
+    fun getAllCardsFromUserCollection(): List<String> {
+        val cards = mutableListOf<String>()
+        //get each category, need to parse stirng to get card code
+        //get each card from global collection from card code and add to list
+
+        return cards
+
     }
 
 
