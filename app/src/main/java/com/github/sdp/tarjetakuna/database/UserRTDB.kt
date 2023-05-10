@@ -127,12 +127,12 @@ class UserRTDB {
     /**
      * Get all cards (json) from the user's collection asynchronously from the database (based on possession category)
      */
-    fun getAllCardsFromUserCollection(): CompletableFuture<DataSnapshot>? {
+    fun getAllCardsFromUserCollection(): CompletableFuture<DataSnapshot> {
         //todo
-        //get each category, need to parse stirng to get card code
+        //get each category, need to parse string to get card code
         //get each card from global collection from card code and add to list
 
-        return null
+        return CompletableFuture<DataSnapshot>()
 
     }
 
