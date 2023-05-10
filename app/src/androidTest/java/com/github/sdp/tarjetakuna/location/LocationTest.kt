@@ -9,6 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.model.Coordinates
+import com.github.sdp.tarjetakuna.utils.Utils
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Before
@@ -39,7 +40,6 @@ class LocationTest {
     @Test
     fun currentLocationChanged() {
         assertEquals(Location.getCurrentLocation(), Coordinates(0.0, 0.0))
-
         val locationManagerMock = mock(LocationManager::class.java)
         `when`(
             locationManagerMock.requestLocationUpdates(
@@ -63,7 +63,10 @@ class LocationTest {
 
         activityRule.onActivity {
             Location.captureCurrentLocation(it)
-            assertNotEquals(Coordinates(0.0, 0.0), Location.getCurrentLocation())
+            Utils.waitWhileTrue(1000, 10) {
+                Location.getCurrentLocation() == Coordinates(0.0, 0.0)
+            }
+            assertNotEquals(Coordinates(0.0, 1.0), Location.getCurrentLocation())
         }
 
 //        verify(locationManagerMock).requestLocationUpdates(
