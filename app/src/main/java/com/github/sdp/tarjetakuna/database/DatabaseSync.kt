@@ -25,7 +25,7 @@ object DatabaseSync {
             Log.i("DatabaseSync", "sync: Not connected to firebase")
             return
         }
-        val cardsUIDs = userRTDB.getAllCardsFromUserCollection()
+//        val cardsUIDs = userRTDB.getAllCardsFromUserCollection()
         //todo: fix this
 //        cards.thenAccept {
 //            processSnapshot(it)

@@ -54,7 +54,7 @@ class HomeFragment : Fragment() {
 
         val addRandomCardButton: Button = binding.addRandomCardButton
         addRandomCardButton.setOnClickListener {
-            //homeViewModel.addRandomCard()
+            homeViewModel.addRandomCard()
         }
 
         return root

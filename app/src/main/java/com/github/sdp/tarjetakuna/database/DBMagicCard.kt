@@ -10,12 +10,22 @@ import com.google.gson.Gson
 @Entity(tableName = "magic_card", primaryKeys = ["code", "number"])
 data class DBMagicCard(
     val card: String,
+    val possession: CardPossession,
     val lastUpdate: Long,
     val code: String,
     val number: Int,
 ) {
     constructor(card: MagicCard) : this(
         card = Gson().toJson(card),
+        possession = CardPossession.NONE,
+        lastUpdate = System.currentTimeMillis(),
+        code = card.set.code,
+        number = card.number,
+    )
+
+    constructor(card: MagicCard, possession: CardPossession) : this(
+        card = Gson().toJson(card),
+        possession = possession,
         lastUpdate = System.currentTimeMillis(),
         code = card.set.code,
         number = card.number,
@@ -29,8 +39,11 @@ data class DBMagicCard(
         /**
          * Create a DBMagicCard from a MagicCard
          */
-        fun fromMagicCard(card: MagicCard): DBMagicCard {
-            return DBMagicCard(card)
+        fun fromMagicCard(
+            card: MagicCard,
+            possession: CardPossession = CardPossession.NONE
+        ): DBMagicCard {
+            return DBMagicCard(card, possession)
         }
     }
 }

@@ -29,7 +29,7 @@ data class User(
     private val userRTDB = UserRTDB()
     fun getAllCards(username: String = this.username): CompletableFuture<DataSnapshot> {
         //todo
-        return userRTDB.getAllCardsFromUserCollection()
+        return userRTDB.getAllCardsFromUserCollection()!!
     }
 
     fun getAllTradeCards(username: String = this.username) {
