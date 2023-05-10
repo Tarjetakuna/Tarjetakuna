@@ -1,26 +1,20 @@
 package com.github.sdp.tarjetakuna.database
 
-import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
-import java.util.concurrent.CompletableFuture
 
 /**
  * This class is used to manage the global collection of cards contained by all users (no duplicates).
  */
 
-class CardsRTDB {
-    private val db = Firebase.database.reference
-    private val cards = db.child("cards")
+class CardsRTDB(val database: FirebaseInterface = FirebaseWrapper(Firebase.database.reference)) {
+
 
     /**
      * Add a card to the global card collection.
      */
     fun addCardToGlobalCollection(fbCard: DBMagicCard) {
-        val cardUID = fbCard.code + fbCard.number
-        val data = Gson().toJson(fbCard)
-        cards.child(cardUID).setValue(data)
+        database.addCardGlobal(fbCard)
     }
 
     /**
@@ -36,53 +30,48 @@ class CardsRTDB {
      * Remove a card from the global collection.
      */
     fun removeCardFromGlobalCollection(cardUID: String) {
-        cards.child(cardUID).removeValue()
+        database.removeCardGlobal(cardUID)
     }
 
     /**
      * Retrieves a card asynchronously from the database
      * The card is identified by only its set code and its number
+     * @return the card if it exists, null otherwise
      */
-    fun getCardFromGlobalCollection(
-        cardUID: String
-    ): CompletableFuture<DataSnapshot> {
-        val future = CompletableFuture<DataSnapshot>()
-        cards.child(cardUID).get().addOnSuccessListener {
-            if (it.value == null) {
-                future.completeExceptionally(NoSuchFieldException("card $cardUID is not in global collection"))
-            } else {
-                future.complete(it)
-            }
-        }.addOnFailureListener {
-            future.completeExceptionally(it)
+    fun getCardFromGlobalCollection(cardUID: String): DBMagicCard? {
+        val card = database.getCardGlobal(cardUID)
+        return try {
+            card.get()
+        } catch (e: Exception) {
+            null
         }
-        return future
     }
 
-    fun getMultipleCardsFromGlobalCollection(cardUIDs: List<String>): CompletableFuture<DataSnapshot>? {
-        val cards = ArrayList<CompletableFuture<DataSnapshot>>()
+    /**
+     * Retrieves a list of cards asynchronously from the database
+     * The cards are identified by only their set code and their number
+     * @return the cards if they exist, null otherwise
+     */
+    fun getMultipleCardsFromGlobalCollection(cardUIDs: List<String>): List<DBMagicCard>? {
+        val cards = mutableListOf<DBMagicCard>()
         for (cardUID in cardUIDs) {
-            getCardFromGlobalCollection(cardUID).thenAccept {
-
+            val card = getCardFromGlobalCollection(cardUID)
+            if (card != null) {
+                cards.add(card)
             }
         }
-        return null
+        return cards
     }
 
     /**
      * Retrieve all the cards asynchronously from the database
      */
-    fun getAllCardsFromGlobalCollection(): CompletableFuture<DataSnapshot> {
-        val future = CompletableFuture<DataSnapshot>()
-        cards.get().addOnSuccessListener {
-            if (it.value == null) {
-                future.completeExceptionally(NoSuchFieldException("no cards in global collection"))
-            } else {
-                future.complete(it)
-            }
-        }.addOnFailureListener {
-            future.completeExceptionally(it)
+    fun getAllCardsFromGlobalCollection(): List<DBMagicCard>? {
+        val cards = database.getAllCardsGlobal()
+        return try {
+            cards.get()
+        } catch (e: Exception) {
+            null
         }
-        return future
     }
 }

@@ -11,9 +11,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.model.*
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
-import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.CustomGlide
 import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
 import com.google.gson.Gson
@@ -217,7 +217,8 @@ class SingleCardFragmentTest {
      */
     @Test
     fun testTypeTextWorkCorrectlyWithArtifactNoSubtype() {
-        val anotherValidMagicCard = validMagicCard.copy(type = MagicCardType.ARTIFACT, subtypes = listOf())
+        val anotherValidMagicCard =
+            validMagicCard.copy(type = MagicCardType.ARTIFACT, subtypes = listOf())
         val anotherValidJson = Gson().toJson(anotherValidMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)

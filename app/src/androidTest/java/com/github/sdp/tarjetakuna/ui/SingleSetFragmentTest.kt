@@ -9,13 +9,13 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.mockdata.CommonMagicSet
 import com.github.sdp.tarjetakuna.model.*
 import com.github.sdp.tarjetakuna.ui.singleset.SingleSetFragment
 import com.google.gson.Gson
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
-import com.github.sdp.tarjetakuna.mockdata.CommonMagicSet
 
 /**
  * This class is used to test the SingleSetFragment.

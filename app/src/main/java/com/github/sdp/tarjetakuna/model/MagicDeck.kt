@@ -21,7 +21,7 @@ data class MagicDeck(
     // For the sake of simplicity now, we'll just use MagicCard class.
     // It will be better to use a different class for this (like Magic ID).
     val cards: List<MagicCard>
-    ) {
+) {
     init {
         require(name.isNotBlank()) { "Name cannot be blank" }
     }
