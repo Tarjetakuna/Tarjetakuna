@@ -3,18 +3,28 @@ package com.github.sdp.tarjetakuna.ui.singlecard
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentSingleCardBinding
+import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicCardType
+import com.github.sdp.tarjetakuna.model.User
 import com.github.sdp.tarjetakuna.utils.CustomGlide
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 
 /**
@@ -39,7 +49,8 @@ class SingleCardFragment : Fragment() {
 
 
         loadCardFromJson()
-        // Initialize the local database
+        setUsersTabs()
+        //Initialize the local database
         viewModel.localDatabase = LocalDatabaseProvider.setDatabase(
             requireContext(),
             LocalDatabaseProvider.CARDS_DATABASE_NAME
@@ -149,6 +160,18 @@ class SingleCardFragment : Fragment() {
     }
 
     /**
+     * Sets the tabs to display the users that have the card in their collection or wanted cards.
+     */
+    private fun setUsersTabs() {
+        binding.singleCardViewPager.adapter = ItemFragmentAdapter(requireActivity())
+        TabLayoutMediator(binding.singleCardTabLayout, binding.singleCardViewPager){ tab, position ->
+            tab.text = if (position == 0) getString(R.string.single_card_users_have) else getString(R.string.single_card_users_want)
+            tab.id = position
+        }.attach()
+
+    }
+
+    /**
      * Displays the buttons to add the card to the deck or to the wanted cards if the user is connected.
      * @param userIsConnected true if the user is connected, false otherwise.
      */
@@ -167,5 +190,13 @@ class SingleCardFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private inner class ItemFragmentAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+        override fun getItemCount(): Int = 2
+
+        override fun createFragment(position: Int): Fragment {
+            return ItemFragment.newInstance(position == 0)
+        }
     }
 }

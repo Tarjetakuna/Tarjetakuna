@@ -98,6 +98,7 @@
                 android:layout_marginTop="@dimen/small_margin"
                 android:text=""
                 android:textStyle="italic" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -154,6 +155,33 @@
                 android:layout_marginEnd="@dimen/small_margin"
                 android:text="@string/single_card_ask_connection"
                 android:visibility="gone" />
+
         </LinearLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/singleCard_tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/single_card_users_have"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/single_card_users_want"/>
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/singleCard_viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <FrameLayout
+            android:id="@+id/singleCard_frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

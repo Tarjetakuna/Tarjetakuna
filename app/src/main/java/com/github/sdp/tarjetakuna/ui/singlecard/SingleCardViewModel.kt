@@ -47,7 +47,7 @@ class SingleCardViewModel : ViewModel() {
         if (!userDB.isConnected()) {
             return
         }
-        DatabaseSync.sync()
+        //DatabaseSync.sync()
         viewModelScope.launch {
             val lCard =
                 localDatabase?.magicCardDao()?.getCard(card.set.code, card.number.toString())
@@ -65,7 +65,6 @@ class SingleCardViewModel : ViewModel() {
      * remove it only if it's not owned
      */
     fun manageWantedCollection() {
-
         viewModelScope.launch {
             val lCard =
                 localDatabase?.magicCardDao()?.getCard(card.set.code, card.number.toString())

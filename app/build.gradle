@@ -80,6 +80,7 @@ dependencies {
     // local database
     implementation "androidx.room:room-runtime:2.5.1"
     implementation "androidx.room:room-ktx:2.5.1"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.room:room-compiler:2.5.1"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
     // json - java to kotlin serialization

@@ -12,6 +12,13 @@ import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
+import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.model.MagicCardType
+import com.github.sdp.tarjetakuna.model.MagicLayout
+import com.github.sdp.tarjetakuna.model.MagicRarity
+import com.github.sdp.tarjetakuna.model.MagicSet
+import com.google.gson.Gson
+import java.time.LocalDate
 
 class HomeFragment : Fragment() {
 
@@ -30,6 +37,10 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val arrayCards = ArrayList<String>()
+        arrayCards.add("cards")
+        LocalDatabaseProvider.deleteDatabases(requireContext(), arrayCards)
 
         val textView: TextView = binding.homeWelcomeText
         homeViewModel.titleText.observe(viewLifecycleOwner) {
@@ -55,7 +66,25 @@ class HomeFragment : Fragment() {
 
         val addRandomCardButton: Button = binding.addRandomCardButton
         addRandomCardButton.setOnClickListener {
-            homeViewModel.addRandomCard()
+            //homeViewModel.addRandomCard()
+            val bundle = Bundle()
+            bundle.putString("card", Gson().toJson(MagicCard(
+                "Aeronaut Tinkerer",
+                "Aeronaut Tinkerer has flying as long as you control an artifact. (It can’t be blocked except by creatures with flying or reach.)",
+                MagicLayout.NORMAL,
+                3,
+                "{2}{U}",
+                MagicSet("MT15", "Magic 2015", "core", "Core Set", LocalDate.parse("2014-07-18")),
+                43,
+                "https://cards.scryfall.io/large/front/e/1/e145e85d-1eaa-4ec6-9208-ca6491577302.jpg?1562795701",
+                MagicRarity.COMMON,
+                MagicCardType.CREATURE,
+                listOf("Human", "Artificer"),
+                "2",
+                "3",
+                "William Murai"
+            )))
+            (requireActivity() as MainActivity).changeFragment(R.id.nav_single_card, bundle)
         }
 
         return root

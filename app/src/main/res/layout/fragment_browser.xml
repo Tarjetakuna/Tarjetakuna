@@ -64,32 +64,32 @@
 
             <TextView
                 android:id="@+id/browser_filter_by_set_textview"
-                android:textSize="16sp"
                 style="@style/DescriptionStyleItalic"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="@string/browser_filter_by_set" />
+                android:text="@string/browser_filter_by_set"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/browser_filter_by_set_edittext"
-                android:textSize="16sp"
+                style="@style/EditTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_weight="2"
-                style="@style/EditTextStyle"
-                android:hint="@string/browser_enter_set_code"
                 android:autofillHints="@string/browser_enter_set_code"
-                android:inputType="text" />
+                android:hint="@string/browser_enter_set_code"
+                android:inputType="text"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/browser_filter_by_set_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="8dp"
+                android:layout_weight="1"
                 android:text="@string/browser_apply" />
 
         </LinearLayout>
@@ -101,32 +101,32 @@
 
             <TextView
                 android:id="@+id/browser_filter_by_mana_textview"
-                android:textSize="16sp"
                 style="@style/DescriptionStyleItalic"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:text="@string/browser_filter_by_mana" />
+                android:text="@string/browser_filter_by_mana"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/browser_filter_by_mana_edittext"
-                android:textSize="16sp"
+                style="@style/EditTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_weight="2"
-                style="@style/EditTextStyle"
-                android:hint="@string/browser_enter_manacost"
                 android:autofillHints="@string/browser_enter_manacost"
-                android:inputType="text" />
+                android:hint="@string/browser_enter_manacost"
+                android:inputType="text"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/browser_filter_by_mana_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="8dp"
+                android:layout_weight="1"
                 android:text="@string/browser_apply" />
 
         </LinearLayout>
