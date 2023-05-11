@@ -30,7 +30,8 @@ class MessageListAdapter(val chat: Chat, private val currentUser: User) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.message.text = chat.messages[position].content
-        holder.time.text = DateFormat.getTimeInstance().format(chat.messages[position].timestamp)
+        holder.time.text =
+            DateFormat.getTimeInstance(DateFormat.SHORT).format(chat.messages[position].timestamp)
         holder.date.text = DateFormat.getDateInstance().format(chat.messages[position].timestamp)
     }
 
