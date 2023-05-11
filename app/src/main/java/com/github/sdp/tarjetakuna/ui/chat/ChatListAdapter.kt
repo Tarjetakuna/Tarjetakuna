@@ -14,7 +14,6 @@ import java.text.DateFormat
 class ChatListAdapter(val chats: List<Chat>, private val currentUser: User) :
     RecyclerView.Adapter<ChatListAdapter.ViewHolder>() {
 
-
     /**
      * Interface for managing the click on a chat-item of the recycler view
      */
@@ -26,7 +25,6 @@ class ChatListAdapter(val chats: List<Chat>, private val currentUser: User) :
      * Listener for the click on a chat-item of the recycler view
      */
     var onChatClickListener: OnChatClickListener? = null
-
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val userIcon: ImageView = itemView.findViewById(R.id.chat_user_logo)
@@ -64,8 +62,20 @@ class ChatListAdapter(val chats: List<Chat>, private val currentUser: User) :
             holder.lastMsg.text = ""
         }
 
-        // TODO set the user icon and notification icon
-//        holder.notifIcon.setImageResource(R.drawable.ic_baseline_notifications_24)
+        // update the notification icon
+        val lastRead = if (chats[position].user1.username == currentUser.username) {
+            chats[position].user1LastRead;
+        } else {
+            chats[position].user2LastRead;
+        }
+
+        if (lastMsg != null && lastMsg.timestamp.after(lastRead)) {
+            holder.notifIcon.visibility = View.VISIBLE
+        } else {
+            holder.notifIcon.visibility = View.INVISIBLE
+        }
+
+        // TODO set the user icon
 //        holder.userIcon.setImageResource(R.drawable.ic_baseline_person_24)
 
         holder.itemView.setOnClickListener {

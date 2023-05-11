@@ -24,11 +24,14 @@ class ChatFragment : Fragment() {
 
     private val fakeCoordinates: Coordinates = Coordinates(0.0f, 0.0f)
     private val fakeCards: ArrayList<DBMagicCard> = ArrayList()
+
     private val fakeUser1: User =
         User("fakeUser2.email@gmail.com", "Fake User1", fakeCards, fakeCoordinates)
+    private val fakeLastReadUser1 = Date(1683828691000)
 
     private val fakeUser2: User =
         User("fakeUser2.email@gmail.com", "Fake User2", fakeCards, fakeCoordinates)
+    private val fakeLastReadUser2 = Date(1683828791000)
 
     private val fakeMessage1: Message =
         Message(1325, fakeUser1, fakeUser2, "Hello", Date(1683828633000))
@@ -49,7 +52,8 @@ class ChatFragment : Fragment() {
 
     private val fakeMessages: ArrayList<Message> =
         arrayListOf(fakeMessage1, fakeMessage2, fakeMessage3, fakeMessage4, fakeMessage5)
-    private val fakeChat: Chat = Chat(1200, fakeUser1, fakeUser2, fakeMessages)
+    private val fakeChat: Chat =
+        Chat(1200, fakeUser1, fakeUser2, fakeMessages, fakeLastReadUser1, fakeLastReadUser2)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

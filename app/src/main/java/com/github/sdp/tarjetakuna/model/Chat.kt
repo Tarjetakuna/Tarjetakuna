@@ -8,6 +8,8 @@ data class Chat(
     val user1: User,
     val user2: User,
     val messages: ArrayList<Message>,
+    val user1LastRead: Date,
+    val user2LastRead: Date,
     var timestamp: Date = Date(0)
 ) {
     init {

@@ -12,6 +12,7 @@ import java.text.DateFormat
 
 class MessageListAdapter(val chat: Chat, private val currentUser: User) :
     RecyclerView.Adapter<MessageListAdapter.ViewHolder>() {
+    
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val message: TextView = itemView.findViewById(R.id.msg_content_text)
         val time: TextView = itemView.findViewById(R.id.msg_timestamp_text)
