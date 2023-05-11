@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.Chat
 import com.github.sdp.tarjetakuna.model.User
+import java.text.DateFormat
 
-class ChatListAdapter(val chats: ArrayList<Chat>, private val currentUser: User) :
+class ChatListAdapter(val chats: List<Chat>, private val currentUser: User) :
     RecyclerView.Adapter<ChatListAdapter.ViewHolder>() {
 
 
@@ -28,7 +29,7 @@ class ChatListAdapter(val chats: ArrayList<Chat>, private val currentUser: User)
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val userIcon: ImageView = itemView.findViewById(R.id.chat_item_user_logo)
+        val userIcon: ImageView = itemView.findViewById(R.id.chat_user_logo)
         val user: TextView = itemView.findViewById(R.id.chat_item_user)
         val lastMsgTime: TextView = itemView.findViewById(R.id.chat_item_time)
         val lastMsg: TextView = itemView.findViewById(R.id.chat_item_last_msg)
@@ -56,7 +57,7 @@ class ChatListAdapter(val chats: ArrayList<Chat>, private val currentUser: User)
         // look for the last message and display it
         val lastMsg = chats[position].messages.maxByOrNull { it.timestamp }
         if (lastMsg != null) {
-            holder.lastMsgTime.text = lastMsg.timestamp.toString()
+            holder.lastMsgTime.text = DateFormat.getDateInstance().format(lastMsg.timestamp)
             holder.lastMsg.text = lastMsg.content
         } else {
             holder.lastMsgTime.text = "no messages"
