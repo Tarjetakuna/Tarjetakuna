@@ -91,6 +91,7 @@
     <string name="single_card_ask_connection">Please connect if you want to manage the card</string>
     <string name="single_card_users_have">They have this card</string>
     <string name="single_card_users_want">They want this card</string>
+    <string name="single_card_distance">%1$s km</string>
 
     <string name="browser_filter">Filter</string>
     <string name="browser_sort">Sort</string>
