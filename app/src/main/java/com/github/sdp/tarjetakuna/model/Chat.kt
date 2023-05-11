@@ -5,7 +5,7 @@ data class Chat(
     val id: Int,
     val user1: User,
     val user2: User,
-    val messages: List<Message>
+    val messages: ArrayList<Message>
 ) {
     init {
 

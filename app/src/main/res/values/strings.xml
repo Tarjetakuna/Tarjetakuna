@@ -25,6 +25,8 @@
     <string name="menu_user_cards">User cards</string>
     <string name="menu_single_card">Card</string>
     <string name="menu_single_set">Set</string>
+    <string name="menu_chats">Chats</string>
+    <string name="menu_chat">Chat</string>
 
     <string name="scanner_button">Scan a card</string>
     <string name="scanner_description">Here you can scan a card by clicking on the button below.</string>

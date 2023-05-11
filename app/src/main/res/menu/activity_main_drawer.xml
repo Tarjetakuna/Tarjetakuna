@@ -21,5 +21,10 @@
             android:id="@+id/nav_webapi"
             android:icon="@drawable/baseline_language_24"
             android:title="@string/menu_webapi" />
+
+        <item
+            android:id="@+id/nav_chats"
+            android:icon="@drawable/fui_ic_mail_white_24dp"
+            android:title="@string/menu_chats" />
     </group>
 </menu>

@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/chat_item_user_logo"
-        android:layout_width="84dp"
-        android:layout_height="78dp"
-        android:contentDescription="userLogo" />
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="userLogo"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,6 +28,11 @@
                 android:layout_height="wrap_content"
                 android:text="UserName" />
 
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1" />
+
             <TextView
                 android:id="@+id/chat_item_time"
                 android:layout_width="wrap_content"
@@ -42,8 +49,12 @@
                 android:id="@+id/chat_item_last_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Last Message"
-                app:drawableEndCompat="" />
+                android:text="Last Message" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/chat_item_notif"
