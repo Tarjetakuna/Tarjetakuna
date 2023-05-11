@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/user_adapter_username"
-        android:layout_width="wrap_content"
+        android:layout_width="115dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:layout_marginEnd="20dp"
@@ -16,14 +16,13 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="5dp"
         app:srcCompat="@drawable/map_marker" />
 
     <TextView
         android:id="@+id/user_adapter_km"
-        android:layout_width="wrap_content"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem" />
@@ -32,17 +31,20 @@
         android:id="@+id/button2"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:layout_weight="1"
         app:icon="@drawable/message"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp" />
+        app:iconGravity="textEnd" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="5dp"
         android:layout_weight="1"
         app:icon="@drawable/account"
-        android:layout_gravity="center_vertical" />
+        app:iconGravity="textEnd" />
 </LinearLayout>

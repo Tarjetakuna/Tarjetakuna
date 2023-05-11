@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.singlecard.SingleCardFragment"
-    android:theme="@style/Theme.Tarjetakuna.NoActionBar">
+    android:theme="@style/Theme.Tarjetakuna.NoActionBar"
+    android:id="@+id/singleCard_scrollView" >
 
     <LinearLayout
         android:layout_width="match_parent"
