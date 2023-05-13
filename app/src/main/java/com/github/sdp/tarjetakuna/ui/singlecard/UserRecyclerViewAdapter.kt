@@ -42,7 +42,7 @@ class UserRecyclerViewAdapter(
     inner class ViewHolder(binding: FragmentUserAdapterBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val usernameView: TextView = binding.userAdapterUsername
-        val kmView: TextView = binding.userAdapterKm
+        val kmView: TextView = binding.userAdapterKmText
     }
 
 }

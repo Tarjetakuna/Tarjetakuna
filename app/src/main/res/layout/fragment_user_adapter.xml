@@ -13,7 +13,7 @@
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/user_adapter_km_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -21,14 +21,14 @@
         app:srcCompat="@drawable/map_marker" />
 
     <TextView
-        android:id="@+id/user_adapter_km"
+        android:id="@+id/user_adapter_km_text"
         android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/user_adapter_message_button"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -39,7 +39,7 @@
         app:iconGravity="textEnd" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/user_adapter_profile_button"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

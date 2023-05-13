@@ -92,7 +92,7 @@ class UsersFragment : Fragment() {
             User(
                 "bastien.jolidon@epfl.ch",
                 "bibi",
-                listOf(fakeDbMagicCard2, fakeDbMagicCard3),
+                listOf(fakeDbMagicCard2, fakeDbMagicCard3, fakeDbMagicCard1),
                 Coordinates(43.4f, -8.6f)
             )
 

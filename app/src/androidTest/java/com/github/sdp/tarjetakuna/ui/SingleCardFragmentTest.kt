@@ -18,7 +18,9 @@ import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.CustomGlide
 import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
+import com.github.sdp.tarjetakuna.utils.WithIndexSafeMatcher.withIndex
 import com.google.gson.Gson
+import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
@@ -265,9 +267,11 @@ class SingleCardFragmentTest {
 
         onView(withText(R.string.single_card_users_have)).check(matches(isDisplayed()))
         onView(withText(R.string.single_card_users_want)).check(matches(isDisplayed()))
-
         onView(withText(R.string.single_card_users_have)).perform(click())
-        //onView(withText("willi")).check(matches(isDisplayed()))
+        onView(withIndex(withText("willi"), 0)).check(matches(isDisplayed()))
+        onView(withIndex(withId(R.id.user_adapter_km_text), 0)).check(matches(isDisplayed()))
+        onView(withIndex(withId(R.id.user_adapter_message_button), 0)).check(matches(isDisplayed()))
+        onView(withIndex(withId(R.id.user_adapter_profile_button), 0))
     }
 
     @Test
@@ -282,6 +286,9 @@ class SingleCardFragmentTest {
         onView(withText(R.string.single_card_users_want)).check(matches(isDisplayed()))
 
         onView(withText(R.string.single_card_users_want)).perform(click())
-        //onView(withText("willi")).check(matches(isDisplayed()))
+        onView(withText("bibi")).check(matches(isDisplayed()))
+        onView(withIndex(withId(R.id.user_adapter_km_text), 0)).check(matches(isDisplayed()))
+        onView(withIndex(withId(R.id.user_adapter_message_button), 0)).check(matches(isDisplayed()))
+        onView(withIndex(withId(R.id.user_adapter_profile_button), 0))
     }
 }
