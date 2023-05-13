@@ -1,26 +1,30 @@
 package com.github.sdp.tarjetakuna.database
 
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.DatabaseReference
 import com.google.gson.Gson
 import java.util.concurrent.CompletableFuture
 
 /**
  * This class is used to manage the global collection of cards contained by all users (no duplicates).
  */
+class CardsRTDB(db: DatabaseReference) {
 
-class CardsRTDB {
-    private val db = Firebase.database.reference
-    private val cards = db.child("cards")
+    private var db: DatabaseReference
+
+    init {
+        this.db = db //Firebase.database.reference.child("cards")
+    }
 
     /**
      * Add a card to the global card collection.
      */
     fun addCardToGlobalCollection(fbCard: DBMagicCard) {
         val cardUID = fbCard.code + fbCard.number
-        val data = Gson().toJson(fbCard)
-        cards.child(cardUID).setValue(data)
+        val newCard =
+            fbCard.clearPossession() //clear the possession when storing in global collection
+        val data = Gson().toJson(newCard)
+        db.child(cardUID).setValue(data)
     }
 
     /**
@@ -36,7 +40,16 @@ class CardsRTDB {
      * Remove a card from the global collection.
      */
     fun removeCardFromGlobalCollection(cardUID: String) {
-        cards.child(cardUID).removeValue()
+        db.child(cardUID).removeValue()
+    }
+
+    /**
+     * Remove a list of cards from the global collection.
+     */
+    fun removeMultipleCardsFromGlobalCollection(cardUIDs: List<String>) {
+        for (cardUID in cardUIDs) {
+            removeCardFromGlobalCollection(cardUID)
+        }
     }
 
     /**
@@ -47,7 +60,7 @@ class CardsRTDB {
         cardUID: String
     ): CompletableFuture<DataSnapshot> {
         val future = CompletableFuture<DataSnapshot>()
-        cards.child(cardUID).get().addOnSuccessListener {
+        db.child(cardUID).get().addOnSuccessListener {
             if (it.value == null) {
                 future.completeExceptionally(NoSuchFieldException("card $cardUID is not in global collection"))
             } else {
@@ -59,14 +72,15 @@ class CardsRTDB {
         return future
     }
 
-    fun getMultipleCardsFromGlobalCollection(cardUIDs: List<String>): CompletableFuture<DataSnapshot>? {
-        val cards = ArrayList<CompletableFuture<DataSnapshot>>()
+    /**
+     * Retrieves a list of cards asynchronously from the database
+     */
+    fun getMultipleCardsFromGlobalCollection(cardUIDs: List<String>): List<CompletableFuture<DataSnapshot>> {
+        val cards = mutableListOf(CompletableFuture<DataSnapshot>())
         for (cardUID in cardUIDs) {
-            getCardFromGlobalCollection(cardUID).thenAccept {
-
-            }
+            getCardFromGlobalCollection(cardUID).let { cards.add(it) }
         }
-        return null
+        return cards
     }
 
     /**
@@ -74,7 +88,7 @@ class CardsRTDB {
      */
     fun getAllCardsFromGlobalCollection(): CompletableFuture<DataSnapshot> {
         val future = CompletableFuture<DataSnapshot>()
-        cards.get().addOnSuccessListener {
+        db.get().addOnSuccessListener {
             if (it.value == null) {
                 future.completeExceptionally(NoSuchFieldException("no cards in global collection"))
             } else {
@@ -85,4 +99,5 @@ class CardsRTDB {
         }
         return future
     }
+    // }
 }

@@ -31,8 +31,18 @@ data class DBMagicCard(
         number = card.number,
     )
 
+    /**
+     * Converts a DBMagicCard to a MagicCard
+     */
     fun toMagicCard(): MagicCard {
         return Gson().fromJson(card, MagicCard::class.java)
+    }
+
+    /**
+     * Creates a DBMagicCard with no possession
+     */ //todo: test this
+    fun clearPossession(): DBMagicCard {
+        return DBMagicCard(this.toMagicCard(), CardPossession.NONE)
     }
 
     companion object {

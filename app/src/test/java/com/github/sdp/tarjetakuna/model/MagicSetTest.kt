@@ -1,8 +1,3 @@
-// ====================
-// MagicSetTest.kt
-// Tarjetakuna, 2023
-// ====================
-
 package com.github.sdp.tarjetakuna.model
 
 import org.junit.Assert.assertEquals
@@ -10,6 +5,9 @@ import org.junit.Assert.assertThrows
 import org.junit.Test
 import java.time.LocalDate
 
+/**
+ * Tests for [MagicSet]
+ */
 class MagicSetTest {
 
     private val validCode = "MT15"

@@ -2,7 +2,10 @@ package com.github.sdp.tarjetakuna.database
 
 import android.util.Log
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
+import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,19 +22,21 @@ object DatabaseSync {
      */
     @JvmStatic
     fun sync() {
-        val userRTDB = UserRTDB()
-        if (!userRTDB.isConnected()) {
+        val userRTDB = UserRTDB(Firebase.database.reference.child("users"))
+        if (!SignIn.getSignIn().isUserLoggedIn()) {
             Log.i("DatabaseSync", "sync: Not connected to firebase")
             return
         }
-        val cards = userRTDB.getAllCardsFromUserCollection()
-        cards.thenAccept {
-            processSnapshot(it)
-        }.exceptionally {
-            Log.i("DatabaseSync", "no cards found in database}")
-            addLocalDBToFirebase()
-            null
-        }
+        //todo: assign the right function for cards
+
+//        val cards = userRTDB.getAllCardsFromUserPossession(Firebase.auth.currentUser!!.uid, CardPossession.OWNED)
+//        cards.thenAccept {
+//            processSnapshot(it)
+//        }.exceptionally {
+//            Log.i("DatabaseSync", "no cards found in database}")
+//            addLocalDBToFirebase()
+//            null
+//        }
     }
 
     /**
@@ -96,7 +101,7 @@ object DatabaseSync {
     private suspend fun pushChanges(cards: List<DBMagicCard>) {
         LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
             .magicCardDao().insertCards(cards)
-        val userRTDB = CardsRTDB()
+        val userRTDB = CardsRTDB(Firebase.database.reference.child("cards"))
         // TODO Change when we can add the cards that we possess
         // TODO cardsSeparated contains the cards separated by possession, it may not be useful depending
         // TODO on how we add the cards to the remote database
@@ -115,7 +120,9 @@ object DatabaseSync {
             val localCards =
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
                     .magicCardDao().getAllCards()
-            val userRTDB = CardsRTDB()
+            val userRTDB = CardsRTDB(
+                Firebase.database.reference.child("cards")
+            )
             // TODO Change when we can add the cards that we possess,
             // TODO cardsSeparated contains the cards separated by possession, it may not be useful depending
             // TODO on how we add the cards to the remote database

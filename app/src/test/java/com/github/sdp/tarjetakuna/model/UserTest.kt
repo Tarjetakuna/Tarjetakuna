@@ -20,10 +20,12 @@ class UserTest {
     @Test
     fun blankEmailIsInvalid() {
         Assert.assertThrows(IllegalArgumentException::class.java) {
-            User("", validListOfCards, validCoordinates)
+            val cards = mutableListOf<DBMagicCard>()
+            cards.addAll(validListOfCards)
+            User("", "", cards, validCoordinates)
         }
     }
-//
+// todo tests
 //    @Test
 //    fun notAnEmailIsInvalid() {
 //        Assert.assertThrows(IllegalArgumentException::class.java) {

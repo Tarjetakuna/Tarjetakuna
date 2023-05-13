@@ -11,6 +11,9 @@ import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.ui.authentication.SignIn
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 /**
@@ -30,13 +33,13 @@ class SingleCardViewModel : ViewModel() {
     private val _buttonWantedText = MutableLiveData<Boolean>()
     val buttonWantedText: LiveData<Boolean> = _buttonWantedText
 
-    private var userDB = UserRTDB()
+    private var userDB = UserRTDB(Firebase.database.reference.child("users"))
 
     /**
      * Check if the user is connected to the app with a google account
      */
     fun checkUserConnected() {
-        _isConnected.value = userDB.isConnected()
+        _isConnected.value = SignIn.getSignIn().isUserLoggedIn()
     }
 
 
@@ -44,7 +47,7 @@ class SingleCardViewModel : ViewModel() {
      * Check if the card is in the collection of the user, either wanted or owned
      */
     fun checkCardInCollection() {
-        if (!userDB.isConnected()) {
+        if (!SignIn.getSignIn().isUserLoggedIn()) {
             return
         }
         DatabaseSync.sync()
