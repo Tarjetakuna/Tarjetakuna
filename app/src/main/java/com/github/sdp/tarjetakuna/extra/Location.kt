@@ -1,4 +1,4 @@
-package com.github.sdp.tarjetakuna.location
+package com.github.sdp.tarjetakuna.extra
 
 import android.Manifest
 import android.content.Context
@@ -70,8 +70,8 @@ object Location {
             currentLocation = newLocation
             Log.i(
                 "Location",
-                "Location changed: latitude: ${Location.getCurrentLocation().latitude}, " +
-                        "longitude: ${Location.getCurrentLocation().longitude}"
+                "Location changed: latitude: ${getCurrentLocation().latitude}, " +
+                        "longitude: ${getCurrentLocation().longitude}"
             )
         }
     }

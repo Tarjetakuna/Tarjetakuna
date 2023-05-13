@@ -1,4 +1,4 @@
-package com.github.sdp.tarjetakuna.location
+package com.github.sdp.tarjetakuna.extra
 
 import android.Manifest
 import android.location.LocationListener
