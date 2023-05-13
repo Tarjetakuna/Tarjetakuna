@@ -40,7 +40,7 @@ data class DBMagicCard(
 
     /**
      * Creates a DBMagicCard with no possession
-     */ //todo: test this
+     */
     fun clearPossession(): DBMagicCard {
         return DBMagicCard(this.toMagicCard(), CardPossession.NONE)
     }

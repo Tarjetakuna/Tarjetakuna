@@ -10,7 +10,7 @@ import java.util.concurrent.CompletableFuture
 class UserRTDB(db: DatabaseReference) { //Firebase.database.reference.child("users") //assumption: we check add ability in User
 
     private var db: DatabaseReference
-    private val cardsRTDB = CardsRTDB(db.child("cards"))
+    private val cardsRTDB = CardsRTDB(FirebaseDB.cardTable())
 
     init {
         this.db = db
@@ -38,7 +38,7 @@ class UserRTDB(db: DatabaseReference) { //Firebase.database.reference.child("use
     /**
      * Removes a card from the users collection.
      */ //todo: handle multiple cards and how this interacts with global collection
-    fun removeCard(card: DBMagicCard, userUID: String) {
+    fun removeCard(userUID: String, card: DBMagicCard) {
         val fbPosession = card.possession.toString().lowercase()
         val cardUID = card.code + card.number
         db.child(userUID).child(fbPosession).child(cardUID)
@@ -49,9 +49,9 @@ class UserRTDB(db: DatabaseReference) { //Firebase.database.reference.child("use
      * Get the unique card code from the user's collection asynchronously from the database (based on possession category)
      */
     private fun getCardCodeFromUserCollection(
-        possession: CardPossession,
         userUID: String,
-        cardUID: String
+        cardUID: String,
+        possession: CardPossession
     ): CompletableFuture<DataSnapshot> {
         val future = CompletableFuture<DataSnapshot>()
         db.child(userUID).child(possession.toString().lowercase()).child(cardUID).get()
@@ -72,12 +72,12 @@ class UserRTDB(db: DatabaseReference) { //Firebase.database.reference.child("use
      */
     //@RequiresApi(Build.VERSION_CODES.S)//for exceptionally
     fun getCardFromUserPossession(
-        fbcard: DBMagicCard,
-        userUID: String
+        userUID: String,
+        fbcard: DBMagicCard
     ): CompletableFuture<DataSnapshot> {
         val cardUID = fbcard.code + fbcard.number
         var future = CompletableFuture<DataSnapshot>()
-        getCardCodeFromUserCollection(fbcard.possession, userUID, cardUID).thenAccept {
+        getCardCodeFromUserCollection(userUID, cardUID, fbcard.possession).thenAccept {
             future =
                 cardsRTDB.getCardFromGlobalCollection(cardUID) //only get the card if the user has it in their collection
         }//todo: not sure how to handle exception case (needs certain api level), is it ok to just not handle this ?
