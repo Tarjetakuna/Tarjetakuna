@@ -5,10 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sdp.tarjetakuna.database.CardPossession
-import com.github.sdp.tarjetakuna.database.DBMagicCard
-import com.github.sdp.tarjetakuna.database.DatabaseSync
-import com.github.sdp.tarjetakuna.database.UserRTDB
+import com.github.sdp.tarjetakuna.database.*
 import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
@@ -33,7 +30,9 @@ class SingleCardViewModel : ViewModel() {
     private val _buttonWantedText = MutableLiveData<Boolean>()
     val buttonWantedText: LiveData<Boolean> = _buttonWantedText
 
-    private var userDB = UserRTDB(Firebase.database.reference.child("users"))
+    private var userDB = UserRTDB(
+        FirebaseDB(Firebase.database.reference)
+    )
 
     /**
      * Check if the user is connected to the app with a google account

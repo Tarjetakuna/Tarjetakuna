@@ -8,12 +8,12 @@ import java.util.concurrent.CompletableFuture
 /**
  * This class is used to manage the global collection of cards contained by all users (no duplicates).
  */
-class CardsRTDB(db: DatabaseReference) {
+class CardsRTDB(database: Database) {
 
     private var db: DatabaseReference
 
     init {
-        this.db = db //Firebase.database.reference.child("cards")
+        this.db = database.cardTable() //Firebase.database.reference.child("cards")
     }
 
     /**

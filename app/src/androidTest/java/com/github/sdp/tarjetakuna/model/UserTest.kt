@@ -4,18 +4,14 @@ import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
-import com.github.sdp.tarjetakuna.database.Database
+import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.github.sdp.tarjetakuna.utils.FBEmulator
 import org.hamcrest.CoreMatchers
 import org.junit.Assert
-import org.junit.Before
+import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import javax.inject.Singleton
 
 /**
  * Tests for [User]
@@ -27,26 +23,19 @@ class UserTest {
     private val invalidUsername1 = "invalidEmail"
     private val invalidUsername2 = "invalidEmail@"
     private val invalidUsername3 = "invalidEmail@google."
-    private val validUID = "validUID"
+    private val validUID = "validUIDhello"
     private val validListOfCards = mutableListOf<DBMagicCard>()
     private val validCoordinates = Coordinates(45.0f, 75.0f)
 
-    private lateinit var mockedDB: Database
+//    private lateinit var mockedDB: Database
 
-    @Singleton
-    private fun provideEmulator(): DatabaseReference {
-        val fb = Firebase.database
-        fb.useEmulator("10.0.2.2", 9000)
-        return fb.reference
+//    private var fb = Firebase.database
 
-    }
 
-    @Before
-    fun setup() {
-        mockedDB = Mockito.mock(Database::class.java)
-        mockedDB.provideEmulator()
-//        Mockito.`when`(mockedDB.returnDatabaseReference())
-//            .thenReturn(provideEmulator())
+    companion object {
+        @get:ClassRule
+        @JvmStatic
+        val fbEmulator = FBEmulator()
     }
 
     @Test
@@ -92,11 +81,25 @@ class UserTest {
 
     @Test
     fun addCardTest() {
-        val user = User(validUID, validUsername, validListOfCards, validCoordinates)
+        val user =
+            User(
+                validUID,
+                validUsername,
+                validListOfCards,
+                validCoordinates,
+                FirebaseDB(fbEmulator.fb.reference)
+            )
         val card = CommonMagicCard.aeronautTinkererCard
         val fbcard = DBMagicCard(card, CardPossession.OWNED)
         user.addCard(card, CardPossession.OWNED)
-        assertThat(user.cards[0].toMagicCard(), CoreMatchers.`is`(card))
-//        assertThat(user.cards.contains(fbcard), CoreMatchers.`is`(true))
+        assertThat(
+            fbEmulator.fb.reference
+                .child("users")
+                .child(validUID)
+                .child("owned")
+                .child(fbcard.code + fbcard.number)
+                .key,
+            CoreMatchers.`is`("MT1543")
+        )
     }
 }

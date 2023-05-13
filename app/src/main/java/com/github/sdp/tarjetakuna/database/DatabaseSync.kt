@@ -22,7 +22,7 @@ object DatabaseSync {
      */
     @JvmStatic
     fun sync() {
-        val userRTDB = UserRTDB(Firebase.database.reference.child("users"))
+        val userRTDB = UserRTDB(FirebaseDB(Firebase.database.reference))
         if (!SignIn.getSignIn().isUserLoggedIn()) {
             Log.i("DatabaseSync", "sync: Not connected to firebase")
             return
@@ -101,7 +101,7 @@ object DatabaseSync {
     private suspend fun pushChanges(cards: List<DBMagicCard>) {
         LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
             .magicCardDao().insertCards(cards)
-        val userRTDB = CardsRTDB(Firebase.database.reference.child("cards"))
+        val userRTDB = CardsRTDB(FirebaseDB(Firebase.database.reference))
         // TODO Change when we can add the cards that we possess
         // TODO cardsSeparated contains the cards separated by possession, it may not be useful depending
         // TODO on how we add the cards to the remote database
@@ -121,8 +121,9 @@ object DatabaseSync {
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
                     .magicCardDao().getAllCards()
             val userRTDB = CardsRTDB(
-                Firebase.database.reference.child("cards")
+                FirebaseDB(Firebase.database.reference)
             )
+
             // TODO Change when we can add the cards that we possess,
             // TODO cardsSeparated contains the cards separated by possession, it may not be useful depending
             // TODO on how we add the cards to the remote database

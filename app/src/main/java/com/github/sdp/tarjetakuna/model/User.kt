@@ -1,10 +1,10 @@
 package com.github.sdp.tarjetakuna.model
 
-import com.github.sdp.tarjetakuna.database.CardPossession
-import com.github.sdp.tarjetakuna.database.DBMagicCard
-import com.github.sdp.tarjetakuna.database.FirebaseDB
-import com.github.sdp.tarjetakuna.database.UserRTDB
+import com.github.sdp.tarjetakuna.database.*
 import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -14,10 +14,14 @@ data class User(
     var uid: String,
     val username: String,
     var cards: MutableList<DBMagicCard>,
-    var location: Coordinates
+    var location: Coordinates,
+    val database: Database = FirebaseDB(Firebase.database.reference)
     //var chats: List<Chat>
 
 ) {
+    private var db: DatabaseReference
+    private var userRTDB: UserRTDB
+
     init {
         require(
             username.matches(
@@ -29,10 +33,10 @@ data class User(
         require(
             uid.isNotBlank()
         ) { "UID is not valid" }
-    }
 
-    private val db = FirebaseDB.returnDatabaseReference()
-    private val userRTDB = UserRTDB(FirebaseDB.userTable())
+        db = database.returnDatabaseReference()
+        userRTDB = UserRTDB(database)
+    }
 
     /**
      * Retrieves a card under a given possession asynchronously from the database

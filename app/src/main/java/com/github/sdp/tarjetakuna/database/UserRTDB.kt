@@ -7,13 +7,14 @@ import java.util.concurrent.CompletableFuture
 /**
  * This class is used to manage the user's data in the database.
  */
-class UserRTDB(db: DatabaseReference) { //Firebase.database.reference.child("users") //assumption: we check add ability in User
+class UserRTDB(database: Database) { //Firebase.database.reference.child("users") //assumption: we check add ability in User
 
     private var db: DatabaseReference
-    private val cardsRTDB = CardsRTDB(FirebaseDB.cardTable())
+    private var cardsRTDB: CardsRTDB
 
     init {
-        this.db = db
+        this.db = database.userTable()
+        cardsRTDB = CardsRTDB(database)
     }
 
     /**
