@@ -72,6 +72,7 @@ class HomeFragmentTest {
 
     }
 
+    //TODO : Remove comment when the correct implementation is done
     /*
     @Test
     fun buttonAddRandomCardWorks() {

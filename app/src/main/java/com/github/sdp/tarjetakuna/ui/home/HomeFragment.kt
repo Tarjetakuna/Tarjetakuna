@@ -66,6 +66,7 @@ class HomeFragment : Fragment() {
 
         val addRandomCardButton: Button = binding.addRandomCardButton
         addRandomCardButton.setOnClickListener {
+            //TODO : Remove the comment and the next lines when the branch 80 is ready to be merged
             //homeViewModel.addRandomCard()
             val bundle = Bundle()
             bundle.putString(
