@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class SingleCardViewModel : ViewModel() {
 
     var localDatabase: AppDatabase? = null
-    lateinit var card: MagicCard
+    var card: MagicCard? = null
 
     private val _isConnected = MutableLiveData<Boolean>()
     val isConnected: LiveData<Boolean> = _isConnected
@@ -53,7 +53,9 @@ class SingleCardViewModel : ViewModel() {
         DatabaseSync.sync()
         viewModelScope.launch {
             val lCard =
-                localDatabase?.magicCardDao()?.getCard(card.set.code, card.number.toString())
+                card?.set?.let {
+                    localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString())
+                }
             if (lCard != null) {
                 _buttonAddText.value = lCard.possession != CardPossession.OWNED
                 _buttonWantedText.value = lCard.possession != CardPossession.WANTED
@@ -71,20 +73,22 @@ class SingleCardViewModel : ViewModel() {
 
         viewModelScope.launch {
             val lCard =
-                localDatabase?.magicCardDao()?.getCard(card.set.code, card.number.toString())
+                card?.set?.let {
+                    localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString())
+                }
             if (lCard != null) {
                 // card not wanted -> make it unwanted from the collection
                 if (lCard.possession == CardPossession.WANTED) {
-                    manageCardsInDatabase(card, CardPossession.NONE)
+                    card?.let { manageCardsInDatabase(it, CardPossession.NONE) }
                     updateButtons(CardPossession.NONE)
                 } else {
                     // card wanted -> make it wanted in the collection
-                    manageCardsInDatabase(card, CardPossession.WANTED)
+                    card?.let { manageCardsInDatabase(it, CardPossession.WANTED) }
                     updateButtons(CardPossession.WANTED)
                 }
             } else {
                 // card not in the database -> add it as wanted in the local database
-                manageCardsInDatabase(card, CardPossession.WANTED)
+                card?.let { manageCardsInDatabase(it, CardPossession.WANTED) }
                 updateButtons(CardPossession.WANTED)
             }
             // sync the local database with the firebase if possible
@@ -100,20 +104,22 @@ class SingleCardViewModel : ViewModel() {
     fun manageOwnedCollection() {
         viewModelScope.launch {
             val lCard =
-                localDatabase?.magicCardDao()?.getCard(card.set.code, card.number.toString())
+                card?.set?.let {
+                    localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString())
+                }
             if (lCard != null) {
                 // card owned -> make it not owned from the collection
                 if (lCard.possession == CardPossession.OWNED) {
-                    manageCardsInDatabase(card, CardPossession.NONE)
+                    card?.let { manageCardsInDatabase(it, CardPossession.NONE) }
                     updateButtons(CardPossession.NONE)
                 } else {
                     // card not owned -> make it owned in the collection
-                    manageCardsInDatabase(card, CardPossession.OWNED)
+                    card?.let { manageCardsInDatabase(it, CardPossession.OWNED) }
                     updateButtons(CardPossession.OWNED)
                 }
             } else {
                 // card not in the database -> add it as owned in the local database
-                manageCardsInDatabase(card, CardPossession.OWNED)
+                card?.let { manageCardsInDatabase(it, CardPossession.OWNED) }
                 updateButtons(CardPossession.OWNED)
             }
             // sync the local database with the firebase if possible
