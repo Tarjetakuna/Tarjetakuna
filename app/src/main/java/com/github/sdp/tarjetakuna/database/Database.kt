@@ -6,5 +6,4 @@ interface Database {
     fun userTable(): DatabaseReference
     fun cardTable(): DatabaseReference
     fun returnDatabaseReference(): DatabaseReference
-    fun provideEmulator(): DatabaseReference
 }
