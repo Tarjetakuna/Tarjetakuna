@@ -15,11 +15,13 @@ object Location {
 
     private var currentLocation: Coordinates = Coordinates(0.0, 0.0)
 
+    private var locationManager: LocationManager? = null
+
     /**
      * Check if the location permission is granted, and if not, request it
      */
-    fun askForLocationPermission(context: AppCompatActivity): Boolean {
-        return if (ActivityCompat.checkSelfPermission(
+    fun askForLocationPermission(context: AppCompatActivity) {
+        if (ActivityCompat.checkSelfPermission(
                 context,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -28,9 +30,6 @@ object Location {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             requestPermission(context)
-            false
-        } else {
-            true
         }
     }
 
@@ -50,9 +49,11 @@ object Location {
             Log.i("Location", "Permission not granted")
             // Do nothing since the user rejected the permission
         } else {
-            val locationManager =
-                context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            locationManager.requestLocationUpdates(
+            if (locationManager == null) {
+                locationManager =
+                    context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            }
+            locationManager!!.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
                 0,
                 0f,
@@ -67,6 +68,11 @@ object Location {
         val newLocation = Coordinates(location.latitude, location.longitude)
         if (!currentLocation.isSameCoordAs(newLocation)) {
             currentLocation = newLocation
+            Log.i(
+                "Location",
+                "Location changed: latitude: ${Location.getCurrentLocation().latitude}, " +
+                        "longitude: ${Location.getCurrentLocation().longitude}"
+            )
         }
     }
 
@@ -90,5 +96,12 @@ object Location {
      */
     fun getCurrentLocation(): Coordinates {
         return currentLocation
+    }
+
+    /**
+     * Setter for the location manager
+     */
+    fun setLocationManager(manager: LocationManager) {
+        locationManager = manager
     }
 }

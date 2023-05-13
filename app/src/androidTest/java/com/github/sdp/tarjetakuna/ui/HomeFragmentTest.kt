@@ -1,6 +1,7 @@
 package com.github.sdp.tarjetakuna.ui
 
 
+import android.Manifest
 import androidx.navigation.Navigation.findNavController
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -9,6 +10,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.DBMagicCard
@@ -20,6 +22,7 @@ import kotlinx.coroutines.withTimeout
 import org.hamcrest.Matchers.equalTo
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -28,6 +31,13 @@ import org.mockito.Mockito
 class HomeFragmentTest {
 
 
+    @Rule
+    @JvmField
+    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    
     private lateinit var activityRule: ActivityScenario<MainActivity>
 
     @Before
@@ -36,7 +46,7 @@ class HomeFragmentTest {
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
         SignIn.setSignIn(mockedAuth)
-        
+
         // close the database that could have been opened because of the previous tests
         LocalDatabaseProvider.closeDatabase("test")
         LocalDatabaseProvider.closeDatabase("test2")

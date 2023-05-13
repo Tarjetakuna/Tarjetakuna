@@ -1,7 +1,6 @@
 package com.github.sdp.tarjetakuna.location
 
 import android.Manifest
-import android.content.Context
 import android.location.LocationListener
 import android.location.LocationManager
 import androidx.test.core.app.ActivityScenario
@@ -9,9 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.model.Coordinates
-import com.github.sdp.tarjetakuna.utils.Utils
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -39,7 +36,6 @@ class LocationTest {
 
     @Test
     fun currentLocationChanged() {
-        assertEquals(Location.getCurrentLocation(), Coordinates(0.0, 0.0))
         val locationManagerMock = mock(LocationManager::class.java)
         `when`(
             locationManagerMock.requestLocationUpdates(
@@ -56,25 +52,18 @@ class LocationTest {
             })
         }
 
-        val contextMock = mock(Context::class.java)
-        `when`(contextMock.getSystemService(Context.LOCATION_SERVICE)).thenReturn(
-            locationManagerMock
-        )
-
         activityRule.onActivity {
+            Location.setLocationManager(locationManagerMock)
             Location.captureCurrentLocation(it)
-            Utils.waitWhileTrue(1000, 10) {
-                Location.getCurrentLocation() == Coordinates(0.0, 0.0)
-            }
-            assertNotEquals(Coordinates(0.0, 1.0), Location.getCurrentLocation())
-        }
 
-//        verify(locationManagerMock).requestLocationUpdates(
-//            eq(LocationManager.GPS_PROVIDER),
-//            eq(0L),
-//            eq(0f),
-//            any(LocationListener::class.java)
-//        )
+            verify(locationManagerMock).requestLocationUpdates(
+                eq(LocationManager.GPS_PROVIDER),
+                eq(0L),
+                eq(0f),
+                any(LocationListener::class.java)
+            )
+            assertEquals(Coordinates(1.0, 2.0), Location.getCurrentLocation())
+        }
     }
 
 }

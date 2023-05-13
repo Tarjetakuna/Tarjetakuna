@@ -1,8 +1,10 @@
 package com.github.sdp.tarjetakuna.database.localDatabase
 
+import android.Manifest
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.AppDatabase
@@ -14,6 +16,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -27,6 +30,13 @@ class LocalDatabaseTest {
     private var cards = generateCards().map { DBMagicCard.fromMagicCard(it) }
 
 
+    @Rule
+    @JvmField
+    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
     @Before
     fun setUp() {
         // mock the authentication
@@ -38,7 +48,7 @@ class LocalDatabaseTest {
         LocalDatabaseProvider.closeDatabase("test")
         LocalDatabaseProvider.closeDatabase("test2")
         LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
-        
+
         database =
             LocalDatabaseProvider.setDatabase(
                 ApplicationProvider.getApplicationContext(), "test", true
