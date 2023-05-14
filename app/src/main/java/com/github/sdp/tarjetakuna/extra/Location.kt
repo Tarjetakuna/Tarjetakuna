@@ -66,7 +66,7 @@ object Location {
     // What to do when the location changes
     private val locationListener: LocationListener = LocationListener { location ->
         val newLocation = Coordinates(location.latitude, location.longitude)
-        if (!currentLocation.isSameCoordAs(newLocation)) {
+        if (currentLocation != newLocation) {
             currentLocation = newLocation
             Log.i(
                 "Location",

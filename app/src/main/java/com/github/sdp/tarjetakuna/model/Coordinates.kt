@@ -1,7 +1,5 @@
 package com.github.sdp.tarjetakuna.model
 
-import java.lang.Math.abs
-
 /**
  * Represents a pair of coordinates.
  * It is used to represent a location for a user.
@@ -21,8 +19,17 @@ data class Coordinates(
         const val longitudeRange = 180.0
     }
 
-    fun isSameCoordAs(other: Coordinates): Boolean {
+//    fun isSameCoordAs(other: Coordinates): Boolean {
+//        return
+//    }
+
+    override fun equals(other: Any?): Boolean {
         val threshold = 0.0001
-        return abs(this.latitude - other.latitude) <= threshold && abs(this.longitude - other.longitude) <= threshold
+        if (other is Coordinates) {
+            return kotlin.math.abs(this.latitude - other.latitude) <= threshold && kotlin.math.abs(
+                this.longitude - other.longitude
+            ) <= threshold
+        }
+        return false
     }
 }

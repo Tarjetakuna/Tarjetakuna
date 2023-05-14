@@ -41,13 +41,20 @@ class CoordinatesTest {
     fun EqualityWorks() {
         val coordinates1 = Coordinates(validLatitude, validLongitude)
         val coordinates2 = Coordinates(validLatitude, validLongitude)
-        assertEquals(true, coordinates1.isSameCoordAs(coordinates2))
+        assertEquals(true, coordinates1 == coordinates2)
     }
 
     @Test
     fun EqualityWorks2() {
         val coordinates1 = Coordinates(validLatitude, validLongitude)
         val coordinates2 = Coordinates(validLatitude + 10, validLongitude + 0.0001)
-        assertEquals(false, coordinates1.isSameCoordAs(coordinates2))
+        assertEquals(false, coordinates1 == coordinates2)
+    }
+
+    @Test
+    fun notACoordEqualsFalse() {
+        val coordinates1 = Coordinates(validLatitude, validLongitude)
+        val coordinates2 = null
+        assertEquals(false, coordinates1 == coordinates2)
     }
 }
