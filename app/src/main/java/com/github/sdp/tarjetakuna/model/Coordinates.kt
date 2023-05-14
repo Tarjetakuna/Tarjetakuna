@@ -19,10 +19,6 @@ data class Coordinates(
         const val longitudeRange = 180.0
     }
 
-//    fun isSameCoordAs(other: Coordinates): Boolean {
-//        return
-//    }
-
     override fun equals(other: Any?): Boolean {
         val threshold = 0.0001
         if (other is Coordinates) {
