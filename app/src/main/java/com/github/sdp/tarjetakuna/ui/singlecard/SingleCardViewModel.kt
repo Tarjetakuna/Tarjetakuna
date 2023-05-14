@@ -9,8 +9,6 @@ import com.github.sdp.tarjetakuna.database.*
 import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 /**
@@ -31,7 +29,7 @@ class SingleCardViewModel : ViewModel() {
     val buttonWantedText: LiveData<Boolean> = _buttonWantedText
 
     private var userDB = UserRTDB(
-        FirebaseDB(Firebase.database.reference)
+        FirebaseDB()
     )
 
     /**

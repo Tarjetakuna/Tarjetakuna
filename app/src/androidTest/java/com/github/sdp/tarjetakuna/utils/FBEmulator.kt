@@ -6,7 +6,7 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
 /**
- * Use Firebase Emulator for Testing
+ * Firebase Emulator for Testing
  */
 class FBEmulator : TestWatcher() {
     val fb = Firebase.database
@@ -15,7 +15,7 @@ class FBEmulator : TestWatcher() {
         try {
             fb.useEmulator("10.0.2.2", 9000)
         } catch (e: Exception) {
-            println("emulator running: ${e.message}")
+            println("emulator already running: ${e.message}")
         }
     }
 }

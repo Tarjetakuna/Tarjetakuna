@@ -1,108 +1,46 @@
-[debug] [2023-05-13T14:27:45.364Z] ----------------------------------------------------------------------
-[debug] [2023-05-13T14:27:45.368Z] Command:       C:\Users\annie\DOCUME~1\SDP\firebase-tools-instant-win.exe C:\Users\annie\.cache\firebase\tools\lib\node_modules\firebase-tools\lib\bin\firebase emulators:start
-[debug] [2023-05-13T14:27:45.368Z] CLI Version:   11.24.0
-[debug] [2023-05-13T14:27:45.368Z] Platform:      win32
-[debug] [2023-05-13T14:27:45.369Z] Node Version:  v16.16.0
-[debug] [2023-05-13T14:27:45.370Z] Time:          Sat May 13 2023 16:27:45 GMT+0200 (Central European Summer Time)
-[debug] [2023-05-13T14:27:45.371Z] ----------------------------------------------------------------------
+[debug] [2023-05-14T16:28:16.883Z] ----------------------------------------------------------------------
+[debug] [2023-05-14T16:28:16.885Z] Command:       C:\Users\annie\DOCUME~1\SDP\firebase-tools-instant-win.exe C:\Users\annie\.cache\firebase\tools\lib\node_modules\firebase-tools\lib\bin\firebase emulators:start
+[debug] [2023-05-14T16:28:16.885Z] CLI Version:   11.24.0
+[debug] [2023-05-14T16:28:16.885Z] Platform:      win32
+[debug] [2023-05-14T16:28:16.885Z] Node Version:  v16.16.0
+[debug] [2023-05-14T16:28:16.886Z] Time:          Sun May 14 2023 18:28:16 GMT+0200 (Central European Summer Time)
+[debug] [2023-05-14T16:28:16.886Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2023-05-13T14:27:45.454Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2023-05-13T14:27:45.455Z] > authorizing via signed-in user (annierusu@gmail.com)
-[debug] [2023-05-13T14:27:45.756Z] java version "17.0.4.1" 2022-08-18 LTS
-
-[debug] [2023-05-13T14:27:45.757Z] Java(TM) SE Runtime Environment (build 17.0.4.1+1-LTS-2)
-Java HotSpot(TM) 64-Bit Server VM (build 17.0.4.1+1-LTS-2, mixed mode, sharing)
-
-[debug] [2023-05-13T14:27:45.780Z] Parsed Java major version: 17
-[info] i  emulators: Starting emulators: database {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: database"}}
-[debug] [2023-05-13T14:27:45.794Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2023-05-13T14:27:45.794Z] [database] Database Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2023-05-13T14:27:45.795Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"database":[{"address":"127.0.0.1","family":"IPv4","port":9000}]},"metadata":{"message":"assigned listening specs for emulators"}}
-[debug] [2023-05-13T14:27:45.799Z] [hub] writing locator at C:\Users\annie\AppData\Local\Temp\hub-tarjetakuna-database.json
-[debug] [2023-05-13T14:27:45.823Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/tarjetakuna-database [none]
-[debug] [2023-05-13T14:27:46.077Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/tarjetakuna-database 200
-[debug] [2023-05-13T14:27:46.077Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/tarjetakuna-database {"projectId":"tarjetakuna-database","projectNumber":"1007028555187","displayName":"Tarjetakuna-Database","name":"projects/tarjetakuna-database","resources":{"hostingSite":"tarjetakuna-database","realtimeDatabaseInstance":"tarjetakuna-database-default-rtdb"},"state":"ACTIVE","etag":"1_f8235950-4d9d-4326-9f30-da7191931eed"}
-[debug] [2023-05-13T14:27:46.078Z] database rules config:  [{"instance":"tarjetakuna-database-default-rtdb","rules":"C:\\Users\\annie\\Documents\\SDP\\Tarjetakuna\\database.rules.json"}]
-[debug] [2023-05-13T14:27:46.082Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
-[debug] [2023-05-13T14:27:46.082Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
-[debug] [2023-05-13T14:27:46.082Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
-[debug] [2023-05-13T14:27:46.082Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","C:\\Users\\annie\\.cache\\firebase\\emulators\\firebase-database-emulator-v4.11.0.jar","--host","127.0.0.1","--port",9000,"--single_project_mode","Warning"],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host","single_project_mode"],"joinArgs":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\annie\\\\.cache\\\\firebase\\\\emulators\\\\firebase-database-emulator-v4.11.0.jar\",\"--host\",\"127.0.0.1\",\"--port\",9000,\"--single_project_mode\",\"Warning\"],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\",\"single_project_mode\"],\"joinArgs\":false}"}}
-[info] i  database: Database Emulator logging to database-debug.log {"metadata":{"emulator":{"name":"database"},"message":"Database Emulator logging to \u001b[1mdatabase-debug.log\u001b[22m"}}
-[debug] [2023-05-13T14:27:52.122Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
-[debug] [2023-05-13T14:27:52.122Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
-[debug] [2023-05-13T14:27:52.122Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\annie\\.cache\\firebase\\emulators\\ui-v1.11.4\\server\\server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\annie\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.11.4\\\\server\\\\server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
-[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
-[debug] [2023-05-13T14:27:52.491Z] Web / API server started at 127.0.0.1:4000
- {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\n"}}
-[debug] [2023-05-13T14:27:52.492Z] Web / API server started at ::1:4000
- {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at ::1:4000\n"}}
-[debug] [2023-05-13T14:27:52.672Z] >>> [apiv2][query] PUT http://127.0.0.1:9000/.settings/rules.json ns=tarjetakuna-database-default-rtdb
-[debug] [2023-05-13T14:27:52.672Z] >>> [apiv2][body] PUT http://127.0.0.1:9000/.settings/rules.json "{\n  \"rules\": {\n    \".read\": true,  \n    \".write\": true,  \n  }\n}"
-[debug] [2023-05-13T14:27:53.479Z] <<< [apiv2][status] PUT http://127.0.0.1:9000/.settings/rules.json 200
-[debug] [2023-05-13T14:27:53.480Z] <<< [apiv2][body] PUT http://127.0.0.1:9000/.settings/rules.json {"status":"ok"}
-[info] 
-┌─────────────────────────────────────────────────────────────┐
-│ ✔  All emulators ready! It is now safe to connect your app. │
-│ i  View Emulator UI at http://127.0.0.1:4000/               │
-└─────────────────────────────────────────────────────────────┘
-
-┌──────────┬────────────────┬────────────────────────────────┐
-│ Emulator │ Host:Port      │ View in Emulator UI            │
-├──────────┼────────────────┼────────────────────────────────┤
-│ Database │ 127.0.0.1:9000 │ http://127.0.0.1:4000/database │
-└──────────┴────────────────┴────────────────────────────────┘
-  Emulator Hub running at 127.0.0.1:4400
-  Other reserved ports: 4500
-
-Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
- 
-[debug] [2023-05-13T14:30:38.827Z] Received signal SIGINT (Ctrl-C) 1
-[debug] [2023-05-13T16:21:35.296Z] ----------------------------------------------------------------------
-[debug] [2023-05-13T16:21:35.297Z] Command:       C:\Users\annie\DOCUME~1\SDP\firebase-tools-instant-win.exe C:\Users\annie\.cache\firebase\tools\lib\node_modules\firebase-tools\lib\bin\firebase emulators:start
-[debug] [2023-05-13T16:21:35.297Z] CLI Version:   11.24.0
-[debug] [2023-05-13T16:21:35.297Z] Platform:      win32
-[debug] [2023-05-13T16:21:35.297Z] Node Version:  v16.16.0
-[debug] [2023-05-13T16:21:35.316Z] Time:          Sat May 13 2023 18:21:35 GMT+0200 (Central European Summer Time)
-[debug] [2023-05-13T16:21:35.316Z] ----------------------------------------------------------------------
-[debug] 
-[debug] [2023-05-13T16:21:35.375Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2023-05-13T16:21:35.376Z] > authorizing via signed-in user (annierusu@gmail.com)
-[debug] [2023-05-13T16:21:35.490Z] java version "17.0.4.1" 2022-08-18 LTS
+[debug] [2023-05-14T16:28:16.943Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-05-14T16:28:16.943Z] > authorizing via signed-in user (annierusu@gmail.com)
+[debug] [2023-05-14T16:28:17.039Z] java version "17.0.4.1" 2022-08-18 LTS
 Java(TM) SE Runtime Environment (build 17.0.4.1+1-LTS-2)
-Java HotSpot(TM) 64-Bit Server VM (build 17.0.4.1+1-LTS-2, mixed mode, sharing)
 
-[debug] [2023-05-13T16:21:35.507Z] Parsed Java major version: 17
+[debug] [2023-05-14T16:28:17.040Z] Java HotSpot(TM) 64-Bit Server VM (build 17.0.4.1+1-LTS-2, mixed mode, sharing)
+
+[debug] [2023-05-14T16:28:17.063Z] Parsed Java major version: 17
 [info] i  emulators: Starting emulators: database {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: database"}}
-[debug] [2023-05-13T16:21:35.523Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2023-05-13T16:21:35.523Z] [database] Database Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2023-05-13T16:21:35.523Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"database":[{"address":"127.0.0.1","family":"IPv4","port":9000}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2023-05-14T16:28:17.073Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-05-14T16:28:17.073Z] [database] Database Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-05-14T16:28:17.073Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"database":[{"address":"127.0.0.1","family":"IPv4","port":9000}]},"metadata":{"message":"assigned listening specs for emulators"}}
 [warn] !  emulators: It seems that you are running multiple instances of the emulator suite for project tarjetakuna-database. This may result in unexpected behavior. 
-[debug] [2023-05-13T16:21:35.527Z] [hub] writing locator at C:\Users\annie\AppData\Local\Temp\hub-tarjetakuna-database.json
-[debug] [2023-05-13T16:21:35.545Z] > refreshing access token with scopes: []
-[debug] [2023-05-13T16:21:35.547Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
-[debug] [2023-05-13T16:21:35.547Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
-[debug] [2023-05-13T16:21:35.698Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
-[debug] [2023-05-13T16:21:35.698Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
-[debug] [2023-05-13T16:21:35.707Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/tarjetakuna-database [none]
-[debug] [2023-05-13T16:21:35.968Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/tarjetakuna-database 200
-[debug] [2023-05-13T16:21:35.968Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/tarjetakuna-database {"projectId":"tarjetakuna-database","projectNumber":"1007028555187","displayName":"Tarjetakuna-Database","name":"projects/tarjetakuna-database","resources":{"hostingSite":"tarjetakuna-database","realtimeDatabaseInstance":"tarjetakuna-database-default-rtdb"},"state":"ACTIVE","etag":"1_f8235950-4d9d-4326-9f30-da7191931eed"}
-[debug] [2023-05-13T16:21:35.968Z] database rules config:  [{"instance":"tarjetakuna-database-default-rtdb","rules":"C:\\Users\\annie\\Documents\\SDP\\Tarjetakuna\\database.rules.json"}]
-[debug] [2023-05-13T16:21:35.975Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
-[debug] [2023-05-13T16:21:35.975Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
-[debug] [2023-05-13T16:21:35.975Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
-[debug] [2023-05-13T16:21:35.975Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","C:\\Users\\annie\\.cache\\firebase\\emulators\\firebase-database-emulator-v4.11.0.jar","--host","127.0.0.1","--port",9000,"--single_project_mode","Warning"],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host","single_project_mode"],"joinArgs":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\annie\\\\.cache\\\\firebase\\\\emulators\\\\firebase-database-emulator-v4.11.0.jar\",\"--host\",\"127.0.0.1\",\"--port\",9000,\"--single_project_mode\",\"Warning\"],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\",\"single_project_mode\"],\"joinArgs\":false}"}}
+[debug] [2023-05-14T16:28:17.077Z] [hub] writing locator at C:\Users\annie\AppData\Local\Temp\hub-tarjetakuna-database.json
+[debug] [2023-05-14T16:28:17.088Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/tarjetakuna-database [none]
+[debug] [2023-05-14T16:28:17.338Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/tarjetakuna-database 200
+[debug] [2023-05-14T16:28:17.338Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/tarjetakuna-database {"projectId":"tarjetakuna-database","projectNumber":"1007028555187","displayName":"Tarjetakuna-Database","name":"projects/tarjetakuna-database","resources":{"hostingSite":"tarjetakuna-database","realtimeDatabaseInstance":"tarjetakuna-database-default-rtdb"},"state":"ACTIVE","etag":"1_3f0bba51-9aaa-4eb8-80f2-d8ed36db9b3a"}
+[debug] [2023-05-14T16:28:17.339Z] database rules config:  [{"instance":"tarjetakuna-database-default-rtdb","rules":"C:\\Users\\annie\\Documents\\SDP\\Tarjetakuna\\database.rules.json"}]
+[debug] [2023-05-14T16:28:17.342Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2023-05-14T16:28:17.342Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2023-05-14T16:28:17.342Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
+[debug] [2023-05-14T16:28:17.342Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","C:\\Users\\annie\\.cache\\firebase\\emulators\\firebase-database-emulator-v4.11.0.jar","--host","127.0.0.1","--port",9000,"--single_project_mode","Warning"],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host","single_project_mode"],"joinArgs":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\annie\\\\.cache\\\\firebase\\\\emulators\\\\firebase-database-emulator-v4.11.0.jar\",\"--host\",\"127.0.0.1\",\"--port\",9000,\"--single_project_mode\",\"Warning\"],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\",\"single_project_mode\"],\"joinArgs\":false}"}}
 [info] i  database: Database Emulator logging to database-debug.log {"metadata":{"emulator":{"name":"database"},"message":"Database Emulator logging to \u001b[1mdatabase-debug.log\u001b[22m"}}
-[debug] [2023-05-13T16:21:37.778Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
-[debug] [2023-05-13T16:21:37.778Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
-[debug] [2023-05-13T16:21:37.779Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\annie\\.cache\\firebase\\emulators\\ui-v1.11.4\\server\\server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\annie\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.11.4\\\\server\\\\server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[debug] [2023-05-14T16:28:18.631Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2023-05-14T16:28:18.632Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2023-05-14T16:28:18.632Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\annie\\.cache\\firebase\\emulators\\ui-v1.11.4\\server\\server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\annie\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.11.4\\\\server\\\\server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
 [info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
-[debug] [2023-05-13T16:21:37.981Z] Web / API server started at 127.0.0.1:4000
-Web / API server started at ::1:4000
- {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\nWeb / API server started at ::1:4000\n"}}
-[debug] [2023-05-13T16:21:38.043Z] >>> [apiv2][query] PUT http://127.0.0.1:9000/.settings/rules.json ns=tarjetakuna-database-default-rtdb
-[debug] [2023-05-13T16:21:38.043Z] >>> [apiv2][body] PUT http://127.0.0.1:9000/.settings/rules.json "{\n  \"rules\": {\n    \".read\": true,  \n    \".write\": true,  \n  }\n}"
-[debug] [2023-05-13T16:21:38.421Z] <<< [apiv2][status] PUT http://127.0.0.1:9000/.settings/rules.json 200
-[debug] [2023-05-13T16:21:38.422Z] <<< [apiv2][body] PUT http://127.0.0.1:9000/.settings/rules.json {"status":"ok"}
+[debug] [2023-05-14T16:28:18.873Z] Web / API server started at 127.0.0.1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\n"}}
+[debug] [2023-05-14T16:28:18.873Z] Web / API server started at ::1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at ::1:4000\n"}}
+[debug] [2023-05-14T16:28:18.911Z] >>> [apiv2][query] PUT http://127.0.0.1:9000/.settings/rules.json ns=tarjetakuna-database-default-rtdb
+[debug] [2023-05-14T16:28:18.911Z] >>> [apiv2][body] PUT http://127.0.0.1:9000/.settings/rules.json "{\n  \"rules\": {\n    \".read\": true,  \n    \".write\": true,  \n  }\n}"
+[debug] [2023-05-14T16:28:19.206Z] <<< [apiv2][status] PUT http://127.0.0.1:9000/.settings/rules.json 200
+[debug] [2023-05-14T16:28:19.206Z] <<< [apiv2][body] PUT http://127.0.0.1:9000/.settings/rules.json {"status":"ok"}
 [info] 
 ┌─────────────────────────────────────────────────────────────┐
 │ ✔  All emulators ready! It is now safe to connect your app. │

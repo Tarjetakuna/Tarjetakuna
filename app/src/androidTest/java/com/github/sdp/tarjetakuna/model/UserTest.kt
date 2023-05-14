@@ -23,14 +23,9 @@ class UserTest {
     private val invalidUsername1 = "invalidEmail"
     private val invalidUsername2 = "invalidEmail@"
     private val invalidUsername3 = "invalidEmail@google."
-    private val validUID = "validUIDhello"
+    private val validUID = "onetwothree"
     private val validListOfCards = mutableListOf<DBMagicCard>()
     private val validCoordinates = Coordinates(45.0f, 75.0f)
-
-//    private lateinit var mockedDB: Database
-
-//    private var fb = Firebase.database
-
 
     companion object {
         @get:ClassRule
@@ -87,8 +82,9 @@ class UserTest {
                 validUsername,
                 validListOfCards,
                 validCoordinates,
-                FirebaseDB(fbEmulator.fb.reference)
+                FirebaseDB()
             )
+        fbEmulator.fb.reference.child("bonjour").setValue("WORLD")
         val card = CommonMagicCard.aeronautTinkererCard
         val fbcard = DBMagicCard(card, CardPossession.OWNED)
         user.addCard(card, CardPossession.OWNED)

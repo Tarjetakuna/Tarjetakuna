@@ -3,8 +3,6 @@ package com.github.sdp.tarjetakuna.model
 import com.github.sdp.tarjetakuna.database.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -15,7 +13,7 @@ data class User(
     val username: String,
     var cards: MutableList<DBMagicCard>,
     var location: Coordinates,
-    val database: Database = FirebaseDB(Firebase.database.reference)
+    val database: Database = FirebaseDB()
     //var chats: List<Chat>
 
 ) {

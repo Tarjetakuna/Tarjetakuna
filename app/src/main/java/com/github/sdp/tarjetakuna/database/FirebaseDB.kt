@@ -2,12 +2,13 @@ package com.github.sdp.tarjetakuna.database
 
 import com.google.firebase.database.DatabaseReference
 
-class FirebaseDB(db: DatabaseReference) : Database {
-    private var dbref: DatabaseReference
+/**
+ * Database for the app using Firebase.
+ */
+class FirebaseDB(db: DatabaseReference = AppFirebaseDatabase().getDB().dbref!!) : Database {
 
-    init {
-        dbref = db
-    }
+    private var dbref: DatabaseReference = db
+
 
     override fun userTable(): DatabaseReference {
         return dbref.child("users")
@@ -19,6 +20,10 @@ class FirebaseDB(db: DatabaseReference) : Database {
 
     override fun returnDatabaseReference(): DatabaseReference {
         return dbref
+    }
+
+    fun useEmulator() {
+        dbref.database.useEmulator("10.0.2.2", 9000)
     }
 
 
