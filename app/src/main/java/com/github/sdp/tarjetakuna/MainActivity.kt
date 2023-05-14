@@ -96,8 +96,7 @@ class MainActivity : AppCompatActivity() {
 
         updateHeader()
 
-        // ask for location permission
-        Location.askForLocationPermission(this)
+        // ask for location permission + get current location if already granted
         Location.captureCurrentLocation(this)
     }
 

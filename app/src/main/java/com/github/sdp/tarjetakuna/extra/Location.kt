@@ -17,38 +17,19 @@ object Location {
 
     private var locationManager: LocationManager? = null
 
-    /**
-     * Check if the location permission is granted, and if not, request it
-     */
-    fun askForLocationPermission(context: AppCompatActivity) {
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                context,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermission(context)
-        }
-    }
+    private var hasAlreadyAsked = false
 
     /**
-     * Get the current location of the user if the permission is granted
+     * Get the current location of the user if the permission is granted, if not asked yet, ask for it
      */
     fun captureCurrentLocation(context: AppCompatActivity) {
         // Check if the location permission is granted, and if not, request it
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (checkPermission(context) && !hasAlreadyAsked) {
             Log.i("Location", "Permission not granted")
+            hasAlreadyAsked = true
+            requestPermission(context)
             // Do nothing since the user rejected the permission
-        } else {
+        } else if (!checkPermission(context)) {
             if (locationManager == null) {
                 locationManager =
                     context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -60,7 +41,19 @@ object Location {
                 locationListener
             )
         }
+    }
 
+    /**
+     * Check if the location permission is granted
+     */
+    private fun checkPermission(context: AppCompatActivity): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED
     }
 
     // What to do when the location changes
