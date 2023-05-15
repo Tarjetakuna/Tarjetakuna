@@ -5,7 +5,7 @@ import com.github.sdp.tarjetakuna.model.Chat
 import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.model.Message
 import com.github.sdp.tarjetakuna.model.User
-import java.util.*
+import java.util.Date
 
 object ChatsData {
     val fakeCoordinates: Coordinates = Coordinates(0.0f, 0.0f)
@@ -54,5 +54,9 @@ object ChatsData {
     val fakeChat2: Chat =
         Chat(1201, fakeUser1, fakeUser2, fakeMessages2, fakeLastReadUser1, fakeLastReadUser2)
 
+    val fakeChat1_emptyMsgs: Chat =
+        Chat(1200, fakeUser1, fakeUser2, ArrayList(), fakeLastReadUser1, fakeLastReadUser2)
+
     val fakeChats1: ArrayList<Chat> = arrayListOf(fakeChat2, fakeChat1)
+    val fakeChats_empty: ArrayList<Chat> = ArrayList()
 }

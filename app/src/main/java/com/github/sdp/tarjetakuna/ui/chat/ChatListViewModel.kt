@@ -12,9 +12,8 @@ class ChatListViewModel : ViewModel() {
     companion object {
         private const val TAG = "ChatListViewModel"
 
-        var o_currentUser: User? = ChatsData.fakeUser1
-        var o_chats: ArrayList<Chat>? = ChatsData.fakeChats1
-
+        var o_currentUser: User = ChatsData.fakeUser1
+        var o_chats: ArrayList<Chat> = ChatsData.fakeChats1
     }
 
     // TODO : link to database - for now, use mock data

@@ -35,9 +35,11 @@ class ChatFragment : Fragment() {
         viewModel.chat.observe(viewLifecycleOwner) {
             binding.chatMessagesRecyclerView.layoutManager = LinearLayoutManager(context)
             binding.chatMessagesRecyclerView.adapter = MessageListAdapter(it, currentUser)
-            binding.msgUsernameText.text =
-                if (it.user1.username == currentUser.username) it.user2.username else currentUser.username
+            binding.chatUsernameText.text =
+                if (it.user1.username == currentUser.username) it.user2.username else it.user1.username
         }
+
+        viewModel.updateData()
 
         return root
     }
