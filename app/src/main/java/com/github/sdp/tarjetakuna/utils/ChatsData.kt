@@ -8,7 +8,7 @@ import com.github.sdp.tarjetakuna.model.User
 import java.util.Date
 
 object ChatsData {
-    val fakeCoordinates: Coordinates = Coordinates(0.0f, 0.0f)
+    val fakeCoordinates: Coordinates = Coordinates(0.0, 0.0)
     val fakeCards: ArrayList<DBMagicCard> = ArrayList()
 
     val fakeUser1: User =
