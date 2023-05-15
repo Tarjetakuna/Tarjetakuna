@@ -79,6 +79,10 @@ class UsersFragment : Fragment() {
         val fakeDbMagicCard1 = DBMagicCard("Aeronaut Tinkerer", CardPossession.WANTED, 3, "M15", 43)
         val fakeDbMagicCard2 = DBMagicCard("Aeronaut Tinkerer", CardPossession.OWNED, 3, "M15", 43)
         val fakeDbMagicCard3 = DBMagicCard("Blabla Woaw", CardPossession.OWNED, 3, "M15", 21)
+        val fakeDbMagicCard4 = DBMagicCard("Aeronaut Tinkerer", CardPossession.WANTED, 3, "M14", 43)
+        val fakeDbMagicCard5 = DBMagicCard("Aeronaut Tinkerer", CardPossession.WANTED, 3, "M15", 32)
+        val fakeDbMagicCard6 = DBMagicCard("BLABLA Woaw", CardPossession.WANTED, 3, "M15", 43)
+
         val fakeUser1 = User(
             "kelvin.kappeler@epfl.ch",
             "keke",
@@ -92,7 +96,14 @@ class UsersFragment : Fragment() {
             User(
                 "bastien.jolidon@epfl.ch",
                 "bibi",
-                listOf(fakeDbMagicCard2, fakeDbMagicCard3, fakeDbMagicCard1),
+                listOf(
+                    fakeDbMagicCard2,
+                    fakeDbMagicCard3,
+                    fakeDbMagicCard1,
+                    fakeDbMagicCard4,
+                    fakeDbMagicCard5,
+                    fakeDbMagicCard6
+                ),
                 Coordinates(43.4f, -8.6f)
             )
 
