@@ -13,7 +13,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     private var cardsRTDB: CardsRTDB
 
     init {
-        this.db = database.userTable()
+        this.db = database.usersTable()
         cardsRTDB = CardsRTDB(database)
     }
 
@@ -74,11 +74,13 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     //@RequiresApi(Build.VERSION_CODES.S)//for exceptionally
     fun getCardFromUserPossession(
         userUID: String,
-        fbcard: DBMagicCard
+        setCode: String,
+        setNumber: Int,
+        possession: CardPossession
     ): CompletableFuture<DataSnapshot> {
-        val cardUID = fbcard.code + fbcard.number
+        val cardUID = setCode + setNumber
         var future = CompletableFuture<DataSnapshot>()
-        getCardCodeFromUserCollection(userUID, cardUID, fbcard.possession).thenAccept {
+        getCardCodeFromUserCollection(userUID, cardUID, possession).thenAccept {
             future =
                 cardsRTDB.getCardFromGlobalCollection(cardUID) //only get the card if the user has it in their collection
         }//todo: not sure how to handle exception case (needs certain api level), is it ok to just not handle this ?
@@ -123,6 +125,10 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         }
         return cards
     }
+
+    /**
+     * Get all cards from the user's collection asynchronously from the database
+     */
 
     fun getAllCardsFromUser(userUID: String): CompletableFuture<DataSnapshot> {
         val future = CompletableFuture<DataSnapshot>()

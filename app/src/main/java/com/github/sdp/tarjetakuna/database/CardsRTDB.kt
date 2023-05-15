@@ -13,7 +13,7 @@ class CardsRTDB(database: Database) {
     private var db: DatabaseReference
 
     init {
-        this.db = database.cardTable() //Firebase.database.reference.child("cards")
+        this.db = database.cardsTable() //Firebase.database.reference.child("cards")
     }
 
     /**

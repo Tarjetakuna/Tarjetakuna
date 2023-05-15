@@ -19,6 +19,7 @@ data class User(
 ) {
     private var db: DatabaseReference
     private var userRTDB: UserRTDB
+    private var usernamesRTDB: UsernamesRTDB
 
     init {
         require(
@@ -34,13 +35,22 @@ data class User(
 
         db = database.returnDatabaseReference()
         userRTDB = UserRTDB(database)
+        usernamesRTDB = UsernamesRTDB(database)
+        usernamesRTDB.addUsernameUID(
+            uid,
+            username
+        ) //to be able to search a user by username so you can then find their collection
     }
 
     /**
      * Retrieves a card under a given possession asynchronously from the database
      */
-    fun getCard(card: MagicCard, possession: CardPossession): CompletableFuture<DataSnapshot> {
-        return userRTDB.getCardFromUserPossession(uid, card.toDBMagicCard(possession))
+    fun getCard(
+        setCode: String,
+        setNumber: Int,
+        possession: CardPossession
+    ): CompletableFuture<DataSnapshot> {
+        return userRTDB.getCardFromUserPossession(uid, setCode, setNumber, possession)
     }
 
     /**
