@@ -113,6 +113,8 @@
     <string name="single_user_error_loading">Error loading the user</string>
     <string name="single_user_owned_cards_number">Number of cards owned by the user : %1$d</string>
     <string name="single_user_wanted_cards_number">Number of cards wanted by the user : %1$d</string>
+    <string name="single_user_owned_cards_text">Owned cards</string>
+    <string name="single_user_wanted_cards_text">Wanted cards</string>
 
     <string name="home_add_a_random_card">add a random card</string>
 
