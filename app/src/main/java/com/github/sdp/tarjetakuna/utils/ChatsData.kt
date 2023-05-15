@@ -19,6 +19,10 @@ object ChatsData {
         User("fakeUser2.email@gmail.com", "Fake User2", fakeCards, fakeCoordinates)
     val fakeLastReadUser2 = Date(1683828791000)
 
+    val fakeUser3: User =
+        User("fakeUser3.email@gmail.com", "Fake User3", fakeCards, fakeCoordinates)
+    val fakeLastReadUser3 = Date(1683928691000)
+
     val fakeMessage1_1: Message =
         Message(1325, fakeUser1, fakeUser2, "Hello", Date(1683828633000))
     val fakeMessage1_2: Message =
@@ -55,8 +59,13 @@ object ChatsData {
         Chat(1201, fakeUser1, fakeUser2, fakeMessages2, fakeLastReadUser1, fakeLastReadUser2)
 
     val fakeChat1_emptyMsgs: Chat =
-        Chat(1200, fakeUser1, fakeUser2, ArrayList(), fakeLastReadUser1, fakeLastReadUser2)
+        Chat(1202, fakeUser1, fakeUser2, ArrayList(), fakeLastReadUser1, fakeLastReadUser2)
+
+    val fakeChat3: Chat =
+        Chat(1203, fakeUser1, fakeUser3, fakeMessages1, fakeLastReadUser1, fakeLastReadUser3)
 
     val fakeChats1: ArrayList<Chat> = arrayListOf(fakeChat2, fakeChat1)
+    val fakeChats2: ArrayList<Chat> = arrayListOf(fakeChat3)
+
     val fakeChats_empty: ArrayList<Chat> = ArrayList()
 }

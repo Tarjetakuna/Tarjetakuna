@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.EspressoException
 import androidx.test.espresso.ViewAssertion
+import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import org.hamcrest.Matchers.comparesEqualTo
 import org.hamcrest.Matchers.greaterThan
@@ -17,7 +18,7 @@ import org.junit.Assert.assertFalse
  * taken from https://gist.github.com/txusballesteros/eed78bd057ddb9d5353bd96e76d8c799
  * Helper to test RecyclerViews
  */
-class RecyclerViewAssertion {
+class RecyclerViewAssertions {
     companion object {
         fun hasItems() = ViewAssertion { view, noViewFoundException ->
             if (view is RecyclerView) {
@@ -55,17 +56,32 @@ class RecyclerViewAssertion {
             }
         }
 
+        fun checkOnItemAtPosition(
+            position: Int = 0,
+            viewInteraction: ViewInteraction,
+            viewAssertion: ViewAssertion
+        ) = ViewAssertion { view, noViewFoundException ->
+            if (view is RecyclerView) {
+                view.findViewHolderForAdapterPosition(position)!!.itemView
+                    .let {
+                        viewInteraction.check(viewAssertion)
+                    }
+            } else {
+                throw noViewFoundException
+            }
+        }
+
         fun hasViewWithTextAtPosition(
             position: Int = 0,
             expectedValue: CharSequence
-        ) = ViewAssertion { view, _ ->
+        ) = ViewAssertion { view, noViewFoundException ->
             if (view is RecyclerView) {
                 val outViews = arrayListOf<View>()
                 view.findViewHolderForAdapterPosition(position)!!.itemView
                     .findViewsWithText(outViews, expectedValue, FIND_VIEWS_WITH_TEXT)
                 assertFalse(outViews.isEmpty())
             } else {
-                throw RecyclerViewAssertionException("The view is not a RecyclerView.")
+                throw noViewFoundException
             }
         }
 
@@ -73,7 +89,7 @@ class RecyclerViewAssertion {
             position: Int = 0,
             viewId: Int,
             crossinline assert: (View) -> Unit
-        ) = ViewAssertion { view, _ ->
+        ) = ViewAssertion { view, noViewFoundException ->
             if (view is RecyclerView) {
                 view.findViewHolderForAdapterPosition(position)!!.itemView.findViewById<View>(viewId)
                     ?.let {
@@ -81,7 +97,7 @@ class RecyclerViewAssertion {
                     }
                     ?: throw RecyclerViewAssertionException("The view holder hasn't got a view with the specified ID, $viewId.")
             } else {
-                throw RecyclerViewAssertionException("The view is not a RecyclerView.")
+                throw noViewFoundException
             }
         }
 
@@ -89,7 +105,7 @@ class RecyclerViewAssertion {
             position: Int = 0,
             viewId: Int,
             expectedValue: CharSequence
-        ) = ViewAssertion { view, _ ->
+        ) = ViewAssertion { view, noViewFoundException ->
             if (view is RecyclerView) {
                 view.findViewHolderForAdapterPosition(position)!!.itemView.findViewById<TextView>(
                     viewId
@@ -99,7 +115,7 @@ class RecyclerViewAssertion {
                     }
                     ?: throw RecyclerViewAssertionException("The view holder hasn't got a view with the specified ID, $viewId.")
             } else {
-                throw RecyclerViewAssertionException("The view is not a RecyclerView.")
+                throw noViewFoundException
             }
         }
     }

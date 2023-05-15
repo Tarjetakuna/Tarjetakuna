@@ -11,7 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.ChatsData
-import com.github.sdp.tarjetakuna.utils.RecyclerViewAssertion
+import com.github.sdp.tarjetakuna.utils.RecyclerViewAssertions
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -55,7 +55,7 @@ class ChatFragmentTest {
         Thread.sleep(1000)
         onView(withId(R.id.chat_username_text)).check(matches(withText(ChatsData.fakeUser2.username)))
         onView(withId(R.id.chat_messages_recyclerView)).check(
-            RecyclerViewAssertion.hasItemCount(
+            RecyclerViewAssertions.hasItemCount(
                 ChatsData.fakeChat1.messages.size
             )
         )
@@ -71,7 +71,7 @@ class ChatFragmentTest {
 
         onView(withId(R.id.chat_username_text)).check(matches(withText(ChatsData.fakeUser1.username)))
         onView(withId(R.id.chat_messages_recyclerView)).check(
-            RecyclerViewAssertion.hasItemCount(
+            RecyclerViewAssertions.hasItemCount(
                 ChatsData.fakeChat1.messages.size
             )
         )
@@ -88,7 +88,7 @@ class ChatFragmentTest {
         onView(withId(R.id.chat_username_text)).check(matches(withText(ChatsData.fakeUser2.username)))
 
         onView(withId(R.id.chat_messages_recyclerView)).check(
-            RecyclerViewAssertion.hasItemCount(
+            RecyclerViewAssertions.hasItemCount(
                 ChatsData.fakeChat2.messages.size
             )
         )
@@ -105,7 +105,7 @@ class ChatFragmentTest {
         onView(withId(R.id.chat_username_text)).check(matches(withText(ChatsData.fakeUser1.username)))
 
         onView(withId(R.id.chat_messages_recyclerView)).check(
-            RecyclerViewAssertion.hasItemCount(
+            RecyclerViewAssertions.hasItemCount(
                 ChatsData.fakeChat2.messages.size
             )
         )
@@ -122,7 +122,7 @@ class ChatFragmentTest {
         Thread.sleep(1000)
         onView(withId(R.id.chat_username_text)).check(matches(withText(ChatsData.fakeUser2.username)))
 
-        onView(withId(R.id.chat_messages_recyclerView)).check(RecyclerViewAssertion.isEmpty())
+        onView(withId(R.id.chat_messages_recyclerView)).check(RecyclerViewAssertions.isEmpty())
     }
 
 }

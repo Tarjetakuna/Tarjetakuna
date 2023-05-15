@@ -2,7 +2,9 @@ package com.github.sdp.tarjetakuna.ui.chat
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -10,7 +12,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.ChatsData
-import com.github.sdp.tarjetakuna.utils.RecyclerViewAssertion
+import com.github.sdp.tarjetakuna.utils.RecyclerViewAssertions
+import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -60,7 +63,7 @@ class ChatListFragmentTest {
 
         changeToNavChats()
 
-        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertion.isEmpty())
+        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.isEmpty())
     }
 
     @Test
@@ -71,7 +74,7 @@ class ChatListFragmentTest {
 
         changeToNavChats()
 
-        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertion.isEmpty())
+        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.isEmpty())
 
     }
 
@@ -83,8 +86,8 @@ class ChatListFragmentTest {
 
         changeToNavChats()
 
-        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertion.hasItems())
-        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertion.hasItemCount(ChatsData.fakeChats1.size))
+        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItems())
+        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItemCount(ChatsData.fakeChats1.size))
     }
 
     @Test
@@ -94,8 +97,57 @@ class ChatListFragmentTest {
         viewModel.o_chats = ChatsData.fakeChats1
 
         changeToNavChats()
-        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertion.hasItems())
-        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertion.hasItemCount(ChatsData.fakeChats1.size))
+        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItems())
+        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItemCount(ChatsData.fakeChats1.size))
+    }
+
+    @Test
+    fun test_onChatClick() {
+        // Set the viewmodel's data
+        viewModel.o_currentUser = ChatsData.fakeUser1
+        viewModel.o_chats = ChatsData.fakeChats1
+
+        changeToNavChats()
+        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItems())
+        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItemCount(ChatsData.fakeChats1.size))
+
+        // perform click on first item and check if it opens the chat
+        onView(withId(R.id.chats_recyclerView)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<ChatListAdapter.ViewHolder>(
+                0,
+                click()
+            )
+        )
+
+        // check if chat is open
+        onView(withId(R.id.chat_constraintLayout)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_notifIconShown() {
+        // Set the viewmodel's data
+        viewModel.o_currentUser = ChatsData.fakeUser1
+        viewModel.o_chats = ChatsData.fakeChats2
+
+        changeToNavChats()
+        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItems())
+        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItemCount(ChatsData.fakeChats2.size))
+
+        onView(withId(R.id.chat_item_notif)).check(matches(isDisplayed()))
+
+    }
+
+    @Test
+    fun test_notifIconHidden() {
+        // Set the viewmodel's data
+        viewModel.o_currentUser = ChatsData.fakeUser3
+        viewModel.o_chats = ChatsData.fakeChats2
+
+        changeToNavChats()
+        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItems())
+        onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItemCount(ChatsData.fakeChats2.size))
+
+        onView(withId(R.id.chat_item_notif)).check(matches(not(isDisplayed())))
     }
 
 }

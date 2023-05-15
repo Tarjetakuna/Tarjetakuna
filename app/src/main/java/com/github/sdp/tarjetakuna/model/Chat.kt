@@ -1,6 +1,6 @@
 package com.github.sdp.tarjetakuna.model
 
-import java.util.*
+import java.util.Date
 
 
 data class Chat(
@@ -14,6 +14,6 @@ data class Chat(
 ) {
     init {
         messages.sortBy { it.timestamp }
-        timestamp = messages.firstOrNull()?.timestamp ?: Date(0)
+        timestamp = messages.lastOrNull()?.timestamp ?: Date(0)
     }
 }
