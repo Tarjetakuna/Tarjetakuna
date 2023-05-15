@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.singleuser.SingleUserFragment"
+    android:theme="@style/Theme.Tarjetakuna.NoActionBar">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/singleUser_user_name_text"
+            style="@style/TitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/single_user_error_loading"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/singleUser_user_email_text"
+            style="@style/DescriptionStyleNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/singleUser_user_number_wanted_cards"
+            style="@style/DescriptionStyleNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/single_user_owned_cards_number"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/singleUser_user_number_owned_cards"
+            style="@style/DescriptionStyleNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/single_user_wanted_cards_number"
+            android:textAlignment="center" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
