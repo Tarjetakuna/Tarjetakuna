@@ -16,7 +16,7 @@ class UserTest {
     private val invalidEmail3 = "invalidEmail@google."
     private val validUsername = "validUsername"
     private val validListOfCards = listOf<DBMagicCard>()
-    private val validCoordinates = Coordinates(45.0f, 75.0f)
+    private val validCoordinates = Coordinates(45.0, 75.0)
 
     @Test
     fun blankEmailIsInvalid() {
