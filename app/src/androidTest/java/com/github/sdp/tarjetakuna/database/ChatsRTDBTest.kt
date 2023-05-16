@@ -147,7 +147,12 @@ class ChatsRTDBTest {
             future.isCompletedExceptionally,
             equalTo(false)
         )
-        
+
+    }
+
+    @Test
+    fun test_addListenersOnChats() {
+        // TODO test_addListenersOnChats
     }
 
     private fun waitForChatToBeAdded(chat: Chat) {
