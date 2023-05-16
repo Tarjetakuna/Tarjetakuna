@@ -10,7 +10,7 @@ import java.time.LocalDate
  */
 class MagicSetTest {
 
-    private val validCode = "MT15"
+    private val validCode = "M15"
     private val validName = "Magic 2015"
     private val validType = "Core"
     private val validBlock = "Core"

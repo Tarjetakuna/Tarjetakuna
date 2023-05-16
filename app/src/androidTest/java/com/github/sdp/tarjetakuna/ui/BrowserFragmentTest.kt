@@ -1,7 +1,9 @@
 package com.github.sdp.tarjetakuna.ui
 
+import androidx.fragment.app.testing.FragmentScenario
+import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -10,13 +12,13 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
+import com.github.sdp.tarjetakuna.ui.browser.BrowserFragment
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -30,7 +32,8 @@ import org.mockito.Mockito
 @RunWith(AndroidJUnit4::class)
 class BrowserFragmentTest {
 
-    private lateinit var activityRule: ActivityScenario<MainActivity>
+    private lateinit var scenario: FragmentScenario<BrowserFragment>
+
 
     @Before
     fun setUp() {
@@ -60,18 +63,14 @@ class BrowserFragmentTest {
             }
         }
 
-        activityRule = ActivityScenario.launch(MainActivity::class.java)
-
-        // Get a reference to the fragment's view
-        activityRule.onActivity { activity ->
-            activity.changeFragment(R.id.nav_browser, null)
-        }
+        scenario = launchFragmentInContainer()
+        scenario.moveToState(Lifecycle.State.STARTED)
     }
 
     @After
     fun after() {
         LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
-        activityRule.close()
+        scenario.close()
         Intents.release()
     }
 

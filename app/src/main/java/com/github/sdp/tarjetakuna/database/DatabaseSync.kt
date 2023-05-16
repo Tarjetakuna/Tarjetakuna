@@ -25,7 +25,7 @@ object DatabaseSync {
             Log.i("DatabaseSync", "sync: Not connected to firebase")
             return
         }
-        //todo: assign the right function for cards
+        //TODO assign the right function for cards
 
 //        val cards = userRTDB.getAllCardsFromUserPossession(Firebase.auth.currentUser!!.uid, CardPossession.OWNED)
 //        cards.thenAccept {
@@ -54,7 +54,7 @@ object DatabaseSync {
         scope.launch {
             val localCards =
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
-                    .magicCardDao().getAllCards().associateBy { it.code + it.number.toString() }
+                    .magicCardDao().getAllCards().associateBy { it.getFbKey() }
             Log.i("DatabaseSync", "sync: ${localCards.size} cards found on local database")
             // merge cards so that we only have the most updated cards
             var updatedCards: MutableMap<String, DBMagicCard> = mutableMapOf()

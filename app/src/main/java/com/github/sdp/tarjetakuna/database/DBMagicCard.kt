@@ -45,6 +45,13 @@ data class DBMagicCard(
         return DBMagicCard(this.toMagicCard(), CardPossession.NONE)
     }
 
+    /**
+     * Get the correct key for this DBMagicCard for the Firebase database
+     */
+    fun getFbKey(): String {
+        return code + "_" + number.toString()
+    }
+
     companion object {
         /**
          * Create a DBMagicCard from a MagicCard
