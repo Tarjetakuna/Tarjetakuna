@@ -64,4 +64,16 @@
         android:name="com.github.sdp.tarjetakuna.ui.singleset.SingleSetFragment"
         android:label="@string/menu_single_set"
         tools:layout="@layout/fragment_single_set" />
+
+    <fragment
+        android:id="@+id/nav_chats"
+        android:name="com.github.sdp.tarjetakuna.ui.chat.ChatListFragment"
+        android:label="@string/menu_chats"
+        tools:layout="@layout/fragment_chat_list" />
+
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.github.sdp.tarjetakuna.ui.chat.ChatFragment"
+        android:label="@string/menu_chat"
+        tools:layout="@layout/fragment_chat" />
 </navigation>
