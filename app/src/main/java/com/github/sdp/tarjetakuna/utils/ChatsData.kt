@@ -12,15 +12,15 @@ object ChatsData {
     val fakeCards: ArrayList<DBMagicCard> = ArrayList()
 
     val fakeUser1: User =
-        User("fakeUser2.email@gmail.com", "Fake User1", fakeCards, fakeCoordinates)
+        User("user_id1", "fakeUser1.email@gmail.com", fakeCards, fakeCoordinates)
     val fakeLastReadUser1 = Date(1683828691000)
 
     val fakeUser2: User =
-        User("fakeUser2.email@gmail.com", "Fake User2", fakeCards, fakeCoordinates)
+        User("user_id2", "fakeUser2.email@gmail.com", fakeCards, fakeCoordinates)
     val fakeLastReadUser2 = Date(1683828791000)
 
     val fakeUser3: User =
-        User("fakeUser3.email@gmail.com", "Fake User3", fakeCards, fakeCoordinates)
+        User("user_id3", "fakeUser3.email@gmail.com", fakeCards, fakeCoordinates)
     val fakeLastReadUser3 = Date(1683928691000)
 
     val fakeMessage1_1: Message =

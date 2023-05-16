@@ -11,7 +11,6 @@ import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentChatListBinding
 import com.github.sdp.tarjetakuna.model.User
-import com.google.gson.Gson
 
 class ChatListFragment : Fragment() {
 
@@ -51,7 +50,7 @@ class ChatListFragment : Fragment() {
         adapter.onChatClickListener = object : ChatListAdapter.OnChatClickListener {
             override fun onClick(position: Int) {
                 val bundle = Bundle()
-                bundle.putString("chat", Gson().toJson(adapter.chats[position]))
+                bundle.putString("chat", adapter.chats[position].id.toString())
                 (requireActivity() as MainActivity).changeFragment(R.id.nav_chat, bundle)
             }
         }

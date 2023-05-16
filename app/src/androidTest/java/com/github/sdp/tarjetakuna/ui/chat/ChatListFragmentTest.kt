@@ -14,10 +14,12 @@ import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.ChatsData
+import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.RecyclerViewAssertions
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
+import org.junit.ClassRule
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,6 +33,12 @@ class ChatListFragmentTest {
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
+
+    companion object {
+        @get:ClassRule
+        @JvmStatic
+        val fbEmulator = FBEmulator()
+    }
 
     private lateinit var activityRule: ActivityScenario<MainActivity>
     private val viewModel = ChatListViewModel
