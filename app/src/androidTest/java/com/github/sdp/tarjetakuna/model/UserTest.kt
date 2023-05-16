@@ -18,6 +18,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.Timeout
 import org.junit.runner.RunWith
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 
 /**
@@ -26,7 +27,7 @@ import java.util.concurrent.TimeUnit
 @RunWith(AndroidJUnit4::class)
 class UserTest {
     @get:Rule
-    val globalTimeout = Timeout(30, TimeUnit.SECONDS)
+    val globalTimeout = Timeout(60, TimeUnit.SECONDS)
 
     private val validUsername = "validEmail@google.com"
     private val invalidUsername1 = "invalidEmail"
@@ -144,23 +145,12 @@ class UserTest {
         val magicCard2 = fbCard2.toMagicCard()
         assertThat(magicCard2, CoreMatchers.`is`(card2))
     }
-//TODO fix: times out on cirrus but not locally
-//    @Test
-//    fun getCardDoesNotExistTest() {
-//        assertThrows(ExecutionException::class.java) {
-//            validUser.getCard("blablabla", 1, CardPossession.OWNED)
-//                .whenComplete { card, throwable ->
-//                    if (throwable != null) {
-//                        assertThat(
-//                            "future completes exceptionally", throwable,
-//                            CoreMatchers.`is`(CoreMatchers.notNullValue())
-//                        )
-//                        assertThat(
-//                            "card doesn't exist", card,
-//                            CoreMatchers.`is`(CoreMatchers.nullValue())
-//                        )
-//                    }
-//                }.get()
-//        }
-//    }
+
+    @Test
+    fun getCardDoesNotExistTest() {
+        assertThrows(ExecutionException::class.java) {
+            validUser.getCard("blablabla", 1, CardPossession.OWNED)
+                .get()
+        }
+    }
 }
