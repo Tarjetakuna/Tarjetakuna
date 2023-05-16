@@ -4,6 +4,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
+/**
+ * Tests for [MagicCard]
+ */
 class MagicCardTest {
 
     private val validName = "Angel of Mercy"
@@ -11,7 +14,7 @@ class MagicCardTest {
     private val validLayout = MagicLayout.NORMAL
     private val validCMC = 7
     private val validManaCost = "{5}{W}{W}"
-    private val validSet = MagicSet("MT15", "Magic 2015")
+    private val validSet = MagicSet("M15", "Magic 2015")
     private val validNumber = 56
     private val validImageUrl =
         "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card"
