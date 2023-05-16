@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             MagicLayout.NORMAL,
             7,
             "{5}{W}{W}",
-            MagicSet("MT15", "Magic 2015"),
+            MagicSet("M15", "Magic 2015"),
             56,
             "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
         ),
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             MagicLayout.NORMAL,
             7,
             "{7}{W}{W}",
-            MagicSet("MT15", "Magic 2015"),
+            MagicSet("M15", "Magic 2015"),
             56,
             "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
         )

@@ -47,7 +47,7 @@ class SingleCardFragment : Fragment() {
 
         binding.singleCardSetText.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("set", Gson().toJson(viewModel.card.set))
+            bundle.putString("set", Gson().toJson(viewModel.card?.set))
             //TODO : Should be changed to remove the dependency on MainActivity
             (requireActivity() as MainActivity).changeFragment(R.id.nav_single_set, bundle)
         }
