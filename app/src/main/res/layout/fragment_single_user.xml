@@ -44,6 +44,7 @@
             android:textAlignment="center" />
 
         <com.google.android.material.tabs.TabLayout
+            android:id="@+id/singleUser_cards_list_tabLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -57,5 +58,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/single_user_wanted_cards_text" />
         </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/singleUser_container_viewPager2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

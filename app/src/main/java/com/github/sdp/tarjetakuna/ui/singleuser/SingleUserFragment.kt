@@ -9,6 +9,7 @@ import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.databinding.FragmentSingleUserBinding
 import com.github.sdp.tarjetakuna.model.User
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 
 /**
@@ -57,6 +58,21 @@ class SingleUserFragment : Fragment() {
             binding.singleUserUserNumberOwnedCards.text = ""
             binding.singleUserUserNumberWantedCards.text = ""
         }
+    }
+
+    /**
+     * Sets the tabs to display the users that have the card in their collection or wanted cards.
+     */
+    private fun setUsersTabs() {
+        binding.singleUserContainerViewPager2.adapter = ItemFragmentAdapter(requireActivity())
+        TabLayoutMediator(
+            binding.singleUserUserNumberOwnedCards,
+            binding.singleUserUserNumberWantedCards
+        ) { tab, position ->
+            tab.text =
+                if (position == 0) getString(R.string.single_user_owned_cards_text) else getString(R.string.single_user_wanted_cards_text)
+            tab.id = position
+        }.attach()
     }
 
     companion object {
