@@ -99,5 +99,4 @@ class CardsRTDB(database: Database) {
         }
         return future
     }
-    // }
 }

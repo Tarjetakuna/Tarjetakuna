@@ -12,17 +12,21 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.hamcrest.CoreMatchers
-import org.junit.Assert
 import org.junit.Assert.assertThrows
 import org.junit.ClassRule
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.Timeout
 import org.junit.runner.RunWith
+import java.util.concurrent.TimeUnit
 
 /**
  * Tests for [User]
  */
 @RunWith(AndroidJUnit4::class)
 class UserTest {
+    @get:Rule
+    val globalTimeout = Timeout(30, TimeUnit.SECONDS)
 
     private val validUsername = "validEmail@google.com"
     private val invalidUsername1 = "invalidEmail"
@@ -53,7 +57,7 @@ class UserTest {
 
     @Test
     fun blankEmailIsInvalid() {
-        Assert.assertThrows(IllegalArgumentException::class.java) {
+        assertThrows(IllegalArgumentException::class.java) {
             val cards = mutableListOf<DBMagicCard>()
             cards.addAll(validListOfCards)
             User(validUID, "", cards, validCoordinates)
@@ -124,26 +128,30 @@ class UserTest {
 
     @Test
     fun getCardExistsTest() {
-        validUser.addCard(card, CardPossession.WANTED)
-        var magiccard = MagicCard()
-        runBlocking {
-            //TODO problem: not even getting through here
-            validUser.getCard(card.set.code, card.number, CardPossession.WANTED).exceptionally {
-                assertThat("helsdflo", CoreMatchers.`is`("hhi"))
-                null
-            }
-                .thenAccept {
-                    val fbCard = Gson().fromJson(it.value as String, DBMagicCard::class.java)
-                    magiccard = fbCard.toMagicCard()
-                    assertThat("hello", CoreMatchers.`is`("hhi"))
-                }
-            delay(1000)
-            //assertThat(magiccard, CoreMatchers.`is`(card))
-        }
+        validUser.addMultipleCards(
+            listOf(card, card2),
+            listOf(CardPossession.WANTED, CardPossession.OWNED)
+        )
+        val futureCard1 = validUser.getCard(card.set.code, card.number, CardPossession.WANTED)
+        val futureCard2 = validUser.getCard(card2.set.code, card2.number, CardPossession.OWNED)
+
+        val actualCard1 = futureCard1.get() // block until the future is complete and get the result
+        val fbCard1 = Gson().fromJson(actualCard1.value as String, DBMagicCard::class.java)
+        val magicCard1 = fbCard1.toMagicCard()
+        assertThat(magicCard1, CoreMatchers.`is`(card))
+
+        val actualCard2 = futureCard2.get()
+        val fbCard2 = Gson().fromJson(actualCard2.value as String, DBMagicCard::class.java)
+        val magicCard2 = fbCard2.toMagicCard()
+        assertThat(magicCard2, CoreMatchers.`is`(card2))
     }
 
-    @Test
-    fun getCardDoesntExistsTest() {
-        //TODO
-    }
+    //todo fix this test
+    /*@Test
+    fun getCardDoesNotExistTest() {
+        val futureCard = validUser.getCard(card.set.code, card.number, CardPossession.OWNED)
+        assertThrows(ExecutionException::class.java) {
+            futureCard.get()
+        }
+    }*/
 }
