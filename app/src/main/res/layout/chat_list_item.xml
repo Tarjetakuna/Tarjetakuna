@@ -10,7 +10,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="@dimen/small_margin"
-        android:contentDescription="userLogo"
+        android:contentDescription="@string/chat_list_item_userlogo"
         tools:srcCompat="@tools:sample/avatars" />
 
     <LinearLayout
@@ -29,7 +29,7 @@
                 android:id="@+id/chat_item_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="UserName"
+                android:text="@string/chat_list_item_defaultUsername"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +38,7 @@
                 android:id="@+id/chat_item_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:00"
+                android:text="@string/chat_list_item_defaultTime"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +57,7 @@
                 android:id="@+id/chat_item_last_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Last Message"
+                android:text="@string/chat_list_item_default_lastMessage"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -68,7 +68,7 @@
                 android:id="@+id/chat_item_notif"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:contentDescription="notif"
+                android:contentDescription="@string/chat_list_item_newMsgNotification"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

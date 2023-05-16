@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna.ui.chat
 
+import android.Manifest
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -8,17 +9,27 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.ChatsData
 import com.github.sdp.tarjetakuna.utils.RecyclerViewAssertions
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class ChatFragmentTest {
+
+    @Rule
+    @JvmField
+    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
 
     private lateinit var activityRule: ActivityScenario<MainActivity>
     private val viewModel = ChatViewModel
@@ -52,7 +63,6 @@ class ChatFragmentTest {
 
         changeToNavChat()
 
-        Thread.sleep(1000)
         onView(withId(R.id.chat_username_text)).check(matches(withText(ChatsData.fakeUser2.username)))
         onView(withId(R.id.chat_messages_recyclerView)).check(
             RecyclerViewAssertions.hasItemCount(
@@ -119,7 +129,6 @@ class ChatFragmentTest {
 
         changeToNavChat()
 
-        Thread.sleep(1000)
         onView(withId(R.id.chat_username_text)).check(matches(withText(ChatsData.fakeUser2.username)))
 
         onView(withId(R.id.chat_messages_recyclerView)).check(RecyclerViewAssertions.isEmpty())

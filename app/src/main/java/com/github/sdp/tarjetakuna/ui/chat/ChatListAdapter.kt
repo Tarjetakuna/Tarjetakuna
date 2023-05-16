@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna.ui.chat
 
+import android.app.Application
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.Chat
+import com.github.sdp.tarjetakuna.model.Message
 import com.github.sdp.tarjetakuna.model.User
 import java.text.DateFormat
 
@@ -46,23 +48,43 @@ class ChatListAdapter(val chats: List<Chat>, private val currentUser: User) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // set the user name to other user
+        setUserName(holder, position)
+
+        // look for the last message and display it
+        val lastMsg = chats[position].messages.maxByOrNull { it.timestamp }
+        setLastMessage(holder, lastMsg)
+
+        // update the notification icon
+        setNotificationIcon(holder, position, lastMsg)
+
+        // TODO set the user icon
+//        holder.userIcon.setImageResource(R.drawable.ic_baseline_person_24)
+
+        // set the onClick listener
+        holder.itemView.setOnClickListener {
+            onChatClickListener?.onClick(position)
+        }
+    }
+
+    private fun setUserName(holder: ViewHolder, position: Int) {
         if (chats[position].user1.username == currentUser.username) {
             holder.user.text = chats[position].user2.username
         } else {
             holder.user.text = chats[position].user1.username
         }
+    }
 
-        // look for the last message and display it
-        val lastMsg = chats[position].messages.maxByOrNull { it.timestamp }
+    private fun setLastMessage(holder: ViewHolder, lastMsg: Message?) {
         if (lastMsg != null) {
             holder.lastMsgTime.text = DateFormat.getDateInstance().format(lastMsg.timestamp)
             holder.lastMsg.text = lastMsg.content
         } else {
-            holder.lastMsgTime.text = "no messages"
-            holder.lastMsg.text = ""
+            holder.lastMsgTime.text = ""
+            holder.lastMsg.text = Application().getString(R.string.chat_list_no_message)
         }
+    }
 
-        // update the notification icon
+    private fun setNotificationIcon(holder: ViewHolder, position: Int, lastMsg: Message?) {
         val lastRead = if (chats[position].user1.username == currentUser.username) {
             chats[position].user1LastRead;
         } else {
@@ -73,13 +95,6 @@ class ChatListAdapter(val chats: List<Chat>, private val currentUser: User) :
             holder.notifIcon.visibility = View.VISIBLE
         } else {
             holder.notifIcon.visibility = View.INVISIBLE
-        }
-
-        // TODO set the user icon
-//        holder.userIcon.setImageResource(R.drawable.ic_baseline_person_24)
-
-        holder.itemView.setOnClickListener {
-            onChatClickListener?.onClick(position)
         }
     }
 

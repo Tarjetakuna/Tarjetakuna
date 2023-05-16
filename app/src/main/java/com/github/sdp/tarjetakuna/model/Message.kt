@@ -1,6 +1,6 @@
 package com.github.sdp.tarjetakuna.model
 
-import java.util.*
+import java.util.Date
 
 class Message(
     val id: Int,
@@ -8,8 +8,4 @@ class Message(
     val receiver: User,
     val content: String,
     val timestamp: Date
-) {
-    init {
-
-    }
-}
+)
