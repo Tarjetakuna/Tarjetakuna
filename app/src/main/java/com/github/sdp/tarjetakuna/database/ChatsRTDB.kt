@@ -30,7 +30,7 @@ class ChatsRTDB(database: Database) {
         val future = CompletableFuture<DBChat>()
         chatsTable.child(chatUID).get().addOnSuccessListener {
             if (it.value == null) {
-                future.completeExceptionally(NoSuchFieldException("message $chatUID is not in chats table"))
+                future.completeExceptionally(NoSuchFieldException("chat $chatUID is not in chats table"))
             } else {
                 future.complete(it.value as DBChat)
             }
@@ -74,5 +74,24 @@ class ChatsRTDB(database: Database) {
             future.completeExceptionally(it)
         }
         return future
+    }
+
+    /**
+     * Add a message to a chat.
+     */
+    fun addMessageToChat(chatUID: String, message: DBMessage) {
+        getChat(chatUID).thenAccept {
+            if (!it.messages.contains(message.uid) && (
+                        (it.user1 == message.sender && it.user2 == message.receiver) ||
+                                (it.user1 == message.receiver && it.user2 == message.sender))
+            ) {
+                // add message to chat
+                it.messages.add(message.uid)
+                addChat(it)
+
+                // add message to messages table
+                messagesRTDB.addMessage(message)
+            }
+        }
     }
 }
