@@ -148,9 +148,11 @@ class UserTest {
 
     @Test
     fun getCardDoesNotExistTest() {
-        assertThrows(ExecutionException::class.java) {
-            validUser.getCard("blablabla", 1, CardPossession.OWNED)
-                .get()
+        runBlocking {
+            assertThrows(ExecutionException::class.java) {
+                validUser.getCard("blablabla", 1, CardPossession.OWNED)
+                    .get()
+            }
         }
     }
 }
