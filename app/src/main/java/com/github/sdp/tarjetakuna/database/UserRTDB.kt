@@ -71,7 +71,6 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     /**
      * Get the card (json) from the user's collection asynchronously from the database (based on possession category)
      */
-    //@RequiresApi(Build.VERSION_CODES.S)//for exceptionally
     fun getCardFromUserPossession(
         userUID: String,
         setCode: String,
@@ -79,13 +78,21 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         possession: CardPossession
     ): CompletableFuture<DataSnapshot> {
         val cardUID = setCode + setNumber
-        var future = CompletableFuture<DataSnapshot>()
-        getCardCodeFromUserCollection(userUID, cardUID, possession).thenAccept {
-            future =
-                cardsRTDB.getCardFromGlobalCollection(cardUID) //only get the card if the user has it in their collection
-        }//todo: not sure how to handle exception case (needs certain api level), is it ok to just not handle this ?
-//            .exceptionally { exp = CompletableFuture.failedFuture<DataSnapshot>(it.cause)
-//            null}
+        val future = CompletableFuture<DataSnapshot>()
+        try {
+            val cardCodeFuture = getCardCodeFromUserCollection(userUID, cardUID, possession)
+            cardCodeFuture.thenCompose {
+                cardsRTDB.getCardFromGlobalCollection(cardUID) //only get the card if it exists in the user's collection
+            }.whenComplete { snapshot, exception ->
+                if (exception != null) {
+                    future.completeExceptionally(exception)
+                } else {
+                    future.complete(snapshot)
+                }
+            }
+        } catch (ex: Exception) {
+            future.completeExceptionally(ex)
+        }
         return future
     }
 
