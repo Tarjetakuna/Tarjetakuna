@@ -102,7 +102,7 @@ class UserTest {
                     .child("users")
                     .child(validUID)
                     .child("owned")
-                    .child(fbcard.code + fbcard.number).get().addOnSuccessListener {
+                    .child(fbcard.getFbKey()).get().addOnSuccessListener {
                         count = it.value as Long
                     }
             }
@@ -115,7 +115,7 @@ class UserTest {
                 .child("users")
                 .child(validUID)
                 .child("owned")
-                .child(fbcard.code + fbcard.number)
+                .child(fbcard.getFbKey())
                 .key,
             CoreMatchers.`is`("MT1543")
         )
@@ -127,7 +127,7 @@ class UserTest {
         validUser.addCard(card, CardPossession.WANTED)
         var magiccard = MagicCard()
         runBlocking {
-            //todo: problem: not even getting through here
+            //TODO problem: not even getting through here
             validUser.getCard(card.set.code, card.number, CardPossession.WANTED).exceptionally {
                 assertThat("helsdflo", CoreMatchers.`is`("hhi"))
                 null

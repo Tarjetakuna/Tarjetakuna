@@ -20,11 +20,11 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     /**
      * Adds a card to the users collection.
      */
-    fun addCard(card: DBMagicCard, userUID: String) {
-        val cardUID = card.code + card.number
-        val fbpossession = card.possession.toString().lowercase()
+    fun addCard(fbcard: DBMagicCard, userUID: String) {
+        val cardUID = fbcard.getFbKey()
+        val fbpossession = fbcard.possession.toString().lowercase()
         db.child(userUID).child(fbpossession).child(cardUID).setValue(1)
-        cardsRTDB.addCardToGlobalCollection(card)
+        cardsRTDB.addCardToGlobalCollection(fbcard)
     }
 
     /**
@@ -38,10 +38,10 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
 
     /**
      * Removes a card from the users collection.
-     */ //todo: handle multiple cards and how this interacts with global collection
-    fun removeCard(userUID: String, card: DBMagicCard) {
-        val fbPosession = card.possession.toString().lowercase()
-        val cardUID = card.code + card.number
+     */ //TODO handle multiple cards and how this interacts with global collection
+    fun removeCard(userUID: String, fbcard: DBMagicCard) {
+        val fbPosession = fbcard.possession.toString().lowercase()
+        val cardUID = fbcard.getFbKey()
         db.child(userUID).child(fbPosession).child(cardUID)
             .removeValue()
     }
@@ -78,12 +78,12 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         setNumber: Int,
         possession: CardPossession
     ): CompletableFuture<DataSnapshot> {
-        val cardUID = setCode + setNumber
+        val cardUID = setCode + "_" + setNumber.toString()
         var future = CompletableFuture<DataSnapshot>()
         getCardCodeFromUserCollection(userUID, cardUID, possession).thenAccept {
             future =
                 cardsRTDB.getCardFromGlobalCollection(cardUID) //only get the card if the user has it in their collection
-        }//todo: not sure how to handle exception case (needs certain api level), is it ok to just not handle this ?
+        }//TODO not sure how to handle exception case (needs certain api level), is it ok to just not handle this ?
 //            .exceptionally { exp = CompletableFuture.failedFuture<DataSnapshot>(it.cause)
 //            null}
         return future

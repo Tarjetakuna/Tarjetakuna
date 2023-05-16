@@ -20,7 +20,7 @@ class CardsRTDB(database: Database) {
      * Add a card to the global card collection.
      */
     fun addCardToGlobalCollection(fbCard: DBMagicCard) {
-        val cardUID = fbCard.code + fbCard.number
+        val cardUID = fbCard.getFbKey()
         val newCard =
             fbCard.clearPossession() //clear the possession when storing in global collection
         val data = Gson().toJson(newCard)
