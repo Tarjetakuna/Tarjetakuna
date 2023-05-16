@@ -34,7 +34,7 @@ class UserTest {
     private val invalidUsername3 = "invalidEmail@google."
     private val validUID = "onetwothree"
     private val validListOfCards = mutableListOf<DBMagicCard>()
-    private val validCoordinates = Coordinates(45.0f, 75.0f)
+    private val validCoordinates = Coordinates(45.0, 75.0)
     private val validUser =
         User(
             validUID,
