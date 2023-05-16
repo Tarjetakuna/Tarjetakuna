@@ -25,6 +25,8 @@
     <string name="menu_user_cards">User cards</string>
     <string name="menu_single_card">Card</string>
     <string name="menu_single_set">Set</string>
+    <string name="menu_chats">Chats</string>
+    <string name="menu_chat">Chat</string>
 
     <string name="scanner_button">Scan a card</string>
     <string name="scanner_description">Here you can scan a card by clicking on the button below.</string>
@@ -110,5 +112,19 @@
     <string name="single_set_error_loading">Error loading the set</string>
 
     <string name="home_add_a_random_card">add a random card</string>
+    <string name="chats_my_chats">My chats</string>
+    <string name="chat_list_no_message">no message</string>
+    <string name="chat_list_item_userlogo">user profile picture</string>
+    <string name="chat_list_item_defaultUsername">Username</string>
+    <string name="chat_list_item_defaultTime">00:00</string>
+    <string name="chat_list_item_default_lastMessage">Last message</string>
+    <string name="chat_list_item_newMsgNotification">New message</string>
+    <string name="chat_userLogo">User logo</string>
+    <string name="chat_default_username">Username</string>
+    <string name="chat_enter_message">Enter message</string>
+    <string name="chat_send_message">Send</string>
+    <string name="msg_date">date</string>
+    <string name="msg_default_content">Message content</string>
+    <string name="msg_default_date">00:00</string>
 
 </resources>
