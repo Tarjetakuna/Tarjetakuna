@@ -121,7 +121,7 @@ class UserTest {
                 .child("owned")
                 .child(fbcard.getFbKey())
                 .key,
-            CoreMatchers.`is`("MT1543")
+            CoreMatchers.`is`("M15_43")
         )
 
     }

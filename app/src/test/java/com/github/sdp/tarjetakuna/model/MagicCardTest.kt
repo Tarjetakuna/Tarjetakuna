@@ -14,7 +14,7 @@ class MagicCardTest {
     private val validLayout = MagicLayout.NORMAL
     private val validCMC = 7
     private val validManaCost = "{5}{W}{W}"
-    private val validSet = MagicSet("MT15", "Magic 2015")
+    private val validSet = MagicSet("M15", "Magic 2015")
     private val validNumber = 56
     private val validImageUrl =
         "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=149935&type=card"
