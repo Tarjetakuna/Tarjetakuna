@@ -66,8 +66,8 @@ class SingleUserFragment : Fragment() {
     private fun setUsersTabs() {
         binding.singleUserContainerViewPager2.adapter = ItemFragmentAdapter(requireActivity())
         TabLayoutMediator(
-            binding.singleUserUserNumberOwnedCards,
-            binding.singleUserUserNumberWantedCards
+            binding.singleUserCardsListTabLayout,
+            binding.singleUserContainerViewPager2
         ) { tab, position ->
             tab.text =
                 if (position == 0) getString(R.string.single_user_owned_cards_text) else getString(R.string.single_user_wanted_cards_text)
