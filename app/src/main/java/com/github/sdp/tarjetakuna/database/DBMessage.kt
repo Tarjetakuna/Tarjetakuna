@@ -1,5 +1,7 @@
 package com.github.sdp.tarjetakuna.database
 
+import com.github.sdp.tarjetakuna.model.Message
+import com.github.sdp.tarjetakuna.model.User
 import java.util.Date
 
 data class DBMessage(
@@ -11,7 +13,7 @@ data class DBMessage(
 ) {
     companion object {
         /**
-         * Conversion from Chat object.
+         * Conversion from Message object.
          */
         fun toDBMessage(message: Message): DBMessage {
             return DBMessage(
@@ -24,15 +26,16 @@ data class DBMessage(
         }
 
         /**
-         * Conversion to Chat object.
+         * Conversion to Message object.
          */
         fun fromDBMessage(dbMessage: DBMessage): Message {
             return Message(
                 dbMessage.uid,
-                dbMessage.sender,
-                dbMessage.receiver,
+                User(dbMessage.sender),
+                User(dbMessage.receiver),
                 dbMessage.content,
-                dbMessage.timestamp
+                dbMessage.timestamp,
+                valid = false
             )
         }
     }

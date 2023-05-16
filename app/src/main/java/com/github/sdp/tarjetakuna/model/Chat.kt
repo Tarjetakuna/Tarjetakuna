@@ -4,14 +4,19 @@ import java.util.Date
 
 
 data class Chat(
-    val id: Int,
-    val user1: User,
-    val user2: User,
-    val messages: ArrayList<Message>,
-    val user1LastRead: Date,
-    val user2LastRead: Date,
+    val uid: String,
+    var user1: User,
+    var user2: User,
+    var messages: ArrayList<Message>,
+    var user1LastRead: Date,
+    var user2LastRead: Date,
+    var valid: Boolean = true,
     var timestamp: Date = Date(0)
 ) {
+
+    constructor(uid: String) :
+            this(uid, User(""), User(""), ArrayList(), Date(0), Date(0), false)
+
     init {
         messages.sortBy { it.timestamp }
         timestamp = messages.lastOrNull()?.timestamp ?: Date(0)

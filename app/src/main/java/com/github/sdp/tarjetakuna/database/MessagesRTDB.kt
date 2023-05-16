@@ -1,24 +1,28 @@
 package com.github.sdp.tarjetakuna.database
 
+import com.github.sdp.tarjetakuna.model.Message
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
+import com.google.gson.Gson
 import java.util.concurrent.CompletableFuture
 
 /**
  * This class is used to manage the global collection of cards contained by all users (no duplicates).
  */
-class MessagesRTDB(database: Database) {
+class MessagesRTDB(database: Database = FirebaseDB()) {
 
     private var messagesTable: DatabaseReference
 
     init {
-        messagesTable = database.chatsTable() //Firebase.database.reference.child("messages")
+        messagesTable = database.messagesTable() //Firebase.database.reference.child("messages")
     }
 
     /**
      * Add a message to the messages table.
      */
-    fun addMessage(message: DBMessage) {
-        messagesTable.child(message.uid).setValue(message)
+    fun addMessage(message: DBMessage): Task<Void> {
+        return messagesTable.child(message.uid).setValue(messageToDBFormat(message))
     }
 
     /**
@@ -30,7 +34,7 @@ class MessagesRTDB(database: Database) {
             if (it.value == null) {
                 future.completeExceptionally(NoSuchFieldException("message $messageUID is not in messages table"))
             } else {
-                future.complete(it.value as DBMessage)
+                future.complete(messageFromDBFormat(it))
             }
         }.addOnFailureListener {
             future.completeExceptionally(it)
@@ -41,12 +45,12 @@ class MessagesRTDB(database: Database) {
     /**
      * Remove a message from the messages table.
      */
-    fun removeMessage(messageUID: String) {
-        messagesTable.child(messageUID).removeValue()
+    fun removeMessage(messageUID: String): Task<Void> {
+        return messagesTable.child(messageUID).removeValue()
     }
 
-    fun addMessageToDatabase(message: Message) {
-        addMessage(DBMessage.toDBMessage(message))
+    fun addMessageToDatabase(message: Message): Task<Void> {
+        return addMessage(DBMessage.toDBMessage(message))
     }
 
     fun getMessageFromDatabase(messageUID: String): CompletableFuture<Message> {
@@ -55,6 +59,7 @@ class MessagesRTDB(database: Database) {
             future.complete(DBMessage.fromDBMessage(it))
         }.exceptionally {
             future.completeExceptionally(it)
+            return@exceptionally null
         }
         return future
     }
@@ -66,5 +71,27 @@ class MessagesRTDB(database: Database) {
         return CompletableFuture.allOf(*messagesFuture.toTypedArray())
             .thenApply { messagesFuture.map { it.get() } }
     }
+
+    /**
+     * Convert a message to a string to store in the database.
+     */
+    private fun messageToDBFormat(message: DBMessage): String {
+        return Gson().toJson(message).toString()
+    }
+
+    /**
+     * Convert a string from the database to a chat.
+     */
+    private fun messageFromDBFormat(data: DataSnapshot): DBMessage {
+        return Gson().fromJson(data.value as String, DBMessage::class.java)
+    }
+
+    /**
+     * Clear all messages from the messages table.
+     */
+    fun clearMessages(): Task<Void> {
+        return messagesTable.removeValue()
+    }
+
 
 }

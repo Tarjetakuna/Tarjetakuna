@@ -1,5 +1,8 @@
 package com.github.sdp.tarjetakuna.database
 
+import com.github.sdp.tarjetakuna.model.Chat
+import com.github.sdp.tarjetakuna.model.Message
+import com.github.sdp.tarjetakuna.model.User
 import java.util.Date
 
 data class DBChat(
@@ -18,11 +21,11 @@ data class DBChat(
         fun toDBChat(chat: Chat): DBChat {
             return DBChat(
                 chat.uid,
-                chat.user1,
-                chat.user2,
-                chat.messages.map { it.uid },
-                chat.user1.lastRead,
-                chat.user2.lastRead
+                chat.user1.uid,
+                chat.user2.uid,
+                chat.messages.map { it.uid } as ArrayList<String>,
+                chat.user1LastRead,
+                chat.user2LastRead
             )
         }
 
@@ -32,11 +35,12 @@ data class DBChat(
         fun fromDBChat(dbChat: DBChat): Chat {
             return Chat(
                 dbChat.uid,
-                dbChat.user1,
-                dbChat.user2,
-                dbChat.messages.map { Message(it.uid) },
-                dbChat.user1.lastRead,
-                dbChat.user2.lastRead
+                User(dbChat.user1),
+                User(dbChat.user2),
+                dbChat.messages.map { Message(it) } as ArrayList<Message>,
+                dbChat.user1LastRead,
+                dbChat.user2LastRead,
+                valid = false
             )
         }
     }

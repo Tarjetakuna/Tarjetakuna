@@ -1,6 +1,11 @@
 package com.github.sdp.tarjetakuna.model
 
-import com.github.sdp.tarjetakuna.database.*
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.Database
+import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.database.UserRTDB
+import com.github.sdp.tarjetakuna.database.UsernamesRTDB
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import java.util.concurrent.CompletableFuture
@@ -9,37 +14,47 @@ import java.util.concurrent.CompletableFuture
  * Represents a user.
  */
 data class User(
-    var uid: String,
-    val username: String,
+    val uid: String,
+    var username: String,
     var cards: MutableList<DBMagicCard>,
     var location: Coordinates,
-    val database: Database = FirebaseDB()
     //var chats: List<Chat>
-
+    var valid: Boolean = true,
+    val database: Database = FirebaseDB(),
 ) {
     private var db: DatabaseReference
     private var userRTDB: UserRTDB
     private var usernamesRTDB: UsernamesRTDB
 
-    init {
-        require(
-            username.matches(
-                Regex(
-                    "^[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*\$"
-                )
-            )
-        ) { "username (email) is not valid" }
-        require(
-            uid.isNotBlank()
-        ) { "UID is not valid" }
+    constructor(uid: String) : this(
+        uid,
+        "",
+        mutableListOf(),
+        Coordinates(),
+        false
+    )
 
+    init {
         db = database.returnDatabaseReference()
         userRTDB = UserRTDB(database)
         usernamesRTDB = UsernamesRTDB(database)
-        usernamesRTDB.addUsernameUID(
-            uid,
-            username
-        ) //to be able to search a user by username so you can then find their collection
+
+        if (valid) {
+            require(
+                username.matches(
+                    Regex(
+                        "^[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*\$"
+                    )
+                )
+            ) { "username (email) is not valid" }
+            require(
+                uid.isNotBlank()
+            ) { "UID is not valid" }
+            usernamesRTDB.addUsernameUID(
+                uid,
+                username
+            ) //to be able to search a user by username so you can then find their collection
+        }
     }
 
     /**

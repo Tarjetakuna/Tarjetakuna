@@ -50,7 +50,7 @@ class ChatListFragment : Fragment() {
         adapter.onChatClickListener = object : ChatListAdapter.OnChatClickListener {
             override fun onClick(position: Int) {
                 val bundle = Bundle()
-                bundle.putString("chat", adapter.chats[position].id.toString())
+                bundle.putString("chat", adapter.chats[position].uid)
                 (requireActivity() as MainActivity).changeFragment(R.id.nav_chat, bundle)
             }
         }

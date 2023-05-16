@@ -4,7 +4,6 @@ import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
-import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.google.gson.Gson
@@ -40,8 +39,7 @@ class UserTest {
             validUID,
             validUsername,
             validListOfCards,
-            validCoordinates,
-            FirebaseDB()
+            validCoordinates
         )
     private val card = CommonMagicCard.aeronautTinkererCard
     private val card2 = CommonMagicCard.venomousHierophantCard
