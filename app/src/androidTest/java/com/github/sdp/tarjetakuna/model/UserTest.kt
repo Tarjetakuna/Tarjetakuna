@@ -18,6 +18,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.Timeout
 import org.junit.runner.RunWith
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 
 /**
@@ -48,11 +49,10 @@ class UserTest {
     private val card3 = CommonMagicCard.solemnOfferingCard
     private val fbcard = DBMagicCard(card, CardPossession.OWNED)
 
-
     companion object {
         @get:ClassRule
         @JvmStatic
-        val fbEmulator = FBEmulator()
+        val fbEmulator = FBEmulator
     }
 
     @Test
@@ -146,12 +146,22 @@ class UserTest {
         assertThat(magicCard2, CoreMatchers.`is`(card2))
     }
 
-    //todo fix this test
-    /*@Test
+    @Test
     fun getCardDoesNotExistTest() {
-        val futureCard = validUser.getCard(card.set.code, card.number, CardPossession.OWNED)
         assertThrows(ExecutionException::class.java) {
-            futureCard.get()
+            validUser.getCard("blablabla", 1, CardPossession.OWNED)
+                .whenComplete { card, throwable ->
+                    if (throwable != null) {
+                        assertThat(
+                            "future completes exceptionally", throwable,
+                            CoreMatchers.`is`(CoreMatchers.notNullValue())
+                        )
+                        assertThat(
+                            "card doesn't exist", card,
+                            CoreMatchers.`is`(CoreMatchers.nullValue())
+                        )
+                    }
+                }.get()
         }
-    }*/
+    }
 }
