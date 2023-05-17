@@ -27,7 +27,7 @@ class LocationTest {
         @JvmStatic
         val fbEmulator = FBEmulator()
     }
-    
+
     @Rule
     @JvmField
     val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
@@ -43,6 +43,13 @@ class LocationTest {
     fun setUp() {
         locationManagerMock = mock(LocationManager::class.java)
         setLocationTo(1.0, 2.0)
+        Location.setLastPushedToFirebase(0L)
+
+        val mck = mock(Authenticator::class.java)
+        `when`(mck.isUserLoggedIn()).thenReturn(true)
+        `when`(mck.getUserUID()).thenReturn("test")
+        SignIn.setSignIn(mck)
+
         activityRule = ActivityScenario.launch(MainActivity::class.java)
     }
 
@@ -81,16 +88,11 @@ class LocationTest {
 
     @Test
     fun cannotAddLocationToFirebaseBefore5MinsWorks() {
-        val mck = mock(Authenticator::class.java)
-        `when`(mck.isUserLoggedIn()).thenReturn(true)
-        `when`(mck.getUserUID()).thenReturn("test")
-        SignIn.setSignIn(mck)
-
         setLocationTo(25.0, 35.0)
         // set location to 1.0, 2.0
         activityRule.onActivity {
             Location.setLocationManager(locationManagerMock)
-            Location.setLastPushedToFirebase(System.currentTimeMillis()) // so that it always pushes to firebase
+            Location.setLastPushedToFirebase(0L) // so that it always pushes to firebase
             Location.captureCurrentLocation(it)
             assertEquals(Coordinates(25.0, 35.0), Location.getCurrentLocation())
         }
