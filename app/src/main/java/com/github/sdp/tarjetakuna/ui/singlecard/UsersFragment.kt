@@ -20,6 +20,7 @@ import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicRarity
 import com.github.sdp.tarjetakuna.model.MagicSet
 import com.github.sdp.tarjetakuna.model.User
+import com.github.sdp.tarjetakuna.ui.authentication.GoogleAuthAdapter
 import com.google.gson.Gson
 import java.time.LocalDate
 
@@ -48,72 +49,27 @@ class UsersFragment : Fragment() {
 
         if (dbMagicCard == null) return view
 
-        val users = generateUsers().filter { user ->
-            user.cards.any { card ->
-                (card.possession == if (ownedCards) CardPossession.OWNED else CardPossession.WANTED)
-                        && (card.code == dbMagicCard!!.code)
-                        && (card.number == dbMagicCard!!.number)
-            } && user.uid != currentUser().uid
-        }.sortedBy { user ->
-            user.location.distanceKmTo(currentUser().location)
-        }
+        val userRTDB = UserRTDB(FirebaseDB())
+        userRTDB.getUserByUsername(GoogleAuthAdapter.currentUser?.email ?: "").thenApply { currentUser ->
+            userRTDB.getUsers().thenApply {
+                val users = it.filter { user ->
+                    user.cards.any { card ->
+                        (card.possession == if (ownedCards) CardPossession.OWNED else CardPossession.WANTED)
+                                && (card.code == dbMagicCard!!.code)
+                                && (card.number == dbMagicCard!!.number)
+                    } && user.username != (currentUser.username)
+                }.sortedBy { user ->
+                    user.location.distanceKmTo(currentUser.location)
+                }
 
-        with(view as RecyclerView) {
-            layoutManager = LinearLayoutManager(context)
-            adapter = UserRecyclerViewAdapter(users, currentUser())
+                with(view as RecyclerView) {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = UserRecyclerViewAdapter(users, currentUser)
+                }
+            }
         }
 
         return view
-    }
-
-    //TODO: Replace / Remove when database is OK
-    private fun currentUser(): User {
-        return User(
-            "13",
-            "kelvin.kappeler@epfl.ch",
-            mutableListOf(DBMagicCard("Aeronaut Tinkerer", CardPossession.OWNED, 3, "M15", 43)),
-            Coordinates(0.4, 3.1)
-        )
-    }
-
-
-    //TODO: Replace when database is OK
-    private fun generateUsers(): List<User> {
-        val fakeDbMagicCard1 = DBMagicCard("Aeronaut Tinkerer", CardPossession.WANTED, 3, "M15", 43)
-        val fakeDbMagicCard2 = DBMagicCard("Aeronaut Tinkerer", CardPossession.OWNED, 3, "M15", 43)
-        val fakeDbMagicCard3 = DBMagicCard("Blabla Woaw", CardPossession.OWNED, 3, "M15", 21)
-        val fakeDbMagicCard4 = DBMagicCard("Aeronaut Tinkerer", CardPossession.WANTED, 3, "M14", 43)
-        val fakeDbMagicCard5 = DBMagicCard("Aeronaut Tinkerer", CardPossession.WANTED, 3, "M15", 32)
-        val fakeDbMagicCard6 = DBMagicCard("BLABLA Woaw", CardPossession.WANTED, 3, "M15", 43)
-
-        val fakeUser1 = User(
-            "13",
-            "kelvin.kappeler@epfl.ch",
-            mutableListOf(fakeDbMagicCard1),
-            Coordinates(0.4, 3.1)
-        )
-
-        Log.d("TEST", UserRTDB(FirebaseDB()).getUsers().toString())
-
-        val fakeUser2 =
-            User("12", "william.kwan@epfl.ch", mutableListOf(fakeDbMagicCard2), Coordinates(0.4, 3.6))
-
-        val fakeUser3 =
-            User(
-                "11",
-                "bastien.jolidon@epfl.ch",
-                mutableListOf(
-                    fakeDbMagicCard2,
-                    fakeDbMagicCard3,
-                    fakeDbMagicCard1,
-                    fakeDbMagicCard4,
-                    fakeDbMagicCard5,
-                    fakeDbMagicCard6
-                ),
-                Coordinates(43.4, -8.6)
-            )
-
-        return listOf(fakeUser1, fakeUser2, fakeUser3)
     }
 
     companion object {
