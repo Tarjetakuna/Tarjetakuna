@@ -18,7 +18,7 @@ import org.junit.*
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 
-@Ignore("This test suit is not working on cirrus-ci, but it works locally.")
+//@Ignore("This test suit is not working on cirrus-ci, but it works locally.")
 @RunWith(AndroidJUnit4::class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class ScannerViewModelTest {

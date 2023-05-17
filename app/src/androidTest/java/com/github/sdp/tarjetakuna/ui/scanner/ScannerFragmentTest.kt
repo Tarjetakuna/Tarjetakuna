@@ -51,7 +51,7 @@ class ScannerFragmentTest {
     }
 
 
-    @Ignore("This test case is not working on cirrus-ci, but it works locally.")
+    //    @Ignore("This test case is not working on cirrus-ci, but it works locally.")
     @Test(timeout = 5000)
     fun test_2_clickSave() {
         // wait for view to be displayed
