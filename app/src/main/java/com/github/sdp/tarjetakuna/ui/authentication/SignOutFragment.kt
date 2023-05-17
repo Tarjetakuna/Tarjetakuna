@@ -33,6 +33,7 @@ class SignOutFragment : Fragment() {
 
         val user = Firebase.auth.currentUser
         val newMessage = user?.displayName
+
         val greetingMessage: TextView = binding.signOutGreetingText
         greetingMessage.text = "Hello $newMessage!"
 

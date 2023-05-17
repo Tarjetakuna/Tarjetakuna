@@ -1,13 +1,12 @@
-// ====================
-// MagicDeckTest.kt
-// Tarjetakuna, 2023
-// ====================
-
 package com.github.sdp.tarjetakuna.model
 
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Test
-import org.junit.Assert.*
 
+/**
+ * Tests for [MagicDeck]
+ */
 class MagicDeckTest {
 
     private val validName = "Best deck ever"

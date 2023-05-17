@@ -5,12 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sdp.tarjetakuna.database.CardPossession
-import com.github.sdp.tarjetakuna.database.DBMagicCard
-import com.github.sdp.tarjetakuna.database.DatabaseSync
-import com.github.sdp.tarjetakuna.database.UserCardsRTDB
+import com.github.sdp.tarjetakuna.database.*
 import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import kotlinx.coroutines.launch
 
 /**
@@ -30,13 +28,15 @@ class SingleCardViewModel : ViewModel() {
     private val _buttonWantedText = MutableLiveData<Boolean>()
     val buttonWantedText: LiveData<Boolean> = _buttonWantedText
 
-    private var userDB = UserCardsRTDB()
+    private var userDB = UserRTDB(
+        FirebaseDB()
+    )
 
     /**
      * Check if the user is connected to the app with a google account
      */
     fun checkUserConnected() {
-        _isConnected.value = userDB.isConnected()
+        _isConnected.value = SignIn.getSignIn().isUserLoggedIn()
     }
 
 
@@ -44,13 +44,15 @@ class SingleCardViewModel : ViewModel() {
      * Check if the card is in the collection of the user, either wanted or owned
      */
     fun checkCardInCollection() {
-        if (!userDB.isConnected()) {
+        if (!SignIn.getSignIn().isUserLoggedIn()) {
             return
         }
         //DatabaseSync.sync()
         viewModelScope.launch {
             val lCard =
-                card?.set?.let { localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString()) }
+                card?.set?.let {
+                    localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString())
+                }
             if (lCard != null) {
                 _buttonAddText.value = lCard.possession != CardPossession.OWNED
                 _buttonWantedText.value = lCard.possession != CardPossession.WANTED
@@ -67,7 +69,9 @@ class SingleCardViewModel : ViewModel() {
     fun manageWantedCollection() {
         viewModelScope.launch {
             val lCard =
-                card?.set?.let { localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString()) }
+                card?.set?.let {
+                    localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString())
+                }
             if (lCard != null) {
                 // card not wanted -> make it unwanted from the collection
                 if (lCard.possession == CardPossession.WANTED) {
@@ -96,7 +100,9 @@ class SingleCardViewModel : ViewModel() {
     fun manageOwnedCollection() {
         viewModelScope.launch {
             val lCard =
-                card?.set?.let { localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString()) }
+                card?.set?.let {
+                    localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString())
+                }
             if (lCard != null) {
                 // card owned -> make it not owned from the collection
                 if (lCard.possession == CardPossession.OWNED) {

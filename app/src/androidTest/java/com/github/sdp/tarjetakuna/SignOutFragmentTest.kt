@@ -1,11 +1,13 @@
 package com.github.sdp.tarjetakuna
 
+import android.Manifest
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.GrantPermissionRule
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -17,6 +19,14 @@ class SignOutFragmentTest {
 
     @get:Rule
     public val activityRule = ActivityScenarioRule(MainActivity::class.java)
+
+    @Rule
+    @JvmField
+    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    
 
     @Before
     fun setUp() {

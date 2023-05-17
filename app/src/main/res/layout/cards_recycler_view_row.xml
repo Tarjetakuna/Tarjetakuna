@@ -49,7 +49,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="2dp"
                 style="@style/BrowserCardDescriptionStyle"
-                android:text="@string/mt15"
+                android:text="@string/m15"
                 app:layout_constraintStart_toEndOf="@+id/cardImageView"
                 app:layout_constraintTop_toBottomOf="@+id/cardNameRecyclerViewTextView" />
         </androidx.constraintlayout.widget.ConstraintLayout>

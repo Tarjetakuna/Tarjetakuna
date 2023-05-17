@@ -47,7 +47,6 @@ class HomeFragment : Fragment() {
             textView.text = it
 
         }
-
         // TODO remove when not owned card search is implemented
         homeViewModel.localDatabase = LocalDatabaseProvider.setDatabase(
             requireContext(),
