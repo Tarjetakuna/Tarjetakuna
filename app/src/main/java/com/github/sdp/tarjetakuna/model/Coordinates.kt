@@ -22,16 +22,16 @@ data class Coordinates(
     /**
      * Calculates the distance in kilometers to another [Coordinates].
      */
-    fun distanceKmTo(other: Coordinates): Float {
+    fun distanceKmTo(other: Coordinates): Double {
         // Haversine formula
         val earthRadius = 6371
-        val latDistance = Math.toRadians((latitude - other.latitude).toDouble())
-        val lngDistance = Math.toRadians((longitude - other.longitude).toDouble())
+        val latDistance = Math.toRadians((latitude - other.latitude))
+        val lngDistance = Math.toRadians((longitude - other.longitude))
         val a = (sin(latDistance / 2) * sin(latDistance / 2)
-                + (cos(Math.toRadians(latitude.toDouble())) * cos(Math.toRadians(other.latitude.toDouble()))
+                + (cos(Math.toRadians(latitude)) * cos(Math.toRadians(other.latitude))
                 * sin(lngDistance / 2) * sin(lngDistance / 2)))
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        return (earthRadius * c).toFloat()
+        return (earthRadius * c)
     }
 
     companion object {
