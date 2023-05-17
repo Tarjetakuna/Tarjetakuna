@@ -23,6 +23,7 @@ import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
 import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
+import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -145,4 +146,59 @@ class SingleCardManageCollectionTest {
         cardQuantityText.check(matches(withText("0")))
     }
 
+}
+
+@RunWith(AndroidJUnit4::class)
+class SingleCardManageCollectionNotLoggedInTest {
+
+    @Test
+    fun buttonAreNotDisplayedWhenNotLoggedIn() {
+        // mock the authentication
+        val mockedAuth = Mockito.mock(Authenticator::class.java)
+        Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(false)
+        SignIn.setSignIn(mockedAuth)
+
+        // close the database that could have been opened because of the previous tests
+        LocalDatabaseProvider.closeDatabase("test")
+        LocalDatabaseProvider.closeDatabase("test2")
+        LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+
+        LocalDatabaseProvider.setDatabase(
+            ApplicationProvider.getApplicationContext(),
+            LocalDatabaseProvider.CARDS_DATABASE_NAME,
+            true
+        )
+        runBlocking {
+            withTimeout(5000) {
+                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+                    ?.magicCardDao()?.insertCard(
+                        DBMagicCard(CommonMagicCard.aeronautTinkererCard, CardPossession.OWNED, 2),
+                    )
+            }
+        }
+
+        val bundleArgs =
+            Bundle().apply {
+                putString(
+                    "card",
+                    Gson().toJson(CommonMagicCard.aeronautTinkererCard)
+                )
+            }
+        val scenario = launchFragmentInContainer<SingleCardFragment>(fragmentArgs = bundleArgs)
+        scenario.moveToState(Lifecycle.State.STARTED)
+
+        Thread.sleep(4000)
+
+
+        onView(withId(R.id.singleCard_askConnection_text)).perform(scrollTo())
+        onView(withId(R.id.singleCard_quantity_text)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.singleCard_add_card_button)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.singleCard_remove_card_button)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.singleCard_add_wanted_button)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.singleCard_askConnection_text)).check(matches(isDisplayed()))
+
+        Intents.release()
+        scenario.close()
+        LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+    }
 }
