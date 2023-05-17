@@ -1,14 +1,18 @@
 package com.github.sdp.tarjetakuna.extra
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationListener
 import android.location.LocationManager
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.model.Coordinates
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 object Location {
 
@@ -22,7 +26,7 @@ object Location {
     /**
      * Get the current location of the user if the permission is granted, if not asked yet, ask for it
      */
-    fun captureCurrentLocation(context: AppCompatActivity) {
+    fun captureCurrentLocation(context: Activity) {
         // Check if the location permission is granted, and if not, request it
         if (checkPermission(context) && !hasAlreadyAsked) {
             Log.i("Location", "Permission not granted")
@@ -46,7 +50,7 @@ object Location {
     /**
      * Check if the location permission is granted
      */
-    private fun checkPermission(context: AppCompatActivity): Boolean {
+    private fun checkPermission(context: Activity): Boolean {
         return ActivityCompat.checkSelfPermission(
             context,
             Manifest.permission.ACCESS_FINE_LOCATION
@@ -61,6 +65,7 @@ object Location {
         val newLocation = Coordinates(location.latitude, location.longitude)
         if (currentLocation != newLocation) {
             currentLocation = newLocation
+            pushCoordinateToFirebase(currentLocation)
             Log.i(
                 "Location",
                 "Location changed: latitude: ${getCurrentLocation().latitude}, " +
@@ -72,7 +77,7 @@ object Location {
     /**
      * Request the location permission
      */
-    private fun requestPermission(context: AppCompatActivity) {
+    private fun requestPermission(context: Activity) {
         val requestcode = 1
         ActivityCompat.requestPermissions(
             context,
@@ -96,5 +101,18 @@ object Location {
      */
     fun setLocationManager(manager: LocationManager) {
         locationManager = manager
+    }
+
+    /**
+     * Push the current location to Firebase
+     */
+    private fun pushCoordinateToFirebase(currentLocation: Coordinates) {
+        val user = UserRTDB(FirebaseDB())
+        if (Firebase.auth.currentUser != null) {
+            user.pushUserLocation(Firebase.auth.currentUser!!.uid, currentLocation)
+            Log.i("Location", "Pushed to Firebase")
+        } else {
+            Log.i("Location", "User not logged in")
+        }
     }
 }
