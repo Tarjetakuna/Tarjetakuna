@@ -30,22 +30,22 @@ class ChatsRTDBTest {
 
     @Before
     fun setUp() {
-//        // make sure db is empty of chats and messages
-//        val task1 = chatsRTDB.clearChats()
-//        Utils.waitUntilTrue(10, 100) { task1.isComplete }
-//
-//        val task2 = MessagesRTDB().clearMessages()
-//        Utils.waitUntilTrue(10, 100) { task2.isComplete }
+        // make sure db is empty of chats and messages
+        val task1 = chatsRTDB.clearChats()
+        Utils.waitUntilTrue(10, 100) { task1.isComplete }
+
+        val task2 = MessagesRTDB().clearMessages()
+        Utils.waitUntilTrue(10, 100) { task2.isComplete }
     }
 
     @After
     fun tearDown() {
-//        // make sure db is empty of chats and messages
-//        val task1 = chatsRTDB.clearChats()
-//        Utils.waitUntilTrue(10, 100) { task1.isComplete }
-//
-//        val task2 = MessagesRTDB().clearMessages()
-//        Utils.waitUntilTrue(10, 100) { task2.isComplete }
+        // make sure db is empty of chats and messages
+        val task1 = chatsRTDB.clearChats()
+        Utils.waitUntilTrue(10, 100) { task1.isComplete }
+
+        val task2 = MessagesRTDB().clearMessages()
+        Utils.waitUntilTrue(10, 100) { task2.isComplete }
     }
 
     @Test
@@ -153,6 +153,15 @@ class ChatsRTDBTest {
     @Test
     fun test_addListenersOnChats() {
         // TODO test_addListenersOnChats
+        // add chat in db
+        val mChat = ChatsData.fakeChat2
+        waitForChatToBeAdded(mChat)
+
+        chatsRTDB.addChatListener(mChat.uid,)
+
+        val mMessage = ChatsData.fakeDBMessage1_1
+        val future = chatsRTDB.addMessageToChat(mChat.uid, mMessage)
+        Utils.waitUntilTrue(10, 100) { future.isDone }
     }
 
     private fun waitForChatToBeAdded(chat: Chat) {
