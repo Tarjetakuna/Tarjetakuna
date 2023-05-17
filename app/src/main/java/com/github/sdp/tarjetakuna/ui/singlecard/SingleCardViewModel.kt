@@ -22,11 +22,11 @@ class SingleCardViewModel : ViewModel() {
     private val _isConnected = MutableLiveData<Boolean>()
     val isConnected: LiveData<Boolean> = _isConnected
 
-    private val _buttonAddText = MutableLiveData<Boolean>()
-    val buttonAddText: LiveData<Boolean> = _buttonAddText
-
     private val _buttonWantedText = MutableLiveData<Boolean>()
     val buttonWantedText: LiveData<Boolean> = _buttonWantedText
+
+    private val _currentQuantity = MutableLiveData<String>()
+    val currentQuantity: LiveData<String> = _currentQuantity
 
     private var userDB = UserRTDB(
         FirebaseDB()
@@ -54,7 +54,7 @@ class SingleCardViewModel : ViewModel() {
                     localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString())
                 }
             if (lCard != null) {
-                _buttonAddText.value = lCard.possession != CardPossession.OWNED
+                _currentQuantity.value = lCard.quantity.toString()
                 _buttonWantedText.value = lCard.possession != CardPossession.WANTED
                 Log.i("SingleCardViewModel", "checkCardInCollection: card found in local database")
             }
@@ -77,16 +77,16 @@ class SingleCardViewModel : ViewModel() {
                 // card not wanted -> make it unwanted from the collection
                 if (lCard.possession == CardPossession.WANTED) {
                     card?.let { manageCardsInDatabase(it, CardPossession.NONE) }
-                    updateButtons(CardPossession.NONE)
+                    updateValues(CardPossession.NONE, 0)
                 } else {
                     // card wanted -> make it wanted in the collection
                     card?.let { manageCardsInDatabase(it, CardPossession.WANTED) }
-                    updateButtons(CardPossession.WANTED)
+                    updateValues(CardPossession.WANTED, 0)
                 }
             } else {
                 // card not in the database -> add it as wanted in the local database
                 card?.let { manageCardsInDatabase(it, CardPossession.WANTED) }
-                updateButtons(CardPossession.WANTED)
+                updateValues(CardPossession.WANTED, 0)
             }
             // sync the local database with the firebase if possible
             DatabaseSync.sync()
@@ -94,30 +94,65 @@ class SingleCardViewModel : ViewModel() {
     }
 
     /**
-     * Manage the collection of cards owned by the user,
-     * add the card if it's not in the collection,
-     * remove it if it's in the collection
+     * Add a copy of the card to the owned collection
      */
-    fun manageOwnedCollection() {
+    fun addCardToOwnedCollection() {
         viewModelScope.launch {
             val lCard =
                 card?.set?.let {
                     localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString())
                 }
             if (lCard != null) {
-                // card owned -> make it not owned from the collection
-                if (lCard.possession == CardPossession.OWNED) {
-                    card?.let { manageCardsInDatabase(it, CardPossession.NONE) }
-                    updateButtons(CardPossession.NONE)
+                // card not owned -> make it owned from the collection
+                if (lCard.possession != CardPossession.OWNED) {
+                    card?.let { manageCardsInDatabase(it, CardPossession.OWNED, 1) }
+                    updateValues(CardPossession.OWNED, 1)
                 } else {
-                    // card not owned -> make it owned in the collection
-                    card?.let { manageCardsInDatabase(it, CardPossession.OWNED) }
-                    updateButtons(CardPossession.OWNED)
+                    card?.let {
+                        manageCardsInDatabase(
+                            it,
+                            CardPossession.OWNED,
+                            lCard.quantity + 1
+                        )
+                    }
+                    updateValues(CardPossession.OWNED, lCard.quantity + 1)
                 }
             } else {
                 // card not in the database -> add it as owned in the local database
-                card?.let { manageCardsInDatabase(it, CardPossession.OWNED) }
-                updateButtons(CardPossession.OWNED)
+                card?.let { manageCardsInDatabase(it, CardPossession.OWNED, 1) }
+                updateValues(CardPossession.OWNED, 1)
+            }
+            // sync the local database with the firebase if possible
+            DatabaseSync.sync()
+        }
+    }
+
+    /**
+     * Remove a copy of the card from the owned collection
+     */
+    fun removeCardFromOwnedCollection() {
+        viewModelScope.launch {
+            val lCard =
+                card?.set?.let {
+                    localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString())
+                }
+            if (lCard != null) {
+                if (lCard.possession == CardPossession.OWNED && lCard.quantity > 1) {
+                    card?.let {
+                        manageCardsInDatabase(
+                            it,
+                            CardPossession.OWNED,
+                            lCard.quantity - 1
+                        )
+                    }
+                    updateValues(CardPossession.OWNED, lCard.quantity - 1)
+                } else {
+                    card?.let { manageCardsInDatabase(it, CardPossession.NONE, 0) }
+                    updateValues(CardPossession.NONE, 0)
+                }
+            } else {
+                card?.let { manageCardsInDatabase(it, CardPossession.NONE, 0) }
+                updateValues(CardPossession.NONE, 0)
             }
             // sync the local database with the firebase if possible
             DatabaseSync.sync()
@@ -128,27 +163,32 @@ class SingleCardViewModel : ViewModel() {
      * Manage the cards in the local database
      * @param card the card to manage
      * @param p the possession of the card (owned or wanted)
+     * @param quantity the quantity of the card
      */
-    private suspend fun manageCardsInDatabase(card: MagicCard, p: CardPossession) {
-        localDatabase?.magicCardDao()?.insertCard(DBMagicCard(card, p))
+    private suspend fun manageCardsInDatabase(
+        card: MagicCard,
+        p: CardPossession,
+        quantity: Int = 0
+    ) {
+        localDatabase?.magicCardDao()?.insertCard(DBMagicCard(card, p, quantity))
     }
 
     /**
-     * Updates the wanted button text
+     * Updates the wanted button text and the quantity of the card
      */
-    private fun updateButtons(p: CardPossession) {
+    private fun updateValues(p: CardPossession, quantity: Int) {
         when (p) {
             CardPossession.WANTED -> {
-                _buttonAddText.value = true
                 _buttonWantedText.value = false
+                _currentQuantity.value = 0.toString()
             }
             CardPossession.OWNED -> {
                 _buttonWantedText.value = true
-                _buttonAddText.value = false
+                _currentQuantity.value = quantity.toString()
             }
             else -> {
                 _buttonWantedText.value = true
-                _buttonAddText.value = true
+                _currentQuantity.value = 0.toString()
             }
         }
     }

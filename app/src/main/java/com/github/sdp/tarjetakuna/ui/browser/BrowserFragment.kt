@@ -119,7 +119,10 @@ class BrowserFragment : Fragment() {
             object : DisplayCardsAdapter.OnCardClickListener {
                 override fun onCardClick(position: Int) {
                     val bundle = Bundle()
-                    bundle.putString("card", Gson().toJson(adapter.cards[position]))
+                    bundle.putString(
+                        "card",
+                        Gson().toJson(adapter.cardsWithQuantities[position].first)
+                    )
                     (requireActivity() as MainActivity).changeFragment(R.id.nav_single_card, bundle)
                 }
             }
@@ -163,8 +166,8 @@ class BrowserFragment : Fragment() {
 
         binding.browserClearFilters.setOnClickListener {
             viewModel.clearFilters()
-            viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
-                o1.name.compareTo(o2.name)
+            viewModel.setSorterState { o1: Pair<MagicCard, Int>, o2: Pair<MagicCard, Int> ->
+                o1.first.name.compareTo(o2.first.name)
             }
             hideKeyboard(this)
         }
@@ -186,28 +189,28 @@ class BrowserFragment : Fragment() {
         }
 
         binding.browserSortByNameButton.setOnClickListener {
-            viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
-                o1.name.compareTo(o2.name)
+            viewModel.setSorterState { o1: Pair<MagicCard, Int>, o2: Pair<MagicCard, Int> ->
+                o1.first.name.compareTo(o2.first.name)
             }
         }
 
         binding.browserSortByManaButton.setOnClickListener {
-            viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
-                o1.manaCost.compareTo(o2.manaCost)
+            viewModel.setSorterState { o1: Pair<MagicCard, Int>, o2: Pair<MagicCard, Int> ->
+                o1.first.convertedManaCost.compareTo(o2.first.convertedManaCost)
             }
         }
 
         binding.browserSortByRarityButton.setOnClickListener {
-            viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
-                o1.rarity.ordinal.compareTo(o2.rarity.ordinal)
+            viewModel.setSorterState { o1: Pair<MagicCard, Int>, o2: Pair<MagicCard, Int> ->
+                o1.first.rarity.ordinal.compareTo(o2.first.rarity.ordinal)
             }
         }
 
         binding.browserSortBySetButton.setOnClickListener {
-            viewModel.setSorterState { o1: MagicCard, o2: MagicCard ->
-                val result = o1.set.name.compareTo(o2.set.name)
+            viewModel.setSorterState { o1: Pair<MagicCard, Int>, o2: Pair<MagicCard, Int> ->
+                val result = o1.first.set.name.compareTo(o2.first.set.name)
                 if (result == 0) {
-                    o1.number.compareTo(o2.number)
+                    o1.first.number.compareTo(o2.first.number)
                 } else {
                     result
                 }

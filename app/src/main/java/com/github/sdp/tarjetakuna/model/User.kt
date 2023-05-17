@@ -63,11 +63,12 @@ data class User(
 
     /**
      * Adds a card to the user's collection with the given possession.
+     * Returns true if the operation succeeded, false otherwise.
      */
-    fun addCard(card: MagicCard, possession: CardPossession) {
+    fun addCard(card: MagicCard, possession: CardPossession): Boolean {
         val fbCard = card.toDBMagicCard(possession)
         cards.add(fbCard)
-        userRTDB.addCard(fbCard, uid)
+        return userRTDB.addCard(fbCard, uid)
     }
 
     /**
@@ -87,4 +88,10 @@ data class User(
         userRTDB.removeCard(uid, card.toDBMagicCard(possession))
     }
 
+    /**
+     * Removes all copy of a card from the user's collection
+     */
+    fun removeAllCopyOfCard(card: MagicCard, possession: CardPossession) {
+        userRTDB.removeAllCopyOfCard(uid, card.toDBMagicCard(possession))
+    }
 }

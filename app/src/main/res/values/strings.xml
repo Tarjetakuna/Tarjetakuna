@@ -86,8 +86,8 @@
     <string name="single_card_showing_stats">(%1$s/%2$s)</string>
     <string name="single_card_showing_type_subtypes_stats">%1$s%2$s%3$s</string>
     <string name="single_card_showing_mana_cost">Mana cost : %1$s</string>
-    <string name="single_card_showing_add_to_collection">add to collection</string>
-    <string name="single_card_showing_remove_collection">remove from collection</string>
+    <string name="single_card_showing_add_to_collection">+</string>
+    <string name="single_card_showing_remove_collection">-</string>
     <string name="single_card_showing_add_to_wanted">add to wanted cards</string>
     <string name="single_card_showing_remove_wanted">remove from wanted cards</string>
     <string name="single_card_ask_connection">Please connect if you want to manage the card</string>
@@ -126,5 +126,8 @@
     <string name="msg_date">date</string>
     <string name="msg_default_content">Message content</string>
     <string name="msg_default_date">00:00</string>
+    <string name="singleCard_quantity_count">0</string>
+    <string name="single_card_manage_collection">Manage collection:</string>
+    <string name="cards_recycler_view_quantity">1X</string>
 
 </resources>

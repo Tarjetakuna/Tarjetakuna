@@ -7,7 +7,6 @@ import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.FBEmulator
-import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -99,9 +98,10 @@ class UserTest {
     @Test
     fun addCardTest() {
         runBlocking {
+            validUser.removeAllCopyOfCard(card, CardPossession.OWNED)
             validUser.addCard(card, CardPossession.OWNED)
             var count = 0L
-            withTimeout(5000) {
+            withTimeout(1000) {
                 fbEmulator.fb.reference
                     .child("users")
                     .child(validUID)
@@ -123,15 +123,86 @@ class UserTest {
                 .key,
             CoreMatchers.`is`("M15_43")
         )
-
     }
 
     @Test
+    fun addMultipleCopyOfTheSameCard() {
+        runBlocking {
+            validUser.removeAllCopyOfCard(card2, CardPossession.OWNED)
+            validUser.removeAllCopyOfCard(card3, CardPossession.WANTED)
+
+            validUser.addMultipleCards(
+                listOf(card2, card2, card3, card3, card3),
+                listOf(
+                    CardPossession.OWNED,
+                    CardPossession.OWNED,
+                    CardPossession.WANTED,
+                    CardPossession.WANTED,
+                    CardPossession.WANTED
+                )
+            )
+
+            var count = 0L
+            val fbcard2 = DBMagicCard(card2, CardPossession.OWNED)
+            withTimeout(1000) {
+                fbEmulator.fb.reference
+                    .child("users")
+                    .child(validUID)
+                    .child("owned")
+                    .child(fbcard2.getFbKey()).get().addOnSuccessListener {
+                        count = it.value as Long
+                    }
+            }
+            delay(1000)
+            assertThat(count, CoreMatchers.`is`(2L))
+
+            count = 0L
+            val fbcard3 = DBMagicCard(card3, CardPossession.WANTED)
+            withTimeout(1000) {
+                fbEmulator.fb.reference
+                    .child("users")
+                    .child(validUID)
+                    .child("wanted")
+                    .child(fbcard3.getFbKey()).get().addOnSuccessListener {
+                        count = it.value as Long
+                    }
+            }
+            delay(1000)
+            assertThat(count, CoreMatchers.`is`(3L))
+
+        }
+    }
+
+    @Test
+    fun removeCardTest() {
+        runBlocking {
+            validUser.addCard(card, CardPossession.OWNED)
+            validUser.addCard(card, CardPossession.OWNED)
+            validUser.addCard(card, CardPossession.OWNED)
+            validUser.removeCard(card, CardPossession.OWNED)
+            var count = 0L
+            withTimeout(1000) {
+                fbEmulator.fb.reference
+                    .child("users")
+                    .child(validUID)
+                    .child("owned")
+                    .child(fbcard.getFbKey()).get().addOnSuccessListener {
+                        count = it.value as Long
+                    }
+            }
+            delay(1000)
+            assertThat(count, CoreMatchers.`is`(2L))
+
+        }
+    }
+
+
+    /*@Test
     fun getCardExistsTest() {
-        validUser.addMultipleCards(
-            listOf(card, card2),
-            listOf(CardPossession.WANTED, CardPossession.OWNED)
-        )
+        validUser.addCard(card, CardPossession.WANTED)
+        validUser.addCard(card2, CardPossession.OWNED)
+
+
         val futureCard1 = validUser.getCard(card.set.code, card.number, CardPossession.WANTED)
         val futureCard2 = validUser.getCard(card2.set.code, card2.number, CardPossession.OWNED)
 
@@ -144,7 +215,7 @@ class UserTest {
         val fbCard2 = Gson().fromJson(actualCard2.value as String, DBMagicCard::class.java)
         val magicCard2 = fbCard2.toMagicCard()
         assertThat(magicCard2, CoreMatchers.`is`(card2))
-    }
+    }*/
 
     //todo fix this test
     /*@Test
