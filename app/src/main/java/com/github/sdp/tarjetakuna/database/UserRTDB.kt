@@ -1,7 +1,12 @@
 package com.github.sdp.tarjetakuna.database
 
+import android.util.Log
+import com.github.sdp.tarjetakuna.model.Coordinates
+import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.model.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
+import com.google.gson.Gson
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -149,6 +154,50 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
             future.completeExceptionally(it)
         }
         return future
+    }
+
+    /**
+     * Get all users from the database
+     */
+    fun getUsers(): List<User> {
+        val users = mutableListOf<User>()
+        db.get().addOnSuccessListener {
+            for (user in it.children) {
+                val uid = user.key.toString()
+                val username = user.child("username").value.toString()
+
+                val coordinates = if (user.child("location").child("lat").value == null || user.child("location").child("long").value == null) {
+                    Coordinates(0.0, 0.0)
+                } else {
+                    Coordinates(
+                        user.child("location").child("lat").value.toString().toDouble(),
+                        user.child("location").child("long").value.toString().toDouble()
+                    )
+                }
+
+                val cards = mutableListOf<DBMagicCard>()
+                cards.addAll(cardsFromUser(uid, CardPossession.OWNED))
+                cards.addAll(cardsFromUser(uid, CardPossession.WANTED))
+                users.add(User(uid, username, cards, coordinates))
+            }
+        }
+        return users
+    }
+
+    private fun cardsFromUser(userUID: String, possession: CardPossession): MutableList<DBMagicCard> {
+        val future = CompletableFuture<DataSnapshot>()
+        val cards = mutableListOf<DBMagicCard>()
+        getAllCardCodesFromUserPossession(userUID, possession).thenApply { cardCode ->
+            for (code in (cardCode.value as HashMap<*, *>).keys) {
+                cardsRTDB.getCardFromGlobalCollection(code.toString()).thenApply { card ->
+                    val dbCard = Gson().fromJson(card.value.toString(), DBMagicCard::class.java)
+                    cards.add(dbCard.copy(possession = possession))
+                    Log.d("cardsFromUser", "added card ${dbCard.copy(possession = possession)} to user $userUID")
+                }
+            }
+        }
+        Log.d("taille", cards.size.toString())
+        return cards
     }
 
 

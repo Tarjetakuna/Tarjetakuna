@@ -1,6 +1,7 @@
 package com.github.sdp.tarjetakuna.ui.singlecard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicCardType
@@ -90,6 +92,8 @@ class UsersFragment : Fragment() {
             mutableListOf(fakeDbMagicCard1),
             Coordinates(0.4, 3.1)
         )
+
+        Log.d("TEST", UserRTDB(FirebaseDB()).getUsers().toString())
 
         val fakeUser2 =
             User("12", "william.kwan@epfl.ch", mutableListOf(fakeDbMagicCard2), Coordinates(0.4, 3.6))
