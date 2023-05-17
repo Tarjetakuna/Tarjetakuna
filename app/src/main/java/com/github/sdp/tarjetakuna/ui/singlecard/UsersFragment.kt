@@ -12,8 +12,14 @@ import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.model.Coordinates
+import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.model.MagicCardType
+import com.github.sdp.tarjetakuna.model.MagicLayout
+import com.github.sdp.tarjetakuna.model.MagicRarity
+import com.github.sdp.tarjetakuna.model.MagicSet
 import com.github.sdp.tarjetakuna.model.User
 import com.google.gson.Gson
+import java.time.LocalDate
 
 /**
  * A fragment representing a list of [User].
@@ -28,11 +34,7 @@ class UsersFragment : Fragment() {
 
         arguments?.let {
             ownedCards = it.getBoolean(ARG_IS_SHOWING_OWNED_CARDS)
-            dbMagicCard = try {
-                Gson().fromJson(it.getString(ARG_CARD), DBMagicCard::class.java)
-            } catch (e: Exception) {
-                null
-            }
+            dbMagicCard = Gson().fromJson(it.getString(ARG_CARD), DBMagicCard::class.java)
         }
     }
 
@@ -54,21 +56,19 @@ class UsersFragment : Fragment() {
             user.location.distanceKmTo(currentUser().location)
         }
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = LinearLayoutManager(context)
-                adapter = UserRecyclerViewAdapter(users, currentUser())
-            }
+        with(view as RecyclerView) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = UserRecyclerViewAdapter(users, currentUser())
         }
+
         return view
     }
 
     //TODO: Replace / Remove when database is OK
     private fun currentUser(): User {
         return User(
+            "13",
             "kelvin.kappeler@epfl.ch",
-            "keke",
             mutableListOf(DBMagicCard("Aeronaut Tinkerer", CardPossession.OWNED, 3, "M15", 43)),
             Coordinates(0.4, 3.1)
         )
@@ -85,18 +85,19 @@ class UsersFragment : Fragment() {
         val fakeDbMagicCard6 = DBMagicCard("BLABLA Woaw", CardPossession.WANTED, 3, "M15", 43)
 
         val fakeUser1 = User(
+            "13",
             "kelvin.kappeler@epfl.ch",
-            "keke",
             mutableListOf(fakeDbMagicCard1),
             Coordinates(0.4, 3.1)
         )
+
         val fakeUser2 =
-            User("william.kwan@epfl.ch", "willi", mutableListOf(fakeDbMagicCard2), Coordinates(0.4, 3.6))
+            User("12", "william.kwan@epfl.ch", mutableListOf(fakeDbMagicCard2), Coordinates(0.4, 3.6))
 
         val fakeUser3 =
             User(
+                "11",
                 "bastien.jolidon@epfl.ch",
-                "bibi",
                 mutableListOf(
                     fakeDbMagicCard2,
                     fakeDbMagicCard3,
