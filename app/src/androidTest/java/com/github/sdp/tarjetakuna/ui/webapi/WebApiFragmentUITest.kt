@@ -24,7 +24,7 @@ import org.junit.runner.RunWith
 /**
  * Test the WebApiFragment UI reacting to UI events
  */
-/*@RunWith(AndroidJUnit4::class)
+@RunWith(AndroidJUnit4::class)
 class WebApiFragmentUITest {
 
     private lateinit var scenario: FragmentScenario<WebApiFragment>
@@ -129,4 +129,3 @@ class WebApiFragmentUITest {
         onView(withId(R.id.api_results)).check(matches(withSubstring("Warhammer 40,000")))
     }
 }
-*/
