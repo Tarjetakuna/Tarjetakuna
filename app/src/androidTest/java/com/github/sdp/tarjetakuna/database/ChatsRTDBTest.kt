@@ -152,16 +152,38 @@ class ChatsRTDBTest {
 
     @Test
     fun test_addListenersOnChats() {
-        // TODO test_addListenersOnChats
         // add chat in db
         val mChat = ChatsData.fakeChat2
         waitForChatToBeAdded(mChat)
 
-        chatsRTDB.addChatListener(mChat.uid,)
+        // add chat listener to chat
+        var called = false
+        chatsRTDB.addChatListener(mChat.uid) { dbChat ->
+            assertThat("chat id is different", dbChat.uid, equalTo(mChat.uid))
+            assertThat("user1 id is different", dbChat.user1, equalTo(mChat.user1.uid))
+            assertThat("user2 id is different", dbChat.user2, equalTo(mChat.user2.uid))
 
+            if (dbChat.messages.size > mChat.messages.size) {
+                assertThat(
+                    "new message added to chat",
+                    dbChat.messages.size,
+                    equalTo(mChat.messages.size + 1)
+                )
+                called = true
+            }
+        }
+
+        // add message to chat to trigger listener
         val mMessage = ChatsData.fakeDBMessage1_1
         val future = chatsRTDB.addMessageToChat(mChat.uid, mMessage)
         Utils.waitUntilTrue(10, 100) { future.isDone }
+
+        // check that listener was called
+        Utils.waitUntilTrue(10, 100) { called }
+        assertThat("listener should have been called", called, equalTo(true))
+
+        // remove listener
+        chatsRTDB.removeChatListener(mChat.uid)
     }
 
     private fun waitForChatToBeAdded(chat: Chat) {
