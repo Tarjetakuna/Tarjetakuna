@@ -5,10 +5,29 @@ import com.github.sdp.tarjetakuna.model.User
 import java.util.Date
 
 data class DBMessage(
+    /**
+     * Message id
+     */
     val uid: String,
+
+    /**
+     * Sender id
+     */
     val sender: String,
+
+    /**
+     * Receiver id
+     */
     val receiver: String,
+
+    /**
+     * Message content
+     */
     val content: String,
+
+    /**
+     * Message timestamp
+     */
     val timestamp: Date,
 ) {
     companion object {
@@ -27,6 +46,7 @@ data class DBMessage(
 
         /**
          * Conversion to Message object.
+         * Message will be invalid as we are only having the ids of the users.
          */
         fun fromDBMessage(dbMessage: DBMessage): Message {
             return Message(

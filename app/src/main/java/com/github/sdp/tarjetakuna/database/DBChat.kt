@@ -6,11 +6,34 @@ import com.github.sdp.tarjetakuna.model.User
 import java.util.Date
 
 data class DBChat(
+    /**
+     * Chat id.
+     */
     val uid: String,
+
+    /**
+     * User 1 id.
+     */
     val user1: String,
+
+    /**
+     * User 2 id.
+     */
     val user2: String,
+
+    /**
+     * List of messages ids.
+     */
     val messages: ArrayList<String>,
+
+    /**
+     * Last read timestamp by user 1.
+     */
     val user1LastRead: Date,
+
+    /**
+     * Last read timestamp by user 2.
+     */
     val user2LastRead: Date,
 ) {
     companion object {
@@ -31,6 +54,7 @@ data class DBChat(
 
         /**
          * Conversion to Chat object.
+         * Chat will be invalid as we are only having the ids of the messages and users.
          */
         fun fromDBChat(dbChat: DBChat): Chat {
             return Chat(

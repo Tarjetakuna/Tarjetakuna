@@ -19,14 +19,14 @@ class MessagesRTDB(database: Database = FirebaseDB()) {
     }
 
     /**
-     * Add a message to the messages table.
+     * Add a [DBMessage] to the messages table.
      */
     fun addMessage(message: DBMessage): Task<Void> {
         return messagesTable.child(message.uid).setValue(messageToDBFormat(message))
     }
 
     /**
-     * Get a message from the messages table.
+     * Get a [DBMessage] from the messages table.
      */
     fun getMessage(messageUID: String): CompletableFuture<DBMessage> {
         val future = CompletableFuture<DBMessage>()
@@ -49,10 +49,16 @@ class MessagesRTDB(database: Database = FirebaseDB()) {
         return messagesTable.child(messageUID).removeValue()
     }
 
+    /**
+     * Add a [Message] to the messages table.
+     */
     fun addMessageToDatabase(message: Message): Task<Void> {
         return addMessage(DBMessage.toDBMessage(message))
     }
 
+    /**
+     * Get a [Message] from the messages table.
+     */
     fun getMessageFromDatabase(messageUID: String): CompletableFuture<Message> {
         val future = CompletableFuture<Message>()
         getMessage(messageUID).thenAccept {
@@ -64,6 +70,9 @@ class MessagesRTDB(database: Database = FirebaseDB()) {
         return future
     }
 
+    /**
+     * Get a list of [Message] from the messages table.
+     */
     fun getMessagesFromDatabase(messagesUID: List<String>): CompletableFuture<List<Message>> {
         val messagesFuture: List<CompletableFuture<Message>> =
             messagesUID.map { getMessageFromDatabase(it) }
@@ -92,6 +101,4 @@ class MessagesRTDB(database: Database = FirebaseDB()) {
     fun clearMessages(): Task<Void> {
         return messagesTable.removeValue()
     }
-
-
 }

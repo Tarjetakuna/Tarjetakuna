@@ -145,7 +145,6 @@ class UserTest {
         assertThat(magicCard2, CoreMatchers.`is`(card2))
     }
 
-    //todo fix this test
     @Test
     fun getCardDoesNotExistTest() {
         assertThrows(ExecutionException::class.java) {
