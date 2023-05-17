@@ -60,13 +60,13 @@ class CoordinatesTest {
 
     @Test
     fun distanceKmToTest() {
-        val coordinates1 = Coordinates(0.0f, 0.0f)
-        val coordinates2 = Coordinates(32.67f, 19.42f)
-        val coordinates3 = Coordinates(-23.9f, 78f)
+        val coordinates1 = Coordinates(0.0, 0.0)
+        val coordinates2 = Coordinates(32.67, 19.42)
+        val coordinates3 = Coordinates(-23.9, 78.0)
 
-        assertEquals(0.0f, coordinates1.distanceKmTo(coordinates1), 0.1f)
-        assertEquals(8789.10f, coordinates1.distanceKmTo(coordinates3), 0.1f)
-        assertEquals(8838.22f, coordinates2.distanceKmTo(coordinates3), 0.1f)
-        assertEquals(4164f, coordinates1.distanceKmTo(coordinates2), 0.1f)
+        assertEquals(0.0, coordinates1.distanceKmTo(coordinates1), 0.1)
+        assertEquals(8789.10, coordinates1.distanceKmTo(coordinates3), 0.1)
+        assertEquals(8838.22, coordinates2.distanceKmTo(coordinates3), 0.1)
+        assertEquals(4164.0, coordinates1.distanceKmTo(coordinates2), 0.1)
     }
 }
