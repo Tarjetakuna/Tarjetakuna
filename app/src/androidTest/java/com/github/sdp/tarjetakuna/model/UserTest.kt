@@ -17,6 +17,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.Timeout
 import org.junit.runner.RunWith
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 
 /**
@@ -145,11 +146,10 @@ class UserTest {
     }
 
     //todo fix this test
-    /*@Test
+    @Test
     fun getCardDoesNotExistTest() {
-        val futureCard = validUser.getCard(card.set.code, card.number, CardPossession.OWNED)
         assertThrows(ExecutionException::class.java) {
-            futureCard.get()
+            validUser.getCard(card.set.code, card.number, CardPossession.OWNED).get()
         }
-    }*/
+    }
 }
