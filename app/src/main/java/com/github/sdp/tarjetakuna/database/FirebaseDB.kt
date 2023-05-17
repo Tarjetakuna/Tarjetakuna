@@ -9,7 +9,6 @@ class FirebaseDB(db: DatabaseReference = AppFirebaseDatabase().getDB().dbref!!) 
 
     private var dbref: DatabaseReference = db
 
-
     override fun usersTable(): DatabaseReference {
         return dbref.child("users")
     }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.model.User
 import com.google.gson.Gson
@@ -48,7 +49,7 @@ class UsersFragment : Fragment() {
                 (card.possession == if (ownedCards) CardPossession.OWNED else CardPossession.WANTED)
                         && (card.code == dbMagicCard!!.code)
                         && (card.number == dbMagicCard!!.number)
-            } && user.email != currentUser().email
+            } && user.uid != currentUser().uid
         }.sortedBy { user ->
             user.location.distanceKmTo(currentUser().location)
         }
@@ -68,8 +69,8 @@ class UsersFragment : Fragment() {
         return User(
             "kelvin.kappeler@epfl.ch",
             "keke",
-            listOf(DBMagicCard("Aeronaut Tinkerer", CardPossession.OWNED, 3, "M15", 43)),
-            Coordinates(0.4f, 3.1f)
+            mutableListOf(DBMagicCard("Aeronaut Tinkerer", CardPossession.OWNED, 3, "M15", 43)),
+            Coordinates(0.4, 3.1)
         )
     }
 
@@ -86,17 +87,17 @@ class UsersFragment : Fragment() {
         val fakeUser1 = User(
             "kelvin.kappeler@epfl.ch",
             "keke",
-            listOf(fakeDbMagicCard1),
-            Coordinates(0.4f, 3.1f)
+            mutableListOf(fakeDbMagicCard1),
+            Coordinates(0.4, 3.1)
         )
         val fakeUser2 =
-            User("william.kwan@epfl.ch", "willi", listOf(fakeDbMagicCard2), Coordinates(0.4f, 3.6f))
+            User("william.kwan@epfl.ch", "willi", mutableListOf(fakeDbMagicCard2), Coordinates(0.4, 3.6))
 
         val fakeUser3 =
             User(
                 "bastien.jolidon@epfl.ch",
                 "bibi",
-                listOf(
+                mutableListOf(
                     fakeDbMagicCard2,
                     fakeDbMagicCard3,
                     fakeDbMagicCard1,
@@ -104,7 +105,7 @@ class UsersFragment : Fragment() {
                     fakeDbMagicCard5,
                     fakeDbMagicCard6
                 ),
-                Coordinates(43.4f, -8.6f)
+                Coordinates(43.4, -8.6)
             )
 
         return listOf(fakeUser1, fakeUser2, fakeUser3)
