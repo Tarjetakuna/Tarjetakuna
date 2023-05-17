@@ -11,8 +11,7 @@ import androidx.core.app.ActivityCompat
 import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.model.Coordinates
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 
 object Location {
 
@@ -68,8 +67,8 @@ object Location {
     private val locationListener: LocationListener = LocationListener { location ->
         val newLocation = Coordinates(location.latitude, location.longitude)
         if (currentLocation != newLocation) {
+            pushCoordinateToFirebase(newLocation)
             currentLocation = newLocation
-            pushCoordinateToFirebase(currentLocation)
             Log.i(
                 "Location",
                 "Location changed: latitude: ${getCurrentLocation().latitude}, " +
@@ -112,16 +111,30 @@ object Location {
      */
     private fun pushCoordinateToFirebase(currentLocation: Coordinates) {
         val user = UserRTDB(FirebaseDB())
-        // push each 5 mins
-        if (Firebase.auth.currentUser != null &&
-            (System.currentTimeMillis() - lastPushedToFirebase > 300000 || firstConnection)
+        // push every 5 mins
+        if (SignIn.getSignIn().isUserLoggedIn() &&
+            (timeElapsed() || firstConnection)
         ) {
             firstConnection = false
             lastPushedToFirebase = System.currentTimeMillis()
-            user.pushUserLocation(Firebase.auth.currentUser!!.uid, currentLocation)
+            user.pushUserLocation(SignIn.getSignIn().getUserUID()!!, currentLocation)
             Log.i("Location", "Pushed to Firebase")
         } else {
-            Log.i("Location", "User not logged in")
+            Log.i("Location", "User not logged in or time not elapsed")
         }
+    }
+
+    /**
+     * Check if 5 mins have passed since the last push to Firebase
+     */
+    private fun timeElapsed(): Boolean {
+        return System.currentTimeMillis() - lastPushedToFirebase > 300000
+    }
+
+    /**
+     * Setter for the last pushed to Firebase
+     */
+    fun setLastPushedToFirebase(time: Long) {
+        lastPushedToFirebase = time
     }
 }
