@@ -149,7 +149,7 @@ class UserTest {
     @Test
     fun getCardDoesNotExistTest() {
         assertThrows(ExecutionException::class.java) {
-            validUser.getCard(card.set.code, card.number, CardPossession.OWNED).get()
+            validUser.getCard("card.set.code", card.number, CardPossession.OWNED).get()
         }
     }
 }
