@@ -30,22 +30,16 @@ class ChatsRTDBTest {
 
     @Before
     fun setUp() {
-        // make sure db is empty of chats and messages
-        val task1 = chatsRTDB.clearChats()
-        Utils.waitUntilTrue(10, 100) { task1.isComplete }
-
-        val task2 = MessagesRTDB().clearMessages()
-        Utils.waitUntilTrue(10, 100) { task2.isComplete }
+        // make sure db is empty of messages
+        val task = FirebaseDB().clearDatabase()
+        Utils.waitUntilTrue(10, 100) { task.isComplete }
     }
 
     @After
     fun tearDown() {
-        // make sure db is empty of chats and messages
-        val task1 = chatsRTDB.clearChats()
-        Utils.waitUntilTrue(10, 100) { task1.isComplete }
-
-        val task2 = MessagesRTDB().clearMessages()
-        Utils.waitUntilTrue(10, 100) { task2.isComplete }
+        // make sure db is empty of messages
+        val task = FirebaseDB().clearDatabase()
+        Utils.waitUntilTrue(10, 100) { task.isComplete }
     }
 
     @Test

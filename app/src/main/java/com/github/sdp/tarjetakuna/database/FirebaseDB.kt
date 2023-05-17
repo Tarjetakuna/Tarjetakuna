@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna.database
 
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DatabaseReference
 
 /**
@@ -36,6 +37,13 @@ class FirebaseDB(db: DatabaseReference = AppFirebaseDatabase().getDB().dbref!!) 
 
     fun useEmulator() {
         dbref.database.useEmulator("10.0.2.2", 9000)
+    }
+
+    /**
+     * Clear all data from the database.
+     */
+    fun clearDatabase(): Task<Void> {
+        return dbref.removeValue()
     }
 
 

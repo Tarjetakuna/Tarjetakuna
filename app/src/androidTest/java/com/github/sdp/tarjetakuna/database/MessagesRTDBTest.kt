@@ -7,6 +7,8 @@ import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.Utils
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
+import org.junit.After
+import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,6 +26,20 @@ class MessagesRTDBTest {
     }
 
     private val messagesRTDB = MessagesRTDB()
+
+    @Before
+    fun setUp() {
+        // make sure db is empty of messages
+        val task = FirebaseDB().clearDatabase()
+        Utils.waitUntilTrue(10, 100) { task.isComplete }
+    }
+
+    @After
+    fun tearDown() {
+        // make sure db is empty of messages
+        val task = FirebaseDB().clearDatabase()
+        Utils.waitUntilTrue(10, 100) { task.isComplete }
+    }
 
     @Test
     fun test_addGetMessageDB() {
