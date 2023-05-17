@@ -153,6 +153,8 @@ class SingleCardManageCollectionNotLoggedInTest {
 
     @Test
     fun buttonAreNotDisplayedWhenNotLoggedIn() {
+        Intents.init()
+        
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(false)
