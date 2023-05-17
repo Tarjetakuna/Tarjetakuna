@@ -25,6 +25,8 @@ object Location {
 
     private var lastPushedToFirebase = System.currentTimeMillis()
 
+    private var firstConnection = true
+
     /**
      * Get the current location of the user if the permission is granted, if not asked yet, ask for it
      */
@@ -111,7 +113,10 @@ object Location {
     private fun pushCoordinateToFirebase(currentLocation: Coordinates) {
         val user = UserRTDB(FirebaseDB())
         // push each 5 mins
-        if (Firebase.auth.currentUser != null && System.currentTimeMillis() - lastPushedToFirebase > 300000) {
+        if (Firebase.auth.currentUser != null &&
+            (System.currentTimeMillis() - lastPushedToFirebase > 300000 || firstConnection)
+        ) {
+            firstConnection = false
             lastPushedToFirebase = System.currentTimeMillis()
             user.pushUserLocation(Firebase.auth.currentUser!!.uid, currentLocation)
             Log.i("Location", "Pushed to Firebase")
