@@ -22,6 +22,7 @@ class LocalDatabaseProviderTest {
     fun setUp() {
         val mockedAuth = mock(Authenticator::class.java)
         `when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
+        `when`(mockedAuth.getUserUID()).thenReturn("test")
         SignIn.setSignIn(mockedAuth)
 
         // close the database that could have been opened because of the previous tests

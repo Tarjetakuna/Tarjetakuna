@@ -6,9 +6,12 @@ import com.google.firebase.ktx.Firebase
 
 object GoogleAuthAdapter : Authenticator {
     var auth: FirebaseAuth = Firebase.auth
-    var currentUser = auth.currentUser
 
     override fun isUserLoggedIn(): Boolean {
-        return currentUser != null
+        return auth.currentUser != null
+    }
+
+    override fun getUserUID(): String? {
+        return auth.currentUser?.uid
     }
 }

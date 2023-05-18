@@ -45,6 +45,4 @@ class FirebaseDB(db: DatabaseReference = AppFirebaseDatabase().getDB().dbref!!) 
     fun clearDatabase(): Task<Void> {
         return dbref.removeValue()
     }
-
-
 }
