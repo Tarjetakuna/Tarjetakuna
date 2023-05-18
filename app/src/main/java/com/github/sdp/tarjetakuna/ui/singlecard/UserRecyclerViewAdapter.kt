@@ -34,7 +34,7 @@ class UserRecyclerViewAdapter(
         holder.kmView.text =
             holder.itemView.context.getString(
             R.string.single_card_distance,
-                currentUser?.location?.distanceKmTo(user.location)?.toInt().toString() ?: "-"
+                currentUser?.location?.distanceKmTo(user.location)?.toInt()?.toString() ?: "-"
         )
     }
 
