@@ -50,22 +50,24 @@ class UsersFragment : Fragment() {
         if (dbMagicCard == null) return view
 
         val userRTDB = UserRTDB(FirebaseDB())
-        userRTDB.getUserByUsername(GoogleAuthAdapter.currentUser?.email ?: "").thenApply { currentUser ->
-            userRTDB.getUsers().thenApply {
-                val users = it.filter { user ->
-                    user.cards.any { card ->
-                        (card.possession == if (ownedCards) CardPossession.OWNED else CardPossession.WANTED)
-                                && (card.code == dbMagicCard!!.code)
-                                && (card.number == dbMagicCard!!.number)
-                    } && user.username != (currentUser.username)
-                }.sortedBy { user ->
-                    user.location.distanceKmTo(currentUser.location)
-                }
+        var currentUser: User? = null
+        val firebaseUser = GoogleAuthAdapter.currentUser
+        userRTDB.getUserByUsername(firebaseUser?.email ?: "").thenAccept {
+            currentUser = it
+        }
 
-                with(view as RecyclerView) {
-                    layoutManager = LinearLayoutManager(context)
-                    adapter = UserRecyclerViewAdapter(users, currentUser)
-                }
+        userRTDB.getUsers().thenApply {
+            Log.d("UsersFragment", it.toString())
+            val users = it.filter { user ->
+                user.cards.any { card ->
+                    (card.possession == if (ownedCards) CardPossession.OWNED else CardPossession.WANTED)
+                            && (card.code == dbMagicCard!!.code)
+                            && (card.number == dbMagicCard!!.number)
+                } && user.username != (currentUser?.username ?: "")
+            }//.sortedBy { user -> if (currentUser == null) 0.0 else user.location.distanceKmTo(currentUser.location) }
+            with(view as RecyclerView) {
+                layoutManager = LinearLayoutManager(context)
+                adapter = UserRecyclerViewAdapter(users, currentUser)
             }
         }
 

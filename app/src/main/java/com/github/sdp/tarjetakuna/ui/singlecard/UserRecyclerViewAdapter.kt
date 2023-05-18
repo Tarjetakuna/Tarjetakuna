@@ -13,7 +13,7 @@ import com.github.sdp.tarjetakuna.model.User
  */
 class UserRecyclerViewAdapter(
     private val users: List<User>,
-    private val currentUser: User
+    private val currentUser: User?
 ) : RecyclerView.Adapter<UserRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,9 +31,10 @@ class UserRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = users[position]
         holder.usernameView.text = user.username
-        holder.kmView.text = holder.itemView.context.getString(
+        holder.kmView.text =
+            holder.itemView.context.getString(
             R.string.single_card_distance,
-            currentUser.location.distanceKmTo(user.location).toInt().toString()
+                currentUser?.location?.distanceKmTo(user.location)?.toString() ?: ""
         )
     }
 

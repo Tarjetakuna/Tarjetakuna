@@ -177,13 +177,16 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                 val ownedCardsFuture = cardsFromUser(uid, CardPossession.OWNED)
                 val wantedCardsFuture = cardsFromUser(uid, CardPossession.WANTED)
 
-                CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenRun {
-                    cards.addAll(ownedCardsFuture.get())
-                    cards.addAll(wantedCardsFuture.get())
-                    users.add(User(uid, username, cards, coordinates))
-                    future.complete(users)
+                ownedCardsFuture.thenAccept { ownedCards ->
+                    cards.addAll(ownedCards)
                 }
+                wantedCardsFuture.thenAccept { wantedCards ->
+                    cards.addAll(wantedCards)
+                }
+
+                users.add(User(uid, username, cards, coordinates))
             }
+            future.complete(users)
         }
         return future
     }
@@ -191,8 +194,8 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     /**
      * Get a user from the database by their username
      */
-    fun getUserByUsername(username: String): CompletableFuture<User> {
-        val future = CompletableFuture<User>()
+    fun getUserByUsername(username: String): CompletableFuture<User?> {
+        val future = CompletableFuture<User?>()
         db.get().addOnSuccessListener { snapshot ->
             for (user in snapshot.children) {
                 if (user.child("username").value.toString() == username) {
@@ -206,13 +209,17 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                     val ownedCardsFuture = cardsFromUser(uid, CardPossession.OWNED)
                     val wantedCardsFuture = cardsFromUser(uid, CardPossession.WANTED)
 
-                    CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenRun {
-                        cards.addAll(ownedCardsFuture.get())
-                        cards.addAll(wantedCardsFuture.get())
-                        future.complete(User(uid, username, cards, coordinates))
+                    ownedCardsFuture.thenAccept { ownedCards ->
+                        cards.addAll(ownedCards)
                     }
+                    wantedCardsFuture.thenAccept { wantedCards ->
+                        cards.addAll(wantedCards)
+                    }
+
+                    future.complete(User(uid, username, cards, coordinates))
                 }
             }
+            future.complete(null)
         }
         return future
     }
