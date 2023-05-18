@@ -13,6 +13,7 @@ data class Coordinates(
     var latitude: Double = 0.0,
     var longitude: Double = 0.0
 ) {
+    private val earthRadius = 6371
 
     init {
         latitude = latitude.coerceAtMost(latitudeRange).coerceAtLeast(-latitudeRange)
@@ -24,7 +25,6 @@ data class Coordinates(
      */
     fun distanceKmTo(other: Coordinates): Double {
         // Haversine formula
-        val earthRadius = 6371
         val latDistance = Math.toRadians((latitude - other.latitude))
         val lngDistance = Math.toRadians((longitude - other.longitude))
         val a = (sin(latDistance / 2) * sin(latDistance / 2)
