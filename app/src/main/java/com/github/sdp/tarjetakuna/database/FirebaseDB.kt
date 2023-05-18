@@ -10,7 +10,6 @@ class FirebaseDB(db: DatabaseReference = AppFirebaseDatabase().getDB().dbref!!) 
 
     private var dbref: DatabaseReference = db
 
-
     override fun usersTable(): DatabaseReference {
         return dbref.child("users")
     }
@@ -33,10 +32,6 @@ class FirebaseDB(db: DatabaseReference = AppFirebaseDatabase().getDB().dbref!!) 
 
     override fun returnDatabaseReference(): DatabaseReference {
         return dbref
-    }
-
-    fun useEmulator() {
-        dbref.database.useEmulator("10.0.2.2", 9000)
     }
 
     /**
