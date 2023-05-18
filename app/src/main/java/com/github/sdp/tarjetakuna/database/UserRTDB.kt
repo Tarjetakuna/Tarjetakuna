@@ -1,6 +1,7 @@
 package com.github.sdp.tarjetakuna.database
 
 import com.google.android.gms.tasks.Task
+import com.github.sdp.tarjetakuna.model.Coordinates
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import java.util.concurrent.CompletableFuture
@@ -153,5 +154,31 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         return future
     }
 
+    /**
+     * Push the location of the user to the database.
+     */
+    fun pushUserLocation(userUID: String, location: Coordinates) {
+        db.child(userUID).child("location").child("lat").setValue(location.latitude)
+        db.child(userUID).child("location").child("long").setValue(location.longitude)
+    }
+
+    /**
+     * Get the location of the user from the database.
+     */
+    fun getUserLocation(userUID: String): CompletableFuture<Coordinates> {
+        val future = CompletableFuture<Coordinates>()
+        db.child(userUID).child("location").get().addOnSuccessListener {
+            if (it.value == null) {
+                future.completeExceptionally(NoSuchFieldException("no location for user"))
+            } else {
+                val lat = it.child("lat").value.toString().toDouble()
+                val long = it.child("long").value.toString().toDouble()
+                future.complete(Coordinates(lat, long))
+            }
+        }.addOnFailureListener {
+            future.completeExceptionally(it)
+        }
+        return future
+    }
 
 }

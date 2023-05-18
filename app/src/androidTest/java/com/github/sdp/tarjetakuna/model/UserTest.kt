@@ -162,18 +162,11 @@ class UserTest {
 
     @Test
     fun getCardDoesNotExistTest() {
-
         runBlocking {
-            delay(1000)
-            println("P1")
             assertThrows(ExecutionException::class.java) {
                 val card = validUser.getCard("blablabla", 1, CardPossession.OWNED)
-                println("P2")
-                val getCard = card.get()
-                println("P3")
+                val getCard = card.get(5, TimeUnit.SECONDS)
             }
-            println("P4")
-            delay(1000)
         }
     }
 }
