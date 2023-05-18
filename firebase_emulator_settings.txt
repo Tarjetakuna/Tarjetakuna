@@ -1,0 +1,19 @@
+ref is here https://firebase.google.com/docs/cli
+
+install 
+	node js
+		download and install:
+			https://nodejs.org/en
+	firebase tools
+		run this command on command line :
+			npm install -g firebase-tools
+		
+		login on command line:	
+			firebase login
+		
+		init the project (you can move into another directory)
+			firebase init, follow the instructions, only pick realtime database
+			
+run the emulator
+	on command line in directory where you init the project
+		firebase emulators:start
