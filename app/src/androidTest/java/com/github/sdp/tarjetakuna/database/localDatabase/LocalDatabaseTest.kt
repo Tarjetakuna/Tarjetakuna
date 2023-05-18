@@ -135,4 +135,5 @@ class LocalDatabaseTest {
         }
         assert(databaseCards.isEmpty())
     }
+
 }

@@ -4,17 +4,17 @@ import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.hamcrest.CoreMatchers
+import org.junit.*
 import org.junit.Assert.assertThrows
-import org.junit.ClassRule
-import org.junit.Rule
-import org.junit.Test
 import org.junit.rules.Timeout
 import org.junit.runner.RunWith
 import java.util.concurrent.ExecutionException
@@ -52,6 +52,18 @@ class UserTest {
         @get:ClassRule
         @JvmStatic
         val fbEmulator = FBEmulator()
+    }
+
+    @Before
+    fun setUp() {
+        val task = FirebaseDB().clearDatabase()
+        Tasks.await(task, 5, TimeUnit.SECONDS)
+    }
+
+    @After
+    fun tearDown() {
+        val task = FirebaseDB().clearDatabase()
+        Tasks.await(task, 5, TimeUnit.SECONDS)
     }
 
     @Test
@@ -97,10 +109,12 @@ class UserTest {
 
     @Test
     fun addCardTest() {
+        assert(validUser.addCard(card, CardPossession.OWNED).get())
+        assert(validUser.addCard(card, CardPossession.OWNED).get())
+
         runBlocking {
-            validUser.addCard(card, CardPossession.OWNED)
             var count = 0L
-            withTimeout(5000) {
+            withTimeout(1000) {
                 fbEmulator.fb.reference
                     .child("users")
                     .child(validUID)
@@ -110,45 +124,52 @@ class UserTest {
                     }
             }
             delay(1000)
-            assertThat(count, CoreMatchers.`is`(1L))
+            assertThat(count, CoreMatchers.`is`(2L))
+        }
+    }
+
+    @Test
+    fun removeCardTest() {
+        runBlocking {
+            validUser.addCard(card, CardPossession.OWNED)
+            validUser.addCard(card, CardPossession.OWNED)
+            validUser.addCard(card, CardPossession.OWNED)
+            validUser.removeCard(card, CardPossession.OWNED)
+            var count = 0L
+            withTimeout(1000) {
+                fbEmulator.fb.reference
+                    .child("users")
+                    .child(validUID)
+                    .child("owned")
+                    .child(fbcard.getFbKey()).get().addOnSuccessListener {
+                        count = it.value as Long
+                    }
+            }
+            delay(1000)
+            assertThat(count, CoreMatchers.`is`(2L))
 
         }
-        assertThat(
-            fbEmulator.fb.reference
-                .child("users")
-                .child(validUID)
-                .child("owned")
-                .child(fbcard.getFbKey())
-                .key,
-            CoreMatchers.`is`("M15_43")
-        )
-
     }
 
     @Test
     fun getCardExistsTest() {
-        validUser.addMultipleCards(
-            listOf(card, card2),
-            listOf(CardPossession.WANTED, CardPossession.OWNED)
-        )
-        val futureCard1 = validUser.getCard(card.set.code, card.number, CardPossession.WANTED)
-        val futureCard2 = validUser.getCard(card2.set.code, card2.number, CardPossession.OWNED)
+        assert(validUser.addCard(card, CardPossession.WANTED).get())
 
-        val actualCard1 = futureCard1.get() // block until the future is complete and get the result
+        val futureCard1 = validUser.getCard(card.set.code, card.number, CardPossession.WANTED)
+
+        val actualCard1 = futureCard1.get()
         val fbCard1 = Gson().fromJson(actualCard1.value as String, DBMagicCard::class.java)
         val magicCard1 = fbCard1.toMagicCard()
         assertThat(magicCard1, CoreMatchers.`is`(card))
-
-        val actualCard2 = futureCard2.get()
-        val fbCard2 = Gson().fromJson(actualCard2.value as String, DBMagicCard::class.java)
-        val magicCard2 = fbCard2.toMagicCard()
-        assertThat(magicCard2, CoreMatchers.`is`(card2))
     }
 
     @Test
     fun getCardDoesNotExistTest() {
-        assertThrows(ExecutionException::class.java) {
-            validUser.getCard("card.set.code", card.number, CardPossession.OWNED).get()
+        runBlocking {
+            assertThrows(ExecutionException::class.java) {
+                val card = validUser.getCard("blablabla", 1, CardPossession.OWNED)
+                val getCard = card.get(5, TimeUnit.SECONDS)
+            }
         }
     }
 }

@@ -34,6 +34,9 @@ class BrowserFragmentTest {
 
     private lateinit var scenario: FragmentScenario<BrowserFragment>
 
+    private val cardText = "Ambush Paratrooper 05"
+    private val quantityText = "4X"
+
 
     @Before
     fun setUp() {
@@ -59,7 +62,13 @@ class BrowserFragmentTest {
             withTimeout(5000) {
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
                     ?.magicCardDao()?.insertCards(
-                        generateCards().map { DBMagicCard.fromMagicCard(it, CardPossession.OWNED) }
+                        generateCards().map {
+                            DBMagicCard(
+                                it,
+                                CardPossession.OWNED,
+                                4
+                            )
+                        }
                     )
             }
         }
@@ -263,6 +272,17 @@ class BrowserFragmentTest {
                 40
             )
         ).check(matches(hasDescendant(withText("Pégase solgrâce"))))
+    }
+
+    @Test
+    fun multipleCopyOfTheSameCard() {
+        onView(withId(R.id.browser_searchbar)).perform(click())
+        onView(withId(R.id.browser_searchbar)).perform(typeText(cardText))
+        onView(withId(R.id.browser_list_cards)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
+                0
+            )
+        ).check(matches(hasDescendant(withText(quantityText))))
     }
 
     //This test is not working with the SingleCardTest. I put in comment for now
