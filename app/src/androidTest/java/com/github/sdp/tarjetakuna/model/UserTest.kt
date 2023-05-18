@@ -8,6 +8,7 @@ import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.google.android.gms.tasks.Tasks
+import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -195,31 +196,25 @@ class UserTest {
         }
     }
 
-
-    /*@Test
+    @Test
     fun getCardExistsTest() {
-        validUser.addCard(card, CardPossession.WANTED)
-        validUser.addCard(card2, CardPossession.OWNED)
-
+        assert(validUser.addCard(card, CardPossession.WANTED).get())
 
         val futureCard1 = validUser.getCard(card.set.code, card.number, CardPossession.WANTED)
-        val futureCard2 = validUser.getCard(card2.set.code, card2.number, CardPossession.OWNED)
 
-        val actualCard1 = futureCard1.get() // block until the future is complete and get the result
+        val actualCard1 = futureCard1.get()
         val fbCard1 = Gson().fromJson(actualCard1.value as String, DBMagicCard::class.java)
         val magicCard1 = fbCard1.toMagicCard()
         assertThat(magicCard1, CoreMatchers.`is`(card))
-
-        val actualCard2 = futureCard2.get()
-        val fbCard2 = Gson().fromJson(actualCard2.value as String, DBMagicCard::class.java)
-        val magicCard2 = fbCard2.toMagicCard()
-        assertThat(magicCard2, CoreMatchers.`is`(card2))
-    }*/
+    }
 
     @Test
     fun getCardDoesNotExistTest() {
-        assertThrows(ExecutionException::class.java) {
-            validUser.getCard("card.set.code", card.number, CardPossession.OWNED).get()
+        runBlocking {
+            assertThrows(ExecutionException::class.java) {
+                val card = validUser.getCard("blablabla", 1, CardPossession.OWNED)
+                val getCard = card.get(5, TimeUnit.SECONDS)
+            }
         }
     }
 }
