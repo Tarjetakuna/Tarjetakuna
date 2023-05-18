@@ -57,7 +57,7 @@
                 android:id="@+id/quantityRecyclerViewTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="@dimen/small_margin"
                 style="@style/LargeTextStyle"
                 android:text="@string/cards_recycler_view_quantity"
                 android:visibility="gone"

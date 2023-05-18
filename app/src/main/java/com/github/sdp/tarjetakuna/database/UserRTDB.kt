@@ -26,6 +26,8 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         val fbpossession = fbcard.possession.toString().lowercase()
         val cardRef = db.child(userUID).child(fbpossession).child(cardUID)
 
+        cardsRTDB.addCardToGlobalCollection(fbcard)
+
         val completableFuture = CompletableFuture<Boolean>()
 
         try {

@@ -4,16 +4,16 @@ import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.google.android.gms.tasks.Tasks
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.hamcrest.CoreMatchers
+import org.junit.*
 import org.junit.Assert.assertThrows
-import org.junit.ClassRule
-import org.junit.Rule
-import org.junit.Test
 import org.junit.rules.Timeout
 import org.junit.runner.RunWith
 import java.util.concurrent.ExecutionException
@@ -51,6 +51,18 @@ class UserTest {
         @get:ClassRule
         @JvmStatic
         val fbEmulator = FBEmulator()
+    }
+
+    @Before
+    fun setUp() {
+        val task = FirebaseDB().clearDatabase()
+        Tasks.await(task, 5, TimeUnit.SECONDS)
+    }
+
+    @After
+    fun tearDown() {
+        val task = FirebaseDB().clearDatabase()
+        Tasks.await(task, 5, TimeUnit.SECONDS)
     }
 
     @Test
@@ -96,9 +108,10 @@ class UserTest {
 
     @Test
     fun addCardTest() {
+        assert(validUser.addCard(card, CardPossession.OWNED).get())
+        assert(validUser.addCard(card, CardPossession.OWNED).get())
+
         runBlocking {
-            validUser.removeAllCopyOfCard(card, CardPossession.OWNED)
-            validUser.addCard(card, CardPossession.OWNED)
             var count = 0L
             withTimeout(1000) {
                 fbEmulator.fb.reference
@@ -110,18 +123,8 @@ class UserTest {
                     }
             }
             delay(1000)
-            assertThat(count, CoreMatchers.`is`(1L))
-
+            assertThat(count, CoreMatchers.`is`(2L))
         }
-        assertThat(
-            fbEmulator.fb.reference
-                .child("users")
-                .child(validUID)
-                .child("owned")
-                .child(fbcard.getFbKey())
-                .key,
-            CoreMatchers.`is`("M15_43")
-        )
     }
 
     @Test
