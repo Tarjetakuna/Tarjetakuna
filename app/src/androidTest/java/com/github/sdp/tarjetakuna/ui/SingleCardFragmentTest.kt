@@ -70,16 +70,12 @@ class SingleCardFragmentTest {
 
     @Before
     fun setup() {
-        val task = FirebaseDB().clearDatabase()
-        Tasks.await(task, 5, TimeUnit.SECONDS)
         FirebaseDB().returnDatabaseReference().updateChildren(CommonFirebase.goodFirebase)
         IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
     }
 
     @After
     fun tearDown() {
-        val task = FirebaseDB().clearDatabase()
-        Tasks.await(task, 5, TimeUnit.SECONDS)
         IdlingRegistry.getInstance().unregister(CustomGlide.countingIdlingResource)
         scenario.close()
     }
