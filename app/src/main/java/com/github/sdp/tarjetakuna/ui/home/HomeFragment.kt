@@ -65,36 +65,7 @@ class HomeFragment : Fragment() {
 
         val addRandomCardButton: Button = binding.addRandomCardButton
         addRandomCardButton.setOnClickListener {
-            //TODO : Remove the comment and the next lines when the branch 80 is ready to be merged
-            //homeViewModel.addRandomCard()
-            val bundle = Bundle()
-            bundle.putString(
-                "card", Gson().toJson(
-                    MagicCard(
-                        "Aeronaut Tinkerer",
-                        "Aeronaut Tinkerer has flying as long as you control an artifact. (It can’t be blocked except by creatures with flying or reach.)",
-                        MagicLayout.NORMAL,
-                        3,
-                        "{2}{U}",
-                        MagicSet(
-                            "M15",
-                            "Magic 2015",
-                            "core",
-                            "Core Set",
-                            LocalDate.parse("2014-07-18")
-                        ),
-                        43,
-                        "https://cards.scryfall.io/large/front/e/1/e145e85d-1eaa-4ec6-9208-ca6491577302.jpg?1562795701",
-                        MagicRarity.COMMON,
-                        MagicCardType.CREATURE,
-                        listOf("Human", "Artificer"),
-                        "2",
-                        "3",
-                        "William Murai"
-                    )
-                )
-            )
-            (requireActivity() as MainActivity).changeFragment(R.id.nav_single_card, bundle)
+            homeViewModel.addRandomCard()
         }
 
         return root
