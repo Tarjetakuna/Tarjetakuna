@@ -153,7 +153,7 @@ class UserTest {
             assertThrows(ExecutionException::class.java) {
                 val card = validUser.getCard("blablabla", 1, CardPossession.OWNED)
                 println("P2")
-                val getCard = stupid.get()
+                val getCard = card.get()
                 println("P3")
             }
             println("P4")
