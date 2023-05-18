@@ -57,14 +57,14 @@ class UsersFragment : Fragment() {
         }
 
         userRTDB.getUsers().thenApply {
-            Log.d("UsersFragment", it.toString())
             val users = it.filter { user ->
                 user.cards.any { card ->
                     (card.possession == if (ownedCards) CardPossession.OWNED else CardPossession.WANTED)
                             && (card.code == dbMagicCard!!.code)
                             && (card.number == dbMagicCard!!.number)
                 } && user.username != (currentUser?.username ?: "")
-            }//.sortedBy { user -> if (currentUser == null) 0.0 else user.location.distanceKmTo(currentUser.location) }
+            }.sortedBy { user -> if (currentUser == null) 0.0 else user.location.distanceKmTo(
+                currentUser!!.location) }
             with(view as RecyclerView) {
                 layoutManager = LinearLayoutManager(context)
                 adapter = UserRecyclerViewAdapter(users, currentUser)

@@ -161,6 +161,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
      */
     fun getUsers(): CompletableFuture<List<User>> {
         val future = CompletableFuture<List<User>>()
+        val userFutures = mutableListOf<CompletableFuture<Void>>()
         val users = mutableListOf<User>()
         db.get().addOnSuccessListener { snapshot ->
             for (user in snapshot.children) {
@@ -177,16 +178,16 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                 val ownedCardsFuture = cardsFromUser(uid, CardPossession.OWNED)
                 val wantedCardsFuture = cardsFromUser(uid, CardPossession.WANTED)
 
-                ownedCardsFuture.thenAccept { ownedCards ->
-                    cards.addAll(ownedCards)
+                val userFuture = CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenRun {
+                    cards.addAll(ownedCardsFuture.get())
+                    cards.addAll(wantedCardsFuture.get())
+                    users.add(User(uid, username, cards, coordinates))
                 }
-                wantedCardsFuture.thenAccept { wantedCards ->
-                    cards.addAll(wantedCards)
-                }
-
-                users.add(User(uid, username, cards, coordinates))
+                userFutures.add(userFuture)
             }
-            future.complete(users)
+            CompletableFuture.allOf(*userFutures.toTypedArray()).thenRun {
+                future.complete(users)
+            }
         }
         return future
     }
@@ -205,18 +206,20 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                         val long = child("long").value?.toString()?.toDouble() ?: 0.0
                         Coordinates(lat, long)
                     }
-                    val cards = mutableListOf<DBMagicCard>()
                     val ownedCardsFuture = cardsFromUser(uid, CardPossession.OWNED)
                     val wantedCardsFuture = cardsFromUser(uid, CardPossession.WANTED)
 
-                    ownedCardsFuture.thenAccept { ownedCards ->
-                        cards.addAll(ownedCards)
-                    }
-                    wantedCardsFuture.thenAccept { wantedCards ->
-                        cards.addAll(wantedCards)
-                    }
+                    CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenAccept {
+                        val ownedCards = ownedCardsFuture.join()
+                        val wantedCards = wantedCardsFuture.join()
 
-                    future.complete(User(uid, username, cards, coordinates))
+                        val cards = mutableListOf<DBMagicCard>()
+                        cards.addAll(ownedCards)
+                        cards.addAll(wantedCards)
+
+                        future.complete(User(uid, username, cards, coordinates))
+                    }
+                    return@addOnSuccessListener
                 }
             }
             future.complete(null)

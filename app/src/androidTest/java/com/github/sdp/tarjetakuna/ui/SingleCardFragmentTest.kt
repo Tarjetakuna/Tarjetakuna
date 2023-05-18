@@ -13,17 +13,25 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.database.localDatabase.UserRTDBTest
+import com.github.sdp.tarjetakuna.mockdata.CommonFirebase
 import com.github.sdp.tarjetakuna.model.*
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.CustomGlide
+import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
 import com.github.sdp.tarjetakuna.utils.WithIndexSafeMatcher.withIndex
 import com.google.gson.Gson
+import kotlinx.coroutines.Delay
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
+import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -52,10 +60,17 @@ class SingleCardFragmentTest {
     private val textCardArtist = onView(withId(R.id.singleCard_artist_text))
     private val textCardManaCost = onView(withId(R.id.singleCard_mana_cost_text))
 
+    companion object {
+        @get:ClassRule
+        @JvmStatic
+        val fbEmulator = FBEmulator()
+    }
+
     @Before
     fun setup() {
         IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
-
+        UserRTDBTest.fbEmulator.fb.reference.setValue(null)
+        UserRTDBTest.fbEmulator.fb.reference.updateChildren(CommonFirebase.goodFirebase)
     }
 
     @After
