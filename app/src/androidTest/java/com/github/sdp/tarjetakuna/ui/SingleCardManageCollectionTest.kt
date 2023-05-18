@@ -130,6 +130,9 @@ class SingleCardManageCollectionTest {
 
     @Test
     fun cardQuantityWhenAddingAndRemovingCardIsCorrect() {
+        // the waitForAction seems to work for most of the test but it sometimes go back to the top of the nested srcoll view and I can't figure out why
+        Thread.sleep(1000)
+        wantedButton.perform(scrollTo())
         addCardButton.perform(click())
         removeCardButton.perform(click())
         addCardButton.perform(click())
@@ -140,6 +143,9 @@ class SingleCardManageCollectionTest {
 
     @Test
     fun addToWantedCardsChangeText() {
+        //same problem as the test above
+        Thread.sleep(1000)
+        wantedButton.perform(scrollTo())
         wantedButton.perform(click())
         wantedButton.check(matches(withText(R.string.single_card_showing_remove_wanted)))
         wantedButton.perform(click())
@@ -197,7 +203,7 @@ class SingleCardManageCollectionNotLoggedInTest {
 
         onView(isRoot()).perform(
             WaitForViewActions.waitForView(
-                R.id.singleCard_add_wanted_button,
+                R.id.singleCard_askConnection_text,
                 5000
             )
         )
