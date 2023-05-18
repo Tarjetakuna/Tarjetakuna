@@ -14,6 +14,7 @@ data class DBMagicCard(
     val lastUpdate: Long,
     val code: String,
     val number: Int,
+    val quantity: Int,
 ) {
     constructor(card: MagicCard) : this(
         card = Gson().toJson(card),
@@ -21,6 +22,7 @@ data class DBMagicCard(
         lastUpdate = System.currentTimeMillis(),
         code = card.set.code,
         number = card.number,
+        quantity = 0,
     )
 
     constructor(card: MagicCard, possession: CardPossession) : this(
@@ -29,6 +31,16 @@ data class DBMagicCard(
         lastUpdate = System.currentTimeMillis(),
         code = card.set.code,
         number = card.number,
+        quantity = 0,
+    )
+
+    constructor(card: MagicCard, possession: CardPossession, quantity: Int) : this(
+        card = Gson().toJson(card),
+        possession = possession,
+        lastUpdate = System.currentTimeMillis(),
+        code = card.set.code,
+        number = card.number,
+        quantity = quantity,
     )
 
     /**
