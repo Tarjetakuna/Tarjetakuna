@@ -112,4 +112,26 @@ class LocationTest {
             null
         }.get()
     }
+
+    @Test
+    fun userIsNotLoggedDoesNotPushToFirebase() {
+        `when`(SignIn.getSignIn().isUserLoggedIn()).thenReturn(false)
+        `when`(SignIn.getSignIn().getUserUID()).thenReturn("fakeUser")
+        setLocationTo(0.0, 5.0)
+        activityRule.onActivity {
+            Location.setLocationManager(locationManagerMock)
+            Location.setLastPushedToFirebase(0L) // so that it always pushes to firebase
+            Location.captureCurrentLocation(it)
+        }
+
+        val userRTDB = UserRTDB(FirebaseDB())
+        userRTDB.getUserLocation("fakeUser").thenAccept {
+            assertThat("should not have pushed to firebase", false)
+        }.exceptionally {
+            assertThat("No card in the database", true)
+            null
+        }.get()
+    }
+
+
 }
