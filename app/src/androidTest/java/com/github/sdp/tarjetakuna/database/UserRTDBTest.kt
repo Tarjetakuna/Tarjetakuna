@@ -22,7 +22,6 @@ class UserRTDBTest {
     @Test
     fun addLocationWorks() {
         userRTDB.pushUserLocation("test", Coordinates(10.15, 20.25))
-
         userRTDB.getUserLocation("test").thenAccept {
             assert(it.latitude == 10.15)
             assert(it.longitude == 20.25)

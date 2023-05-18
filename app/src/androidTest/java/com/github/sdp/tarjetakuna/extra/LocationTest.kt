@@ -13,6 +13,7 @@ import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.github.sdp.tarjetakuna.utils.Utils
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.*
 import org.junit.Assert.assertEquals
@@ -50,7 +51,18 @@ class LocationTest {
         `when`(mck.getUserUID()).thenReturn("test")
         SignIn.setSignIn(mck)
 
+        // make sure db is empty of messages
+        val task = FirebaseDB().clearDatabase()
+        Utils.waitUntilTrue(10, 100) { task.isComplete }
+
         activityRule = ActivityScenario.launch(MainActivity::class.java)
+    }
+
+    @After
+    fun tearDown() {
+        // make sure db is empty of messages
+        val task = FirebaseDB().clearDatabase()
+        Utils.waitUntilTrue(10, 100) { task.isComplete }
     }
 
     private fun setLocationTo(lat: Double, long: Double) {
@@ -128,7 +140,7 @@ class LocationTest {
         userRTDB.getUserLocation("fakeUser").thenAccept {
             assertThat("should not have pushed to firebase", false)
         }.exceptionally {
-            assertThat("No card in the database", true)
+            assertThat("No location in the database", true)
             null
         }.get()
     }
