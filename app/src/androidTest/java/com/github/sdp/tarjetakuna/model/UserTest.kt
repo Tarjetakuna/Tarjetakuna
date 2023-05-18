@@ -4,7 +4,6 @@ import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
-import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.google.gson.Gson
@@ -41,8 +40,7 @@ class UserTest {
             validUID,
             validUsername,
             validListOfCards,
-            validCoordinates,
-            FirebaseDB()
+            validCoordinates
         )
     private val card = CommonMagicCard.aeronautTinkererCard
     private val card2 = CommonMagicCard.venomousHierophantCard
@@ -153,9 +151,9 @@ class UserTest {
             delay(1000)
             println("P1")
             assertThrows(ExecutionException::class.java) {
-                val stupid = validUser.getCard("blablabla", 1, CardPossession.OWNED)
+                val card = validUser.getCard("blablabla", 1, CardPossession.OWNED)
                 println("P2")
-                val hate = stupid.get()
+                val getCard = stupid.get()
                 println("P3")
             }
             println("P4")
