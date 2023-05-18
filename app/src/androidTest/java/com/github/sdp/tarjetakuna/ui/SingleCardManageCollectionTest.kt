@@ -36,6 +36,8 @@ class SingleCardManageCollectionTest {
 
     private lateinit var scenario: FragmentScenario<SingleCardFragment>
 
+    private val card = CommonMagicCard.aeronautTinkererCard
+
     private val cardQuantityText = onView(withId(R.id.singleCard_quantity_text))
     private val wantedButton = onView(withId(R.id.singleCard_add_wanted_button))
     private val addCardButton = onView(withId(R.id.singleCard_add_card_button))
@@ -64,7 +66,7 @@ class SingleCardManageCollectionTest {
             withTimeout(5000) {
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
                     ?.magicCardDao()?.insertCard(
-                        DBMagicCard(CommonMagicCard.aeronautTinkererCard, CardPossession.OWNED, 2),
+                        DBMagicCard(card, CardPossession.OWNED, 2),
                     )
             }
         }
@@ -73,7 +75,7 @@ class SingleCardManageCollectionTest {
             Bundle().apply {
                 putString(
                     "card",
-                    Gson().toJson(CommonMagicCard.aeronautTinkererCard)
+                    Gson().toJson(card)
                 )
             }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
@@ -110,6 +112,16 @@ class SingleCardManageCollectionTest {
         cardQuantityText.check(matches(withText("3")))
         addCardButton.perform(click())
         cardQuantityText.check(matches(withText("4")))
+
+        runBlocking {
+            withTimeout(5000) {
+                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+                    ?.magicCardDao()?.getCard(card.set.code, card.number.toString())?.let {
+                        assert(it.quantity == 4)
+                    }
+            }
+        }
+
     }
 
     @Test
@@ -120,6 +132,15 @@ class SingleCardManageCollectionTest {
         cardQuantityText.check(matches(withText("0")))
         removeCardButton.perform(click())
         cardQuantityText.check(matches(withText("0")))
+
+        runBlocking {
+            withTimeout(5000) {
+                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+                    ?.magicCardDao()?.getCard(card.set.code, card.number.toString())?.let {
+                        assert(it.quantity == 0)
+                    }
+            }
+        }
     }
 
     @Test
@@ -130,20 +151,45 @@ class SingleCardManageCollectionTest {
         removeCardButton.perform(click())
         removeCardButton.perform(click())
         cardQuantityText.check(matches(withText("1")))
+
+        runBlocking {
+            withTimeout(5000) {
+                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+                    ?.magicCardDao()?.getCard(card.set.code, card.number.toString())?.let {
+                        assert(it.quantity == 1)
+                    }
+            }
+        }
     }
 
     @Test
     fun addToWantedCardsChangeText() {
         wantedButton.perform(click())
         wantedButton.check(matches(withText(R.string.single_card_showing_remove_wanted)))
-        wantedButton.perform(click())
-        wantedButton.check(matches(withText(R.string.single_card_showing_add_to_wanted)))
+
+        runBlocking {
+            withTimeout(5000) {
+                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+                    ?.magicCardDao()?.getCard(card.set.code, card.number.toString())?.let {
+                        assert(it.possession == CardPossession.WANTED)
+                    }
+            }
+        }
     }
 
     @Test
     fun addToWantedPutQuantityToZero() {
         wantedButton.perform(click())
         cardQuantityText.check(matches(withText("0")))
+
+        runBlocking {
+            withTimeout(5000) {
+                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+                    ?.magicCardDao()?.getCard(card.set.code, card.number.toString())?.let {
+                        assert(it.quantity == 0)
+                    }
+            }
+        }
     }
 
 }

@@ -129,49 +129,46 @@ class UserTest {
 
     @Test
     fun addMultipleCopyOfTheSameCard() {
-        runBlocking {
-            validUser.removeAllCopyOfCard(card2, CardPossession.OWNED)
-            validUser.removeAllCopyOfCard(card3, CardPossession.WANTED)
-
+        assert(
             validUser.addMultipleCards(
-                listOf(card2, card2, card3, card3, card3),
+                listOf(card2, card2, card2, card3, card3),
                 listOf(
                     CardPossession.OWNED,
                     CardPossession.OWNED,
-                    CardPossession.WANTED,
+                    CardPossession.OWNED,
                     CardPossession.WANTED,
                     CardPossession.WANTED
                 )
-            )
+            ).get()
+        )
 
+        runBlocking {
             var count = 0L
-            val fbcard2 = DBMagicCard(card2, CardPossession.OWNED)
             withTimeout(1000) {
                 fbEmulator.fb.reference
                     .child("users")
                     .child(validUID)
                     .child("owned")
-                    .child(fbcard2.getFbKey()).get().addOnSuccessListener {
-                        count = it.value as Long
-                    }
-            }
-            delay(1000)
-            assertThat(count, CoreMatchers.`is`(2L))
-
-            count = 0L
-            val fbcard3 = DBMagicCard(card3, CardPossession.WANTED)
-            withTimeout(1000) {
-                fbEmulator.fb.reference
-                    .child("users")
-                    .child(validUID)
-                    .child("wanted")
-                    .child(fbcard3.getFbKey()).get().addOnSuccessListener {
+                    .child(DBMagicCard(card2, CardPossession.OWNED).getFbKey()).get()
+                    .addOnSuccessListener {
                         count = it.value as Long
                     }
             }
             delay(1000)
             assertThat(count, CoreMatchers.`is`(3L))
 
+            withTimeout(1000) {
+                fbEmulator.fb.reference
+                    .child("users")
+                    .child(validUID)
+                    .child("wanted")
+                    .child(DBMagicCard(card3, CardPossession.WANTED).getFbKey()).get()
+                    .addOnSuccessListener {
+                        count = it.value as Long
+                    }
+            }
+            delay(1000)
+            assertThat(count, CoreMatchers.`is`(2L))
         }
     }
 

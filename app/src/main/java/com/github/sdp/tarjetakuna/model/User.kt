@@ -84,11 +84,18 @@ data class User(
     /**
      * Adds a list of cards to the user's collection with the given possessions.
      */
-    fun addMultipleCards(cards: List<MagicCard>, possession: List<CardPossession>) {
+    fun addMultipleCards(
+        cards: List<MagicCard>,
+        possession: List<CardPossession>
+    ): CompletableFuture<Boolean> {
         val cardsWithPossession = cards.zip(possession)
-        for ((card, pos) in cardsWithPossession) {
-            addCard(card, pos)
-        }
+        val completableFutures = cardsWithPossession.map { (card, pos) ->
+            CompletableFuture.supplyAsync { addCard(card, pos) }
+        }.toTypedArray()
+
+        return CompletableFuture.allOf(*completableFutures)
+            .thenApply { true }
+            .exceptionally { false }
     }
 
     /**
