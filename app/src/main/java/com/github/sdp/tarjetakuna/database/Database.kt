@@ -22,6 +22,16 @@ interface Database {
     fun usernamesTable(): DatabaseReference
 
     /**
+     * Returns the reference to the chats table.
+     */
+    fun chatsTable(): DatabaseReference
+
+    /**
+     * Returns the reference to the messages table.
+     */
+    fun messagesTable(): DatabaseReference
+
+    /**
      * Returns the reference to the database.
      */
     fun returnDatabaseReference(): DatabaseReference

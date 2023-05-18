@@ -23,6 +23,14 @@ class FirebaseDB(db: DatabaseReference = AppFirebaseDatabase().getDB().dbref!!) 
         return dbref.child("usernames")
     }
 
+    override fun chatsTable(): DatabaseReference {
+        return dbref.child("chats")
+    }
+
+    override fun messagesTable(): DatabaseReference {
+        return dbref.child("messages")
+    }
+
     override fun returnDatabaseReference(): DatabaseReference {
         return dbref
     }
