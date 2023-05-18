@@ -51,7 +51,7 @@ class UsersFragment : Fragment() {
 
         val userRTDB = UserRTDB(FirebaseDB())
         var currentUser: User? = null
-        val firebaseUser = GoogleAuthAdapter.currentUser
+        val firebaseUser = GoogleAuthAdapter.auth.currentUser
         userRTDB.getUserByUsername(firebaseUser?.email ?: "").thenAccept {
             currentUser = it
         }
