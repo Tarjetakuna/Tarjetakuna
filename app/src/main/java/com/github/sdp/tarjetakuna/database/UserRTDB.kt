@@ -108,14 +108,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         val cardRef = db.child(userUID).child(fbpossession).child(cardUID)
         cardRef.runTransaction(object : Transaction.Handler {
             override fun doTransaction(currentData: MutableData): Transaction.Result {
-                val currentValue = currentData.getValue(Int::class.java)
-                if (currentValue != null) {
-                    // Value exists, set it to 0
-                    currentData.value = 0
-                } else {
-                    // Value doesn't exist, set it to 0
-                    currentData.value = 0
-                }
+                currentData.value = 0
                 return Transaction.success(currentData)
             }
 

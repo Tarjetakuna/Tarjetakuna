@@ -20,6 +20,7 @@ import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
+import com.github.sdp.tarjetakuna.utils.WaitForViewActions
 import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -79,7 +80,12 @@ class SingleCardManageCollectionTest {
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
         scenario.moveToState(Lifecycle.State.STARTED)
 
-        Thread.sleep(1000)
+        onView(isRoot()).perform(
+            WaitForViewActions.waitForView(
+                R.id.singleCard_add_wanted_button,
+                5000
+            )
+        )
         wantedButton.perform(scrollTo())
     }
 
@@ -154,7 +160,7 @@ class SingleCardManageCollectionNotLoggedInTest {
     @Test
     fun buttonAreNotDisplayedWhenNotLoggedIn() {
         Intents.init()
-        
+
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(false)
@@ -189,8 +195,12 @@ class SingleCardManageCollectionNotLoggedInTest {
         val scenario = launchFragmentInContainer<SingleCardFragment>(fragmentArgs = bundleArgs)
         scenario.moveToState(Lifecycle.State.STARTED)
 
-        Thread.sleep(4000)
-
+        onView(isRoot()).perform(
+            WaitForViewActions.waitForView(
+                R.id.singleCard_add_wanted_button,
+                5000
+            )
+        )
 
         onView(withId(R.id.singleCard_askConnection_text)).perform(scrollTo())
         onView(withId(R.id.singleCard_quantity_text)).check(matches(not(isDisplayed())))
