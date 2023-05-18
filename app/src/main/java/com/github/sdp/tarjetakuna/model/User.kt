@@ -1,11 +1,7 @@
 package com.github.sdp.tarjetakuna.model
 
-import com.github.sdp.tarjetakuna.database.CardPossession
-import com.github.sdp.tarjetakuna.database.DBMagicCard
-import com.github.sdp.tarjetakuna.database.Database
-import com.github.sdp.tarjetakuna.database.FirebaseDB
-import com.github.sdp.tarjetakuna.database.UserRTDB
-import com.github.sdp.tarjetakuna.database.UsernamesRTDB
+import com.github.sdp.tarjetakuna.database.*
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import java.util.concurrent.CompletableFuture
@@ -79,10 +75,10 @@ data class User(
     /**
      * Adds a card to the user's collection with the given possession.
      */
-    fun addCard(card: MagicCard, possession: CardPossession) {
+    fun addCard(card: MagicCard, possession: CardPossession): Task<Void> {
         val fbCard = card.toDBMagicCard(possession)
         cards.add(fbCard)
-        userRTDB.addCard(fbCard, uid)
+        return userRTDB.addCard(fbCard, uid)
     }
 
     /**

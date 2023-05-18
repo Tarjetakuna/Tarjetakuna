@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna.database
 
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import java.util.concurrent.CompletableFuture
@@ -20,11 +21,12 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     /**
      * Adds a card to the users collection.
      */
-    fun addCard(fbcard: DBMagicCard, userUID: String) {
+    fun addCard(fbcard: DBMagicCard, userUID: String): Task<Void> {
         val cardUID = fbcard.getFbKey()
         val fbpossession = fbcard.possession.toString().lowercase()
-        db.child(userUID).child(fbpossession).child(cardUID).setValue(1)
         cardsRTDB.addCardToGlobalCollection(fbcard)
+        return db.child(userUID).child(fbpossession).child(cardUID).setValue(1)
+
     }
 
     /**

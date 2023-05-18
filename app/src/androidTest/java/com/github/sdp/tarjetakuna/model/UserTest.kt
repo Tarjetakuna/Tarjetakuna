@@ -4,17 +4,17 @@ import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.hamcrest.CoreMatchers
+import org.junit.*
 import org.junit.Assert.assertThrows
-import org.junit.ClassRule
-import org.junit.Rule
-import org.junit.Test
 import org.junit.rules.Timeout
 import org.junit.runner.RunWith
 import java.util.concurrent.ExecutionException
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 @RunWith(AndroidJUnit4::class)
 class UserTest {
     @get:Rule
-    val globalTimeout = Timeout(60, TimeUnit.SECONDS)
+    val globalTimeout = Timeout(30, TimeUnit.SECONDS)
 
     private val validUsername = "validEmail@google.com"
     private val invalidUsername1 = "invalidEmail"
@@ -52,6 +52,21 @@ class UserTest {
         @JvmStatic
         val fbEmulator = FBEmulator()
     }
+
+    @Before
+    fun setUp() {
+        // make sure db is empty
+        val task = FirebaseDB().clearDatabase()
+        Tasks.await(task, 5, TimeUnit.SECONDS)
+    }
+
+    @After
+    fun tearDown() {
+        // make sure db is empty
+        val task = FirebaseDB().clearDatabase()
+        Tasks.await(task, 5, TimeUnit.SECONDS)
+    }
+
 
     @Test
     fun blankEmailIsInvalid() {
@@ -97,7 +112,8 @@ class UserTest {
     @Test
     fun addCardTest() {
         runBlocking {
-            validUser.addCard(card, CardPossession.OWNED)
+            val task = validUser.addCard(card, CardPossession.OWNED)
+            Tasks.await(task)
             var count = 0L
             withTimeout(5000) {
                 fbEmulator.fb.reference
