@@ -13,6 +13,7 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentAuthenticationBinding
+import com.github.sdp.tarjetakuna.extra.Location
 
 
 /**
@@ -41,6 +42,7 @@ class AuthenticationFragment : Fragment() {
         signInLauncher = registerForActivityResult(
             FirebaseAuthUIActivityResultContract()
         ) { res ->
+            Location.captureCurrentLocation(requireActivity())
             viewModel.onSignInResult(res)
         }
 

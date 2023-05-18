@@ -9,3 +9,7 @@
 .cxx
 .log
 local.properties
+database-debug.log
+ui-debug.log
+FETCH_HEAD
+firebase-debug.log
