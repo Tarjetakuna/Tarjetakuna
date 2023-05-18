@@ -50,7 +50,7 @@ class UserTest {
     companion object {
         @get:ClassRule
         @JvmStatic
-        val fbEmulator = FBEmulator
+        val fbEmulator = FBEmulator()
     }
 
     @Test
