@@ -151,5 +151,29 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         return future
     }
 
+    /**
+     * Put a list of chats ids in the user's chats collection
+     */
+    fun addChatsToUser(userUID: String, chatsIds: List<String>) {
+        for (id in chatsIds) {
+            db.child(userUID).child("chats").setValue(id)
+        }
+    }
 
+    /**
+     * Get all chats ids from the user's chats collection
+     */
+    fun getChatsIdsFromUser(userUID: String): CompletableFuture<DataSnapshot> {
+        val future = CompletableFuture<DataSnapshot>()
+        db.child(userUID).child("chats").get().addOnSuccessListener {
+            if (it.value == null) {
+                future.completeExceptionally(NoSuchFieldException("no chats in user collection"))
+            } else {
+                future.complete(it)
+            }
+        }.addOnFailureListener {
+            future.completeExceptionally(it)
+        }
+        return future
+    }
 }
