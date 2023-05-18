@@ -30,12 +30,12 @@ class UserRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = users[position]
-        holder.usernameView.text = user.username
+        holder.usernameView.text = user.uid
         holder.kmView.text =
             holder.itemView.context.getString(
-            R.string.single_card_distance,
+                R.string.single_card_distance,
                 currentUser?.location?.distanceKmTo(user.location)?.toInt()?.toString() ?: "-"
-        )
+            )
     }
 
     override fun getItemCount(): Int = users.size

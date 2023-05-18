@@ -7,7 +7,7 @@ import com.github.sdp.tarjetakuna.model.Chat
 import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.model.Message
 import com.github.sdp.tarjetakuna.model.User
-import java.util.Date
+import java.util.*
 
 object ChatsData {
 
@@ -20,9 +20,9 @@ object ChatsData {
     val user_id2 = "user_id2"
     val user_id3 = "user_id3"
 
-    val user_mail1 = "fakeUser1.email@gmail.com"
-    val user_mail2 = "fakeUser2.email@gmail.com"
-    val user_mail3 = "fakeUser3.email@gmail.com"
+    val user_mail1 = "jolidon.bastien@gmail.com"
+    val user_mail2 = "kelvin.kappeler@gmail.com"
+    val user_mail3 = "william.kwan@gmail.com"
 
     val msg_uid1_1 = "msg_uid1_1"
     val msg_uid1_2 = "msg_uid1_2"
@@ -45,12 +45,12 @@ object ChatsData {
     val date_4 = Date(1683828791000)
     val date_5 = Date(1683928691000)
 
-    val msg1_1_content = "Hello"
-    val msg1_2_content = "Hello you too"
-    val msg1_3_content = "What are you doing ?"
-    val msg1_4_content = "Nothing, you ?"
+    val msg1_1_content = "Hello, do you want to trade?"
+    val msg1_2_content = "Yes"
+    val msg1_3_content = "Tomorrow 8h?"
+    val msg1_4_content = "Yes"
     val msg1_5_content =
-        "Chilling in bed doing sdp \n but i m so lazy \n i hate it asd adsfsdf asdasdfs adf asdssd fsd fff  fffff"
+        "Thank you for the trade ! I hope you will enjoy your new card ! See you next time !"
 
     val msg2_1_content = "Bonjour"
     val msg2_2_content = "Bonjour you too"
@@ -83,7 +83,7 @@ object ChatsData {
 
     val fakeMessages2 = arrayListOf(fakeMessage2_1, fakeMessage2_2, fakeMessage2_3)
     val fakeChat2: Chat =
-        Chat(chat_uid2, fakeUser1, fakeUser2, fakeMessages2, fakeLastReadUser1, fakeLastReadUser2)
+        Chat(chat_uid2, fakeUser1, fakeUser3, fakeMessages2, fakeLastReadUser1, fakeLastReadUser2)
 
     val fakeChat1_emptyMsgs: Chat =
         Chat(chat_uid3, fakeUser1, fakeUser2, ArrayList(), fakeLastReadUser1, fakeLastReadUser2)

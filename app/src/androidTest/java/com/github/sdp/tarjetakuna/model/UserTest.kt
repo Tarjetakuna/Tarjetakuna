@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna.model
 
+import android.util.Log
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.database.CardPossession
@@ -64,6 +65,13 @@ class UserTest {
     fun tearDown() {
         val task = FirebaseDB().clearDatabase()
         Tasks.await(task, 5, TimeUnit.SECONDS)
+    }
+
+    @Test
+    fun test() {
+        Log.i("Card Json", Gson().toJson(CommonMagicCard.aeronautTinkererCard.toDBMagicCard()))
+        Log.i("Card Json", Gson().toJson(CommonMagicCard.venomousHierophantCard.toDBMagicCard()))
+        Log.i("Card Json", Gson().toJson(CommonMagicCard.solemnOfferingCard.toDBMagicCard()))
     }
 
     @Test

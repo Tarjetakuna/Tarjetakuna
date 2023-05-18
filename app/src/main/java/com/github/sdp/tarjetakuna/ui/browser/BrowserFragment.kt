@@ -79,13 +79,13 @@ class BrowserFragment : Fragment() {
 
         viewModel.initialCards.observe(viewLifecycleOwner) {
             binding.browserListCards.layoutManager = LinearLayoutManager(context)
-            val adapter = DisplayCardsAdapter(it)
+            val adapter = DisplayCardsAdapter(this, it)
             binding.browserListCards.adapter = adapter
             initOnCardClickListener(adapter)
         }
 
         viewModel.cards.observe(viewLifecycleOwner) {
-            val adapter = DisplayCardsAdapter(it)
+            val adapter = DisplayCardsAdapter(this, it)
             binding.browserListCards.adapter = adapter
             initOnCardClickListener(adapter)
         }

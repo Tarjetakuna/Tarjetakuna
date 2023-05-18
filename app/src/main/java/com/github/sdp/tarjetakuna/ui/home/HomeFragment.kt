@@ -12,13 +12,6 @@ import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
-import com.github.sdp.tarjetakuna.model.MagicCard
-import com.github.sdp.tarjetakuna.model.MagicCardType
-import com.github.sdp.tarjetakuna.model.MagicLayout
-import com.github.sdp.tarjetakuna.model.MagicRarity
-import com.github.sdp.tarjetakuna.model.MagicSet
-import com.google.gson.Gson
-import java.time.LocalDate
 
 class HomeFragment : Fragment() {
 
@@ -40,7 +33,7 @@ class HomeFragment : Fragment() {
 
         val arrayCards = ArrayList<String>()
         arrayCards.add("cards")
-        LocalDatabaseProvider.deleteDatabases(requireContext(), arrayCards)
+        //LocalDatabaseProvider.deleteDatabases(requireContext(), arrayCards)
 
         val textView: TextView = binding.homeWelcomeText
         homeViewModel.titleText.observe(viewLifecycleOwner) {
