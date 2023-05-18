@@ -70,7 +70,7 @@ class HomeFragmentTest {
         LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
     }
 
-    /**
+    /**8
      * Test that the authentication fragment is displayed when the corresponding button is clicked
      */
     @Test

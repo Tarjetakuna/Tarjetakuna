@@ -2,19 +2,19 @@ package com.github.sdp.tarjetakuna.database.localDatabase
 
 import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.sdp.tarjetakuna.database.CardPossession
-import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.mockdata.CommonFirebase
-import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.google.android.gms.tasks.Tasks
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.concurrent.TimeUnit
 
 /**
  * Tests for [UserRTDB]
@@ -32,9 +32,15 @@ class UserRTDBTest {
 
     @Before
     fun setUp() {
+        val task = FirebaseDB().clearDatabase()
+        Tasks.await(task, 5, TimeUnit.SECONDS)
         userRTDB = UserRTDB(FirebaseDB())
-        fbEmulator.fb.reference.setValue(null)
-        fbEmulator.fb.reference.updateChildren(CommonFirebase.goodFirebase)
+    }
+
+    @After
+    fun tearDown() {
+        val task = FirebaseDB().clearDatabase()
+        Tasks.await(task, 5, TimeUnit.SECONDS)
     }
 
     @Test
