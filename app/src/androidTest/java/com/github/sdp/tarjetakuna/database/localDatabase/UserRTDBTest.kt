@@ -34,6 +34,8 @@ class UserRTDBTest {
     fun setUp() {
         val task = FirebaseDB().clearDatabase()
         Tasks.await(task, 5, TimeUnit.SECONDS)
+        fbEmulator.fb.reference.setValue(null)
+        fbEmulator.fb.reference.updateChildren(CommonFirebase.goodFirebase)
         userRTDB = UserRTDB(FirebaseDB())
     }
 
