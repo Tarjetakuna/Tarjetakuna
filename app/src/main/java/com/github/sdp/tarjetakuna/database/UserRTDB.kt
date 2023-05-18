@@ -1,8 +1,7 @@
 package com.github.sdp.tarjetakuna.database
 
 import com.github.sdp.tarjetakuna.model.Coordinates
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.*
 import java.util.concurrent.CompletableFuture
 
 /**
