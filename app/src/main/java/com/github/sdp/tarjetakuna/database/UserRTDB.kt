@@ -20,10 +20,12 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
      * Adds a card to the user's collection.
      * Returns true if the operation succeeded, false otherwise.
      */
-    fun addCard(fbcard: DBMagicCard, userUID: String): Boolean {
+    fun addCard(fbcard: DBMagicCard, userUID: String): CompletableFuture<Boolean> {
         val cardUID = fbcard.getFbKey()
         val fbpossession = fbcard.possession.toString().lowercase()
         val cardRef = db.child(userUID).child(fbpossession).child(cardUID)
+
+        val completableFuture = CompletableFuture<Boolean>()
 
         try {
             cardRef.runTransaction(object : Transaction.Handler {
@@ -46,13 +48,17 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                 ) {
                     if (error != null || !committed) {
                         cardRef.setValue(ServerValue.increment(0))  // Rollback the transaction
+                        completableFuture.complete(false) // Card addition failed
+                    } else {
+                        completableFuture.complete(true) // Card addition succeeded
                     }
                 }
             })
-            return true
         } catch (e: Exception) {
-            return false
+            completableFuture.completeExceptionally(e) // Complete exceptionally if an exception occurs
         }
+
+        return completableFuture
     }
 
 
@@ -68,35 +74,47 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     /**
      * Removes a card from the users collection.
      */
-    fun removeCard(userUID: String, fbcard: DBMagicCard) {
+    fun removeCard(userUID: String, fbcard: DBMagicCard): CompletableFuture<Boolean> {
         val cardUID = fbcard.getFbKey()
         val fbpossession = fbcard.possession.toString().lowercase()
         val cardRef = db.child(userUID).child(fbpossession).child(cardUID)
-        cardRef.runTransaction(object : Transaction.Handler {
-            override fun doTransaction(currentData: MutableData): Transaction.Result {
-                val currentValue = currentData.getValue(Int::class.java)
-                if (currentValue != null) {
-                    // Value exists, decrement it
-                    if (currentData.value != 0) {
-                        currentData.value = currentValue - 1
-                    }
-                } else {
-                    // Value doesn't exist, set it to 0
-                    currentData.value = 0
-                }
-                return Transaction.success(currentData)
-            }
 
-            override fun onComplete(
-                error: DatabaseError?,
-                committed: Boolean,
-                currentData: DataSnapshot?
-            ) {
-                if (error != null || !committed) {
-                    cardRef.setValue(ServerValue.increment(0))  // Rollback the transaction
+        val completableFuture = CompletableFuture<Boolean>()
+
+        try {
+            cardRef.runTransaction(object : Transaction.Handler {
+                override fun doTransaction(currentData: MutableData): Transaction.Result {
+                    val currentValue = currentData.getValue(Int::class.java)
+                    if (currentValue != null) {
+                        // Value exists, decrement it
+                        if (currentData.value != 0) {
+                            currentData.value = currentValue - 1
+                        }
+                    } else {
+                        // Value doesn't exist, set it to 0
+                        currentData.value = 0
+                    }
+                    return Transaction.success(currentData)
                 }
-            }
-        })
+
+                override fun onComplete(
+                    error: DatabaseError?,
+                    committed: Boolean,
+                    currentData: DataSnapshot?
+                ) {
+                    if (error != null || !committed) {
+                        cardRef.setValue(ServerValue.increment(0))  // Rollback the transaction
+                        completableFuture.complete(false) // Card removal failed
+                    } else {
+                        completableFuture.complete(true) // Card removal succeeded
+                    }
+                }
+            })
+        } catch (e: Exception) {
+            completableFuture.completeExceptionally(e) // Complete exceptionally if an exception occurs
+        }
+
+        return completableFuture
     }
 
     /**

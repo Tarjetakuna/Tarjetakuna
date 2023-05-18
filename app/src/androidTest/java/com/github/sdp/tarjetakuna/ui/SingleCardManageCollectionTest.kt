@@ -20,7 +20,6 @@ import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
-import com.github.sdp.tarjetakuna.utils.WaitForViewActions
 import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -80,12 +79,7 @@ class SingleCardManageCollectionTest {
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
         scenario.moveToState(Lifecycle.State.STARTED)
 
-        onView(isRoot()).perform(
-            WaitForViewActions.waitForView(
-                R.id.singleCard_add_wanted_button,
-                5000
-            )
-        )
+        Thread.sleep(1000)
         wantedButton.perform(scrollTo())
     }
 
@@ -130,9 +124,6 @@ class SingleCardManageCollectionTest {
 
     @Test
     fun cardQuantityWhenAddingAndRemovingCardIsCorrect() {
-        // the waitForAction seems to work for most of the test but it sometimes go back to the top of the nested srcoll view and I can't figure out why
-        Thread.sleep(1000)
-        wantedButton.perform(scrollTo())
         addCardButton.perform(click())
         removeCardButton.perform(click())
         addCardButton.perform(click())
@@ -143,9 +134,6 @@ class SingleCardManageCollectionTest {
 
     @Test
     fun addToWantedCardsChangeText() {
-        //same problem as the test above
-        Thread.sleep(1000)
-        wantedButton.perform(scrollTo())
         wantedButton.perform(click())
         wantedButton.check(matches(withText(R.string.single_card_showing_remove_wanted)))
         wantedButton.perform(click())
@@ -201,12 +189,8 @@ class SingleCardManageCollectionNotLoggedInTest {
         val scenario = launchFragmentInContainer<SingleCardFragment>(fragmentArgs = bundleArgs)
         scenario.moveToState(Lifecycle.State.STARTED)
 
-        onView(isRoot()).perform(
-            WaitForViewActions.waitForView(
-                R.id.singleCard_askConnection_text,
-                5000
-            )
-        )
+        Thread.sleep(1000)
+
 
         onView(withId(R.id.singleCard_askConnection_text)).perform(scrollTo())
         onView(withId(R.id.singleCard_quantity_text)).check(matches(not(isDisplayed())))
