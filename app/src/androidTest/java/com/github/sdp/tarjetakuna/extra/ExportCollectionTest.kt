@@ -23,12 +23,10 @@ import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
+import com.github.sdp.tarjetakuna.utils.FBEmulator
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import org.junit.After
+import org.junit.*
 import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.FileInputStream
 
@@ -44,6 +42,12 @@ class ExportCollectionTest {
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
+
+    companion object {
+        @get:ClassRule
+        @JvmStatic
+        val fbEmulator = FBEmulator()
+    }
 
     @get:Rule
     val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)

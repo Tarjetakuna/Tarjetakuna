@@ -14,12 +14,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import junit.framework.TestCase.assertEquals
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
@@ -34,6 +32,12 @@ class ProfileFragmentInActivityTest {
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
+
+    companion object {
+        @get:ClassRule
+        @JvmStatic
+        val fbEmulator = FBEmulator()
+    }
 
     @Before
     fun setUp() {
