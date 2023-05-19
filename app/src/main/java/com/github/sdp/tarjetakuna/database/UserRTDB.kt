@@ -11,10 +11,12 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
 
     private var db: DatabaseReference
     private var cardsRTDB: CardsRTDB
+    private var chatsRTDB: ChatsRTDB
 
     init {
         this.db = database.usersTable()
         cardsRTDB = CardsRTDB(database)
+        chatsRTDB = ChatsRTDB(database)
     }
 
     /**
@@ -152,24 +154,37 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     }
 
     /**
-     * Put a list of chats ids in the user's chats collection
+     * Put a chat reference in both users' chats collection
      */
-    fun addChatsToUser(userUID: String, chatsIds: List<String>) {
-        for (id in chatsIds) {
-            db.child(userUID).child("chats").setValue(id)
-        }
+    fun addChat(dbChat: DBChat): CompletableFuture<DBChat> {
+        val future = CompletableFuture<DBChat>()
+        db.child(dbChat.user1).child("chats").push().setValue(dbChat.uid)
+            .addOnSuccessListener {
+                db.child(dbChat.user2).child("chats").push().setValue(dbChat.uid)
+                    .addOnSuccessListener { future.complete(dbChat) }
+                    .addOnFailureListener { future.completeExceptionally(it) }
+            }.addOnFailureListener { future.completeExceptionally(it) }
+
+        return future
     }
 
     /**
      * Get all chats ids from the user's chats collection
      */
-    fun getChatsIdsFromUser(userUID: String): CompletableFuture<DataSnapshot> {
-        val future = CompletableFuture<DataSnapshot>()
+    fun getChatsFromUser(userUID: String): CompletableFuture<List<DBChat>> {
+        val future = CompletableFuture<List<DBChat>>()
         db.child(userUID).child("chats").get().addOnSuccessListener {
             if (it.value == null) {
-                future.completeExceptionally(NoSuchFieldException("no chats in user collection"))
+                future.complete(mutableListOf())
             } else {
-                future.complete(it)
+                val chatIds = it as List<String>
+                val chats = mutableListOf<DBChat>()
+                for (chatId in chatIds) {
+                    chatsRTDB.getChat(chatId).thenAccept { chat ->
+                        chats.add(chat)
+                    }
+                }
+                future.complete(chats)
             }
         }.addOnFailureListener {
             future.completeExceptionally(it)

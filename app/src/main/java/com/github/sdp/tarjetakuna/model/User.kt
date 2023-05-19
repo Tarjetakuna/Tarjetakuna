@@ -1,6 +1,13 @@
 package com.github.sdp.tarjetakuna.model
 
-import com.github.sdp.tarjetakuna.database.*
+import android.util.Log
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBChat
+import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.Database
+import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.database.UserRTDB
+import com.github.sdp.tarjetakuna.database.UsernamesRTDB
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import java.util.concurrent.CompletableFuture
@@ -20,7 +27,7 @@ data class User(
     private var db: DatabaseReference
     private var userRTDB: UserRTDB
     private var usernamesRTDB: UsernamesRTDB
-    private lateinit var chatsIds: MutableList<String>
+    private lateinit var chats: MutableList<DBChat>
 
     constructor(uid: String) : this(
         uid,
@@ -97,5 +104,27 @@ data class User(
     fun removeCard(card: MagicCard, possession: CardPossession) {
         userRTDB.removeCard(uid, card.toDBMagicCard(possession))
     }
+
+    fun newChat(chat: DBChat): CompletableFuture<DBChat> {
+        if (chatAlreadyExist(chat)) {
+            Log.w("User", "Chat $chat already exist")
+            return CompletableFuture.completedFuture(chat)
+        }
+        chats.add(chat)
+        return userRTDB.addChat(chat)
+    }
+
+    fun getChats(): CompletableFuture<List<DBChat>> {
+        return userRTDB.getChatsFromUser(uid)
+    }
+
+    private fun chatAlreadyExist(chat: DBChat): Boolean {
+        return (chats.any {
+            (it.uid == chat.uid) || // same id
+                    (it.user1 == chat.user1 && it.user2 == chat.user2) || // same users
+                    (it.user1 == chat.user2 && it.user2 == chat.user1) // same users
+        })
+    }
+
 
 }
