@@ -106,9 +106,6 @@ data class MagicCard(
      * Converts a MagicCard to a MagicCardEntity.
      */
     fun toDBMagicCard(possession: CardPossession = CardPossession.NONE): DBMagicCard {
-        return DBMagicCard(
-            this,
-            possession
-        )
+        return DBMagicCard(this, possession)
     }
 }

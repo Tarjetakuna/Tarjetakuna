@@ -33,6 +33,7 @@ class SignOutFragment : Fragment() {
 
         val user = Firebase.auth.currentUser
         val newMessage = user?.displayName
+
         val greetingMessage: TextView = binding.signOutGreetingText
         greetingMessage.text = "Hello $newMessage!"
 
@@ -47,12 +48,6 @@ class SignOutFragment : Fragment() {
         backButton.setOnClickListener {
             val mainActivity = requireActivity() as MainActivity
             mainActivity.changeFragment(R.id.nav_home)
-        }
-
-        val configureCollectionButton = binding.signOutManageCollectionButton
-        configureCollectionButton.setOnClickListener {
-            val mainActivity = requireActivity() as MainActivity
-            mainActivity.changeFragment(R.id.nav_user_cards)
         }
 
         return root

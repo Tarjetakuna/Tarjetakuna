@@ -22,12 +22,7 @@
         android:id="@+id/signOut_sign_out_button"
         style="@style/ButtonStyle"
         android:text="@string/sign_out" />
-
-    <Button
-        android:id="@+id/signOut_manage_collection_button"
-        style="@style/ButtonStyle"
-        android:text="@string/manage_collection_button" />
-
+    
     <Button
         android:id="@+id/signOut_home_button"
         style="@style/HomeButtonStyle"

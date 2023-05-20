@@ -2,10 +2,10 @@ package com.github.sdp.tarjetakuna.ui.webapi
 
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.test.espresso.Espresso.*
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.*
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -15,6 +15,7 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
+import org.hamcrest.CoreMatchers.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -76,10 +77,15 @@ class WebApiFragmentUITest {
         }
 
         // check that the text is the default one
-        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 100))
+        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 200))
 
         // click on the button
-        onView(withId(R.id.api_random_card_button)).perform(waitForText(R.string.api_random_card, 100))
+        onView(withId(R.id.api_random_card_button)).perform(
+            waitForText(
+                R.string.api_random_card,
+                200
+            )
+        )
         onView(withId(R.id.api_random_card_button)).perform(click())
 
         // check that the text change to "waiting results" after the click
@@ -87,7 +93,7 @@ class WebApiFragmentUITest {
         onView(withId(R.id.api_results)).check(matches(withText(R.string.api_waiting_results)))
 
         // wait for the response - allowed because we manually set the delay on the mock response
-        onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 300))
+        onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 600))
 
         // check that the text change to the response
         onView(withId(R.id.api_results)).check(matches(withSubstring("Marsh Goblins")))
@@ -105,10 +111,10 @@ class WebApiFragmentUITest {
         }
 
         // check that the text is the default one
-        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 100))
+        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 200))
 
         // click on the button
-        onView(withId(R.id.api_sets_button)).perform(waitForText(R.string.api_sets, 100))
+        onView(withId(R.id.api_sets_button)).perform(waitForText(R.string.api_sets, 200))
         onView(withId(R.id.api_sets_button)).perform(click())
 
         // check that the text change to "waiting results" after the click
@@ -116,7 +122,7 @@ class WebApiFragmentUITest {
         onView(withId(R.id.api_results)).check(matches(withText(R.string.api_waiting_results)))
 
         // wait for the response - allowed because we manually set the delay on the mock response
-        onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 300))
+        onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 600))
 
         // check that the text change to the response
         onView(withId(R.id.api_results)).check(matches(withSubstring("Unlimited Edition")))

@@ -14,16 +14,16 @@ data class FilterState(
      * @param cards The cards to filter.
      * @return The filtered cards.
      */
-    fun filter(cards: ArrayList<MagicCard>): ArrayList<MagicCard> {
+    fun filter(cards: ArrayList<Pair<MagicCard, Int>>): ArrayList<Pair<MagicCard, Int>> {
         var filteredCards = cards
 
         if (setFilter != null) {
             filteredCards =
-                filteredCards.filter { it.set.code.contains(setFilter) } as ArrayList<MagicCard>
+                filteredCards.filter { it.first.set.code.contains(setFilter) } as ArrayList<Pair<MagicCard, Int>>
         }
         if (manaFilter != null) {
             filteredCards =
-                filteredCards.filter { it.convertedManaCost == manaFilter.toDouble() } as ArrayList<MagicCard>
+                filteredCards.filter { it.first.convertedManaCost == manaFilter } as ArrayList<Pair<MagicCard, Int>>
         }
         return filteredCards
     }

@@ -47,7 +47,7 @@ class SingleCardFragment : Fragment() {
 
         binding.singleCardSetText.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("set", Gson().toJson(viewModel.card.set))
+            bundle.putString("set", Gson().toJson(viewModel.card?.set))
             //TODO : Should be changed to remove the dependency on MainActivity
             (requireActivity() as MainActivity).changeFragment(R.id.nav_single_set, bundle)
         }
@@ -58,22 +58,20 @@ class SingleCardFragment : Fragment() {
             viewModel.checkCardInCollection()
         }
 
-        binding.singleCardAddOwnedButton.setOnClickListener {
-            viewModel.manageOwnedCollection()
+        binding.singleCardAddCardButton.setOnClickListener {
+            viewModel.addCardToOwnedCollection()
+        }
+
+        binding.singleCardRemoveCardButton.setOnClickListener {
+            viewModel.removeCardFromOwnedCollection()
         }
 
         binding.singleCardAddWantedButton.setOnClickListener {
             viewModel.manageWantedCollection()
         }
 
-        viewModel.buttonAddText.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.singleCardAddOwnedButton.text =
-                    getString(R.string.single_card_showing_add_to_collection)
-            } else {
-                binding.singleCardAddOwnedButton.text =
-                    getString(R.string.single_card_showing_remove_collection)
-            }
+        viewModel.currentQuantity.observe(viewLifecycleOwner) {
+            binding.singleCardQuantityText.text = it.toString()
         }
 
         viewModel.buttonWantedText.observe(viewLifecycleOwner) {
@@ -152,12 +150,16 @@ class SingleCardFragment : Fragment() {
      */
     private fun displayButton(userIsConnected: Boolean) {
         if (userIsConnected) {
-            binding.singleCardAddOwnedButton.visibility = View.VISIBLE
+            binding.singleCardAddCardButton.visibility = View.VISIBLE
+            binding.singleCardRemoveCardButton.visibility = View.VISIBLE
             binding.singleCardAddWantedButton.visibility = View.VISIBLE
+            binding.singleCardQuantityText.visibility = View.VISIBLE
             binding.singleCardAskConnectionText.visibility = View.GONE
         } else {
-            binding.singleCardAddOwnedButton.visibility = View.GONE
+            binding.singleCardAddCardButton.visibility = View.GONE
+            binding.singleCardRemoveCardButton.visibility = View.GONE
             binding.singleCardAddWantedButton.visibility = View.GONE
+            binding.singleCardQuantityText.visibility = View.GONE
             binding.singleCardAskConnectionText.visibility = View.VISIBLE
         }
     }

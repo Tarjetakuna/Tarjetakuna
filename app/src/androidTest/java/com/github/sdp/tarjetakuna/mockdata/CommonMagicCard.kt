@@ -33,7 +33,7 @@ object CommonMagicCard {
     /**
      * This is a valid [MagicCard] Venomous Hierophant
      */
-    private val venomousHierophantCard: MagicCard = MagicCard(
+    val venomousHierophantCard: MagicCard = MagicCard(
         "Venomous Hierophant",
         "Deathtouch\nWhen Venomous Hierophant enters the battlefield, mill three cards.",
         MagicLayout.NORMAL,
@@ -53,7 +53,7 @@ object CommonMagicCard {
     /**
      * This is a valid [MagicCard] Solemn Offering
      */
-    private val solemnOfferingCard: MagicCard = MagicCard(
+    val solemnOfferingCard: MagicCard = MagicCard(
         "Solemn Offering",
         "Destroy target artifact or enchantment. You gain 4 life.",
         MagicLayout.NORMAL,

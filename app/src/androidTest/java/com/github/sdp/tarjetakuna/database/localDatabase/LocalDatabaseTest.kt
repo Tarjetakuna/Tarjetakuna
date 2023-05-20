@@ -1,20 +1,21 @@
 package com.github.sdp.tarjetakuna.database.localDatabase
 
+import android.Manifest
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
+import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 
@@ -27,18 +28,32 @@ class LocalDatabaseTest {
     private var cards = generateCards().map { DBMagicCard.fromMagicCard(it) }
 
 
+    @Rule
+    @JvmField
+    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    companion object {
+        @get:ClassRule
+        @JvmStatic
+        val fbEmulator = FBEmulator()
+    }
+
     @Before
     fun setUp() {
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
+        Mockito.`when`(mockedAuth.getUserUID()).thenReturn("test")
         SignIn.setSignIn(mockedAuth)
 
         // close the database that could have been opened because of the previous tests
         LocalDatabaseProvider.closeDatabase("test")
         LocalDatabaseProvider.closeDatabase("test2")
         LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
-        
+
         database =
             LocalDatabaseProvider.setDatabase(
                 ApplicationProvider.getApplicationContext(), "test", true
@@ -120,4 +135,5 @@ class LocalDatabaseTest {
         }
         assert(databaseCards.isEmpty())
     }
+
 }

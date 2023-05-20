@@ -33,6 +33,7 @@ class DisplayCardsAdapter(private val contextFragment: Fragment, val cards: Arra
         val cardName: TextView = itemView.findViewById(R.id.cardNameRecyclerViewTextView)
         val setInfo: TextView = itemView.findViewById(R.id.setRecyclerViewTextView)
         val cardImage: ImageView = itemView.findViewById(R.id.cardImageView)
+        val cardQuantity: TextView = itemView.findViewById(R.id.quantityRecyclerViewTextView)
     }
 
     /**
@@ -48,14 +49,22 @@ class DisplayCardsAdapter(private val contextFragment: Fragment, val cards: Arra
      * Set the items
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.cardName.text = cards[position].name
-        CustomGlide.loadDrawable(
+        holder.cardName.text = cardsWithQuantities[position].first.name
+                CustomGlide.loadDrawable(
             contextFragment,
             cards[position].imageUrl
         ) {
             holder.cardImage.setImageDrawable(it)
         }
-        holder.setInfo.text = cards[position].set.name
+        holder.setInfo.text = cardsWithQuantities[position].first.set.name
+        if (cardsWithQuantities[position].second > 1) {
+            holder.cardQuantity.visibility = View.VISIBLE
+            val quantityText = cardsWithQuantities[position].second.toString() + "X"
+            holder.cardQuantity.text = quantityText
+        } else {
+            holder.cardQuantity.visibility = View.GONE
+        }
+
         holder.itemView.setOnClickListener {
             onCardClickListener?.onCardClick(position)
         }
@@ -65,6 +74,6 @@ class DisplayCardsAdapter(private val contextFragment: Fragment, val cards: Arra
      * The number of items in the recycler view
      */
     override fun getItemCount(): Int {
-        return cards.size
+        return cardsWithQuantities.size
     }
 }

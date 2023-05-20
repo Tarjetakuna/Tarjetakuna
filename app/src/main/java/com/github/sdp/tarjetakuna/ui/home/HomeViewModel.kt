@@ -32,8 +32,17 @@ class HomeViewModel : ViewModel() {
     fun addRandomCard() {
         val toInsert = cards.random()
         viewModelScope.launch {
-            localDatabase?.magicCardDao()
-                ?.insertCard(DBMagicCard.fromMagicCard(toInsert, CardPossession.OWNED))
+            val lCard =
+                localDatabase?.magicCardDao()
+                    ?.getCard(toInsert.set.code, toInsert.number.toString())
+            if (lCard != null) {
+                localDatabase?.magicCardDao()?.insertCard(
+                    DBMagicCard(toInsert, CardPossession.OWNED, lCard.quantity + 1)
+                )
+            } else {
+                localDatabase?.magicCardDao()
+                    ?.insertCard(DBMagicCard(toInsert, CardPossession.OWNED, 1))
+            }
 
         }.invokeOnCompletion {
             Log.i("Database", "set: ${toInsert.set}, number: ${toInsert.number} added to database")

@@ -25,6 +25,8 @@
     <string name="menu_user_cards">User cards</string>
     <string name="menu_single_card">Card</string>
     <string name="menu_single_set">Set</string>
+    <string name="menu_chats">Chats</string>
+    <string name="menu_chat">Chat</string>
 
     <string name="scanner_button">Scan a card</string>
     <string name="scanner_description">Here you can scan a card by clicking on the button below.</string>
@@ -52,7 +54,7 @@
     <string name="api_waiting_results">Waiting for results…</string>
 
     <string name="meandering_towershell">Meandering Towershell</string>
-    <string name="mt15">MT15</string>
+    <string name="m15">M15</string>
     <string name="this_image_is_a_card">this image is a card</string>
 
     <string name="text_set_card">set</string>
@@ -84,8 +86,8 @@
     <string name="single_card_showing_stats">(%1$s/%2$s)</string>
     <string name="single_card_showing_type_subtypes_stats">%1$s%2$s%3$s</string>
     <string name="single_card_showing_mana_cost">Mana cost : %1$s</string>
-    <string name="single_card_showing_add_to_collection">add to collection</string>
-    <string name="single_card_showing_remove_collection">remove from collection</string>
+    <string name="single_card_showing_add_to_collection">+</string>
+    <string name="single_card_showing_remove_collection">-</string>
     <string name="single_card_showing_add_to_wanted">add to wanted cards</string>
     <string name="single_card_showing_remove_wanted">remove from wanted cards</string>
     <string name="single_card_ask_connection">Please connect if you want to manage the card</string>
@@ -112,5 +114,22 @@
 
     <string name="home_add_a_random_card">add a random card</string>
     <string name="api_cards">Random Card</string>
+    <string name="chats_my_chats">My chats</string>
+    <string name="chat_list_no_message">no message</string>
+    <string name="chat_list_item_userlogo">user profile picture</string>
+    <string name="chat_list_item_defaultUsername">Username</string>
+    <string name="chat_list_item_defaultTime">00:00</string>
+    <string name="chat_list_item_default_lastMessage">Last message</string>
+    <string name="chat_list_item_newMsgNotification">New message</string>
+    <string name="chat_userLogo">User logo</string>
+    <string name="chat_default_username">Username</string>
+    <string name="chat_enter_message">Enter message</string>
+    <string name="chat_send_message">Send</string>
+    <string name="msg_date">date</string>
+    <string name="msg_default_content">Message content</string>
+    <string name="msg_default_date">00:00</string>
+    <string name="singleCard_quantity_count">0</string>
+    <string name="single_card_manage_collection">Manage collection:</string>
+    <string name="cards_recycler_view_quantity">1X</string>
 
 </resources>

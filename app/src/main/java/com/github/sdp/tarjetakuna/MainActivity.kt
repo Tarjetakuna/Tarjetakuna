@@ -16,6 +16,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
 import com.github.sdp.tarjetakuna.extra.ExportCollection
+import com.github.sdp.tarjetakuna.extra.Location
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             MagicLayout.NORMAL,
             7.0,
             "{5}{W}{W}",
-            MagicSet("MT15", "Magic 2015"),
+            MagicSet("M15", "Magic 2015"),
             56,
             "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
         ),
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             MagicLayout.NORMAL,
             7.0,
             "{7}{W}{W}",
-            MagicSet("MT15", "Magic 2015"),
+            MagicSet("M15", "Magic 2015"),
             56,
             "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
         )
@@ -94,6 +95,9 @@ class MainActivity : AppCompatActivity() {
         sharedPref.registerOnSharedPreferenceChangeListener(sharedPrefListener)
 
         updateHeader()
+
+        // ask for location permission + get current location if already granted
+        Location.captureCurrentLocation(this)
     }
 
     // Change fragment
@@ -140,5 +144,15 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // Handle location permission result, if granted, get current location
+        Location.captureCurrentLocation(this)
     }
 }

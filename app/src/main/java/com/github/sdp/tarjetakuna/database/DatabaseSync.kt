@@ -2,6 +2,7 @@ package com.github.sdp.tarjetakuna.database
 
 import android.util.Log
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
+import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.google.firebase.database.DataSnapshot
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -19,19 +20,21 @@ object DatabaseSync {
      */
     @JvmStatic
     fun sync() {
-        val userRTDB = UserCardsRTDB()
-        if (!userRTDB.isConnected()) {
+        val userRTDB = UserRTDB(FirebaseDB())
+        if (!SignIn.getSignIn().isUserLoggedIn()) {
             Log.i("DatabaseSync", "sync: Not connected to firebase")
             return
         }
-        val cards = userRTDB.getAllCardsFromCollection()
-        cards.thenAccept {
-            processSnapshot(it)
-        }.exceptionally {
-            Log.i("DatabaseSync", "no cards found in database}")
-            addLocalDBToFirebase()
-            null
-        }
+        //TODO assign the right function for cards
+
+//        val cards = userRTDB.getAllCardsFromUserPossession(Firebase.auth.currentUser!!.uid, CardPossession.OWNED)
+//        cards.thenAccept {
+//            processSnapshot(it)
+//        }.exceptionally {
+//            Log.i("DatabaseSync", "no cards found in database}")
+//            addLocalDBToFirebase()
+//            null
+//        }
     }
 
     /**
@@ -51,7 +54,7 @@ object DatabaseSync {
         scope.launch {
             val localCards =
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
-                    .magicCardDao().getAllCards().associateBy { it.code + it.number.toString() }
+                    .magicCardDao().getAllCards().associateBy { it.getFbKey() }
             Log.i("DatabaseSync", "sync: ${localCards.size} cards found on local database")
             // merge cards so that we only have the most updated cards
             var updatedCards: MutableMap<String, DBMagicCard> = mutableMapOf()
@@ -96,13 +99,18 @@ object DatabaseSync {
     private suspend fun pushChanges(cards: List<DBMagicCard>) {
         LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
             .magicCardDao().insertCards(cards)
-        val userRTDB = UserCardsRTDB()
-        userRTDB.addCardsToCollection(cards)
+        val userRTDB = CardsRTDB(FirebaseDB())
+        // TODO Change when we can add the cards that we possess
+        // TODO cardsSeparated contains the cards separated by possession, it may not be useful depending
+        // TODO on how we add the cards to the remote database
+        val cardsSeparated = separateCardsByPossession(cards)
+//        userRTDB.addCardsToCollection(cards)
         Log.i("DatabaseSync", "pushChanges: ${cards.size} cards updated")
     }
 
     /**
      * Add the local database to the remote database.
+     * Used when the user has no cards in the remote database.
      */
     private fun addLocalDBToFirebase() {
         val scope = CoroutineScope(Dispatchers.Default)
@@ -110,9 +118,43 @@ object DatabaseSync {
             val localCards =
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
                     .magicCardDao().getAllCards()
-            val userRTDB = UserCardsRTDB()
-            userRTDB.addCardsToCollection(localCards)
+            val userRTDB = CardsRTDB(
+                FirebaseDB()
+            )
+
+            // TODO Change when we can add the cards that we possess,
+            // TODO cardsSeparated contains the cards separated by possession, it may not be useful depending
+            // TODO on how we add the cards to the remote database
+            val cardsSeparated = separateCardsByPossession(localCards)
+//            userRTDB.addCardsToCollection(localCards)
         }
+    }
+
+    /**
+     * Separate the cards by possession.
+     */
+    private fun separateCardsByPossession(cards: List<DBMagicCard>): Map<String, List<DBMagicCard>> {
+        val cardsByPossession: MutableMap<String, MutableList<DBMagicCard>> = mutableMapOf()
+        cardsByPossession[CardPossession.OWNED.toString()] = mutableListOf()
+        cardsByPossession[CardPossession.NONE.toString()] = mutableListOf()
+        cardsByPossession[CardPossession.WANTED.toString()] = mutableListOf()
+        cardsByPossession[CardPossession.TRADE.toString()] = mutableListOf()
+
+        for (card in cards) {
+            when (card.possession) {
+                CardPossession.NONE -> cardsByPossession[CardPossession.NONE.toString()]!!.add(card)
+                CardPossession.OWNED -> cardsByPossession[CardPossession.OWNED.toString()]!!.add(
+                    card
+                )
+                CardPossession.WANTED -> cardsByPossession[CardPossession.WANTED.toString()]!!.add(
+                    card
+                )
+                CardPossession.TRADE -> cardsByPossession[CardPossession.TRADE.toString()]!!.add(
+                    card
+                )
+            }
+        }
+        return cardsByPossession
     }
 
 }
