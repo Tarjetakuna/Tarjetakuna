@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class BrowserViewModel : ViewModel() {
+class UserCollectionViewModel : ViewModel() {
 
     private val _searchState = MutableLiveData<String>()
     private val _filterState = MutableLiveData<FilterState>()
@@ -99,7 +99,7 @@ class BrowserViewModel : ViewModel() {
                     cardsArray.sortWith { card1, card2 ->
                         card1.first.name.compareTo(card2.first.name)
                     }
-                    this@BrowserViewModel.cardsArray = cardsArray
+                    this@UserCollectionViewModel.cardsArray = cardsArray
                     _cards.postValue(applyFilters())
                 }
             }

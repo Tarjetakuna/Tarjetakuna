@@ -6,17 +6,19 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.ui.webapi.WebApi
 import com.github.sdp.tarjetakuna.utils.Utils
 
 class BrowserApiViewModel : ViewModel() {
 
-    private val _cardList = MutableLiveData<ArrayList<MagicCard>>()
-    val cardList: LiveData<ArrayList<MagicCard>> = _cardList
+    private val _cardList = MutableLiveData<ArrayList<Pair<MagicCard, Int>>>()
+    val cardList: LiveData<ArrayList<Pair<MagicCard, Int>>> = _cardList
 
     private fun setCardList(list: ArrayList<MagicCard>) {
-        _cardList.value = list
+        _cardList.value = zipWithQuantity(list)
     }
 
 
@@ -105,6 +107,20 @@ class BrowserApiViewModel : ViewModel() {
                 Log.e("WebApiViewModel", "Error getting cards by set", e)
                 null
             }
+    }
+
+    private fun zipWithQuantity(
+        cards: List<MagicCard>,
+        collection: List<DBMagicCard> = emptyList()
+    ): ArrayList<Pair<MagicCard, Int>> {
+        val result = ArrayList<Pair<MagicCard, Int>>()
+        for (card in cards) {
+            val quantity =
+                collection.find { it.code == card.set.code && it.number == card.number && it.possession == CardPossession.OWNED }
+                    ?.quantity ?: 0
+            result.add(Pair(card, quantity))
+        }
+        return result
     }
 
 }

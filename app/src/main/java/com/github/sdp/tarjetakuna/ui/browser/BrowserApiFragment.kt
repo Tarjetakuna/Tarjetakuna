@@ -82,7 +82,10 @@ class BrowserApiFragment : Fragment() {
             object : DisplayCardsAdapter.OnCardClickListener {
                 override fun onCardClick(position: Int) {
                     val bundle = Bundle()
-                    bundle.putString("card", Gson().toJson(adapter.cards[position]))
+                    bundle.putString(
+                        "card",
+                        Gson().toJson(adapter.cardsWithQuantities[position].first)
+                    )
                     (requireActivity() as MainActivity).changeFragment(R.id.nav_single_card, bundle)
                 }
             }

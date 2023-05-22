@@ -14,7 +14,10 @@ import com.github.sdp.tarjetakuna.utils.CustomGlide
 /**
  * Adapter for the recycler view that displays the cards.
  */
-class DisplayCardsAdapter(private val contextFragment: Fragment, val cards: ArrayList<MagicCard>) :
+class DisplayCardsAdapter(
+    private val contextFragment: Fragment,
+    val cardsWithQuantities: ArrayList<Pair<MagicCard, Int>>
+) :
     RecyclerView.Adapter<DisplayCardsAdapter.ViewHolder>() {
 
     /**
@@ -50,9 +53,9 @@ class DisplayCardsAdapter(private val contextFragment: Fragment, val cards: Arra
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.cardName.text = cardsWithQuantities[position].first.name
-                CustomGlide.loadDrawable(
+        CustomGlide.loadDrawable(
             contextFragment,
-            cards[position].imageUrl
+            cardsWithQuantities[position].first.imageUrl
         ) {
             holder.cardImage.setImageDrawable(it)
         }
