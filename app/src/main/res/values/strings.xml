@@ -14,7 +14,7 @@
     <string name="authentication_failed_please_try_again">Authentication failed, please try again</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_browser">Browse</string>
+    <string name="menu_browser">Collection</string>
     <string name="menu_scanner">Scan</string>
     <string name="menu_webapi">Webapi</string>
     <string name="menu_profile">Profile</string>
@@ -104,6 +104,8 @@
     <string name="browser_sort_by_rarity">Rarity</string>
     <string name="browser_clear_filters">Clear all the filters</string>
     <string name="browser_sort_by_set">Set</string>
+    <string name="browser_page_adapter_collection_title">My Collection</string>
+    <string name="browser_page_adapter_wanted_title">Cards I Want</string>
 
     <string name="single_set_code">(%1$s)</string>
     <string name="single_set_type">Type : %1$s</string>

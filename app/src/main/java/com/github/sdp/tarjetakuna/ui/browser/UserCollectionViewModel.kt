@@ -11,8 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class UserCollectionViewModel : ViewModel() {
+class UserCollectionViewModel(possession: CardPossession) : ViewModel() {
 
+    private var browserPossession: CardPossession
     private val _searchState = MutableLiveData<String>()
     private val _filterState = MutableLiveData<FilterState>()
     private val _sorterState = MutableLiveData<Comparator<Pair<MagicCard, Int>>>()
@@ -33,6 +34,7 @@ class UserCollectionViewModel : ViewModel() {
     var cardsArray: ArrayList<Pair<MagicCard, Int>> = ArrayList()
 
     init {
+        browserPossession = possession
         _searchState.value = ""
         _filterState.value = FilterState()
         _sorterState.value =
@@ -92,8 +94,10 @@ class UserCollectionViewModel : ViewModel() {
                 if (cards != null) {
                     val cardsArray = ArrayList<Pair<MagicCard, Int>>()
                     for (card in cards) {
-                        if (card.possession == CardPossession.OWNED && card.quantity > 0) {
+                        if (browserPossession == CardPossession.OWNED && card.possession == browserPossession && card.quantity > 0) {
                             cardsArray.add(Pair(card.toMagicCard(), card.quantity))
+                        } else if (browserPossession == CardPossession.WANTED && card.possession == browserPossession) {
+                            cardsArray.add(Pair(card.toMagicCard(), 1))
                         }
                     }
                     cardsArray.sortWith { card1, card2 ->

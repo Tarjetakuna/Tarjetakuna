@@ -27,7 +27,7 @@ class WebApiFragment : Fragment() {
         viewModel = ViewModelProvider(this)[WebApiViewModel::class.java]
         _binding = FragmentWebApiBinding.inflate(inflater, container, false)
 
-        binding.browserApiListCard.layoutManager = LinearLayoutManager(context)
+        binding.webApiListCard.layoutManager = LinearLayoutManager(context)
 
         initObservers()
         initListener()
@@ -40,9 +40,9 @@ class WebApiFragment : Fragment() {
      */
     private fun initObservers() {
         viewModel.cardList.observe(viewLifecycleOwner) {
-            binding.browserApiListCard.layoutManager = LinearLayoutManager(context)
+            binding.webApiListCard.layoutManager = LinearLayoutManager(context)
             val adapter = DisplayCardsAdapter(this, it)
-            binding.browserApiListCard.adapter = adapter
+            binding.webApiListCard.adapter = adapter
             initOnCardClickListener(adapter)
         }
     }

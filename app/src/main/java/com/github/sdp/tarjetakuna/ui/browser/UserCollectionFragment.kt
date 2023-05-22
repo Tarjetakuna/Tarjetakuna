@@ -1,25 +1,29 @@
 package com.github.sdp.tarjetakuna.ui.browser
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentUserCollectionBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.utils.Utils.Companion.hideKeyboard
 import com.google.gson.Gson
 
+
 /**
  * Fragment that displays the cards in a recycler view
  */
-class UserCollectionFragment : Fragment() {
+class UserCollectionFragment(val possession: CardPossession) : Fragment() {
 
     private var _binding: FragmentUserCollectionBinding? = null
     private lateinit var viewModel: UserCollectionViewModel
@@ -32,7 +36,11 @@ class UserCollectionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[UserCollectionViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            UserCollectionViewModelFactory(possession)
+        )[UserCollectionViewModel::class.java]
+
         _binding = FragmentUserCollectionBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -225,8 +233,22 @@ class UserCollectionFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        Log.i("UserCollectionFragment", "onDestroyView")
         super.onDestroyView()
         _binding = null
     }
 
+}
+
+class UserCollectionViewModelFactory(possession: CardPossession) :
+    ViewModelProvider.Factory {
+    private val viewModelPossession: CardPossession
+
+    init {
+        viewModelPossession = possession
+    }
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return UserCollectionViewModel(viewModelPossession) as T
+    }
 }
