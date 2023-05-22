@@ -149,13 +149,14 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     /**
      * Get the unique card code from the user's collection asynchronously from the database (based on possession category)
      */
-    private fun getCardCodeFromUserCollection(
+    private fun getCardQuantityFromUserCollection(
         userUID: String,
         cardUID: String,
         possession: CardPossession
     ): CompletableFuture<DataSnapshot> {
         val future = CompletableFuture<DataSnapshot>()
-        db.child(userUID).child(possession.toString().lowercase()).child(cardUID).get()
+        db.child(userUID).child(possession.toString().lowercase()).child(cardUID).child("quantity")
+            .get()
             .addOnSuccessListener {
                 if (it.value == null) {
                     future.completeExceptionally(NoSuchFieldException("card $cardUID is not in user collection"))
@@ -180,9 +181,13 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         val cardUID = setCode + "_" + setNumber.toString()
         val future = CompletableFuture<DataSnapshot>()
         try {
-            val cardCodeFuture = getCardCodeFromUserCollection(userUID, cardUID, possession)
+            val cardCodeFuture = getCardQuantityFromUserCollection(userUID, cardUID, possession)
             cardCodeFuture.thenCompose {
-                cardsRTDB.getCardFromGlobalCollection(cardUID) //only get the card if it exists in the user's collection
+                if (it.value == null || it.value == 0L) {
+                    throw NoSuchFieldException("card $cardUID is not in user collection")
+                } else {
+                    cardsRTDB.getCardFromGlobalCollection(cardUID) //only get the card if it exists in the user's collection
+                }
             }.whenComplete { snapshot, exception ->
                 if (exception != null) {
                     future.completeExceptionally(exception)

@@ -189,6 +189,20 @@ class UserTest {
     }
 
     @Test
+    fun getCardWhenQuantityZeroDoesNotWork() {
+        assert(validUser.addCard(card, CardPossession.WANTED).get())
+        assert(validUser.removeCard(card, CardPossession.WANTED).get())
+
+        val futureCard1 = validUser.getCard(card.set.code, card.number, CardPossession.WANTED)
+        futureCard1.thenAccept {
+            assertThat("Quantity should be zero, so not work", CoreMatchers.`is`(false))
+        }.exceptionally {
+            assertThat("Quantity is zero", CoreMatchers.`is`(true))
+            null
+        }
+    }
+
+    @Test
     fun getCardDoesNotExistTest() {
         runBlocking {
             assertThrows(ExecutionException::class.java) {
