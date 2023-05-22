@@ -2,6 +2,7 @@ package com.github.sdp.tarjetakuna.database
 
 import com.github.sdp.tarjetakuna.model.Coordinates
 import com.google.firebase.database.*
+import com.google.gson.Gson
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -24,7 +25,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     fun addCard(fbcard: DBMagicCard, userUID: String): CompletableFuture<Boolean> {
         val cardUID = fbcard.getFbKey()
         val fbpossession = fbcard.possession.toString().lowercase()
-        val cardRef = db.child(userUID).child(fbpossession).child(cardUID)
+        val cardRef = db.child(userUID).child(fbpossession).child(cardUID).child("quantity")
 
         cardsRTDB.addCardToGlobalCollection(fbcard)
 
@@ -80,7 +81,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     fun removeCard(userUID: String, fbcard: DBMagicCard): CompletableFuture<Boolean> {
         val cardUID = fbcard.getFbKey()
         val fbpossession = fbcard.possession.toString().lowercase()
-        val cardRef = db.child(userUID).child(fbpossession).child(cardUID)
+        val cardRef = db.child(userUID).child(fbpossession).child(cardUID).child("quantity")
 
         val completableFuture = CompletableFuture<Boolean>()
 
@@ -273,6 +274,36 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
             }
         }.addOnFailureListener {
             future.completeExceptionally(it)
+        }
+        return future
+    }
+
+    fun cardsFromUser(
+        userUID: String,
+        possession: CardPossession
+    ): CompletableFuture<MutableList<DBMagicCard>> {
+        val future = CompletableFuture<MutableList<DBMagicCard>>()
+        val cards = mutableListOf<DBMagicCard>()
+
+        getAllCardCodesFromUserPossession(userUID, possession).thenApply { cardCode ->
+            val cardCodeMap = cardCode.value as HashMap<*, *>
+            val cardFutures = mutableListOf<CompletableFuture<DBMagicCard>>()
+
+            for (code in cardCodeMap.keys) {
+                val cardFuture =
+                    cardsRTDB.getCardFromGlobalCollection(code.toString()).thenApply { card ->
+                        val dbCard = Gson().fromJson(card.value.toString(), DBMagicCard::class.java)
+                        dbCard.copy(possession = possession)
+                    }
+                cardFutures.add(cardFuture)
+            }
+
+            CompletableFuture.allOf(*cardFutures.toTypedArray()).thenRun {
+                for (cardFuture in cardFutures) {
+                    cards.add(cardFuture.get())
+                }
+                future.complete(cards)
+            }
         }
         return future
     }

@@ -119,7 +119,8 @@ class UserTest {
                     .child("users")
                     .child(validUID)
                     .child("owned")
-                    .child(fbcard.getFbKey()).get().addOnSuccessListener {
+                    .child(fbcard.getFbKey())
+                    .child("quantity").get().addOnSuccessListener {
                         count = it.value as Long
                     }
             }
@@ -141,7 +142,8 @@ class UserTest {
                     .child("users")
                     .child(validUID)
                     .child("owned")
-                    .child(fbcard.getFbKey()).get().addOnSuccessListener {
+                    .child(fbcard.getFbKey())
+                    .child("quantity").get().addOnSuccessListener {
                         count = it.value as Long
                     }
             }

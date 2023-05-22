@@ -95,7 +95,6 @@ class MainActivity : AppCompatActivity() {
         sharedPref.registerOnSharedPreferenceChangeListener(sharedPrefListener)
 
         updateHeader()
-
         // ask for location permission + get current location if already granted
         Location.captureCurrentLocation(this)
     }

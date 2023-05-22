@@ -20,21 +20,34 @@ object DatabaseSync {
      */
     @JvmStatic
     fun sync() {
+        Log.i("DatabaseSync", "sync: start")
         val userRTDB = UserRTDB(FirebaseDB())
         if (!SignIn.getSignIn().isUserLoggedIn()) {
             Log.i("DatabaseSync", "sync: Not connected to firebase")
             return
         }
         //TODO assign the right function for cards
-
-//        val cards = userRTDB.getAllCardsFromUserPossession(Firebase.auth.currentUser!!.uid, CardPossession.OWNED)
-//        cards.thenAccept {
+        val cards = userRTDB.cardsFromUser(
+            SignIn.getSignIn().getUserUID()!!,
+            CardPossession.OWNED
+        )
+        cards.thenAccept {
+            if (it != null) {
+                Log.i("DatabaseSync", "sync: ${it.size} found on firebase")
+                for (card in it) {
+                    Log.e("DatabaseSync", "sync: ${card.code}_${card.number} found on firebase")
+                }
+//                    LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+//                        .magicCardDao().insertCard(it)
+            }
 //            processSnapshot(it)
-//        }.exceptionally {
-//            Log.i("DatabaseSync", "no cards found in database}")
-//            addLocalDBToFirebase()
-//            null
-//        }
+        }.exceptionally {
+            Log.i("DatabaseSync", "no cards found in database}")
+//                addLocalDBToFirebase()
+            null
+        }
+
+
     }
 
     /**
