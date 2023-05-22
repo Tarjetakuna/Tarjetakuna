@@ -101,8 +101,15 @@ data class User(
     /**
      * Removes a card from the user's collection with the given possession.
      */
-    fun removeCard(card: MagicCard, possession: CardPossession) {
-        userRTDB.removeCard(uid, card.toDBMagicCard(possession))
+    fun removeCard(card: MagicCard, possession: CardPossession): CompletableFuture<Boolean> {
+        for (card2 in cards) {
+            if (card.number == card2.number && card.set.code == card2.code) {
+                if (card2.quantity > 0) {
+                    card2.quantity -= 1
+                }
+            }
+        }
+        return userRTDB.removeCard(uid, card.toDBMagicCard(possession))
     }
 
     /**

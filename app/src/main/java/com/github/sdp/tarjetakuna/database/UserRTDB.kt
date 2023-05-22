@@ -91,7 +91,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                     val currentValue = currentData.getValue(Int::class.java)
                     if (currentValue != null) {
                         // Value exists, decrement it
-                        if (currentData.value != 0) {
+                        if (currentValue != 0) {
                             currentData.value = currentValue - 1
                         }
                     } else {

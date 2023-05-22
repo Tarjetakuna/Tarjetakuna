@@ -154,6 +154,29 @@ class UserTest {
     }
 
     @Test
+    fun removeMoreCardDoesNotGoBelowZero() {
+        runBlocking {
+            validUser.addCard(card, CardPossession.OWNED)
+            validUser.removeCard(card, CardPossession.OWNED)
+            validUser.removeCard(card, CardPossession.OWNED)
+            var count = 0L
+            withTimeout(1000) {
+                fbEmulator.fb.reference
+                    .child("users")
+                    .child(validUID)
+                    .child("owned")
+                    .child(fbcard.getFbKey())
+                    .child("quantity").get().addOnSuccessListener {
+                        count = it.value as Long
+                    }
+            }
+            delay(1000)
+            assertThat(count, CoreMatchers.`is`(0L))
+
+        }
+    }
+
+    @Test
     fun getCardExistsTest() {
         assert(validUser.addCard(card, CardPossession.WANTED).get())
 

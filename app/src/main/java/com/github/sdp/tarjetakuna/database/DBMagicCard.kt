@@ -14,7 +14,7 @@ data class DBMagicCard(
     val lastUpdate: Long,
     val code: String,
     val number: Int,
-    val quantity: Int,
+    var quantity: Int,
 ) {
     constructor(card: MagicCard) : this(
         card = Gson().toJson(card),
