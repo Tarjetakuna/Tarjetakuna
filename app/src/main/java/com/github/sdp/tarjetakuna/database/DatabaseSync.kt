@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.concurrent.CompletableFuture
 
 /**
  * Represents a database sync.
@@ -27,27 +28,12 @@ object DatabaseSync {
             return
         }
         //TODO assign the right function for cards
-        val cards = userRTDB.cardsFromUser(
-            SignIn.getSignIn().getUserUID()!!,
-            CardPossession.OWNED
-        )
+        val cards = processCardsByPossession(CardPossession.OWNED, userRTDB)
         cards.thenAccept {
-            if (it != null) {
-                Log.i("DatabaseSync", "sync: ${it.size} found on firebase")
-                for (card in it) {
-                    Log.e("DatabaseSync", "sync: ${card.code}_${card.number} found on firebase")
-                }
-//                    LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
-//                        .magicCardDao().insertCard(it)
+            for (card in it) {
+                Log.i("DatabaseSync", "${card.getFbKey()}: $card")
             }
-//            processSnapshot(it)
-        }.exceptionally {
-            Log.i("DatabaseSync", "no cards found in database}")
-//                addLocalDBToFirebase()
-            null
         }
-
-
     }
 
     /**
@@ -74,7 +60,7 @@ object DatabaseSync {
             updatedCards = mergeCards(localCards, fbCardsMap, updatedCards)
             updatedCards = mergeCards(fbCardsMap, localCards, updatedCards)
 
-            pushChanges(updatedCards.toList().map { it.second })
+//            pushChanges(updatedCards.toList().map { it.second })
         }
     }
 
@@ -107,18 +93,19 @@ object DatabaseSync {
 
     /**
      * Push the changes to the local database and to the remote database.
-     * @param cards the cards to push
+     * @param newCard the card to push
+     * @param oldCard the old card
      */
-    private suspend fun pushChanges(cards: List<DBMagicCard>) {
+    private suspend fun pushChanges(newCard: DBMagicCard, oldCard: DBMagicCard) {
         LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
-            .magicCardDao().insertCards(cards)
-        val userRTDB = CardsRTDB(FirebaseDB())
+            .magicCardDao().insertCard(newCard)
+        val userRTDB = UserRTDB(FirebaseDB())
         // TODO Change when we can add the cards that we possess
         // TODO cardsSeparated contains the cards separated by possession, it may not be useful depending
         // TODO on how we add the cards to the remote database
-        val cardsSeparated = separateCardsByPossession(cards)
-//        userRTDB.addCardsToCollection(cards)
-        Log.i("DatabaseSync", "pushChanges: ${cards.size} cards updated")
+        userRTDB.removeCard(SignIn.getSignIn().getUserUID()!!, oldCard)
+        userRTDB.addCard(newCard, SignIn.getSignIn().getUserUID()!!)
+        Log.i("DatabaseSync", "pushChanges: $newCard cards updated")
     }
 
     /**
@@ -170,4 +157,152 @@ object DatabaseSync {
         return cardsByPossession
     }
 
+    /**
+     * Get the cards from the remote database.
+     * @param possession the possession of the cards
+     * @param userRTDB the remote database
+     * @return the cards from the remote database
+     */
+    private fun processCardsByPossession(
+        possession: CardPossession,
+        userRTDB: UserRTDB
+    ): CompletableFuture<MutableList<DBMagicCard>> {
+        val cards = userRTDB.cardsFromUser(
+            SignIn.getSignIn().getUserUID()!!,
+            possession
+        )
+
+        val listOfCards = mutableListOf<DBMagicCard>()
+        cards.whenComplete { c, exception ->
+            if (c != null) {
+                for (card in c) {
+                    Log.i(
+                        "DatabaseSync",
+                        "card in cards: ${card.code}_${card.number} found on firebase"
+                    )
+                    val future1 = getCardQuantity(card, possession, userRTDB)
+                    // When the quantity is found,
+                    // We search for the last time it has been updated and then update the card
+                    future1.whenComplete { quantity, _ ->
+                        card.quantity = quantity.getValue(Int::class.java)!!
+                        // Get the last time the card has been updated
+                        val future2 = getLastUpdated(card, possession, userRTDB)
+                        future2.whenComplete { lastUpdated, _ ->
+                            card.lastUpdate = lastUpdated.value as Long
+                            listOfCards.add(card)
+                            Log.i("DatabaseSync", "finish: card added to list: $card")
+                            syncCard(card)
+                        }
+                    }
+                }
+            }
+        }.exceptionally {
+            Log.i("DatabaseSync", "no cards found in database}")
+//                addLocalDBToFirebase()
+            null
+        }
+        return cards
+    }
+
+    /**
+     * Get the quantity of a card from the remote database.
+     */
+    private fun getCardQuantity(
+        card: DBMagicCard,
+        possession: CardPossession,
+        userRTDB: UserRTDB
+    ): CompletableFuture<DataSnapshot> {
+        val quantity = userRTDB.getCardQuantityFromUserCollection(
+            SignIn.getSignIn().getUserUID()!!,
+            card.getFbKey(),
+            possession
+        )
+        quantity.thenAccept { q ->
+            if (q != null) {
+                Log.i(
+                    "DatabaseSync",
+                    "getQuantity: ${card.code}_${card.number} found on firebase with ${q.value} quantity"
+                )
+                card.quantity = q.value as Int
+            }
+        }
+        return quantity
+    }
+
+    /**
+     * Get the last update of a card from the remote database.
+     */
+    private fun getLastUpdated(
+        card: DBMagicCard,
+        possession: CardPossession,
+        userRTDB: UserRTDB
+    ): CompletableFuture<DataSnapshot> {
+        val lastUpdate = userRTDB.getCardLastUpdatedFromUserPossession(
+            SignIn.getSignIn().getUserUID()!!,
+            card.getFbKey(),
+            possession
+        )
+        lastUpdate.thenAccept { l ->
+            if (l != null) {
+                Log.i("DatabaseSync", "lastUpdate: ${l.value} for card ${card.code}_${card.number}")
+                card.lastUpdate = l.value as Long
+            }
+        }
+        return lastUpdate
+    }
+
+    /**
+     * Add a card to the local database.
+     */
+    private fun addToLocalDatabase(card: DBMagicCard) {
+        val scope = CoroutineScope(Dispatchers.Default)
+        scope.launch {
+            LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+                .magicCardDao().insertCard(card)
+        }
+    }
+
+    /**
+     * Add a card to the remote database.
+     */
+    private fun addTOFirebase(card: DBMagicCard) {
+    }
+
+    /**
+     * Sync a card
+     */
+    private fun syncCard(fbCard: DBMagicCard) {
+        val scope = CoroutineScope(Dispatchers.Default)
+        scope.launch {
+            val localCard =
+                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+                    .magicCardDao().getCard(fbCard.code, fbCard.number.toString())
+
+            Log.i("DatabaseSync", "Local databse card: $localCard")
+            if (localCard == null) {
+                // Card is not in the local database, so we put it in the local database
+                addToLocalDatabase(fbCard)
+            } else {
+                // Card is in the local database, so we compare the last update
+                if (isOlderThan(localCard, fbCard)) {
+                    pushChanges(fbCard, localCard)
+                } else {
+                    pushChanges(localCard, fbCard)
+                }
+            }
+        }
+    }
+
+    /**
+     * Compare the last update of two cards.
+     */
+    private fun isOlderThan(card1: DBMagicCard, card2: DBMagicCard): Boolean {
+        return if (card1.lastUpdate < card2.lastUpdate) {
+            Log.i("DatabaseSync", "card1 is older than card2")
+            true
+        } else {
+            Log.i("DatabaseSync", "card2 is older than card1")
+            false
+        }
+    }
 }

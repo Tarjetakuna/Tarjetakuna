@@ -149,7 +149,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     /**
      * Get the unique card code from the user's collection asynchronously from the database (based on possession category)
      */
-    private fun getCardQuantityFromUserCollection(
+    fun getCardQuantityFromUserCollection(
         userUID: String,
         cardUID: String,
         possession: CardPossession
@@ -198,6 +198,30 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         } catch (ex: Exception) {
             future.completeExceptionally(ex)
         }
+        return future
+    }
+
+    /**
+     * Get the last time the given card has been updated in the user's collection asynchronously from the database (based on possession category)
+     */
+    fun getCardLastUpdatedFromUserPossession(
+        userUID: String,
+        cardUID: String,
+        possession: CardPossession
+    ): CompletableFuture<DataSnapshot> {
+        val future = CompletableFuture<DataSnapshot>()
+        db.child(userUID).child(possession.toString().lowercase()).child(cardUID)
+            .child("lastUpdated")
+            .get()
+            .addOnSuccessListener {
+                if (it.value == null) {
+                    future.completeExceptionally(NoSuchFieldException("card $cardUID is not in user collection"))
+                } else {
+                    future.complete(it)
+                }
+            }.addOnFailureListener {
+                future.completeExceptionally(it)
+            }
         return future
     }
 

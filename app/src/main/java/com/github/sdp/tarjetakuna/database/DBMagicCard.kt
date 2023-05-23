@@ -11,7 +11,7 @@ import com.google.gson.Gson
 data class DBMagicCard(
     val card: String,
     val possession: CardPossession,
-    val lastUpdate: Long,
+    var lastUpdate: Long,
     val code: String,
     val number: Int,
     var quantity: Int,
