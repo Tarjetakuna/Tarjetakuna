@@ -25,23 +25,27 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     fun addCard(fbcard: DBMagicCard, userUID: String): CompletableFuture<Boolean> {
         val cardUID = fbcard.getFbKey()
         val fbpossession = fbcard.possession.toString().lowercase()
-        val cardRef = db.child(userUID).child(fbpossession).child(cardUID).child("quantity")
+        val cardNode = db.child(userUID).child(fbpossession).child(cardUID)
 
         cardsRTDB.addCardToGlobalCollection(fbcard)
 
         val completableFuture = CompletableFuture<Boolean>()
 
         try {
-            cardRef.runTransaction(object : Transaction.Handler {
+            cardNode.runTransaction(object : Transaction.Handler {
                 override fun doTransaction(currentData: MutableData): Transaction.Result {
-                    val currentValue = currentData.getValue(Int::class.java)
+                    val quantityRef = currentData.child("quantity")
+                    val currentValue = quantityRef.getValue(Int::class.java)
                     if (currentValue != null) {
                         // Value exists, increment it
-                        currentData.value = currentValue + 1
+                        quantityRef.value = currentValue + 1
                     } else {
                         // Value doesn't exist, set it to 1
-                        currentData.value = 1
+                        quantityRef.value = 1
                     }
+
+                    val lastUpdatedRef = currentData.child("lastUpdated")
+                    lastUpdatedRef.value = fbcard.lastUpdate
                     return Transaction.success(currentData)
                 }
 
@@ -51,7 +55,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                     currentData: DataSnapshot?
                 ) {
                     if (error != null || !committed) {
-                        cardRef.setValue(ServerValue.increment(0))  // Rollback the transaction
+                        cardNode.setValue(ServerValue.increment(0))  // Rollback the transaction
                         completableFuture.complete(false) // Card addition failed
                     } else {
                         completableFuture.complete(true) // Card addition succeeded
@@ -81,23 +85,27 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     fun removeCard(userUID: String, fbcard: DBMagicCard): CompletableFuture<Boolean> {
         val cardUID = fbcard.getFbKey()
         val fbpossession = fbcard.possession.toString().lowercase()
-        val cardRef = db.child(userUID).child(fbpossession).child(cardUID).child("quantity")
+        val cardNode = db.child(userUID).child(fbpossession).child(cardUID)
 
         val completableFuture = CompletableFuture<Boolean>()
 
         try {
-            cardRef.runTransaction(object : Transaction.Handler {
+            cardNode.runTransaction(object : Transaction.Handler {
                 override fun doTransaction(currentData: MutableData): Transaction.Result {
-                    val currentValue = currentData.getValue(Int::class.java)
+                    val quantityRef = currentData.child("quantity")
+                    val currentValue = quantityRef.getValue(Int::class.java)
                     if (currentValue != null) {
                         // Value exists, decrement it
                         if (currentValue != 0) {
-                            currentData.value = currentValue - 1
+                            quantityRef.value = currentValue - 1
                         }
                     } else {
                         // Value doesn't exist, set it to 0
-                        currentData.value = 0
+                        quantityRef.value = 0
                     }
+
+                    val lastUpdatedRef = currentData.child("lastUpdated")
+                    lastUpdatedRef.value = fbcard.lastUpdate
                     return Transaction.success(currentData)
                 }
 
@@ -107,7 +115,8 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                     currentData: DataSnapshot?
                 ) {
                     if (error != null || !committed) {
-                        cardRef.setValue(ServerValue.increment(0))  // Rollback the transaction
+                        cardNode.child("quantity")
+                            .setValue(ServerValue.increment(0))  // Rollback the transaction
                         completableFuture.complete(false) // Card removal failed
                     } else {
                         completableFuture.complete(true) // Card removal succeeded
@@ -130,7 +139,10 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         val cardRef = db.child(userUID).child(fbpossession).child(cardUID)
         cardRef.runTransaction(object : Transaction.Handler {
             override fun doTransaction(currentData: MutableData): Transaction.Result {
-                currentData.value = 0
+                val quantityRef = currentData.child("quantity")
+                quantityRef.value = 0
+                val lastUpdatedRef = currentData.child("lastUpdated")
+                lastUpdatedRef.value = fbcard.lastUpdate
                 return Transaction.success(currentData)
             }
 
@@ -140,7 +152,8 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                 currentData: DataSnapshot?
             ) {
                 if (error != null || !committed) {
-                    cardRef.setValue(ServerValue.increment(0))  // Rollback the transaction
+                    cardRef.child("quantity")
+                        .setValue(ServerValue.increment(0))  // Rollback the transaction
                 }
             }
         })

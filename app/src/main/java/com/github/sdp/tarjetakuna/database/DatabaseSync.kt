@@ -28,12 +28,10 @@ object DatabaseSync {
             return
         }
         //TODO assign the right function for cards
-        val cards = processCardsByPossession(CardPossession.OWNED, userRTDB)
-        cards.thenAccept {
-            for (card in it) {
-                Log.i("DatabaseSync", "${card.getFbKey()}: $card")
-            }
-        }
+        processCardsByPossession(CardPossession.OWNED, userRTDB)
+        processCardsByPossession(CardPossession.TRADE, userRTDB)
+        processCardsByPossession(CardPossession.WANTED, userRTDB)
+
     }
 
     /**
@@ -100,10 +98,7 @@ object DatabaseSync {
         LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
             .magicCardDao().insertCard(newCard)
         val userRTDB = UserRTDB(FirebaseDB())
-        // TODO Change when we can add the cards that we possess
-        // TODO cardsSeparated contains the cards separated by possession, it may not be useful depending
-        // TODO on how we add the cards to the remote database
-        userRTDB.removeCard(SignIn.getSignIn().getUserUID()!!, oldCard)
+        userRTDB.removeAllCopyOfCard(SignIn.getSignIn().getUserUID()!!, oldCard)
         userRTDB.addCard(newCard, SignIn.getSignIn().getUserUID()!!)
         Log.i("DatabaseSync", "pushChanges: $newCard cards updated")
     }
@@ -172,8 +167,9 @@ object DatabaseSync {
             possession
         )
 
-        val listOfCards = mutableListOf<DBMagicCard>()
-        cards.whenComplete { c, exception ->
+        val listOfFirebaseCards = mutableListOf<DBMagicCard>()
+        val listOfFutures1 = mutableListOf<CompletableFuture<DataSnapshot>>()
+        cards.thenApply { c ->
             if (c != null) {
                 for (card in c) {
                     Log.i(
@@ -183,18 +179,24 @@ object DatabaseSync {
                     val future1 = getCardQuantity(card, possession, userRTDB)
                     // When the quantity is found,
                     // We search for the last time it has been updated and then update the card
-                    future1.whenComplete { quantity, _ ->
+                    future1.thenApply { quantity ->
                         card.quantity = quantity.getValue(Int::class.java)!!
                         // Get the last time the card has been updated
                         val future2 = getLastUpdated(card, possession, userRTDB)
-                        future2.whenComplete { lastUpdated, _ ->
+                        future2.thenApply { lastUpdated ->
                             card.lastUpdate = lastUpdated.value as Long
-                            listOfCards.add(card)
-                            Log.i("DatabaseSync", "finish: card added to list: $card")
-                            syncCard(card)
+                            syncCard(card, listOfFirebaseCards)
                         }
                     }
+                    listOfFutures1.add(future1)
                 }
+                // When all of them are done, we can sync the local database to the remote database
+                CompletableFuture.allOf(*listOfFutures1.toTypedArray())
+                    .thenRun {
+                        Log.i("DatabaseSync", "finish: all cards added to list")
+                        syncLocalDBToFirebase(possession, userRTDB, listOfFirebaseCards)
+
+                    }
             }
         }.exceptionally {
             Log.i("DatabaseSync", "no cards found in database}")
@@ -265,14 +267,16 @@ object DatabaseSync {
     /**
      * Add a card to the remote database.
      */
-    private fun addTOFirebase(card: DBMagicCard) {
+    private fun addToFirebase(card: DBMagicCard, userRTDB: UserRTDB) {
+        userRTDB.addCard(card, SignIn.getSignIn().getUserUID()!!)
     }
 
     /**
      * Sync a card
      */
-    private fun syncCard(fbCard: DBMagicCard) {
+    private fun syncCard(fbCard: DBMagicCard, listOfFirebaseCards: MutableList<DBMagicCard>) {
         val scope = CoroutineScope(Dispatchers.Default)
+        var cardToBeAdded: DBMagicCard = fbCard
         scope.launch {
             val localCard =
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
@@ -288,8 +292,11 @@ object DatabaseSync {
                     pushChanges(fbCard, localCard)
                 } else {
                     pushChanges(localCard, fbCard)
+                    cardToBeAdded = localCard
                 }
             }
+        }.invokeOnCompletion {
+            listOfFirebaseCards.add(cardToBeAdded)
         }
     }
 
@@ -303,6 +310,40 @@ object DatabaseSync {
         } else {
             Log.i("DatabaseSync", "card2 is older than card1")
             false
+        }
+    }
+
+    /**
+     * Sync all cards from the local database to the remote database.
+     */
+    private fun syncLocalDBToFirebase(
+        possession: CardPossession,
+        userRTDB: UserRTDB,
+        listOfFirebaseCards: MutableList<DBMagicCard>
+    ) {
+        val scope = CoroutineScope(Dispatchers.Default)
+        scope.launch {
+            val localCards =
+                LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+                    .magicCardDao().getAllCardsByPossession(possession.toString())
+            for (localCard in localCards) {
+                val cardIndex = listOfFirebaseCards.indexOfFirst {
+                    it.code == localCard.code && it.number == localCard.number
+                }
+                if (cardIndex == -1) {
+                    // Card is not in the remote database, so we put it in the remote database
+                    addToFirebase(localCard, userRTDB)
+                    continue
+                }
+                val fbCard = listOfFirebaseCards[cardIndex]
+                // Card is in the remote database, so we compare the last update
+                if (isOlderThan(localCard, fbCard)) {
+                    pushChanges(fbCard, localCard)
+                } else {
+                    pushChanges(localCard, fbCard)
+                }
+
+            }
         }
     }
 }
