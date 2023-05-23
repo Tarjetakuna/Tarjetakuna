@@ -5,12 +5,14 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
+import com.github.sdp.tarjetakuna.utils.ChatsData
 import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.hamcrest.CoreMatchers
+import org.hamcrest.Matchers.equalTo
 import org.junit.Assert.assertThrows
 import org.junit.ClassRule
 import org.junit.Rule
@@ -149,6 +151,40 @@ class UserTest {
     fun getCardDoesNotExistTest() {
         assertThrows(ExecutionException::class.java) {
             validUser.getCard("card.set.code", card.number, CardPossession.OWNED).get()
+        }
+    }
+
+    @Test
+    fun test_getNoChat() {
+        val chats = validUser.getChats().get()
+        assertThat("no chat in db for user", chats.size, CoreMatchers.`is`(0))
+    }
+
+    @Test
+    fun test_newChat() {
+        val user: User = ChatsData.fakeUser1
+        val mChat: Chat = ChatsData.fakeChat1
+
+        // create new chat
+        user.newChat(mChat).get(1, TimeUnit.SECONDS)
+
+        // get chats
+        val chats = user.getChats().get()
+        assertThat("nb of chats is different", chats.size, equalTo(user.chats.size))
+
+        // check if the chat are the same
+        user.chats.sortBy { it.uid }
+        val sortedChats = chats.toList().sortedBy { it.uid }
+
+        for (i in user.chats.indices) {
+            assertThat("chat uid ", sortedChats[i].uid, equalTo(user.chats[i].uid))
+            assertThat("user1 id", sortedChats[i].user1, equalTo(user.chats[i].user1))
+            assertThat("user2 id", sortedChats[i].user2, equalTo(user.chats[i].user2))
+            assertThat(
+                "nb of messages in chat ",
+                sortedChats[i].messages.size,
+                equalTo(user.chats[i].messages.size)
+            )
         }
     }
 }

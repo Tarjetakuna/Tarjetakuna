@@ -3,7 +3,6 @@ package com.github.sdp.tarjetakuna.database
 import android.util.Log
 import com.github.sdp.tarjetakuna.model.Chat
 import com.github.sdp.tarjetakuna.model.Message
-import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -32,8 +31,17 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
     /**
      * Add a chat to the chats table.
      */
-    fun addChat(chat: DBChat): Task<Void> {
-        return chatsTable.child(chat.uid).setValue(chatToDBFormat(chat))
+    fun addChat(chat: DBChat): CompletableFuture<DBChat> {
+        val future = CompletableFuture<DBChat>()
+        val tasks = chatsTable.child(chat.uid).setValue(chatToDBFormat(chat))
+        tasks.addOnSuccessListener {
+            future.complete(chat)
+            Log.d(TAG, "Chat ${chat.uid} added to chat table")
+        }.addOnFailureListener {
+            future.completeExceptionally(it)
+            Log.w(TAG, "Chat ${chat.uid} failed to be added to chat table")
+        }
+        return future
     }
 
     /**
@@ -54,28 +62,63 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
     }
 
     /**
+     * Get some chats from the chats table.
+     */
+    fun getChats(chatsUID: List<String>): CompletableFuture<List<DBChat>> {
+        val chatsFuture: List<CompletableFuture<DBChat>> = chatsUID.map { getChat(it) }
+
+        return CompletableFuture.allOf(*chatsFuture.toTypedArray())
+            .thenApply { chatsFuture.map { it.get() } }
+    }
+
+    /**
      * Remove a chat from the chats table.
      */
-    fun removeChat(chatUID: String): Task<Void> {
-        return chatsTable.child(chatUID).removeValue()
-    }
-
-    /**
-     * Add a chat to the database.
-     */
-    fun addChatToDatabase(chat: Chat): ArrayList<Task<Void>> {
-        val tasks = ArrayList<Task<Void>>()
-        val task = addChat(DBChat.toDBChat(chat))
-        tasks.add(task)
-        for (message in chat.messages) {
-            val msgTask = messagesRTDB.addMessageToDatabase(message)
-            tasks.add(msgTask)
+    fun removeChat(chatUID: String): CompletableFuture<String> {
+        val future = CompletableFuture<String>()
+        val task = chatsTable.child(chatUID).removeValue()
+        task.addOnSuccessListener {
+            future.complete(chatUID)
+        }.addOnFailureListener {
+            future.completeExceptionally(it)
         }
-        return tasks
+        return future
     }
 
     /**
-     * Get a chat from the database.
+     * Add a chat to the database along with its messages.
+     * in chats and messages nodes.
+     */
+    fun addChatToDatabase(chat: Chat): CompletableFuture<Chat> {
+        val future = CompletableFuture<Chat>()
+        val futureMessages: MutableList<CompletableFuture<Message>> = ArrayList()
+        val futureDBChat = addChat(DBChat.toDBChat(chat))
+
+        for (message in chat.messages) {
+            val futureMessage = messagesRTDB.addMessageToDatabase(message)
+            futureMessages.add(futureMessage)
+        }
+        futureDBChat.thenCompose {
+            CompletableFuture.allOf(*futureMessages.toTypedArray()).thenAccept {
+                future.complete(chat)
+                Log.d(TAG, "all messages for ${chat.uid} added to messages table")
+            }.exceptionally {
+                future.completeExceptionally(it)
+                Log.w(TAG, "some messages for ${chat.uid} failed to be added to messages table")
+                return@exceptionally null
+            }
+        }.exceptionally {
+            future.completeExceptionally(it)
+            Log.w(TAG, "dbChat ${chat.uid} failed to be added to chats table")
+            return@exceptionally null
+        }
+
+        return future
+    }
+
+    /**
+     * Get a chat from the database along with its messages.
+     * in chat and messages nodes.
      */
     fun getChatFromDatabase(chatUID: String): CompletableFuture<Chat> {
         val future = CompletableFuture<Chat>()
@@ -96,9 +139,23 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
     }
 
     /**
+     * Get some chats from the database along with their messages.
+     * in chat and messages nodes.
+     */
+    fun getChatsFromDatabase(chatsUID: List<String>): CompletableFuture<List<Chat>> {
+        val chatsFuture: List<CompletableFuture<Chat>> = chatsUID.map { getChatFromDatabase(it) }
+
+        return CompletableFuture.allOf(*chatsFuture.toTypedArray())
+            .thenApply { chatsFuture.map { it.get() } }
+    }
+
+    /**
      * Add a message to a chat.
      */
-    fun addMessageToChat(chatUID: String, message: DBMessage): CompletableFuture<Void> {
+    fun addMessageToChat(
+        chatUID: String,
+        message: DBMessage
+    ): CompletableFuture<Pair<String, DBMessage>> {
         return getChat(chatUID).thenCompose {
             if (!it.messages.contains(message.uid) && (
                         (it.user1 == message.sender && it.user2 == message.receiver) ||
@@ -107,21 +164,19 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
                 // add message to chat
                 it.messages.add(message.uid)
 
-                val future = CompletableFuture<Void>()
+                val future = CompletableFuture<Pair<String, DBMessage>>()
                 // add chat and message to database
-                addChat(it).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "Message added to chat")
-                        messagesRTDB.addMessage(message)
-                        future.complete(null)
-                    } else {
-                        Log.d(TAG, "Message not added to chat")
-                        future.completeExceptionally(task.exception!!)
+                addChat(it).thenAccept { _ ->
+                    messagesRTDB.addMessage(message).thenAccept {
+                        future.complete(Pair(chatUID, message))
+                    }.exceptionally { it3 ->
+                        future.completeExceptionally(it3)
+                        return@exceptionally null
                     }
                 }
                 return@thenCompose future
             } else {
-                val future = CompletableFuture<Void>()
+                val future = CompletableFuture<Pair<String, DBMessage>>()
                 future.completeExceptionally(
                     NoSuchFieldException("message $message is not add to chat $chatUID")
                 )
@@ -178,7 +233,13 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
     /**
      * Clear all chats from the database.
      */
-    fun clearChats(): Task<Void> {
-        return chatsTable.removeValue()
+    fun clearChats(): CompletableFuture<Void> {
+        val future = CompletableFuture<Void>()
+        chatsTable.removeValue().addOnSuccessListener {
+            future.complete(null)
+        }.addOnFailureListener {
+            future.completeExceptionally(it)
+        }
+        return future
     }
 }

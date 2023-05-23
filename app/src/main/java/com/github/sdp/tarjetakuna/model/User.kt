@@ -20,21 +20,20 @@ data class User(
     var username: String,
     var cards: MutableList<DBMagicCard>,
     var location: Coordinates,
-//    var chats: List<Chat>,
+    var chats: MutableList<DBChat> = mutableListOf(),
     var valid: Boolean = true,
     val database: Database = FirebaseDB(),
 ) {
     private var db: DatabaseReference
     private var userRTDB: UserRTDB
     private var usernamesRTDB: UsernamesRTDB
-    private lateinit var chats: MutableList<DBChat>
 
     constructor(uid: String) : this(
         uid,
         "",
         mutableListOf(),
         Coordinates(),
-        false
+        valid = false
     )
 
     init {
@@ -105,6 +104,23 @@ data class User(
         userRTDB.removeCard(uid, card.toDBMagicCard(possession))
     }
 
+    /**
+     * Creates a new chat with the given user, uploading it to the database
+     * in the users, chats and messages nodes.
+     */
+    fun newChat(chat: Chat): CompletableFuture<Chat> {
+        val dbChat = DBChat.toDBChat(chat)
+        if (chatAlreadyExist(dbChat)) {
+            Log.w("User", "Chat $chat already exist")
+            return CompletableFuture.completedFuture(chat)
+        }
+        chats.add(dbChat)
+        return userRTDB.addChat(chat)
+    }
+
+    /**
+     * Creates a new chat with the given user in the user table only.
+     */
     fun newChat(chat: DBChat): CompletableFuture<DBChat> {
         if (chatAlreadyExist(chat)) {
             Log.w("User", "Chat $chat already exist")
@@ -114,6 +130,9 @@ data class User(
         return userRTDB.addChat(chat)
     }
 
+    /**
+     * Retrieves all chats asynchronously from the database (only the user table).
+     */
     fun getChats(): CompletableFuture<List<DBChat>> {
         return userRTDB.getChatsFromUser(uid)
     }

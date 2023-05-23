@@ -1,5 +1,7 @@
 package com.github.sdp.tarjetakuna.database
 
+import android.util.Log
+import com.github.sdp.tarjetakuna.model.Chat
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import java.util.concurrent.CompletableFuture
@@ -138,7 +140,6 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     /**
      * Get all cards from the user's collection asynchronously from the database
      */
-
     fun getAllCardsFromUser(userUID: String): CompletableFuture<DataSnapshot> {
         val future = CompletableFuture<DataSnapshot>()
         db.child(userUID).get().addOnSuccessListener {
@@ -154,39 +155,61 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     }
 
     /**
+     * Add a [Chat] to the user's chats collection,
+     * in user, chats and messages nodes.
+     */
+    fun addChat(chat: Chat): CompletableFuture<Chat> {
+        val future = CompletableFuture<Chat>()
+        val dbChat = DBChat.toDBChat(chat)
+        addChat(dbChat).thenAccept {
+            chatsRTDB.addChatToDatabase(chat)
+            future.complete(chat)
+        }.exceptionally {
+            future.completeExceptionally(it)
+            null
+        }
+        return future
+    }
+
+    /**
      * Put a chat reference in both users' chats collection
+     * in the users nodes only.
      */
     fun addChat(dbChat: DBChat): CompletableFuture<DBChat> {
         val future = CompletableFuture<DBChat>()
-        db.child(dbChat.user1).child("chats").push().setValue(dbChat.uid)
+        db.child(dbChat.user1).child("chats").child(dbChat.uid).setValue(1)
             .addOnSuccessListener {
-                db.child(dbChat.user2).child("chats").push().setValue(dbChat.uid)
+                db.child(dbChat.user2).child("chats").child(dbChat.uid).setValue(1)
                     .addOnSuccessListener { future.complete(dbChat) }
                     .addOnFailureListener { future.completeExceptionally(it) }
             }.addOnFailureListener { future.completeExceptionally(it) }
-
         return future
     }
 
     /**
      * Get all chats ids from the user's chats collection
+     * in the users and chats nodes.
      */
     fun getChatsFromUser(userUID: String): CompletableFuture<List<DBChat>> {
         val future = CompletableFuture<List<DBChat>>()
         db.child(userUID).child("chats").get().addOnSuccessListener {
             if (it.value == null) {
+                Log.d("UserRTDB", "no chats")
                 future.complete(mutableListOf())
             } else {
-                val chatIds = it as List<String>
-                val chats = mutableListOf<DBChat>()
-                for (chatId in chatIds) {
-                    chatsRTDB.getChat(chatId).thenAccept { chat ->
-                        chats.add(chat)
-                    }
+                Log.d("UserRTDB", "chats received $it")
+                val chatIds = it.value as HashMap<String, Int>
+
+                val futureDBChats = chatsRTDB.getChats(chatIds.keys.toList())
+                futureDBChats.thenAccept { dbChats ->
+                    future.complete(dbChats)
+                }.exceptionally { it2 ->
+                    future.completeExceptionally(it2)
+                    null
                 }
-                future.complete(chats)
             }
         }.addOnFailureListener {
+            Log.w("UserRTDB", "Error getting chats", it)
             future.completeExceptionally(it)
         }
         return future

@@ -8,10 +8,13 @@ import com.github.sdp.tarjetakuna.utils.Utils
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.After
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeUnit
 
 /**
  * Tests for [MessagesRTDB]
@@ -45,8 +48,7 @@ class MessagesRTDBTest {
     fun test_addGetMessageDB() {
 
         // add message in db
-        val task = messagesRTDB.addMessage(ChatsData.fakeDBMessage1_1)
-        Utils.waitUntilTrue(10, 100) { task.isComplete }
+        messagesRTDB.addMessage(ChatsData.fakeDBMessage1_1).get(1, TimeUnit.SECONDS)
 
         // get message from db
         messagesRTDB.getMessage(ChatsData.fakeDBMessage1_1.uid).thenAccept { message ->
@@ -64,8 +66,7 @@ class MessagesRTDBTest {
     @Test
     fun test_removeMessageDB() {
         // add message in db
-        val task1 = messagesRTDB.addMessage(ChatsData.fakeDBMessage1_2)
-        Utils.waitUntilTrue(10, 100) { task1.isComplete }
+        messagesRTDB.addMessage(ChatsData.fakeDBMessage1_2).get(1, TimeUnit.SECONDS)
 
         // get message from db
         messagesRTDB.getMessage(ChatsData.fakeDBMessage1_2.uid).thenAccept { message ->
@@ -80,8 +81,8 @@ class MessagesRTDBTest {
         }.get()
 
         // remove message from db
-        val task2 = messagesRTDB.removeMessage(ChatsData.fakeDBMessage1_2.uid)
-        Utils.waitUntilTrue(10, 100) { task2.isComplete }
+        val future2 = messagesRTDB.removeMessage(ChatsData.fakeDBMessage1_2.uid)
+        Utils.waitUntilTrue(10, 100) { future2.isDone }
 
         // get message from db
         messagesRTDB.getMessage(ChatsData.fakeDBMessage1_2.uid).thenAccept { message ->
@@ -100,8 +101,7 @@ class MessagesRTDBTest {
     fun test_addGetMessage() {
 
         // add message in db
-        val task1 = messagesRTDB.addMessageToDatabase(ChatsData.fakeMessage1_1)
-        Utils.waitUntilTrue(10, 100) { task1.isComplete }
+        messagesRTDB.addMessageToDatabase(ChatsData.fakeMessage1_1).get(1, TimeUnit.SECONDS)
 
         // get message from db
         messagesRTDB.getMessageFromDatabase(ChatsData.fakeMessage1_1.uid).thenAccept { message ->
@@ -146,8 +146,7 @@ class MessagesRTDBTest {
 
         // add messages to db
         for (kv in hashMap.toList()) {
-            val task1 = messagesRTDB.addMessageToDatabase(kv.second)
-            Utils.waitUntilTrue(10, 100) { task1.isComplete }
+            messagesRTDB.addMessageToDatabase(kv.second).get(1, TimeUnit.SECONDS)
         }
 
         // get messages from db
@@ -191,4 +190,31 @@ class MessagesRTDBTest {
                 null
             }.get()
     }
+
+    @Test
+    fun test_clearMessages() {
+        val mDBMessages = arrayListOf(ChatsData.fakeDBMessage1_1, ChatsData.fakeDBMessage1_2)
+
+        // add chats in db
+        mDBMessages.map { messagesRTDB.addMessage(it) }
+            .forEach { it.get(1, TimeUnit.SECONDS) }
+
+        // control before removing messages from db
+        mDBMessages.map {
+            messagesRTDB.getMessage(it.uid).get(1, TimeUnit.SECONDS)
+        }.forEach {
+            assertThat("message should be in db", it != null)
+        }
+
+        // clear messages
+        messagesRTDB.clearMessages().get(1, TimeUnit.SECONDS)
+
+        // get messages from db
+        mDBMessages.map {
+            assertThrows(ExecutionException::class.java) {
+                messagesRTDB.getMessage(it.uid).get(1, TimeUnit.SECONDS)
+            }
+        }
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.github.sdp.tarjetakuna.database
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.sdp.tarjetakuna.model.Chat
 import com.github.sdp.tarjetakuna.model.Message
 import com.github.sdp.tarjetakuna.utils.ChatsData
 import com.github.sdp.tarjetakuna.utils.FBEmulator
@@ -9,10 +8,13 @@ import com.github.sdp.tarjetakuna.utils.Utils
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.After
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeUnit
 
 /**
  * Tests for [ChatsRTDB]
@@ -25,7 +27,7 @@ class ChatsRTDBTest {
         val fbEmulator = FBEmulator()
     }
 
-    val chatsRTDB = ChatsRTDB()
+    private val chatsRTDB = ChatsRTDB()
 
 
     @Before
@@ -43,11 +45,10 @@ class ChatsRTDBTest {
     }
 
     @Test
-    fun test_addGetChatDB() {
+    fun test_AddAndGet_Chat() {
 
         // add chat in db
-        val task1 = chatsRTDB.addChat(ChatsData.fakeDBChat1)
-        Utils.waitUntilTrue(10, 100) { task1.isComplete }
+        chatsRTDB.addChat(ChatsData.fakeDBChat1).get(1, TimeUnit.SECONDS)
 
         // get chat from db
         chatsRTDB.getChat(ChatsData.fakeDBChat1.uid).thenAccept { chat ->
@@ -60,10 +61,33 @@ class ChatsRTDBTest {
     }
 
     @Test
-    fun test_removeChatDB() {
+    fun test_addGet_Chats() {
+
+        val mDBChats = arrayListOf(ChatsData.fakeDBChat1, ChatsData.fakeDBChat2).sortedBy { it.uid }
+
+        // add chat in db
+        chatsRTDB.addChat(ChatsData.fakeDBChat1)
+            .thenCompose { chatsRTDB.addChat(ChatsData.fakeDBChat2) }
+            .get(1, TimeUnit.SECONDS)
+
+        // get chat from db
+        chatsRTDB.getChats(mDBChats.map { it.uid }).thenAccept { chats ->
+            assertThat("same number of chat", chats.size, equalTo(mDBChats.size))
+            for (i in chats.indices) {
+                assertThat("chat is not fakeDBChat$i", chats[i], equalTo(mDBChats[i]))
+            }
+        }.exceptionally {
+            assertThat("error '$it' should not have happened", false)
+            null
+        }.get()
+
+    }
+
+    @Test
+    fun test_removeChat() {
         // add message in db
-        val task1 = chatsRTDB.addChat(ChatsData.fakeDBChat2)
-        Utils.waitUntilTrue(10, 100) { task1.isComplete }
+        val future1 = chatsRTDB.addChat(ChatsData.fakeDBChat2)
+        future1.get(1, TimeUnit.SECONDS)
 
         // get message from db
         chatsRTDB.getChat(ChatsData.fakeDBChat2.uid).thenAccept { message ->
@@ -75,8 +99,8 @@ class ChatsRTDBTest {
 
 
         // remove message from db
-        val task2 = chatsRTDB.removeChat(ChatsData.fakeDBChat2.uid)
-        Utils.waitUntilTrue(10, 100) { task2.isComplete }
+        val future2 = chatsRTDB.removeChat(ChatsData.fakeDBChat2.uid)
+        future2.get(1, TimeUnit.SECONDS)
 
         // get chat from db
         chatsRTDB.getChat(ChatsData.fakeDBChat2.uid).thenAccept { chat ->
@@ -92,10 +116,11 @@ class ChatsRTDBTest {
     }
 
     @Test
-    fun test_addGetChat() {
+    fun test_addAndGet_ChatFromDatabase() {
         // add chat in db
         val mChat = ChatsData.fakeChat1
-        waitForChatToBeAdded(mChat)
+        val future = chatsRTDB.addChatToDatabase(mChat)
+        future.get(1, TimeUnit.SECONDS)
 
         // get chat from db and check
         chatsRTDB.getChatFromDatabase(mChat.uid).thenAccept { chat ->
@@ -126,10 +151,57 @@ class ChatsRTDBTest {
     }
 
     @Test
+    fun test_addAndGet_ChatsFromDatabase() {
+        // add chat in db
+        val mChat1 = ChatsData.fakeChat1
+        val mChat2 = ChatsData.fakeChat2
+        val future = chatsRTDB.addChatToDatabase(mChat1)
+            .thenApply { chatsRTDB.addChatToDatabase(mChat2) }
+        future.get(1, TimeUnit.SECONDS)
+
+        val mChats = arrayListOf(mChat1, mChat2).sortedBy { it.uid }
+
+        // get chat from db and check
+        chatsRTDB.getChatsFromDatabase(arrayListOf(mChat1.uid, mChat2.uid)).thenAccept { it ->
+            val chats = it.sortedBy { it.uid }
+            assertThat("chats size is different", chats.size, equalTo(mChats.size))
+
+            for (i in mChats.indices) {
+                val chat = chats[i]
+                val mChat = mChats[i]
+
+                assertThat("chat should not be valid", chat.valid, equalTo(false))
+                assertThat("chat id is different", chat.uid, equalTo(mChat.uid))
+                assertThat("user1 id is different", chat.user1.uid, equalTo(mChat.user1.uid))
+                assertThat("user2 id is different", chat.user2.uid, equalTo(mChat.user2.uid))
+                for (message in chat.messages) {
+                    // check message in chat
+                    assertThat(
+                        "chat should contain message",
+                        mChat.messages.map { it.uid }.contains(message.uid),
+                        equalTo(true)
+                    )
+                    val filtered = chat.messages.filter { it.uid == message.uid }
+                    val mMessage = mChat.messages.filter { it.uid == message.uid }[0]
+
+                    assertThat("message should be once only in db chat", filtered.size, equalTo(1))
+
+                    checkMessageInChat(filtered[0], mMessage)
+                }
+            }
+
+
+        }.exceptionally {
+            assertThat("error '$it' should not have happened", false)
+            null
+        }.get()
+    }
+
+    @Test
     fun test_addMessageToChat() {
         // add chat in db
         val mChat = ChatsData.fakeChat2
-        waitForChatToBeAdded(mChat)
+        chatsRTDB.addChatToDatabase(mChat).get(2, TimeUnit.SECONDS)
 
         // add message to chat
         val mMessage = ChatsData.fakeDBMessage1_1
@@ -148,7 +220,7 @@ class ChatsRTDBTest {
     fun test_addListenersOnChats() {
         // add chat in db
         val mChat = ChatsData.fakeChat2
-        waitForChatToBeAdded(mChat)
+        chatsRTDB.addChatToDatabase(mChat).get(1, TimeUnit.SECONDS)
 
         // add chat listener to chat
         var called = false
@@ -180,17 +252,32 @@ class ChatsRTDBTest {
         chatsRTDB.removeChatListener(mChat.uid)
     }
 
-    private fun waitForChatToBeAdded(chat: Chat) {
-        val tasks1 = chatsRTDB.addChatToDatabase(chat)
-        Utils.waitUntilTrue(10, 100) {
-            var complete = false
-            for (task in tasks1) {
-                if (task.isComplete) {
-                    complete = true
-                    break
-                }
-            }
-            complete
+    @Test
+    fun test_removeChatListener_noListener() {
+        val mChat = ChatsData.fakeChat2
+        chatsRTDB.removeChatListener(mChat.uid)
+
+        assert(true)
+    }
+
+    @Test
+    fun test_clearChats() {
+        val mDBChats = arrayListOf(ChatsData.fakeDBChat1, ChatsData.fakeDBChat2)
+
+        // add chats in db
+        mDBChats.map { chatsRTDB.addChat(it) }
+            .forEach { it.get(1, TimeUnit.SECONDS) }
+
+        // control before removing chats from db
+        val dbChats0 = chatsRTDB.getChats(mDBChats.map { it.uid }).get(1, TimeUnit.SECONDS)
+        assertThat("chats size not correct", dbChats0.size, equalTo(mDBChats.size))
+
+        // clear chats
+        chatsRTDB.clearChats().get(1, TimeUnit.SECONDS)
+
+        // get chats from db
+        assertThrows(ExecutionException::class.java) {
+            chatsRTDB.getChats(mDBChats.map { it.uid }).get(1, TimeUnit.SECONDS)
         }
     }
 
