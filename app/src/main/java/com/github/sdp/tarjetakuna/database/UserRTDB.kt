@@ -73,7 +73,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     /**
      * Adds a list of cards to the users collection.
      */
-    fun addMultipleCards(cards: List<DBMagicCard>, userUID: String, possession: CardPossession) {
+    fun addMultipleCards(cards: List<DBMagicCard>, userUID: String) {
         for (card in cards) {
             addCard(card, userUID)
         }
