@@ -1,9 +1,10 @@
 package com.github.sdp.tarjetakuna.ui
 
+import android.Manifest
 import android.os.Bundle
-import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
+import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -12,6 +13,8 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.GrantPermissionRule
+import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
@@ -20,13 +23,12 @@ import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
+import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.hamcrest.CoreMatchers.not
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 
@@ -34,8 +36,20 @@ import org.mockito.Mockito
 @RunWith(AndroidJUnit4::class)
 class SingleCardManageCollectionTest {
 
-    private lateinit var scenario: FragmentScenario<SingleCardFragment>
+    companion object {
+        @get:ClassRule
+        @JvmStatic
+        val fbEmulator = FBEmulator()
+    }
 
+    @Rule
+    @JvmField
+    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    private lateinit var activityRule: ActivityScenario<MainActivity>
     private val card = CommonMagicCard.aeronautTinkererCard
 
     private val cardQuantityText = onView(withId(R.id.singleCard_quantity_text))
@@ -50,12 +64,19 @@ class SingleCardManageCollectionTest {
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
+        Mockito.`when`(mockedAuth.getUserUID()).thenReturn("test")
+
         SignIn.setSignIn(mockedAuth)
 
         // close the database that could have been opened because of the previous tests
         LocalDatabaseProvider.closeDatabase("test")
         LocalDatabaseProvider.closeDatabase("test2")
         LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+
+        LocalDatabaseProvider.deleteDatabases(
+            ApplicationProvider.getApplicationContext(),
+            arrayListOf(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+        )
 
         LocalDatabaseProvider.setDatabase(
             ApplicationProvider.getApplicationContext(),
@@ -78,8 +99,10 @@ class SingleCardManageCollectionTest {
                     Gson().toJson(card)
                 )
             }
-        scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
-        scenario.moveToState(Lifecycle.State.STARTED)
+        activityRule = ActivityScenario.launch(MainActivity::class.java)
+        activityRule.onActivity {
+            it.changeFragment(R.id.nav_single_card, bundleArgs)
+        }
 
         Thread.sleep(1000)
         wantedButton.perform(scrollTo())
@@ -88,7 +111,6 @@ class SingleCardManageCollectionTest {
     @After
     fun tearDown() {
         Intents.release()
-        scenario.close()
         LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
     }
 

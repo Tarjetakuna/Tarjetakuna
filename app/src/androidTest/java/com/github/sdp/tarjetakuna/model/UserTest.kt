@@ -156,9 +156,9 @@ class UserTest {
     @Test
     fun removeMoreCardDoesNotGoBelowZero() {
         runBlocking {
-            validUser.addCard(card, CardPossession.OWNED)
-            validUser.removeCard(card, CardPossession.OWNED)
-            validUser.removeCard(card, CardPossession.OWNED)
+            validUser.addCard(card, CardPossession.OWNED).get()
+            validUser.removeCard(card, CardPossession.OWNED).get()
+            validUser.removeCard(card, CardPossession.OWNED).get()
             var count = 0L
             withTimeout(1000) {
                 fbEmulator.fb.reference

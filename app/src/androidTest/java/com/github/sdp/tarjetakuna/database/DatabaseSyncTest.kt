@@ -7,6 +7,7 @@ import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.google.android.gms.tasks.Tasks
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.hamcrest.MatcherAssert.assertThat
@@ -15,6 +16,7 @@ import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
 import org.mockito.Mockito
+import java.util.concurrent.TimeUnit
 
 class DatabaseSyncTest {
 
@@ -46,7 +48,8 @@ class DatabaseSyncTest {
             true
         )
         userRTDB = UserRTDB(FirebaseDB())
-        FirebaseDB().clearDatabase()
+        val task = FirebaseDB().clearDatabase()
+        Tasks.await(task, 5, TimeUnit.SECONDS)
     }
 
     @After
@@ -56,7 +59,8 @@ class DatabaseSyncTest {
             ApplicationProvider.getApplicationContext(),
             arrayListOf(LocalDatabaseProvider.CARDS_DATABASE_NAME)
         )
-        FirebaseDB().clearDatabase()
+        val task = FirebaseDB().clearDatabase()
+        Tasks.await(task, 5, TimeUnit.SECONDS)
     }
 
     @Test

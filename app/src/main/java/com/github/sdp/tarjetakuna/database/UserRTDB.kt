@@ -371,4 +371,24 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         return future
     }
 
+    fun replaceCardFromUser(
+        userUID: String,
+        card: DBMagicCard
+    ): CompletableFuture<Boolean> {
+        val cardUID = card.getFbKey()
+        val future = CompletableFuture<Boolean>()
+        val cardRef = db.child(userUID).child(card.possession.toString().lowercase()).child(cardUID)
+
+        cardsRTDB.addCardToGlobalCollection(card)
+        cardRef.child("quantity").setValue(card.quantity).addOnSuccessListener {
+            cardRef.child("lastUpdated").setValue(card.lastUpdate).addOnSuccessListener {
+                future.complete(true)
+            }.addOnFailureListener {
+                future.completeExceptionally(it)
+            }
+
+        }
+        return future
+    }
+
 }
