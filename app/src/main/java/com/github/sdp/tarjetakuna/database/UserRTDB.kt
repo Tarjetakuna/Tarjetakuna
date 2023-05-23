@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna.database
 
+import android.util.Log
 import com.github.sdp.tarjetakuna.model.Coordinates
 import com.google.firebase.database.*
 import com.google.gson.Gson
@@ -73,10 +74,17 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     /**
      * Adds a list of cards to the users collection.
      */
-    fun addMultipleCards(cards: List<DBMagicCard>, userUID: String) {
+    fun addMultipleCards(cards: List<DBMagicCard>, userUID: String): CompletableFuture<Boolean> {
+        val listOfFutures = mutableListOf<CompletableFuture<Boolean>>()
+        val completableFuture = CompletableFuture<Boolean>()
         for (card in cards) {
-            addCard(card, userUID)
+            val future = addCard(card, userUID)
+            listOfFutures.add(future)
         }
+        CompletableFuture.allOf(*listOfFutures.toTypedArray()).thenRun {
+            completableFuture.complete(true)
+        }
+        return completableFuture
     }
 
     /**
@@ -133,10 +141,13 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     /**
      * Removes a list of cards from the users collection.
      */
-    fun removeAllCopyOfCard(userUID: String, fbcard: DBMagicCard) {
+    fun removeAllCopyOfCard(userUID: String, fbcard: DBMagicCard): CompletableFuture<Boolean> {
         val cardUID = fbcard.getFbKey()
         val fbpossession = fbcard.possession.toString().lowercase()
         val cardRef = db.child(userUID).child(fbpossession).child(cardUID)
+
+        val completableFuture = CompletableFuture<Boolean>()
+
         cardRef.runTransaction(object : Transaction.Handler {
             override fun doTransaction(currentData: MutableData): Transaction.Result {
                 val quantityRef = currentData.child("quantity")
@@ -153,10 +164,15 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
             ) {
                 if (error != null || !committed) {
                     cardRef.child("quantity")
-                        .setValue(ServerValue.increment(0))  // Rollback the transaction
+                        .setValue(ServerValue.increment(0)) // Rollback the transaction
+                    completableFuture.complete(false) // Card removal failed
+
+                } else {
+                    completableFuture.complete(true) // Card removal succeeded
                 }
             }
         })
+        return completableFuture
     }
 
     /**
@@ -328,6 +344,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         val cards = mutableListOf<DBMagicCard>()
 
         getAllCardCodesFromUserPossession(userUID, possession).thenApply { cardCode ->
+            Log.e("cardCode", possession.toString())
             val cardCodeMap = cardCode.value as HashMap<*, *>
             val cardFutures = mutableListOf<CompletableFuture<DBMagicCard>>()
 
@@ -346,6 +363,10 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                 }
                 future.complete(cards)
             }
+        }.exceptionally { ex ->
+            Log.e("cardCode", possession.toString())
+            future.completeExceptionally(ex)
+            null
         }
         return future
     }
