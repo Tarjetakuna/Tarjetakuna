@@ -1,18 +1,31 @@
 package com.github.sdp.tarjetakuna.ui.browser;
 
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.action.ViewActions.swipeRight
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
+import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
+import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
+import com.github.sdp.tarjetakuna.ui.authentication.SignIn
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 
 @RunWith(AndroidJUnit4::class)
 class BrowserFragmentTest {
@@ -23,6 +36,46 @@ class BrowserFragmentTest {
     fun setUp() {
         activityRule = ActivityScenario.launch(MainActivity::class.java)
 
+        Intents.init()
+
+        // mock the authentication
+        val mockedAuth = Mockito.mock(Authenticator::class.java)
+        Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
+        Mockito.`when`(mockedAuth.getUserUID()).thenReturn("test")
+        SignIn.setSignIn(mockedAuth)
+
+        // close the database that could have been opened because of the previous tests
+        LocalDatabaseProvider.closeDatabase("test")
+        LocalDatabaseProvider.closeDatabase("test2")
+        LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+
+        LocalDatabaseProvider.setDatabase(
+            ApplicationProvider.getApplicationContext(),
+            LocalDatabaseProvider.CARDS_DATABASE_NAME,
+            true
+        )
+
+        val magicDAO = LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+            ?.magicCardDao()
+        runBlocking {
+            withTimeout(5000) {
+                magicDAO?.insertCard(
+                    DBMagicCard(
+                        CommonMagicCard.venomousHierophantCard,
+                        CardPossession.OWNED,
+                        1
+                    )
+                )
+                magicDAO?.insertCard(
+                    DBMagicCard(
+                        CommonMagicCard.aeronautTinkererCard,
+                        CardPossession.WANTED,
+                        1
+                    )
+                )
+            }
+        }
+
         // Get a reference to the fragment's view
         activityRule.onActivity { activity ->
             activity.changeFragment(R.id.nav_browser, null)
@@ -31,7 +84,9 @@ class BrowserFragmentTest {
 
     @After
     fun after() {
+        LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
         activityRule.close()
+        Intents.release()
     }
 
     @Test
@@ -48,19 +103,31 @@ class BrowserFragmentTest {
 
     @Test
     fun testTabLayoutHasCorrectTabs() {
-        onView(withText("User"))
+        onView(withText(R.string.browser_page_adapter_collection_title))
             .check(matches(isDisplayed()))
-        onView(withText("BrowserApi"))
+        onView(withText(R.string.browser_page_adapter_wanted_title))
             .check(matches(isDisplayed()))
     }
 
     @Test
     fun testScrollingBetweenTabsWorksCorrectly() {
-        onView(withId(R.id.user_collection_filter_button)).check(matches(isDisplayed()))
+        onView(withId(R.id.user_collection_list_cards)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
+                0
+            )
+        ).check(matches(hasDescendant(withText(CommonMagicCard.venomousHierophantCard.name))))
         onView(withId(R.id.viewPager)).perform(swipeLeft())
-        onView(withId(R.id.api_random_card_button)).check(matches(isDisplayed()))
+        onView(withId(R.id.user_collection_list_cards)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
+                0
+            )
+        ).check(matches(hasDescendant(withText(CommonMagicCard.aeronautTinkererCard.name))))
         onView(withId(R.id.viewPager)).perform(swipeRight())
-        onView(withId(R.id.user_collection_filter_button)).check(matches(isDisplayed()))
+        onView(withId(R.id.user_collection_list_cards)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
+                0
+            )
+        ).check(matches(hasDescendant(withText(CommonMagicCard.venomousHierophantCard.name))))
     }
 
 }

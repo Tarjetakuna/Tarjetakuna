@@ -23,7 +23,7 @@ import com.google.gson.Gson
 /**
  * Fragment that displays the cards in a recycler view
  */
-class UserCollectionFragment(val possession: CardPossession) : Fragment() {
+class UserCollectionFragment(val possession: CardPossession = CardPossession.OWNED) : Fragment() {
 
     private var _binding: FragmentUserCollectionBinding? = null
     private lateinit var viewModel: UserCollectionViewModel
@@ -36,6 +36,9 @@ class UserCollectionFragment(val possession: CardPossession) : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        Log.i("UserCollectionFragment", "onCreateView")
+
         viewModel = ViewModelProvider(
             this,
             UserCollectionViewModelFactory(possession)
@@ -64,6 +67,7 @@ class UserCollectionFragment(val possession: CardPossession) : Fragment() {
     }
 
     override fun onResume() {
+        Log.i("UserCollectionFragment", "onResume")
         super.onResume()
         viewModel.getCardsFromDatabase()
     }
@@ -240,6 +244,9 @@ class UserCollectionFragment(val possession: CardPossession) : Fragment() {
 
 }
 
+/**
+ * Factory for the ViewModel
+ */
 class UserCollectionViewModelFactory(possession: CardPossession) :
     ViewModelProvider.Factory {
     private val viewModelPossession: CardPossession
@@ -251,4 +258,5 @@ class UserCollectionViewModelFactory(possession: CardPossession) :
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return UserCollectionViewModel(viewModelPossession) as T
     }
+
 }

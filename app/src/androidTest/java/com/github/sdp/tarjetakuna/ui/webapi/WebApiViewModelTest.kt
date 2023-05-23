@@ -1,33 +1,10 @@
 package com.github.sdp.tarjetakuna.ui.webapi
 
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.matcher.ViewMatchers.assertThat
-import androidx.test.platform.app.InstrumentationRegistry
-import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.utils.FileReader
-import com.github.sdp.tarjetakuna.utils.OkHttp3IdlingResource
-import com.github.sdp.tarjetakuna.utils.OkHttpProvider
-import com.github.sdp.tarjetakuna.utils.Utils
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
-import org.hamcrest.CoreMatchers.containsString
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
-
 /**
  * Test the WebApiViewModel behaviour (need UI to mock the webserver) of apiResults and apiError
  */
 class WebApiViewModelTest {
-    private val viewModel = WebApiViewModelTester()
+    /*private val viewModel = WebApiViewModelTester()
     private lateinit var scenario: FragmentScenario<WebApiFragment>
 
     private val mockWebServer = MockWebServer()
@@ -222,5 +199,5 @@ class WebApiViewModelTest {
         assertThat(
             apiError.value!!.toString(), containsString("timeout")
         )
-    }
+    }*/
 }

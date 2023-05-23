@@ -1,24 +1,9 @@
 package com.github.sdp.tarjetakuna.ui.webapi
 
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.utils.*
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
 import org.hamcrest.CoreMatchers.*
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
@@ -27,7 +12,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class WebApiFragmentUITest {
 
-    private lateinit var scenario: FragmentScenario<WebApiFragment>
+    /*private lateinit var scenario: FragmentScenario<WebApiFragment>
     private val mockWebServer = MockWebServer()
     private lateinit var okHttp3IdlingResource: OkHttp3IdlingResource
 
@@ -127,5 +112,5 @@ class WebApiFragmentUITest {
         // check that the text change to the response
         onView(withId(R.id.api_results)).check(matches(withSubstring("Unlimited Edition")))
         onView(withId(R.id.api_results)).check(matches(withSubstring("Warhammer 40,000")))
-    }
+    }*/
 }

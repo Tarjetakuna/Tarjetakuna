@@ -18,7 +18,6 @@ import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
-import com.github.sdp.tarjetakuna.ui.browser.BrowserFragment
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -32,7 +31,7 @@ import org.mockito.Mockito
 @RunWith(AndroidJUnit4::class)
 class UserCollectionFragmentTest {
 
-    private lateinit var scenario: FragmentScenario<BrowserFragment>
+    private lateinit var scenario: FragmentScenario<UserCollectionFragment>
 
     private val cardText = "Ambush Paratrooper 05"
     private val quantityText = "4X"
@@ -276,9 +275,9 @@ class UserCollectionFragmentTest {
 
     @Test
     fun multipleCopyOfTheSameCard() {
-        onView(withId(R.id.browser_searchbar)).perform(click())
-        onView(withId(R.id.browser_searchbar)).perform(typeText(cardText))
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_searchbar)).perform(click())
+        onView(withId(R.id.user_collection_searchbar)).perform(typeText(cardText))
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
