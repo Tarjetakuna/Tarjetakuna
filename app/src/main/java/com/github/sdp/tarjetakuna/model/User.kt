@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna.model
 
+
 import android.util.Log
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBChat
@@ -8,6 +9,7 @@ import com.github.sdp.tarjetakuna.database.Database
 import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.database.UsernamesRTDB
+import com.github.sdp.tarjetakuna.database.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import java.util.concurrent.CompletableFuture
@@ -80,21 +82,29 @@ data class User(
 
     /**
      * Adds a card to the user's collection with the given possession.
+     * Returns true if the operation succeeded, false otherwise.
      */
-    fun addCard(card: MagicCard, possession: CardPossession) {
+    fun addCard(card: MagicCard, possession: CardPossession): CompletableFuture<Boolean> {
         val fbCard = card.toDBMagicCard(possession)
         cards.add(fbCard)
-        userRTDB.addCard(fbCard, uid)
+        return userRTDB.addCard(fbCard, uid)
     }
 
     /**
      * Adds a list of cards to the user's collection with the given possessions.
      */
-    fun addMultipleCards(cards: List<MagicCard>, possession: List<CardPossession>) {
+    fun addMultipleCards(
+        cards: List<MagicCard>,
+        possession: List<CardPossession>
+    ): CompletableFuture<Boolean> {
         val cardsWithPossession = cards.zip(possession)
-        for ((card, pos) in cardsWithPossession) {
-            addCard(card, pos)
-        }
+        val completableFutures = cardsWithPossession.map { (card, pos) ->
+            CompletableFuture.supplyAsync { addCard(card, pos) }
+        }.toTypedArray()
+
+        return CompletableFuture.allOf(*completableFutures)
+            .thenApply { true }
+            .exceptionally { false }
     }
 
     /**
@@ -146,4 +156,10 @@ data class User(
     }
 
 
+	/**
+     * Removes all copy of a card from the user's collection
+     */
+    fun removeAllCopyOfCard(card: MagicCard, possession: CardPossession) {
+        userRTDB.removeAllCopyOfCard(uid, card.toDBMagicCard(possession))
+    }
 }

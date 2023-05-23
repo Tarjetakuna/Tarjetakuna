@@ -10,5 +10,6 @@
 .log
 local.properties
 database-debug.log
-firebase-debug.log
 ui-debug.log
+FETCH_HEAD
+firebase-debug.log

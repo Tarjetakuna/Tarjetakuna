@@ -11,13 +11,11 @@ import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
+import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 
@@ -37,11 +35,18 @@ class LocalDatabaseTest {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
+    companion object {
+        @get:ClassRule
+        @JvmStatic
+        val fbEmulator = FBEmulator()
+    }
+
     @Before
     fun setUp() {
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
+        Mockito.`when`(mockedAuth.getUserUID()).thenReturn("test")
         SignIn.setSignIn(mockedAuth)
 
         // close the database that could have been opened because of the previous tests
@@ -130,4 +135,5 @@ class LocalDatabaseTest {
         }
         assert(databaseCards.isEmpty())
     }
+
 }

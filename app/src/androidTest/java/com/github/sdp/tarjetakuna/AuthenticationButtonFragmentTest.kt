@@ -8,8 +8,10 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
+import com.github.sdp.tarjetakuna.utils.FBEmulator
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.ClassRule
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,6 +28,12 @@ class AuthenticationButtonFragmentTest {
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
+
+    companion object {
+        @get:ClassRule
+        @JvmStatic
+        val fbEmulator = FBEmulator()
+    }
 
     @Before
     fun setUp() {
