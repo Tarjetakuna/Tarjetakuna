@@ -57,4 +57,16 @@ class CoordinatesTest {
         val coordinates2 = null
         assertEquals(false, coordinates1 == coordinates2)
     }
+
+    @Test
+    fun distanceKmToTest() {
+        val coordinates1 = Coordinates(0.0, 0.0)
+        val coordinates2 = Coordinates(32.67, 19.42)
+        val coordinates3 = Coordinates(-23.9, 78.0)
+
+        assertEquals(0.0, coordinates1.distanceKmTo(coordinates1), 0.1)
+        assertEquals(8789.10, coordinates1.distanceKmTo(coordinates3), 0.1)
+        assertEquals(8838.22, coordinates2.distanceKmTo(coordinates3), 0.1)
+        assertEquals(4164.0, coordinates1.distanceKmTo(coordinates2), 0.1)
+    }
 }
