@@ -9,9 +9,7 @@ import com.github.sdp.tarjetakuna.database.Database
 import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.database.UsernamesRTDB
-import com.github.sdp.tarjetakuna.database.*
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -19,14 +17,13 @@ import java.util.concurrent.CompletableFuture
  */
 data class User(
     val uid: String,
-    var username: String,
-    var cards: MutableList<DBMagicCard>,
-    var location: Coordinates,
+    val username: String,
+    var cards: MutableList<DBMagicCard> = mutableListOf(),
+    var location: Coordinates = Coordinates(),
     var chats: MutableList<DBChat> = mutableListOf(),
     var valid: Boolean = true,
     val database: Database = FirebaseDB(),
 ) {
-    private var db: DatabaseReference
     private var userRTDB: UserRTDB
     private var usernamesRTDB: UsernamesRTDB
 
@@ -39,7 +36,6 @@ data class User(
     )
 
     init {
-        db = database.returnDatabaseReference()
         userRTDB = UserRTDB(database)
         usernamesRTDB = UsernamesRTDB(database)
 
