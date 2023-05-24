@@ -386,6 +386,9 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
             })
     }
 
+    /**
+     * Remove the listener from the user's chats collection.
+     */
     fun removeChatsListener(userUID: String) {
         chatsListener?.let { db.child(userUID).child("chats").removeEventListener(it) }
     }

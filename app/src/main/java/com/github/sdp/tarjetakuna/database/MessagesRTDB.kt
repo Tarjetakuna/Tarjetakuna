@@ -54,6 +54,16 @@ class MessagesRTDB(database: Database = FirebaseDB()) {
     }
 
     /**
+     * Get some [DBMessage]s from the messages table.
+     */
+    fun getMessages(messagesUID: List<String>): CompletableFuture<List<DBMessage>> {
+        val messagesFuture: List<CompletableFuture<DBMessage>> = messagesUID.map { getMessage(it) }
+
+        return CompletableFuture.allOf(*messagesFuture.toTypedArray())
+            .thenApply { messagesFuture.map { it.get() } }
+    }
+
+    /**
      * Remove a message from the messages table.
      */
     fun removeMessage(messageUID: String): CompletableFuture<String> {

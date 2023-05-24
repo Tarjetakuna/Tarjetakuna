@@ -6,24 +6,31 @@ import androidx.lifecycle.ViewModel
 import com.github.sdp.tarjetakuna.database.ChatsRTDB
 import com.github.sdp.tarjetakuna.model.Chat
 import com.github.sdp.tarjetakuna.model.CurrentUser
-import com.github.sdp.tarjetakuna.model.User
-import com.github.sdp.tarjetakuna.utils.ChatsData
+import com.github.sdp.tarjetakuna.model.CurrentUserInterface
 
 class ChatListViewModel : ViewModel() {
 
     companion object {
         private const val TAG = "ChatListViewModel"
-
-        var o_currentUser: User = ChatsData.fakeUser1
+        var currentUser: CurrentUserInterface = CurrentUser
 
         val o_ChatRTDB = ChatsRTDB()
+        val o_chats = MutableLiveData<MutableList<Chat>>()
+
+        /**
+         * This method is used to set the current user interface to be used by the view model.
+         * FOR TESTING PURPOSES ONLY.
+         */
+        fun setCurrentUserInterface(newCurrentUser: CurrentUserInterface) {
+            currentUser = newCurrentUser
+        }
     }
 
     fun attachChatsListener() {
-        if (CurrentUser.isUserLoggedIn()) return
-        _currentUser.postValue(CurrentUser.getCurrentUser())
-        CurrentUser.attachChatsListener(listener = {
-            o_ChatRTDB.getChatsFromDatabase(CurrentUser.getCurrentUser().chats.map { it.uid })
+        if (currentUser.isUserLoggedIn()) return
+
+        currentUser.attachChatsListener(listener = {
+            o_ChatRTDB.getChatsFromDatabase(currentUser.getCurrentUser().chats.map { it.uid })
                 .thenAccept { chats ->
                     _chats.postValue(chats as MutableList<Chat>)
                 }
@@ -31,13 +38,10 @@ class ChatListViewModel : ViewModel() {
     }
 
     fun detachChatsListener() {
-        if (CurrentUser.isUserLoggedIn()) return
-        CurrentUser.detachChatsListener()
+        if (currentUser.isUserLoggedIn()) return
+        currentUser.detachChatsListener()
     }
 
-    private val _currentUser = MutableLiveData<User>()
-    val currentUser: LiveData<User> = _currentUser
-
-    private val _chats = MutableLiveData<MutableList<Chat>>()
+    private val _chats = o_chats
     val chats: LiveData<MutableList<Chat>> = _chats
 }

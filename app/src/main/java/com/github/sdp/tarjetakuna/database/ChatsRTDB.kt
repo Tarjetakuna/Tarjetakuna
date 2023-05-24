@@ -18,6 +18,8 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
     private var chatsTable: DatabaseReference
     private var messagesRTDB: MessagesRTDB
     private var chatsEventListener: HashMap<String, ValueEventListener> = HashMap()
+    private var chatListener: ValueEventListener? = null
+    private var chatUID_listening: String? = null
 
     companion object {
         private const val TAG = "ChatsRTDB"
@@ -242,5 +244,46 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
             future.completeExceptionally(it)
         }
         return future
+    }
+
+    /**
+     * Add a listener to the a chat to get updates
+     * from the chat and messages tables.
+     */
+    fun addChatListener(chatUID: String, listener: UserChatListener) {
+        if (chatListener != null && chatUID_listening != null) {
+            chatsTable.child(chatUID_listening!!).removeEventListener(chatListener!!)
+        }
+        chatListener =
+            chatsTable.child(chatUID).addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.w(TAG, "ValueEventListener:onDataChange snapshot: $snapshot")
+                    if (snapshot.value == null) {
+                        listener.onChatRemoved()
+                    } else {
+                        val chat = chatFromDBFormat(snapshot)
+                        messagesRTDB.getMessages(chat.messages).thenAccept { it ->
+                            val messages = it as ArrayList<DBMessage>
+                            listener.onChatChanged(messages)
+                        }.exceptionally { it2 ->
+                            Log.w(TAG, "Error getting messages for chat ${chat.uid}", it2)
+                            return@exceptionally null
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "Failed to read value.", error.toException())
+                }
+            })
+        chatUID_listening = chatUID
+    }
+
+    /**
+     * Remove the listener from the chat table.
+     */
+    fun removeChatListener() {
+        if (chatListener == null || chatUID_listening == null) return
+        chatListener?.let { chatsTable.child(chatUID_listening!!).removeEventListener(it) }
     }
 }

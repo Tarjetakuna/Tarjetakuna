@@ -1,33 +1,53 @@
 package com.github.sdp.tarjetakuna.model
 
-class CurrentUser {
-    companion object {
-        private var currentUser: User? = null
+object CurrentUser : CurrentUserInterface {
+    private var currentUser: User? = null
+    private var chatUID: String? = null
 
-        fun getCurrentUser(): User {
-            return currentUser!!
-        }
+    override fun getCurrentUser(): User {
+        return currentUser!!
+    }
 
-        fun setCurrentUser(user: User) {
-            currentUser = user
-            currentUser!!.addChatsListener()
-        }
+    override fun setCurrentUser(user: User) {
+        currentUser = user
+        currentUser!!.addChatsListener()
+    }
 
-        fun attachChatsListener(listener: () -> Unit) {
-            currentUser!!.addChatsListener(listener)
-        }
+    override fun attachChatsListener(listener: () -> Unit) {
+        currentUser!!.addChatsListener(listener)
+    }
 
-        fun detachChatsListener() {
-            currentUser!!.addChatsListener()
-        }
+    override fun detachChatsListener() {
+        currentUser!!.addChatsListener()
+    }
 
-        fun removeCurrentUser() {
-            currentUser!!.removeChatsListener()
-            currentUser = null
-        }
+    override fun setChatUID(chatUID: String) {
+        this.chatUID = chatUID
+    }
 
-        fun isUserLoggedIn(): Boolean {
-            return currentUser != null
-        }
+    override fun getChatUID(): String {
+        return chatUID!!
+    }
+
+    override fun removeChatUID() {
+        chatUID = null
+    }
+
+    override fun attachChatListener(listener: () -> Unit) {
+        currentUser!!.addChatListener(chatUID!!, listener)
+    }
+
+    override fun detachChatListener() {
+        currentUser!!.removeChatListener()
+    }
+
+    override fun removeCurrentUser() {
+        currentUser!!.removeChatsListener()
+        currentUser!!.removeChatListener()
+        currentUser = null
+    }
+
+    override fun isUserLoggedIn(): Boolean {
+        return currentUser != null
     }
 }

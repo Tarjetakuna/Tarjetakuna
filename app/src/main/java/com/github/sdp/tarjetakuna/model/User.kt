@@ -3,10 +3,13 @@ package com.github.sdp.tarjetakuna.model
 
 import android.util.Log
 import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.ChatsRTDB
 import com.github.sdp.tarjetakuna.database.DBChat
 import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.DBMessage
 import com.github.sdp.tarjetakuna.database.Database
 import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.database.UserChatListener
 import com.github.sdp.tarjetakuna.database.UserChatsListener
 import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.database.UsernamesRTDB
@@ -22,11 +25,13 @@ data class User(
     var cards: MutableList<DBMagicCard> = mutableListOf(),
     var location: Coordinates = Coordinates(),
     var chats: MutableList<DBChat> = mutableListOf(),
+    var messages: MutableList<DBMessage> = mutableListOf(),
     var valid: Boolean = true,
     val database: Database = FirebaseDB(),
 ) {
     private val userRTDB: UserRTDB = UserRTDB(database)
     private val usernamesRTDB: UsernamesRTDB = UsernamesRTDB(database)
+    private val chatsRTDB = ChatsRTDB(database)
 
     constructor(uid: String) : this(
         uid,
@@ -162,6 +167,25 @@ data class User(
 
     fun removeChatsListener() {
         userRTDB.removeChatsListener(uid)
+    }
+
+    fun addChatListener(chatUID: String, listener: (() -> Unit)? = null) {
+        val mListener: UserChatListener = object : UserChatListener {
+            override fun onChatRemoved() {
+                messages.clear()
+                if (listener != null) listener()
+            }
+
+            override fun onChatChanged(messagesChanged: List<DBMessage>) {
+                messages = messagesChanged.toMutableList()
+                if (listener != null) listener()
+            }
+        }
+        chatsRTDB.addChatListener(chatUID, mListener)
+    }
+
+    fun removeChatListener() {
+        chatsRTDB.removeChatListener()
     }
 
     private fun chatAlreadyExist(chat: DBChat): Boolean {
