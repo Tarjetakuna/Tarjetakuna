@@ -1,6 +1,12 @@
 package com.github.sdp.tarjetakuna.database
 
+import android.util.Log
 import com.github.sdp.tarjetakuna.model.Coordinates
+import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.model.User
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseReference
+import com.google.gson.Gson
 import com.google.firebase.database.*
 import java.util.concurrent.CompletableFuture
 
@@ -251,6 +257,103 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     }
 
     /**
+     * Get all users from the database
+     */
+    fun getUsers(): CompletableFuture<List<User>> {
+        val future = CompletableFuture<List<User>>()
+        val userFutures = mutableListOf<CompletableFuture<Void>>()
+        val users = mutableListOf<User>()
+        db.get().addOnSuccessListener { snapshot ->
+            for (user in snapshot.children) {
+                val uid = user.key.toString()
+                val username = user.child("username").value.toString()
+
+                val coordinates = user.child("location").run {
+                    val lat = child("lat").value?.toString()?.toDouble() ?: 0.0
+                    val long = child("long").value?.toString()?.toDouble() ?: 0.0
+                    Coordinates(lat, long)
+                }
+
+                val cards = mutableListOf<DBMagicCard>()
+                val ownedCardsFuture = cardsFromUser(uid, CardPossession.OWNED)
+                val wantedCardsFuture = cardsFromUser(uid, CardPossession.WANTED)
+
+                val userFuture = CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenRun {
+                    cards.addAll(ownedCardsFuture.get())
+                    cards.addAll(wantedCardsFuture.get())
+                    users.add(User(uid, username, cards, coordinates))
+                }
+                userFutures.add(userFuture)
+            }
+            CompletableFuture.allOf(*userFutures.toTypedArray()).thenRun {
+                future.complete(users)
+            }
+        }
+        return future
+    }
+
+    /**
+     * Get a user from the database by their username
+     */
+    fun getUserByUsername(username: String): CompletableFuture<User?> {
+        val future = CompletableFuture<User?>()
+        db.get().addOnSuccessListener { snapshot ->
+            for (user in snapshot.children) {
+                if (user.child("username").value.toString() == username) {
+                    val uid = user.key.toString()
+                    val coordinates = user.child("location").run {
+                        val lat = child("lat").value?.toString()?.toDouble() ?: 0.0
+                        val long = child("long").value?.toString()?.toDouble() ?: 0.0
+                        Coordinates(lat, long)
+                    }
+                    val ownedCardsFuture = cardsFromUser(uid, CardPossession.OWNED)
+                    val wantedCardsFuture = cardsFromUser(uid, CardPossession.WANTED)
+
+                    CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenAccept {
+                        val ownedCards = ownedCardsFuture.join()
+                        val wantedCards = wantedCardsFuture.join()
+
+                        val cards = mutableListOf<DBMagicCard>()
+                        cards.addAll(ownedCards)
+                        cards.addAll(wantedCards)
+
+                        future.complete(User(uid, username, cards, coordinates))
+                    }
+                    return@addOnSuccessListener
+                }
+            }
+            future.complete(null)
+        }
+        return future
+    }
+
+    private fun cardsFromUser(userUID: String, possession: CardPossession): CompletableFuture<MutableList<DBMagicCard>> {
+        val future = CompletableFuture<MutableList<DBMagicCard>>()
+        val cards = mutableListOf<DBMagicCard>()
+
+        getAllCardCodesFromUserPossession(userUID, possession).thenApply { cardCode ->
+            val cardCodeMap = cardCode.value as HashMap<*, *>
+            val cardFutures = mutableListOf<CompletableFuture<DBMagicCard>>()
+
+            for (code in cardCodeMap.keys) {
+                val cardFuture = cardsRTDB.getCardFromGlobalCollection(code.toString()).thenApply { card ->
+                    val dbCard = Gson().fromJson(card.value.toString(), DBMagicCard::class.java)
+                    dbCard.copy(possession = possession)
+                }
+                cardFutures.add(cardFuture)
+            }
+
+            CompletableFuture.allOf(*cardFutures.toTypedArray()).thenRun {
+                for (cardFuture in cardFutures) {
+                    cards.add(cardFuture.get())
+                }
+                future.complete(cards)
+            }
+        }
+        return future
+    }
+    
+    /*
      * Push the location of the user to the database.
      */
     fun pushUserLocation(userUID: String, location: Coordinates) {
