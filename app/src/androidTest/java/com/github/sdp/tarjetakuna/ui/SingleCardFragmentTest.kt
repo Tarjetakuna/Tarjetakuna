@@ -278,7 +278,7 @@ class SingleCardFragmentTest {
     fun testUserCanSeeUsersThatHaveTheCard() {
         val bundleArgs = Bundle().apply { putString("card", validJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
-        Thread.sleep(2000)
+        //Thread.sleep(2000)
         onView(withId(R.id.singleCard_scrollView)).perform(swipeUp())
 
         onView(withText(R.string.single_card_users_have)).check(matches(isDisplayed()))
@@ -295,7 +295,7 @@ class SingleCardFragmentTest {
     fun testUserCanSeeUsersThatWantTheCard() {
         val bundleArgs = Bundle().apply { putString("card", validJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
-        Thread.sleep(2000)
+        //Thread.sleep(2000)
         onView(withId(R.id.singleCard_scrollView)).perform(swipeUp())
 
         onView(withText(R.string.single_card_users_have)).check(matches(isDisplayed()))
