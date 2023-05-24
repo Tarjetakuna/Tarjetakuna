@@ -11,10 +11,10 @@ import com.google.gson.Gson
 data class DBMagicCard(
     val card: String,
     val possession: CardPossession,
-    var lastUpdate: Long,
+    val lastUpdate: Long,
     val code: String,
     val number: Int,
-    var quantity: Int,
+    val quantity: Int,
 ) {
     constructor(card: MagicCard) : this(
         card = Gson().toJson(card),

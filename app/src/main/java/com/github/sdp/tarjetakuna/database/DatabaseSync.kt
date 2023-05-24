@@ -3,7 +3,6 @@ package com.github.sdp.tarjetakuna.database
 import android.util.Log
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
-import com.google.firebase.database.DataSnapshot
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -32,7 +31,7 @@ object DatabaseSync {
         val f2 = processCardsByPossession(CardPossession.TRADE, userRTDB)
         val f3 = processCardsByPossession(CardPossession.WANTED, userRTDB)
 
-        CompletableFuture.allOf(f1, f2, f3).thenRun {
+        CompletableFuture.allOf(f1, f2, f3).thenAccept {
             Log.i("DatabaseSync", "sync: all cards processed")
             isSyncCompleted.complete(true)
         }
@@ -51,84 +50,31 @@ object DatabaseSync {
     ): CompletableFuture<Boolean> {
 
         val isSyncDone = CompletableFuture<Boolean>()
-        val cards = userRTDB.cardsFromUser(
-            SignIn.getSignIn().getUserUID()!!,
-            possession
-        )
 
         val listOfFirebaseCards = mutableListOf<DBMagicCard>()
-        val listOfFutures1 = mutableListOf<CompletableFuture<DataSnapshot>>()
-        cards.thenAccept { c ->
-            if (c != null) {
-                for (card in c) {
-                    val f1 = getCardQuantity(card, possession, userRTDB)
-                    // When the quantity is found,
-                    // We search for the last time it has been updated and then update the card
-                    f1.thenApply { quantity ->
-                        card.quantity = quantity.getValue(Int::class.java)!!
-                        Log.e(
-                            "DatabaseSync",
-                            "processCardsByPossession: ${card.getFbKey()}: ${quantity}"
-                        )
-                        // Get the last time the card has been updated
-                        val f2 = getLastUpdated(card, possession, userRTDB)
-                        f2.thenApply { lastUpdated ->
-                            card.lastUpdate = lastUpdated.value as Long
-                            syncCard(card, listOfFirebaseCards)
-                        }
-                    }
-                    listOfFutures1.add(f1)
-                }
-                // When all of them are done, we can sync the local database to the remote database
-                CompletableFuture.allOf(*listOfFutures1.toTypedArray())
-                    .thenRun {
-                        val f = syncLocalDBToFirebase(possession, userRTDB, listOfFirebaseCards)
-                        f.whenComplete { _, _ ->
-                            isSyncDone.complete(true)
-                        }
-                    }
+        val cards = userRTDB.getListOfFullCardsInfos(
+            SignIn.getSignIn().getUserUID()!!,
+            possession
+        )
+
+        cards.thenAccept {
+            val listOfFutures = mutableListOf<CompletableFuture<Boolean>>()
+            for (card in it) {
+                val future = syncCard(card, listOfFirebaseCards)
+                listOfFutures.add(future)
+            }
+            CompletableFuture.allOf(*listOfFutures.toTypedArray()).thenRun {
+                syncLocalDBToFirebase(possession, userRTDB, listOfFirebaseCards)
+                    .thenAccept(isSyncDone::complete)
             }
         }.exceptionally {
+            Log.i("DatabaseSync", "processCardsByPossession: There is no card in the firebase")
             addLocalDBToFirebase(possession, userRTDB)
-                .whenComplete { _, _ ->
-                    isSyncDone.complete(true)
-                }
+                .thenAccept(isSyncDone::complete)
             null
         }
+
         return isSyncDone
-    }
-
-    /**
-     * Get the quantity of a card from the remote database.
-     */
-    private fun getCardQuantity(
-        card: DBMagicCard,
-        possession: CardPossession,
-        userRTDB: UserRTDB
-    ): CompletableFuture<DataSnapshot> {
-        val quantity = userRTDB.getCardQuantityFromUserCollection(
-            SignIn.getSignIn().getUserUID()!!,
-            card.getFbKey(),
-            possession
-        )
-        return quantity
-    }
-
-    /**
-     * Get the last update of a card from the remote database.
-     */
-    private fun getLastUpdated(
-        card: DBMagicCard,
-        possession: CardPossession,
-        userRTDB: UserRTDB
-    ): CompletableFuture<DataSnapshot> {
-
-        val lastUpdate = userRTDB.getCardLastUpdatedFromUserPossession(
-            SignIn.getSignIn().getUserUID()!!,
-            card.getFbKey(),
-            possession
-        )
-        return lastUpdate
     }
 
     /**
@@ -140,10 +86,6 @@ object DatabaseSync {
         newCard: DBMagicCard,
         oldCard: DBMagicCard
     ): CompletableFuture<Boolean> {
-        Log.e(
-            "DatabaseSync",
-            "pushChanges: number of cards: ${newCard.quantity}, ${oldCard.quantity}"
-        )
 
         val isSyncDone = CompletableFuture<Boolean>()
         LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
@@ -172,7 +114,6 @@ object DatabaseSync {
         userRTDB: UserRTDB,
     ): CompletableFuture<Boolean> {
 
-        Log.e("DatabaseSync", "addLocalDBToFirebase: I am here")
         val isSyncDone = CompletableFuture<Boolean>()
 
         val scope = CoroutineScope(Dispatchers.Default)
@@ -189,8 +130,8 @@ object DatabaseSync {
                 SignIn.getSignIn().getUserUID()!!
             )
 
-            f1.whenComplete { _, _ ->
-                isSyncDone.complete(true)
+            f1.thenAccept {
+                isSyncDone.complete(it)
             }
         }
         return isSyncDone
@@ -201,7 +142,6 @@ object DatabaseSync {
      * Add a card to the local database.
      */
     private suspend fun addToLocalDatabase(card: DBMagicCard) {
-        Log.e("DatabaseSync", "addToLocalDatabase: I am here")
         LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
             .magicCardDao().insertCard(card)
     }
@@ -230,7 +170,6 @@ object DatabaseSync {
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
                     .magicCardDao().getCard(fbCard.code, fbCard.number.toString())
 
-            Log.i("DatabaseSync", "syncCard: ${localCard?.getFbKey()}: ${localCard?.quantity}")
             if (localCard == null) {
                 // Card is not in the local database, so we put it in the local database
                 addToLocalDatabase(fbCard)
@@ -239,14 +178,10 @@ object DatabaseSync {
                 // Card is in the local database, so we compare the last update
                 if (isOlderThan(localCard, fbCard)) {
                     pushChanges(fbCard, localCard)
-                        .whenComplete { _, _ ->
-                            isSyncDone.complete(true)
-                        }
+                        .thenAccept(isSyncDone::complete)
                 } else {
                     pushChanges(localCard, fbCard)
-                        .whenComplete { _, _ ->
-                            isSyncDone.complete(true)
-                        }
+                        .thenAccept(isSyncDone::complete)
                     cardToBeAdded = localCard
                 }
             }
@@ -260,13 +195,7 @@ object DatabaseSync {
      * Compare the last update of two cards.
      */
     private fun isOlderThan(card1: DBMagicCard, card2: DBMagicCard): Boolean {
-        return if (card1.lastUpdate <= card2.lastUpdate) {
-            Log.i("DatabaseSync", "card1 is older than card2")
-            true
-        } else {
-            Log.i("DatabaseSync", "card2 is older than card1")
-            false
-        }
+        return card1.lastUpdate <= card2.lastUpdate
     }
 
     /**
@@ -311,7 +240,7 @@ object DatabaseSync {
                 }
             }
 
-            CompletableFuture.allOf(*listOfFutures.toTypedArray()).thenRun {
+            CompletableFuture.allOf(*listOfFutures.toTypedArray()).thenAccept {
                 isSyncDone.complete(true)
             }
         }

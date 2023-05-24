@@ -1,7 +1,11 @@
 package com.github.sdp.tarjetakuna.database
 
+import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.model.Coordinates
+import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
+import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.google.android.gms.tasks.Tasks
 import org.hamcrest.MatcherAssert.assertThat
@@ -10,6 +14,7 @@ import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 import java.util.concurrent.TimeUnit
 
 @RunWith(AndroidJUnit4::class)
@@ -25,6 +30,11 @@ class UserRTDBTest {
 
     @Before
     fun setUp() {
+        val mockedAuth = Mockito.mock(Authenticator::class.java)
+        Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
+        Mockito.`when`(mockedAuth.getUserUID()).thenReturn("test")
+        SignIn.setSignIn(mockedAuth)
+
         val task = FirebaseDB().clearDatabase()
         Tasks.await(task, 5, TimeUnit.SECONDS)
     }
@@ -45,6 +55,29 @@ class UserRTDBTest {
             assertThat("error '$it' should not have happened", false)
             null
         }.get()
+    }
+
+    @Test
+    fun getListOfFullCardsInfoWorks() {
+        val card1 = CommonMagicCard.aeronautTinkererCard.toDBMagicCard(CardPossession.OWNED)
+            .copy(lastUpdate = 20)
+        val card2 = CommonMagicCard.venomousHierophantCard.toDBMagicCard(CardPossession.OWNED)
+            .copy(lastUpdate = 30)
+
+        userRTDB.addCard(card1, SignIn.getSignIn().getUserUID()!!).get()
+        userRTDB.addCard(card2, SignIn.getSignIn().getUserUID()!!).get()
+
+        userRTDB.getListOfFullCardsInfos(SignIn.getSignIn().getUserUID()!!, CardPossession.OWNED)
+            .thenAccept {
+                assertThat("size should be 2", it.size == 2)
+                Log.e("test", "IL Y A $it")
+                assertThat("card1 should be in the list", it.contains(card1.copy(quantity = 1)))
+                assertThat("card2 should be in the list", it.contains(card2.copy(quantity = 1)))
+            }
+            .exceptionally {
+                assertThat("error '$it' should not have happened", false)
+                null
+            }.get()
     }
 
 }
