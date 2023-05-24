@@ -5,7 +5,13 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
 
+/**
+ * Custom TypeSafeMatcher to use when you want the Xth view that matches a matcher
+ */
 object WithIndexSafeMatcher {
+    /**
+     * Matcher to check if a view matches a matcher and is the index view that matches
+     */
     fun withIndex(matcher: Matcher<View?>, index: Int) = object : TypeSafeMatcher<View?>() {
 
         var currentIndex = 0
