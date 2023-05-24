@@ -1,7 +1,6 @@
 package com.github.sdp.tarjetakuna.ui.browser
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +27,7 @@ class UserCollectionFragment(val possession: CardPossession = CardPossession.OWN
     private var _binding: FragmentUserCollectionBinding? = null
     private lateinit var viewModel: UserCollectionViewModel
     private val binding get() = _binding!!
-    
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,7 +62,6 @@ class UserCollectionFragment(val possession: CardPossession = CardPossession.OWN
     }
 
     override fun onResume() {
-        Log.i("UserCollectionFragment", "onResume")
         super.onResume()
         viewModel.getCardsFromDatabase()
     }
@@ -233,7 +231,6 @@ class UserCollectionFragment(val possession: CardPossession = CardPossession.OWN
     }
 
     override fun onDestroyView() {
-        Log.i("UserCollectionFragment", "onDestroyView")
         super.onDestroyView()
         _binding = null
     }

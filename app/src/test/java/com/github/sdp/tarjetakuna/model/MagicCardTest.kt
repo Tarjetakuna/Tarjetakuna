@@ -12,7 +12,7 @@ class MagicCardTest {
     private val validName = "Angel of Mercy"
     private val validText = "Flying"
     private val validLayout = MagicLayout.NORMAL
-    private val validCMC = 7
+    private val validCMC = 7.0
     private val validManaCost = "{5}{W}{W}"
     private val validSet = MagicSet("M15", "Magic 2015")
     private val validNumber = 56
@@ -112,7 +112,7 @@ class MagicCardTest {
                 validName,
                 validText,
                 validLayout,
-                -1,
+                -1.0,
                 validManaCost,
                 validSet,
                 validNumber,
