@@ -2,10 +2,15 @@ package com.github.sdp.tarjetakuna.database
 
 import android.util.Log
 import com.github.sdp.tarjetakuna.model.Chat
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
 import com.github.sdp.tarjetakuna.model.Coordinates
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.ServerValue
+import com.google.firebase.database.Transaction
+import com.google.firebase.database.ValueEventListener
+import java.util.Date
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -13,9 +18,14 @@ import java.util.concurrent.CompletableFuture
  */
 class UserRTDB(database: Database) { //Firebase.database.reference.child("users") //assumption: we check add ability in User
 
+    companion object {
+        private const val TAG = "UserRTDB"
+    }
+
     private var db: DatabaseReference
     private var cardsRTDB: CardsRTDB
     private var chatsRTDB: ChatsRTDB
+    private var chatsListener: ValueEventListener? = null
 
     init {
         this.db = database.usersTable()
@@ -268,11 +278,11 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         }.exceptionally {
             future.completeExceptionally(it)
             null
-		}
+        }
         return future
     }
-	
-	/**
+
+    /**
      * Push the location of the user to the database.
      */
     fun pushUserLocation(userUID: String, location: Coordinates) {
@@ -305,9 +315,10 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
      */
     fun addChat(dbChat: DBChat): CompletableFuture<DBChat> {
         val future = CompletableFuture<DBChat>()
-        db.child(dbChat.user1).child("chats").child(dbChat.uid).setValue(1)
+        db.child(dbChat.user1).child("chats").child(dbChat.uid).setValue(dbChat.user1LastRead)
             .addOnSuccessListener {
-                db.child(dbChat.user2).child("chats").child(dbChat.uid).setValue(1)
+                db.child(dbChat.user2).child("chats").child(dbChat.uid)
+                    .setValue(dbChat.user2LastRead)
                     .addOnSuccessListener { future.complete(dbChat) }
                     .addOnFailureListener { future.completeExceptionally(it) }
             }.addOnFailureListener { future.completeExceptionally(it) }
@@ -322,11 +333,11 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         val future = CompletableFuture<List<DBChat>>()
         db.child(userUID).child("chats").get().addOnSuccessListener {
             if (it.value == null) {
-                Log.d("UserRTDB", "no chats")
+                Log.d(TAG, "no chats")
                 future.complete(mutableListOf())
             } else {
-                Log.d("UserRTDB", "chats received $it")
-                val chatIds = it.value as HashMap<String, Int>
+                Log.d(TAG, "chats received $it")
+                val chatIds = it.value as HashMap<String, Date>
 
                 val futureDBChats = chatsRTDB.getChats(chatIds.keys.toList())
                 futureDBChats.thenAccept { dbChats ->
@@ -337,9 +348,46 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                 }
             }
         }.addOnFailureListener {
-            Log.w("UserRTDB", "Error getting chats", it)
+            Log.w(TAG, "Error getting chats", it)
             future.completeExceptionally(it)
         }
         return future
     }
+
+    /**
+     * Add a listener to the user's chats collection to get updates
+     * from the user and chat tables.
+     */
+    fun addChatsListener(userUID: String, listener: UserChatsListener) {
+        if (chatsListener != null) {
+            db.child(userUID).child("chats").removeEventListener(chatsListener!!)
+        }
+        chatsListener =
+            db.child(userUID).child("chats").addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.w(TAG, "ValueEventListener:onDataChange snapshot: $snapshot")
+                    if (snapshot.value == null) {
+                        listener.onChatsRemoved()
+                    } else {
+                        val chatIds = snapshot.value as HashMap<String, Date>
+                        val futureDBChats = chatsRTDB.getChats(chatIds.keys.toList())
+                        futureDBChats.thenAccept { dbChats ->
+                            listener.onChatsChanged(dbChats)
+                        }.exceptionally { it2 ->
+                            Log.w(TAG, "Error getting chats", it2)
+                            null
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "Failed to read value.", error.toException())
+                }
+            })
+    }
+
+    fun removeChatsListener(userUID: String) {
+        chatsListener?.let { db.child(userUID).child("chats").removeEventListener(it) }
+    }
+
 }

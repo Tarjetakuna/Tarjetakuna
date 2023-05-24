@@ -7,6 +7,7 @@ import com.github.sdp.tarjetakuna.database.DBChat
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.Database
 import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.database.UserChatsListener
 import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.database.UsernamesRTDB
 import com.google.firebase.database.DataSnapshot
@@ -24,8 +25,8 @@ data class User(
     var valid: Boolean = true,
     val database: Database = FirebaseDB(),
 ) {
-    private var userRTDB: UserRTDB
-    private var usernamesRTDB: UsernamesRTDB
+    private val userRTDB: UserRTDB = UserRTDB(database)
+    private val usernamesRTDB: UsernamesRTDB = UsernamesRTDB(database)
 
     constructor(uid: String) : this(
         uid,
@@ -36,8 +37,6 @@ data class User(
     )
 
     init {
-        userRTDB = UserRTDB(database)
-        usernamesRTDB = UsernamesRTDB(database)
 
         if (valid) {
             require(
@@ -144,6 +143,25 @@ data class User(
             this.chats = chats.toMutableList()
             chats
         }
+    }
+
+    fun addChatsListener(listener: (() -> Unit)? = null) {
+        val mListener: UserChatsListener = object : UserChatsListener {
+            override fun onChatsRemoved() {
+                chats.clear()
+                if (listener != null) listener()
+            }
+
+            override fun onChatsChanged(chatsChanged: List<DBChat>) {
+                chats = chatsChanged.toMutableList()
+                if (listener != null) listener()
+            }
+        }
+        userRTDB.addChatsListener(uid, mListener)
+    }
+
+    fun removeChatsListener() {
+        userRTDB.removeChatsListener(uid)
     }
 
     private fun chatAlreadyExist(chat: DBChat): Boolean {
