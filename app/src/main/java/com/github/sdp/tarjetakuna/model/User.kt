@@ -1,7 +1,12 @@
 package com.github.sdp.tarjetakuna.model
 
-import android.util.Log
-import com.github.sdp.tarjetakuna.database.*
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBChat
+import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.Database
+import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.database.UserRTDB
+import com.github.sdp.tarjetakuna.database.UsernamesRTDB
 import com.google.firebase.database.DataSnapshot
 import java.util.concurrent.CompletableFuture
 
@@ -10,28 +15,23 @@ import java.util.concurrent.CompletableFuture
  */
 data class User(
     val uid: String,
-	val username: String,
+    val username: String,
     var cards: MutableList<DBMagicCard> = mutableListOf(),
     var location: Coordinates = Coordinates(),
     var chats: MutableList<DBChat> = mutableListOf(),
-    val username: String,
     var valid: Boolean = true,
     val database: Database = FirebaseDB(),
 ) {
-    private var userRTDB: UserRTDB
-    private var usernamesRTDB: UsernamesRTDB
+    private val userRTDB: UserRTDB = UserRTDB(database)
+    private val usernamesRTDB: UsernamesRTDB = UsernamesRTDB(database)
 
     constructor(uid: String) : this(
         uid,
-        "",
-        mutableListOf(),
-        Coordinates(),
-        false
+        "fake_$uid",
+        valid = false
     )
 
     init {
-        userRTDB = UserRTDB(database)
-        usernamesRTDB = UsernamesRTDB(database)
 
         if (valid) {
             require(
