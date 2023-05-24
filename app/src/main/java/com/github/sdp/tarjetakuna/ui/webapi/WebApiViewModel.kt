@@ -120,7 +120,7 @@ open class WebApiViewModel : ViewModel() {
         for (card in cards) {
             val quantity =
                 collection.find { it.code == card.set.code && it.number == card.number && it.possession == CardPossession.OWNED }
-                    ?.quantity ?: 0
+                    ?.quantity ?: 1
             result.add(Pair(card, quantity))
         }
         return result

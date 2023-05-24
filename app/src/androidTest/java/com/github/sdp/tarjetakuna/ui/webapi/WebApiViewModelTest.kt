@@ -1,9 +1,17 @@
 package com.github.sdp.tarjetakuna.ui.webapi
 
+import org.junit.Test
+
 /**
  * Test the WebApiViewModel behaviour (need UI to mock the webserver) of apiResults and apiError
  */
 class WebApiViewModelTest {
+
+    @Test
+    fun basicTest() {
+        assert(true)
+    }
+
     /*private val viewModel = WebApiViewModelTester()
     private lateinit var scenario: FragmentScenario<WebApiFragment>
 

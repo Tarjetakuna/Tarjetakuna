@@ -27,17 +27,13 @@ class UserCollectionFragment(val possession: CardPossession = CardPossession.OWN
 
     private var _binding: FragmentUserCollectionBinding? = null
     private lateinit var viewModel: UserCollectionViewModel
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        Log.i("UserCollectionFragment", "onCreateView")
 
         viewModel = ViewModelProvider(
             this,
