@@ -12,6 +12,7 @@ import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.ChatsData
 import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.github.sdp.tarjetakuna.utils.Utils
 import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
@@ -246,45 +247,45 @@ class UserTest {
         )
     }
 
-//    @Test
-//    fun test_sendMessages() {
-//        val userRTDB = UserRTDB(FirebaseDB())
-//        val chatsRTDB = ChatsRTDB()
-//        val messagesRTDB = MessagesRTDB()
-//
-//        val user1: User = ChatsData.fakeUser1
-//        val user2: User = ChatsData.fakeUser2
-//
-//        var chats1_updated = 0
-//        var chats2_updated = 0
-//
-//        user1.addChatsListener { chats1_updated++ }
-//        user2.addChatsListener { chats2_updated++ }
-//
-//        val message = "Hello"
-//        val pair1 = user1.sendMessageToUser(message, user2.uid).get(1, TimeUnit.SECONDS)
-//
-//        Utils.waitUntilTrue(50, 20) { chats1_updated >= 2 && chats2_updated >= 2 }
-//        val pair2 = user2.sendMessageToUser("$message back", user1.uid).get(1, TimeUnit.SECONDS)
-//
-//        println("dbChat ${pair1.first}")
-//        println("dbMessage ${pair1.second}")
-//
-//        val dbChats1 = userRTDB.getChatsFromUser(user1.uid).get(1, TimeUnit.SECONDS)
-//        val dbChats2 = userRTDB.getChatsFromUser(user2.uid).get(1, TimeUnit.SECONDS)
-//
-//        assertThat("chats user1 length not 1", dbChats1.size, equalTo(1))
-//        assertThat("chats user1 and user2 are different", dbChats1, equalTo(dbChats2))
-//        assertThat("chats are different", pair1.first.toString(), equalTo(dbChats1[0].toString()))
-//
-//        val chat1 = chatsRTDB.getChatFromDatabase(dbChats1[0].uid).get(1, TimeUnit.SECONDS)
-//        val dbMessage = messagesRTDB.getMessage(dbChats1[0].messages[0]).get(1, TimeUnit.SECONDS)
-//
-//        assertThat("message is different", pair1.second.toString(), equalTo(dbMessage.toString()))
-//        assertThat(
-//            "message is different",
-//            pair1.second.toString(),
-//            equalTo(DBMessage.toDBMessage(chat1.messages[0]).toString())
-//        )
-//    }
+    @Test
+    fun test_sendMessages() {
+        val userRTDB = UserRTDB(FirebaseDB())
+        val chatsRTDB = ChatsRTDB()
+        val messagesRTDB = MessagesRTDB()
+
+        val user1: User = ChatsData.fakeUser1
+        val user2: User = ChatsData.fakeUser2
+
+        var chats1_updated = 0
+        var chats2_updated = 0
+
+        user1.addChatsListener { chats1_updated++ }
+        user2.addChatsListener { chats2_updated++ }
+
+        val message = "Hello"
+        val pair1 = user1.sendMessageToUser(message, user2.uid).get(1, TimeUnit.SECONDS)
+
+        Utils.waitUntilTrue(50, 20) { chats1_updated >= 2 && chats2_updated >= 2 }
+        val pair2 = user2.sendMessageToUser("$message back", user1.uid).get(1, TimeUnit.SECONDS)
+
+        println("dbChat ${pair1.first}")
+        println("dbMessage ${pair1.second}")
+
+        val dbChats1 = userRTDB.getChatsFromUser(user1.uid).get(1, TimeUnit.SECONDS)
+        val dbChats2 = userRTDB.getChatsFromUser(user2.uid).get(1, TimeUnit.SECONDS)
+
+        assertThat("chats user1 length not 1", dbChats1.size, equalTo(1))
+        assertThat("chats user1 and user2 are different", dbChats1, equalTo(dbChats2))
+        assertThat("chats are different", pair1.first.toString(), equalTo(dbChats1[0].toString()))
+
+        val chat1 = chatsRTDB.getChatFromDatabase(dbChats1[0].uid).get(1, TimeUnit.SECONDS)
+        val dbMessage = messagesRTDB.getMessage(dbChats1[0].messages[0]).get(1, TimeUnit.SECONDS)
+
+        assertThat("message is different", pair1.second.toString(), equalTo(dbMessage.toString()))
+        assertThat(
+            "message is different",
+            pair1.second.toString(),
+            equalTo(DBMessage.toDBMessage(chat1.messages[0]).toString())
+        )
+    }
 }
