@@ -189,12 +189,13 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
     /**
      * Add a listener for when a chat changes
      */
-    fun addChatListener(chatUID: String, listener: (DBChat) -> Unit) {
+    fun addChatListener(chatUID: String, listener: (DBChat?) -> Unit) {
         chatsEventListener[chatUID] =
             chatsTable.child(chatUID).addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     Log.w(TAG, "ValueEventListener:onDataChange snapshot: $snapshot")
                     if (snapshot.value == null) {
+                        listener(null)
                         return
                     }
                     listener(chatFromDBFormat(snapshot))

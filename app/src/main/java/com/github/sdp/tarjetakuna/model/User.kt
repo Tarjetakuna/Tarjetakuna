@@ -140,7 +140,10 @@ data class User(
      * Retrieves all chats asynchronously from the database (only the user table).
      */
     fun getChats(): CompletableFuture<List<DBChat>> {
-        return userRTDB.getChatsFromUser(uid)
+        return userRTDB.getChatsFromUser(uid).thenApply { chats ->
+            this.chats = chats.toMutableList()
+            chats
+        }
     }
 
     private fun chatAlreadyExist(chat: DBChat): Boolean {
@@ -152,7 +155,7 @@ data class User(
     }
 
 
-	/**
+    /**
      * Removes all copy of a card from the user's collection
      */
     fun removeAllCopyOfCard(card: MagicCard, possession: CardPossession) {

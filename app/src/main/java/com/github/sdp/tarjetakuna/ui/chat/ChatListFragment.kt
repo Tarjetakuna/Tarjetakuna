@@ -41,7 +41,7 @@ class ChatListFragment : Fragment() {
             initOnChatClickListener(binding.chatsRecyclerView.adapter as ChatListAdapter)
         }
 
-        viewModel.updateData()
+        viewModel.addChatsListener()
 
         return root
     }
@@ -54,6 +54,12 @@ class ChatListFragment : Fragment() {
                 (requireActivity() as MainActivity).changeFragment(R.id.nav_chat, bundle)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.removeChatsListener()
+        _binding = null
     }
 
 }
