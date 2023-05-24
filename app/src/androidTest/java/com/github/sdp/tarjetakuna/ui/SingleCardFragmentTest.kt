@@ -13,10 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.database.CardPossession
-import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.FirebaseDB
-import com.github.sdp.tarjetakuna.database.localDatabase.UserRTDBTest
 import com.github.sdp.tarjetakuna.mockdata.CommonFirebase
 import com.github.sdp.tarjetakuna.model.*
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
@@ -25,17 +22,13 @@ import com.github.sdp.tarjetakuna.utils.CustomGlide
 import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
 import com.github.sdp.tarjetakuna.utils.WithIndexSafeMatcher.withIndex
-import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
-import kotlinx.coroutines.Delay
-import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.concurrent.TimeUnit
 
 /**
  * This class is used to test the SingleCardFragment.
@@ -274,11 +267,9 @@ class SingleCardFragmentTest {
     }
 
     @Test
-    //TODO : Change this test when the user database is OK to mock it
     fun testUserCanSeeUsersThatHaveTheCard() {
         val bundleArgs = Bundle().apply { putString("card", validJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
-        //Thread.sleep(2000)
         onView(withId(R.id.singleCard_scrollView)).perform(swipeUp())
 
         onView(withText(R.string.single_card_users_have)).check(matches(isDisplayed()))
@@ -291,11 +282,9 @@ class SingleCardFragmentTest {
     }
 
     @Test
-    //TODO : Change this test when the user database is OK to mock it
     fun testUserCanSeeUsersThatWantTheCard() {
         val bundleArgs = Bundle().apply { putString("card", validJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
-        //Thread.sleep(2000)
         onView(withId(R.id.singleCard_scrollView)).perform(swipeUp())
 
         onView(withText(R.string.single_card_users_have)).check(matches(isDisplayed()))
