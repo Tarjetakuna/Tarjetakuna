@@ -27,7 +27,7 @@ class ChatListViewModel : ViewModel() {
     }
 
     fun attachChatsListener() {
-        if (currentUser.isUserLoggedIn()) return
+        if (!currentUser.isUserLoggedIn()) return
 
         currentUser.attachChatsListener(listener = {
             o_ChatRTDB.getChatsFromDatabase(currentUser.getCurrentUser().chats.map { it.uid })

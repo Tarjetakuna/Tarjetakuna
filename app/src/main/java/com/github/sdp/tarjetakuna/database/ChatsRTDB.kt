@@ -19,7 +19,7 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
     private var messagesRTDB: MessagesRTDB
     private var chatsEventListener: HashMap<String, ValueEventListener> = HashMap()
     private var chatListener: ValueEventListener? = null
-    private var chatUID_listening: String? = null
+    private var chatUIDListening: String? = null
 
     companion object {
         private const val TAG = "ChatsRTDB"
@@ -251,8 +251,8 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
      * from the chat and messages tables.
      */
     fun addChatListener(chatUID: String, listener: UserChatListener) {
-        if (chatListener != null && chatUID_listening != null) {
-            chatsTable.child(chatUID_listening!!).removeEventListener(chatListener!!)
+        if (chatListener != null && chatUIDListening != null) {
+            chatsTable.child(chatUIDListening!!).removeEventListener(chatListener!!)
         }
         chatListener =
             chatsTable.child(chatUID).addValueEventListener(object : ValueEventListener {
@@ -276,14 +276,14 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
                     Log.w(TAG, "Failed to read value.", error.toException())
                 }
             })
-        chatUID_listening = chatUID
+        chatUIDListening = chatUID
     }
 
     /**
      * Remove the listener from the chat table.
      */
     fun removeChatListener() {
-        if (chatListener == null || chatUID_listening == null) return
-        chatListener?.let { chatsTable.child(chatUID_listening!!).removeEventListener(it) }
+        if (chatListener == null || chatUIDListening == null) return
+        chatListener?.let { chatsTable.child(chatUIDListening!!).removeEventListener(it) }
     }
 }

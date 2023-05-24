@@ -225,6 +225,10 @@ class ChatsRTDBTest {
         // add chat listener to chat
         var called = false
         chatsRTDB.addChatListener(mChat.uid) { dbChat ->
+            if (dbChat == null) {
+                assertThat("chat should not be null", false)
+                return@addChatListener
+            }
             assertThat("chat id is different", dbChat.uid, equalTo(mChat.uid))
             assertThat("user1 id is different", dbChat.user1, equalTo(mChat.user1.uid))
             assertThat("user2 id is different", dbChat.user2, equalTo(mChat.user2.uid))
