@@ -203,4 +203,51 @@ data class User(
     fun removeAllCopyOfCard(card: MagicCard, possession: CardPossession) {
         userRTDB.removeAllCopyOfCard(uid, card.toDBMagicCard(possession))
     }
+
+    /**
+     * Send the message to the given user, creating a new chat if it doesn't exist.
+     */
+    fun sendMessageToUser(
+        message: String,
+        toUserUID: String
+    ): CompletableFuture<Pair<DBChat, DBMessage>> {
+
+        val dbMessage = DBMessage.newMessage(uid, toUserUID, message)
+        val dbChat = findChatWithUser(toUserUID)
+
+        val future = CompletableFuture<Pair<DBChat, DBMessage>>()
+        if (dbChat != null) {
+            sendMessageToUser(dbChat, dbMessage, future)
+        } else {
+            val chat = DBChat.newChat(uid, toUserUID)
+            newChat(chat).thenAccept { mDBChat -> sendMessageToUser(mDBChat, dbMessage, future) }
+        }
+        return future
+    }
+
+    /**
+     * Sends a message to the given chat, updating the messages node, the chats node and the user node.
+     */
+    private fun sendMessageToUser(
+        dbChat: DBChat,
+        dbMessage: DBMessage,
+        future: CompletableFuture<Pair<DBChat, DBMessage>>
+    ) {
+        chatsRTDB.addMessageToChat(dbChat.uid, dbMessage).thenApply { (dbChat, dbMessage) ->
+            messages.removeIf { it.uid == dbMessage.uid }
+            messages.add(dbMessage)
+            userRTDB.addChat(dbChat).thenApply {
+                chats.removeIf { it.uid == dbChat.uid }
+                chats.add(dbChat)
+                future.complete(Pair(dbChat, dbMessage))
+            }
+        }
+    }
+
+    private fun findChatWithUser(otherUserUID: String): DBChat? {
+        return chats.find {
+            (it.user1 == uid && it.user2 == otherUserUID) ||
+                    (it.user1 == otherUserUID && it.user2 == uid)
+        }
+    }
 }

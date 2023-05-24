@@ -24,17 +24,17 @@ data class DBChat(
     /**
      * List of messages ids.
      */
-    val messages: ArrayList<String>,
+    val messages: MutableList<String>,
 
     /**
      * Last read timestamp by user 1.
      */
-    val user1LastRead: Date,
+    var user1LastRead: Date,
 
     /**
      * Last read timestamp by user 2.
      */
-    val user2LastRead: Date,
+    var user2LastRead: Date,
 ) {
     companion object {
 
@@ -66,6 +66,12 @@ data class DBChat(
                 dbChat.user2LastRead,
                 valid = false
             )
+        }
+
+        fun newChat(user1: String, user2: String): DBChat {
+            val dbChat = DBChat("", user1, user2, ArrayList(), Date(), Date())
+            val uid = dbChat.hashCode().toString()
+            return dbChat.copy(uid = uid)
         }
     }
 

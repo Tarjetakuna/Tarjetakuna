@@ -1,5 +1,9 @@
 package com.github.sdp.tarjetakuna.model
 
+import com.github.sdp.tarjetakuna.database.DBChat
+import com.github.sdp.tarjetakuna.database.DBMessage
+import java.util.concurrent.CompletableFuture
+
 interface CurrentUserInterface {
     fun getCurrentUser(): User
     fun setCurrentUser(user: User)
@@ -12,4 +16,9 @@ interface CurrentUserInterface {
     fun detachChatListener()
     fun removeCurrentUser()
     fun isUserLoggedIn(): Boolean
+
+    fun sendMessageToUser(
+        message: String,
+        userUID: String
+    ): CompletableFuture<Pair<DBChat, DBMessage>>
 }

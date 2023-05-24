@@ -152,12 +152,12 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
     }
 
     /**
-     * Add a message to a chat.
+     * Add a message to a chat into chats and messages nodes.
      */
     fun addMessageToChat(
         chatUID: String,
         message: DBMessage
-    ): CompletableFuture<Pair<String, DBMessage>> {
+    ): CompletableFuture<Pair<DBChat, DBMessage>> {
         return getChat(chatUID).thenCompose {
             if (!it.messages.contains(message.uid) && (
                         (it.user1 == message.sender && it.user2 == message.receiver) ||
@@ -166,11 +166,18 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
                 // add message to chat
                 it.messages.add(message.uid)
 
-                val future = CompletableFuture<Pair<String, DBMessage>>()
+                // update last read of sender
+                if (it.user1 == message.sender) {
+                    it.user1LastRead = message.timestamp
+                } else {
+                    it.user2LastRead = message.timestamp
+                }
+
+                val future = CompletableFuture<Pair<DBChat, DBMessage>>()
                 // add chat and message to database
                 addChat(it).thenAccept { _ ->
-                    messagesRTDB.addMessage(message).thenAccept {
-                        future.complete(Pair(chatUID, message))
+                    messagesRTDB.addMessage(message).thenAccept { _ ->
+                        future.complete(Pair(it, message))
                     }.exceptionally { it3 ->
                         future.completeExceptionally(it3)
                         return@exceptionally null
@@ -178,11 +185,11 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
                 }
                 return@thenCompose future
             } else {
-                val future = CompletableFuture<Pair<String, DBMessage>>()
+                val future = CompletableFuture<Pair<DBChat, DBMessage>>()
                 future.completeExceptionally(
                     NoSuchFieldException("message $message is not add to chat $chatUID")
                 )
-                Log.d(TAG, "Message not added to chat")
+                Log.w(TAG, "Message not added to chat")
                 return@thenCompose future
             }
         }

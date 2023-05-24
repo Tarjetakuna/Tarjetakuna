@@ -1,5 +1,9 @@
 package com.github.sdp.tarjetakuna.model
 
+import com.github.sdp.tarjetakuna.database.DBChat
+import com.github.sdp.tarjetakuna.database.DBMessage
+import java.util.concurrent.CompletableFuture
+
 object CurrentUser : CurrentUserInterface {
     private var currentUser: User? = null
     private var chatUID: String? = null
@@ -11,6 +15,16 @@ object CurrentUser : CurrentUserInterface {
     override fun setCurrentUser(user: User) {
         currentUser = user
         currentUser!!.addChatsListener()
+    }
+
+    override fun removeCurrentUser() {
+        currentUser!!.removeChatsListener()
+        currentUser!!.removeChatListener()
+        currentUser = null
+    }
+
+    override fun isUserLoggedIn(): Boolean {
+        return currentUser != null
     }
 
     override fun attachChatsListener(listener: () -> Unit) {
@@ -41,13 +55,10 @@ object CurrentUser : CurrentUserInterface {
         currentUser!!.removeChatListener()
     }
 
-    override fun removeCurrentUser() {
-        currentUser!!.removeChatsListener()
-        currentUser!!.removeChatListener()
-        currentUser = null
-    }
-
-    override fun isUserLoggedIn(): Boolean {
-        return currentUser != null
+    override fun sendMessageToUser(
+        message: String,
+        userUID: String
+    ): CompletableFuture<Pair<DBChat, DBMessage>> {
+        return currentUser!!.sendMessageToUser(message, userUID)
     }
 }
