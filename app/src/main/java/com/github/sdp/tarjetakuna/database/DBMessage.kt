@@ -61,7 +61,7 @@ data class DBMessage(
 
         fun newMessage(sender: String, receiver: String, content: String): DBMessage {
             val dbMessage = DBMessage("", sender, receiver, content, Date())
-            val uid = dbMessage.hashCode().toString()
+            val uid = dbMessage.hashCode().toUInt().toString()
             return dbMessage.copy(uid = uid)
         }
     }

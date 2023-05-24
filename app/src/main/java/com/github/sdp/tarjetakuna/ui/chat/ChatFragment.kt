@@ -33,6 +33,11 @@ class ChatFragment : Fragment() {
                 if (it.user1.username == ChatViewModel.currentUser.getCurrentUser().username) it.user2.username else it.user1.username
         }
 
+        binding.chatSendButton.setOnClickListener {
+            viewModel.sendMessage(binding.chatMessageText.text.toString())
+            binding.chatMessageText.text.clear()
+        }
+
         viewModel.attachChatListener()
 
         return root

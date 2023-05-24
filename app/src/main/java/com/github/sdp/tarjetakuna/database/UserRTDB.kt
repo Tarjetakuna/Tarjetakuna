@@ -389,7 +389,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         return future
     }
 
-    /*
+    /**
      * Push the location of the user to the database.
      */
     fun pushUserLocation(userUID: String, location: Coordinates) {

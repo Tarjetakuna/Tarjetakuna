@@ -70,7 +70,7 @@ data class DBChat(
 
         fun newChat(user1: String, user2: String): DBChat {
             val dbChat = DBChat("", user1, user2, ArrayList(), Date(), Date())
-            val uid = dbChat.hashCode().toString()
+            val uid = dbChat.hashCode().toUInt().toString()
             return dbChat.copy(uid = uid)
         }
     }

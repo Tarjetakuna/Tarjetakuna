@@ -42,7 +42,6 @@ data class User(
     )
 
     init {
-
         if (valid) {
             require(
                 username.matches(
@@ -129,7 +128,7 @@ data class User(
     }
 
     /**
-     * Creates a new chat with the given user in the user table only.
+     * Creates a new chat with the given user in the user table only and in chats table.
      */
     fun newChat(chat: DBChat): CompletableFuture<DBChat> {
         if (chatAlreadyExist(chat)) {
@@ -137,7 +136,7 @@ data class User(
             return CompletableFuture.completedFuture(chat)
         }
         chats.add(chat)
-        return userRTDB.addChat(chat)
+        return userRTDB.addChat(chat).thenCompose { chatsRTDB.addChat(chat) }
     }
 
     /**
@@ -150,6 +149,10 @@ data class User(
         }
     }
 
+    /**
+     * Add a listeners on the chats of a user to always have them up to date.
+     * From user table and chats table.
+     */
     fun addChatsListener(listener: (() -> Unit)? = null) {
         val mListener: UserChatsListener = object : UserChatsListener {
             override fun onChatsRemoved() {
@@ -165,10 +168,17 @@ data class User(
         userRTDB.addChatsListener(uid, mListener)
     }
 
+    /**
+     * Remove the listener on the chats of a user.
+     */
     fun removeChatsListener() {
         userRTDB.removeChatsListener(uid)
     }
 
+    /**
+     * Add a listener on a single chat to have it up to date at all time.
+     * From chats table and message table.
+     */
     fun addChatListener(chatUID: String, listener: (() -> Unit)? = null) {
         val mListener: UserChatListener = object : UserChatListener {
             override fun onChatRemoved() {
@@ -184,6 +194,9 @@ data class User(
         chatsRTDB.addChatListener(chatUID, mListener)
     }
 
+    /**
+     * Remove the listener on a single chat.
+     */
     fun removeChatListener() {
         chatsRTDB.removeChatListener()
     }
@@ -220,7 +233,9 @@ data class User(
             sendMessageToUser(dbChat, dbMessage, future)
         } else {
             val chat = DBChat.newChat(uid, toUserUID)
-            newChat(chat).thenAccept { mDBChat -> sendMessageToUser(mDBChat, dbMessage, future) }
+            newChat(chat).thenAccept { mDBChat ->
+                sendMessageToUser(mDBChat, dbMessage, future)
+            }
         }
         return future
     }
@@ -244,6 +259,9 @@ data class User(
         }
     }
 
+    /**
+     * Finds a chat between this user and the other, if it exists.
+     */
     private fun findChatWithUser(otherUserUID: String): DBChat? {
         return chats.find {
             (it.user1 == uid && it.user2 == otherUserUID) ||
