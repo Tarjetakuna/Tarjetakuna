@@ -2,7 +2,6 @@ package com.github.sdp.tarjetakuna.ui.scanner
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -54,14 +53,9 @@ class ScannerFragmentTest {
     //    @Ignore("This test case is not working on cirrus-ci, but it works locally.")
     @Test(timeout = 5000)
     fun test_2_clickSave() {
-        // wait for view to be displayed
         waitForText(R.id.scanner_description_text, R.string.scanner_description, 100)
 
-        // click on the button
         onView(withId(R.id.scanner_save_button)).perform(click())
-
-        // find all snackbars and check that the text is the default one
-        onView(withId(com.google.android.material.R.id.snackbar_text))
-            .check(matches(withText(R.string.scanner_photo_saved)))
+        waitForText(R.string.scanner_photo_saved, 1000)
     }
 }
