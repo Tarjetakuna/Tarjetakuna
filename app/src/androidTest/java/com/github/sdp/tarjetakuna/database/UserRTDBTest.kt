@@ -2,19 +2,15 @@ package com.github.sdp.tarjetakuna.database
 
 import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.mockdata.CommonFirebase
+import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.google.android.gms.tasks.Tasks
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.ClassRule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import java.util.concurrent.TimeUnit
@@ -32,14 +28,6 @@ class UserRTDBTest {
 
     @Before
     fun setUp() {
-        val task = FirebaseDB().clearDatabase()
-        Tasks.await(task, 5, TimeUnit.SECONDS)
-        FirebaseDB().returnDatabaseReference().updateChildren(CommonFirebase.goodFirebase)
-        userRTDB = UserRTDB(FirebaseDB())
-    }
-
-    @Before
-    fun setUp() {
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
         Mockito.`when`(mockedAuth.getUserUID()).thenReturn("test")
@@ -47,6 +35,9 @@ class UserRTDBTest {
 
         val task = FirebaseDB().clearDatabase()
         Tasks.await(task, 5, TimeUnit.SECONDS)
+
+        FirebaseDB().returnDatabaseReference().updateChildren(CommonFirebase.goodFirebase)
+        userRTDB = UserRTDB(FirebaseDB())
     }
 
     @After
@@ -88,12 +79,6 @@ class UserRTDBTest {
                 assertThat("error '$it' should not have happened", false)
                 null
             }.get()
-    }
-
-    @After
-    fun tearDown() {
-        val task = FirebaseDB().clearDatabase()
-        Tasks.await(task, 5, TimeUnit.SECONDS)
     }
 
     @Test
