@@ -1,5 +1,8 @@
 package com.github.sdp.tarjetakuna.ui.webapi.magicApi
 
+import com.github.sdp.tarjetakuna.model.*
+import java.time.LocalDate
+
 /**
  * Data class for a MagicCard (need to match the doc in https://api.scryfall.com)
  */
@@ -95,7 +98,44 @@ data class MagicApiCard(
     val variation_of: String?,
     val security_stamp: String?,
     val watermark: String?,
-)
+) {
+    /**
+     * Convert this [MagicApiCard] to a [MagicCard]
+     */
+    fun toMagicCard(): MagicCard {
+        return MagicCard(
+            name = name,
+            text = if (oracle_text == null || oracle_text == "") {
+                "None"
+            } else {
+                oracle_text
+            },
+            layout = MagicLayout.fromApiString(layout ?: ""),
+            convertedManaCost = cmc ?: 0.0,
+            manaCost = if (mana_cost == null || mana_cost == "") {
+                "None"
+            } else {
+                mana_cost
+            },
+            set = MagicSet(
+                code = set,
+                name = set_name,
+                type = set_type,
+                block = "Unknown", //todo get block from set
+                releaseDate = LocalDate.parse(released_at),
+            ),
+            number = collector_number.toIntOrNull() ?: 1,
+            imageUrl = image_uris?.normal ?: "",
+            rarity = MagicRarity.fromApiString(rarity),
+            type = MagicCardType.CREATURE, //todo get type from type_line
+            subtypes = listOf(), //todo get subtypes from type_line
+            power = power ?: "None",
+            toughness = toughness ?: "None",
+            artist = artist ?: "Unknown",
+        )
+    }
+}
+
 
 /**
  * Data class for a [RelatedCardObjectApi] used in [MagicApiCard] (need to match the doc in https://api.scryfall.com)

@@ -12,7 +12,7 @@ class MagicCardTest {
     private val validName = "Angel of Mercy"
     private val validText = "Flying"
     private val validLayout = MagicLayout.NORMAL
-    private val validCMC = 7
+    private val validCMC = 7.0
     private val validManaCost = "{5}{W}{W}"
     private val validSet = MagicSet("M15", "Magic 2015")
     private val validNumber = 56
@@ -112,7 +112,7 @@ class MagicCardTest {
                 validName,
                 validText,
                 validLayout,
-                -1,
+                -1.0,
                 validManaCost,
                 validSet,
                 validNumber,
@@ -413,7 +413,7 @@ class MagicCardTest {
         assertEquals("Unknown name", card.name)
         assertEquals("Unknown text", card.text)
         assertEquals(MagicLayout.NORMAL, card.layout)
-        assertEquals(0, card.convertedManaCost)
+        assertEquals(0.0, card.convertedManaCost, 0.01)
         assertEquals("{0}", card.manaCost)
         assertEquals(MagicSet(), card.set)
         assertEquals(1, card.number)
@@ -450,7 +450,7 @@ class MagicCardTest {
         assertEquals(validName, card.name)
         assertEquals(validText, card.text)
         assertEquals(validLayout, card.layout)
-        assertEquals(validCMC, card.convertedManaCost)
+        assertEquals(validCMC, card.convertedManaCost, 0.01)
         assertEquals(validManaCost, card.manaCost)
         assertEquals(validSet, card.set)
         assertEquals(validNumber, card.number)

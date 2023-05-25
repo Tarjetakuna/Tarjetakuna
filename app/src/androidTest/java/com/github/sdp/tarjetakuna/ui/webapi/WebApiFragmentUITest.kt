@@ -2,9 +2,11 @@ package com.github.sdp.tarjetakuna.ui.webapi
 
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -21,6 +23,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
 /**
  * Test the WebApiFragment UI reacting to UI events
  */
@@ -30,6 +33,8 @@ class WebApiFragmentUITest {
     private lateinit var scenario: FragmentScenario<WebApiFragment>
     private val mockWebServer = MockWebServer()
     private lateinit var okHttp3IdlingResource: OkHttp3IdlingResource
+
+    private val recyclerView = onView(withId(R.id.web_api_list_card))
 
     @Before
     fun setUp() {
@@ -61,8 +66,6 @@ class WebApiFragmentUITest {
     @Test
     fun test_initialText() {
         onView(withId(R.id.api_random_card_button)).check(matches(withText(R.string.api_random_card)))
-        onView(withId(R.id.api_sets_button)).check(matches(withText(R.string.api_sets)))
-        onView(withId(R.id.api_results)).check(matches(withText(R.string.api_default_results)))
     }
 
     @Test
@@ -76,56 +79,108 @@ class WebApiFragmentUITest {
             }
         }
 
-        // check that the text is the default one
-        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 200))
-
-        // click on the button
-        onView(withId(R.id.api_random_card_button)).perform(
-            waitForText(
-                R.string.api_random_card,
-                200
-            )
-        )
+        // make the call to the api
         onView(withId(R.id.api_random_card_button)).perform(click())
 
-        // check that the text change to "waiting results" after the click
-        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_waiting_results, 200))
-        onView(withId(R.id.api_results)).check(matches(withText(R.string.api_waiting_results)))
+        // wait for the response and for the recyclerView to be updated
+        var result = false
+        val timeoutMillis: Long = 2000
+        val startTimeMillis = System.currentTimeMillis()
 
-        // wait for the response - allowed because we manually set the delay on the mock response
-        onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 600))
+        while (System.currentTimeMillis() - startTimeMillis < timeoutMillis) {
+            try {
+                // check that the card displayed is the one from the response
+                recyclerView.check(matches(hasDescendant(withText("Marsh Goblins"))))
 
-        // check that the text change to the response
-        onView(withId(R.id.api_results)).check(matches(withSubstring("Marsh Goblins")))
+                // assertion passed, break the loop
+                result = true
+                break
+            } catch (e: Error) {
+                // Assertion failed, continue looping until timeout
+                Espresso.onIdle()
+            }
+        }
+
+        // check that the test passed
+        assertThat(result, `is`(true))
     }
 
     @Test
-    fun test_clickOnSetsButtonWithMockWebServer() {
+    fun test_searchBySetCodeWithMockWebServer() {
         // setup the mock webserver to return a delayed response
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse().setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("scryfall_api_sets.json"))
+                    .setBody(FileReader.readStringFromFile("scryfall_api_cards_search_set_m15.json"))
                     .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
             }
         }
 
-        // check that the text is the default one
-        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_default_results, 200))
+        onView(withId(R.id.api_set_id_edittext)).perform(click())
+        onView(withId(R.id.api_set_id_edittext)).perform(typeText("m15"))
+        onView(withId(R.id.api_cards_by_set_button)).perform(click())
 
-        // click on the button
-        onView(withId(R.id.api_sets_button)).perform(waitForText(R.string.api_sets, 200))
-        onView(withId(R.id.api_sets_button)).perform(click())
+        // wait for the response and for the recyclerView to be updated
+        var result = false
+        val timeoutMillis: Long = 2000
+        val startTimeMillis = System.currentTimeMillis()
 
-        // check that the text change to "waiting results" after the click
-        onView(withId(R.id.api_results)).perform(waitForText(R.string.api_waiting_results, 200))
-        onView(withId(R.id.api_results)).check(matches(withText(R.string.api_waiting_results)))
+        while (System.currentTimeMillis() - startTimeMillis < timeoutMillis) {
+            try {
+                // check that the cards displayed are the one from the response
+                recyclerView.check(matches(hasDescendant(withText("Ajani Steadfast"))))
+                recyclerView.check(matches(hasDescendant(withText("Battle Mastery"))))
 
-        // wait for the response - allowed because we manually set the delay on the mock response
-        onView(withId(R.id.api_results)).perform(waitForTextDiff(R.string.api_waiting_results, 600))
+                // assertion passed, break the loop
+                result = true
+                break
+            } catch (e: Error) {
+                // Assertion failed, continue looping until timeout
+                Espresso.onIdle()
+            }
+        }
 
-        // check that the text change to the response
-        onView(withId(R.id.api_results)).check(matches(withSubstring("Unlimited Edition")))
-        onView(withId(R.id.api_results)).check(matches(withSubstring("Warhammer 40,000")))
+        // check that the test passed
+        assertThat(result, `is`(true))
     }
+
+    @Test
+    fun test_searchByNameWithMockWebServer() {
+        // setup the mock webserver to return a delayed response
+        mockWebServer.dispatcher = object : Dispatcher() {
+            override fun dispatch(request: RecordedRequest): MockResponse {
+                return MockResponse().setResponseCode(200)
+                    .setBody(FileReader.readStringFromFile("scryfall_api_cards_search_name_ajani.json"))
+                    .setBodyDelay(400, java.util.concurrent.TimeUnit.MILLISECONDS)
+            }
+        }
+
+        onView(withId(R.id.api_card_name_edittext)).perform(click())
+        onView(withId(R.id.api_card_name_edittext)).perform(typeText("ajani"))
+        onView(withId(R.id.api_cards_by_name_button)).perform(click())
+
+        // wait for the response and for the recyclerView to be updated
+        var result = false
+        val timeoutMillis: Long = 2000
+        val startTimeMillis = System.currentTimeMillis()
+
+        while (System.currentTimeMillis() - startTimeMillis < timeoutMillis) {
+            try {
+                // check that the cards displayed are the one from the response
+                recyclerView.check(matches(hasDescendant(withText("Ajani's Aid"))))
+                recyclerView.check(matches(hasDescendant(withText("Ajani's Comrade"))))
+
+                // assertion passed, break the loop
+                result = true
+                break
+            } catch (e: Error) {
+                // Assertion failed, continue looping until timeout
+                Espresso.onIdle()
+            }
+        }
+
+        // check that the test passed
+        assertThat(result, `is`(true))
+    }
+
 }

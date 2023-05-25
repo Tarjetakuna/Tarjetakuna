@@ -64,9 +64,9 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
@@ -143,9 +143,9 @@ dependencies {
     implementation 'org.apache.poi:poi-ooxml:5.2.2'
 
     // google sign in testing dependencies
-    testImplementation 'org.mockito:mockito-core:3.2.4'
+    testImplementation 'org.mockito:mockito-core:3.5.10'
     testImplementation "org.mockito:mockito-android:3.5.10"
-    androidTestImplementation 'org.mockito:mockito-core:3.2.4'
+    androidTestImplementation 'org.mockito:mockito-core:3.5.10'
     androidTestImplementation "org.mockito:mockito-android:3.5.10"
 }
 
