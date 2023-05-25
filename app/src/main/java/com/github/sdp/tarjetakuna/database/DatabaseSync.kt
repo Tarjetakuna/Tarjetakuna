@@ -102,8 +102,9 @@ object DatabaseSync {
     ): CompletableFuture<Boolean> {
 
         val isSyncDone = CompletableFuture<Boolean>()
-        LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)?.magicCardDao()
-            ?.insertCard(newCard)
+        LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+            .magicCardDao()
+            .insertCard(newCard)
         val userRTDB = UserRTDB(FirebaseDB())
 
         // remove if there is a card in another folder (e.g new folder = owned -> old one = wanted)

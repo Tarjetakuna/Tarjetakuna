@@ -291,4 +291,54 @@ class DatabaseSyncTest {
                 null
             }.get()
     }
+
+    @Test
+    fun fbCardOlderThanLocalCard() {
+        val card1 = DBMagicCard(CommonMagicCard.aeronautTinkererCard, CardPossession.OWNED, 1)
+            .copy(lastUpdate = 1)
+
+        val card2 = DBMagicCard(CommonMagicCard.solemnOfferingCard, CardPossession.OWNED, 1)
+            .copy(lastUpdate = 100)
+
+        runBlocking {
+            LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+                .magicCardDao().insertCard(card2)
+        }
+
+        userRTDB.addCard(
+            card1,
+            SignIn.getSignIn().getUserUID()!!
+        ).get()
+
+        DatabaseSync.sync().get()
+
+        runBlocking {
+            withTimeout(5000) {
+                val databaseCards =
+                    LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+                        .magicCardDao()
+                        .getAllCardsByPossession(CardPossession.OWNED.toString())
+
+                assertThat(
+                    "card has been added to local database",
+                    databaseCards.contains(card1)
+                )
+                assertThat(
+                    "card has been added to local database",
+                    databaseCards.contains(card2)
+                )
+            }
+        }
+
+        userRTDB.getListOfFullCardsInfos(
+            SignIn.getSignIn().getUserUID()!!,
+            CardPossession.OWNED
+        ).thenAccept {
+            assertThat("cards contains card1", it.contains(card1))
+            assertThat("cards contains card2", it.contains(card2))
+        }.exceptionally {
+            assertThat("cards is empty", false)
+            null
+        }.get()
+    }
 }

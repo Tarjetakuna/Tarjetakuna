@@ -216,30 +216,6 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     }
 
     /**
-     * Get the last time the given card has been updated in the user's collection asynchronously from the database (based on possession category)
-     */
-    fun getCardLastUpdatedFromUserPossession(
-        userUID: String,
-        cardUID: String,
-        possession: CardPossession
-    ): CompletableFuture<DataSnapshot> {
-        val future = CompletableFuture<DataSnapshot>()
-        db.child(userUID).child(possession.toString().lowercase()).child(cardUID)
-            .child("lastUpdated")
-            .get()
-            .addOnSuccessListener {
-                if (it.value == null) {
-                    future.completeExceptionally(NoSuchFieldException("card $cardUID is not in user collection"))
-                } else {
-                    future.complete(it)
-                }
-            }.addOnFailureListener {
-                future.completeExceptionally(it)
-            }
-        return future
-    }
-
-    /**
      * Get all card codes from the user's collection asynchronously from the database (based on possession category)
      */
     private fun getAllCardCodesFromUserPossession(
@@ -321,6 +297,9 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         return future
     }
 
+    /**
+     * Replace the card in the user's collection asynchronously from the database
+     */
     fun replaceCardFromUser(
         userUID: String,
         card: DBMagicCard
