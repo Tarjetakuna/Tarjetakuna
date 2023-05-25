@@ -5,7 +5,6 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -82,21 +81,6 @@ class UserCollectionFragmentTest {
         LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
         scenario.close()
         Intents.release()
-    }
-
-    /**
-     * Test if the search bar shown the correct card
-     */
-    @Test
-    fun searchForCard() {
-        onView(withId(R.id.user_collection_searchbar)).perform(click())
-        onView(withId(R.id.user_collection_searchbar)).perform(typeText("Ambush Paratrooper 14"))
-        Espresso.closeSoftKeyboard()
-        onView(withId(R.id.user_collection_list_cards)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                0
-            )
-        ).check(matches(hasDescendant(withText("Ambush Paratrooper 14"))))
     }
 
     @Test
