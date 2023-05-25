@@ -1,4 +1,4 @@
-package com.github.sdp.tarjetakuna.ui
+package com.github.sdp.tarjetakuna.ui.browser
 
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -18,7 +18,6 @@ import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
-import com.github.sdp.tarjetakuna.ui.browser.BrowserFragment
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -30,9 +29,9 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito
 
 @RunWith(AndroidJUnit4::class)
-class BrowserFragmentTest {
+class UserCollectionFragmentTest {
 
-    private lateinit var scenario: FragmentScenario<BrowserFragment>
+    private lateinit var scenario: FragmentScenario<UserCollectionFragment>
 
     private val cardText = "Ambush Paratrooper 05"
     private val quantityText = "4X"
@@ -84,38 +83,24 @@ class BrowserFragmentTest {
         Intents.release()
     }
 
-    /**
-     * Test if the search bar shown the correct card
-     */
-    @Test
-    fun searchForCard() {
-        onView(withId(R.id.browser_searchbar)).perform(click())
-        onView(withId(R.id.browser_searchbar)).perform(typeText("Ambush Paratrooper 14"))
-        onView(withId(R.id.browser_list_cards)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                0
-            )
-        ).check(matches(hasDescendant(withText("Ambush Paratrooper 14"))))
-    }
-
     @Test
     fun checkIfClearFilterButtonWorks() {
-        onView(withId(R.id.browser_filter_button)).perform(click())
-        onView(withId(R.id.browser_filter_by_set_edittext)).perform(typeText("M15"))
-        onView(withId(R.id.browser_sort_button)).perform(click())
-        onView(withId(R.id.browser_sort_by_rarity_button)).perform(click())
-        onView(withId(R.id.browser_clear_filters)).perform(click())
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_filter_button)).perform(click())
+        onView(withId(R.id.user_collection_filter_by_set_edittext)).perform(typeText("M15"))
+        onView(withId(R.id.user_collection_sort_button)).perform(click())
+        onView(withId(R.id.user_collection_sort_by_rarity_button)).perform(click())
+        onView(withId(R.id.user_collection_clear_filters)).perform(click())
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
         ).check(matches(hasDescendant(withText("Ambush Paratrooper 01"))))
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 9
             )
         ).check(matches(hasDescendant(withText("Ambush Paratrooper 10"))))
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 40
             )
@@ -124,42 +109,42 @@ class BrowserFragmentTest {
 
     @Test
     fun checkSwapFromFilterToSortView() {
-        onView(withId(R.id.browser_filter_button)).perform(click())
-        onView(withId(R.id.browser_sort_button)).perform(click())
-        onView(withId(R.id.browser_sort_box)).check(matches(isDisplayed()))
-        onView(withId(R.id.browser_filter_box)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.browser_filter_button)).perform(click())
-        onView(withId(R.id.browser_filter_box)).check(matches(isDisplayed()))
-        onView(withId(R.id.browser_sort_box)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.user_collection_filter_button)).perform(click())
+        onView(withId(R.id.user_collection_sort_button)).perform(click())
+        onView(withId(R.id.user_collection_sort_box)).check(matches(isDisplayed()))
+        onView(withId(R.id.user_collection_filter_box)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.user_collection_filter_button)).perform(click())
+        onView(withId(R.id.user_collection_filter_box)).check(matches(isDisplayed()))
+        onView(withId(R.id.user_collection_sort_box)).check(matches(not(isDisplayed())))
     }
 
     @Test
     fun checkFilterAndSortBoxDisappearAfterClickingTwice() {
-        onView(withId(R.id.browser_sort_button)).perform(click())
-        onView(withId(R.id.browser_sort_button)).perform(click())
-        onView(withId(R.id.browser_filter_box)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.browser_sort_box)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.browser_filter_button)).perform(click())
-        onView(withId(R.id.browser_filter_button)).perform(click())
-        onView(withId(R.id.browser_filter_box)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.browser_sort_box)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.user_collection_sort_button)).perform(click())
+        onView(withId(R.id.user_collection_sort_button)).perform(click())
+        onView(withId(R.id.user_collection_filter_box)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.user_collection_sort_box)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.user_collection_filter_button)).perform(click())
+        onView(withId(R.id.user_collection_filter_button)).perform(click())
+        onView(withId(R.id.user_collection_filter_box)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.user_collection_sort_box)).check(matches(not(isDisplayed())))
     }
 
     @Test
     fun filterByManaCostTest() {
-        onView(withId(R.id.browser_filter_button)).perform(click())
-        onView(withId(R.id.browser_filter_by_mana_edittext)).perform(click())
-        onView(withId(R.id.browser_filter_by_mana_edittext)).perform(typeText("2"))
-        onView(withId(R.id.browser_filter_by_mana_button)).perform(click())
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_filter_button)).perform(click())
+        onView(withId(R.id.user_collection_filter_by_mana_edittext)).perform(click())
+        onView(withId(R.id.user_collection_filter_by_mana_edittext)).perform(typeText("2"))
+        onView(withId(R.id.user_collection_filter_by_mana_button)).perform(click())
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
         ).check(matches(hasDescendant(withText("Ambush Paratrooper 01"))))
-        onView(withId(R.id.browser_filter_by_mana_edittext)).perform(clearText())
-        onView(withId(R.id.browser_filter_by_mana_edittext)).perform(typeText("3"))
-        onView(withId(R.id.browser_filter_by_mana_button)).perform(click())
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_filter_by_mana_edittext)).perform(clearText())
+        onView(withId(R.id.user_collection_filter_by_mana_edittext)).perform(typeText("3"))
+        onView(withId(R.id.user_collection_filter_by_mana_button)).perform(click())
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
@@ -168,19 +153,19 @@ class BrowserFragmentTest {
 
     @Test
     fun filterWithAIllegalManaValueShouldRemoveFilter() {
-        onView(withId(R.id.browser_filter_button)).perform(click())
-        onView(withId(R.id.browser_filter_by_mana_edittext)).perform(click())
-        onView(withId(R.id.browser_filter_by_mana_edittext)).perform(typeText("3"))
-        onView(withId(R.id.browser_filter_by_mana_button)).perform(click())
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_filter_button)).perform(click())
+        onView(withId(R.id.user_collection_filter_by_mana_edittext)).perform(click())
+        onView(withId(R.id.user_collection_filter_by_mana_edittext)).perform(typeText("3"))
+        onView(withId(R.id.user_collection_filter_by_mana_button)).perform(click())
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
         ).check(matches(hasDescendant(withText("Pégase solgrâce"))))
-        onView(withId(R.id.browser_filter_by_mana_edittext)).perform(clearText())
-        onView(withId(R.id.browser_filter_by_mana_edittext)).perform(typeText("a"))
-        onView(withId(R.id.browser_filter_by_mana_button)).perform(click())
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_filter_by_mana_edittext)).perform(clearText())
+        onView(withId(R.id.user_collection_filter_by_mana_edittext)).perform(typeText("a"))
+        onView(withId(R.id.user_collection_filter_by_mana_button)).perform(click())
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
@@ -189,11 +174,11 @@ class BrowserFragmentTest {
 
     @Test
     fun filterBySet() {
-        onView(withId(R.id.browser_filter_button)).perform(click())
-        onView(withId(R.id.browser_filter_by_set_edittext)).perform(click())
-        onView(withId(R.id.browser_filter_by_set_edittext)).perform(typeText("M15"))
-        onView(withId(R.id.browser_filter_by_set_button)).perform(click())
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_filter_button)).perform(click())
+        onView(withId(R.id.user_collection_filter_by_set_edittext)).perform(click())
+        onView(withId(R.id.user_collection_filter_by_set_edittext)).perform(typeText("M15"))
+        onView(withId(R.id.user_collection_filter_by_set_button)).perform(click())
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
@@ -202,14 +187,14 @@ class BrowserFragmentTest {
 
     @Test
     fun sortByManaCost() {
-        onView(withId(R.id.browser_sort_button)).perform(click())
-        onView(withId(R.id.browser_sort_by_mana_button)).perform(click())
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_sort_button)).perform(click())
+        onView(withId(R.id.user_collection_sort_by_mana_button)).perform(click())
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
         ).check(matches(hasDescendant(withText("Ambush Paratrooper 01"))))
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 40
             )
@@ -218,19 +203,19 @@ class BrowserFragmentTest {
 
     @Test
     fun sortByName() {
-        onView(withId(R.id.browser_sort_button)).perform(click())
-        onView(withId(R.id.browser_sort_by_name_button)).perform(click())
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_sort_button)).perform(click())
+        onView(withId(R.id.user_collection_sort_by_name_button)).perform(click())
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
         ).check(matches(hasDescendant(withText("Ambush Paratrooper 01"))))
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 10
             )
         ).check(matches(hasDescendant(withText("Ambush Paratrooper 11"))))
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 40
             )
@@ -239,14 +224,14 @@ class BrowserFragmentTest {
 
     @Test
     fun sortByRarity() {
-        onView(withId(R.id.browser_sort_button)).perform(click())
-        onView(withId(R.id.browser_sort_by_rarity_button)).perform(click())
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_sort_button)).perform(click())
+        onView(withId(R.id.user_collection_sort_by_rarity_button)).perform(click())
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
         ).check(matches(hasDescendant(withText("Pégase solgrâce"))))
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 40
             )
@@ -255,19 +240,19 @@ class BrowserFragmentTest {
 
     @Test
     fun sortBySet() {
-        onView(withId(R.id.browser_sort_button)).perform(click())
-        onView(withId(R.id.browser_sort_by_set_button)).perform(click())
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_sort_button)).perform(click())
+        onView(withId(R.id.user_collection_sort_by_set_button)).perform(click())
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )
         ).check(matches(hasDescendant(withText("Ambush Paratrooper 01"))))
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 2
             )
         ).check(matches(hasDescendant(withText("Ambush Paratrooper 03"))))
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 40
             )
@@ -276,9 +261,9 @@ class BrowserFragmentTest {
 
     @Test
     fun multipleCopyOfTheSameCard() {
-        onView(withId(R.id.browser_searchbar)).perform(click())
-        onView(withId(R.id.browser_searchbar)).perform(typeText(cardText))
-        onView(withId(R.id.browser_list_cards)).perform(
+        onView(withId(R.id.user_collection_searchbar)).perform(click())
+        onView(withId(R.id.user_collection_searchbar)).perform(typeText(cardText))
+        onView(withId(R.id.user_collection_list_cards)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
             )

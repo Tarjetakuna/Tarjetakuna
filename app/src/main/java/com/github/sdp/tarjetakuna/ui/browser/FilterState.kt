@@ -23,7 +23,7 @@ data class FilterState(
         }
         if (manaFilter != null) {
             filteredCards =
-                filteredCards.filter { it.first.convertedManaCost == manaFilter } as ArrayList<Pair<MagicCard, Int>>
+                filteredCards.filter { it.first.convertedManaCost == manaFilter.toDouble() } as ArrayList<Pair<MagicCard, Int>>
         }
         return filteredCards
     }

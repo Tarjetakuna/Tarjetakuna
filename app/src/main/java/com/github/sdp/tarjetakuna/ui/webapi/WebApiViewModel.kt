@@ -6,10 +6,10 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiCards
-import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiSets
-import com.github.sdp.tarjetakuna.utils.Utils.Companion.isNetworkAvailable
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.utils.Utils
 
 
 /**
@@ -17,36 +17,21 @@ import com.github.sdp.tarjetakuna.utils.Utils.Companion.isNetworkAvailable
  */
 open class WebApiViewModel : ViewModel() {
 
-    // api results
-    private val _apiResults = MutableLiveData<String>()
-    val apiResults: LiveData<String> = _apiResults
+    private val _cardList = MutableLiveData<ArrayList<Pair<MagicCard, Int>>>()
+    val cardList: LiveData<ArrayList<Pair<MagicCard, Int>>> = _cardList
 
-    // Cards and sets live data
-    private val _cards = MutableLiveData<MagicApiCards>()
-    val cards: LiveData<MagicApiCards> = _cards
-
-    private val _sets = MutableLiveData<MagicApiSets>()
-    val sets: LiveData<MagicApiSets> = _sets
-
-    private fun setApiResults(s: String) {
-        _apiResults.value = s
+    private fun setCardList(list: ArrayList<MagicCard>) {
+        _cardList.value = zipWithQuantity(list)
     }
 
-    // error code
-    private val _apiError = MutableLiveData<Pair<Int, String>>()
-    val apiError: LiveData<Pair<Int, String>> = _apiError
-
-    private fun setError(resId: Int, s: String) {
-        _apiError.value = Pair(resId, s)
-    }
 
     /**
      * Get all cards information
      */
     fun getRandomCard(context: Context) {
         // check if network is available
-        if (isNetworkAvailable(context)) {
-            getRandomCardWeb()
+        if (Utils.isNetworkAvailable(context)) {
+            getRandomCardWeb(context)
         }
         // TODO else get from cache
         else {
@@ -59,8 +44,8 @@ open class WebApiViewModel : ViewModel() {
      */
     fun getCardsByName(context: Context, cardName: String) {
         // check if network is available
-        if (isNetworkAvailable(context)) {
-            getCardsByNameWeb(cardName)
+        if (Utils.isNetworkAvailable(context)) {
+            getCardsByNameWeb(context, cardName)
         }
         // TODO else get from cache
         else {
@@ -73,36 +58,8 @@ open class WebApiViewModel : ViewModel() {
      */
     fun getCardsBySet(context: Context, setCode: String) {
         // check if network is available
-        if (isNetworkAvailable(context)) {
-            getCardsBySetWeb(setCode)
-        }
-        // TODO else get from cache
-        else {
-            Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    /**
-     * Get all sets information
-     */
-    fun getSets(context: Context) {
-        // check if network is available
-        if (isNetworkAvailable(context)) {
-            getSetsWeb()
-        }
-        // TODO else get from cache
-        else {
-            Toast.makeText(context, "No network available", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    /**
-     * Get a single set by its set code
-     */
-    fun getSetByCode(context: Context, code: String) {
-        // check if network is available
-        if (isNetworkAvailable(context)) {
-            getSetByCodeWeb(code)
+        if (Utils.isNetworkAvailable(context)) {
+            getCardsBySetWeb(context, setCode)
         }
         // TODO else get from cache
         else {
@@ -113,15 +70,13 @@ open class WebApiViewModel : ViewModel() {
     /**
      * get cards from the web
      */
-    protected fun getRandomCardWeb() {
+    private fun getRandomCardWeb(context: Context) {
         WebApi.getRandomCard()
             .thenAccept {
-                if (it != null) _cards.value = MagicApiCards(1, false, "", listOf(it))
-                else _cards.value = MagicApiCards(0, false, "", listOf())
-                setApiResults(it.toString())
+                setCardList(arrayListOf(it.toMagicCard()))
             }
             .exceptionally { e ->
-                setError(R.string.txt_error_msg, e.message ?: "Unknown error")
+                Toast.makeText(context, "No card found", Toast.LENGTH_SHORT).show()
                 Log.e("WebApiViewModel", "Error getting cards", e)
                 null
             }
@@ -130,15 +85,13 @@ open class WebApiViewModel : ViewModel() {
     /**
      * search cards by name from the web
      */
-    protected fun getCardsByNameWeb(name: String) {
+    private fun getCardsByNameWeb(context: Context, name: String) {
         WebApi.getCardsByName(name)
             .thenAccept {
-                if (it != null) _cards.value = it
-                else _cards.value = MagicApiCards(0, false, "", listOf())
-                setApiResults(it.toString())
+                setCardList(ArrayList(it.data.map { magicApiCard -> magicApiCard.toMagicCard() }))
             }
             .exceptionally { e ->
-                setError(R.string.txt_error_msg, e.message ?: "Unknown error")
+                Toast.makeText(context, "No card found", Toast.LENGTH_SHORT).show()
                 Log.e("WebApiViewModel", "Error getting cards by name", e)
                 null
             }
@@ -147,49 +100,29 @@ open class WebApiViewModel : ViewModel() {
     /**
      * search cards by set code from the web
      */
-    protected fun getCardsBySetWeb(set: String) {
+    private fun getCardsBySetWeb(context: Context, set: String) {
         WebApi.getCardsBySet(set)
             .thenAccept {
-                if (it != null) _cards.value = it
-                else _cards.value = MagicApiCards(0, false, "", listOf())
-                setApiResults(it.toString())
+                setCardList(ArrayList(it.data.map { magicApiCard -> magicApiCard.toMagicCard() }))
             }
             .exceptionally { e ->
-                setError(R.string.txt_error_msg, e.message ?: "Unknown error")
+                Toast.makeText(context, "No card found", Toast.LENGTH_SHORT).show()
                 Log.e("WebApiViewModel", "Error getting cards by set", e)
                 null
             }
     }
 
-    /**
-     * get sets from the web
-     */
-    protected fun getSetsWeb() {
-        WebApi.getSets()
-            .thenAccept {
-                setApiResults(it.toString())
-            }
-            .exceptionally { e ->
-                setError(R.string.txt_error_msg, e.message ?: "Unknown error")
-                Log.e("WebApiViewModel", "Error getting sets", e)
-                null
-            }
-    }
-
-    /**
-     * get a single set by code from the web
-     */
-    protected fun getSetByCodeWeb(code: String) {
-        WebApi.getSetByCode(code)
-            .thenAccept {
-                if (it != null) _sets.value = MagicApiSets(listOf(it))
-                else _sets.value = MagicApiSets(listOf())
-                setApiResults(it.toString())
-            }
-            .exceptionally { e ->
-                setError(R.string.txt_error_msg, e.message ?: "Unknown error")
-                Log.e("WebApiViewModel", "Error getting set by code", e)
-                null
-            }
+    private fun zipWithQuantity(
+        cards: List<MagicCard>,
+        collection: List<DBMagicCard> = emptyList()
+    ): ArrayList<Pair<MagicCard, Int>> {
+        val result = ArrayList<Pair<MagicCard, Int>>()
+        for (card in cards) {
+            val quantity =
+                collection.find { it.code == card.set.code && it.number == card.number && it.possession == CardPossession.OWNED }
+                    ?.quantity ?: 1
+            result.add(Pair(card, quantity))
+        }
+        return result
     }
 }

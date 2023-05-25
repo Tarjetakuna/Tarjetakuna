@@ -16,6 +16,9 @@ interface MagicCardDao {
     @Query("SELECT * FROM magic_card")
     suspend fun getAllCards(): List<DBMagicCard>
 
+    @Query("SELECT * FROM magic_card WHERE possession = :possession")
+    suspend fun getAllCardsByPossession(possession: String): List<DBMagicCard>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCard(card: DBMagicCard)
 

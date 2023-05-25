@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             "MagicCard",
             "A beautiful card",
             MagicLayout.NORMAL,
-            7,
+            7.0,
             "{5}{W}{W}",
             MagicSet("M15", "Magic 2015"),
             56,
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             "BestMagicCard",
             "An even more beautiful card",
             MagicLayout.NORMAL,
-            7,
+            7.0,
             "{7}{W}{W}",
             MagicSet("M15", "Magic 2015"),
             56,
@@ -76,7 +76,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home,
                 R.id.nav_browser,
                 R.id.nav_scanner,
-                R.id.nav_webapi
+                R.id.nav_webapi,
+                R.id.nav_chats
             ),
             drawerLayout
         )
@@ -95,7 +96,6 @@ class MainActivity : AppCompatActivity() {
         sharedPref.registerOnSharedPreferenceChangeListener(sharedPrefListener)
 
         updateHeader()
-
         // ask for location permission + get current location if already granted
         Location.captureCurrentLocation(this)
     }

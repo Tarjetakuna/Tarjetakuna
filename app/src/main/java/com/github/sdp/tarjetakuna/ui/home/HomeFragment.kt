@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
@@ -56,6 +57,14 @@ class HomeFragment : Fragment() {
         //check if sign in error has occurred
         setupErrorMsg()
 
+        // TODO remove when not owned card search is implemented
+        homeViewModel.localDatabase = LocalDatabaseProvider.setDatabase(
+            requireContext(),
+            LocalDatabaseProvider.CARDS_DATABASE_NAME
+        )
+        // Sync the databases when the user opens the app
+        DatabaseSync.sync()
+
         val descTextView: TextView = binding.homeWelcomeDescription
         homeViewModel.descriptionText.observe(viewLifecycleOwner) {
             descTextView.text = it
@@ -64,13 +73,6 @@ class HomeFragment : Fragment() {
         val greetingMessage: TextView = binding.homeUserGreetingText
         greetingMessage.text =
             getString(R.string.home_welcome_signed_in, SignIn.getSignIn().getUserDisplayName())
-
-        //Local database
-        // TODO remove when not owned card search is implemented
-        homeViewModel.localDatabase = LocalDatabaseProvider.setDatabase(
-            requireContext(),
-            LocalDatabaseProvider.CARDS_DATABASE_NAME
-        )
 
         //Buttons
         val authenticationButton: Button = binding.homeAuthenticationButton

@@ -21,7 +21,7 @@
     <string name="confirmSignOut_no">No</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_browser">Browse</string>
+    <string name="menu_browser">Collection</string>
     <string name="menu_scanner">Scan</string>
     <string name="menu_webapi">Webapi</string>
     <string name="menu_profile">Profile</string>
@@ -115,14 +115,18 @@
     <string name="browser_sort_by_rarity">Rarity</string>
     <string name="browser_clear_filters">Clear all the filters</string>
     <string name="browser_sort_by_set">Set</string>
+    <string name="browser_page_adapter_collection_title">My Collection</string>
+    <string name="browser_page_adapter_wanted_title">Cards I Want</string>
 
     <string name="single_set_code">(%1$s)</string>
     <string name="single_set_type">Type : %1$s</string>
     <string name="single_set_block">Block : %1$s</string>
     <string name="single_set_release_date">Release date : %1$s</string>
     <string name="single_set_error_loading">Error loading the set</string>
+    <string name="browser_owned_cards_only">Only show owned cards</string>
 
     <string name="home_add_a_random_card">add a random card</string>
+    <string name="api_cards">Random Card</string>
     <string name="chats_my_chats">My chats</string>
     <string name="chat_list_no_message">no message</string>
     <string name="chat_list_item_userlogo">user profile picture</string>
