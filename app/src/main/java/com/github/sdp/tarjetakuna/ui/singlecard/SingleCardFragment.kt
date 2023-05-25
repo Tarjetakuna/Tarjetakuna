@@ -3,6 +3,7 @@ package com.github.sdp.tarjetakuna.ui.singlecard
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentSingleCardBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
@@ -40,6 +43,9 @@ class SingleCardFragment : Fragment() {
         _binding = FragmentSingleCardBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this)[SingleCardViewModel::class.java]
 
+        UserRTDB(FirebaseDB()).getUsers().thenApply {
+            Log.d("BLABLA", it.toString())
+        }
 
         loadCardFromJson()
         setUsersTabs()

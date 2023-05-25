@@ -1,8 +1,10 @@
 package com.github.sdp.tarjetakuna.database
 
+import android.util.Log
 import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.model.User
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.values
 import com.google.gson.Gson
 import java.util.concurrent.CompletableFuture
 
@@ -281,11 +283,20 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         db.get().addOnSuccessListener { snapshot ->
             for (user in snapshot.children) {
                 val uid = user.key.toString()
-                val username = user.child("username").value.toString()
+                val usernameValue = user.child("username").value
+                var username = usernameValue?.toString()
+
+                if (username == null) {
+                    UsernamesRTDB(FirebaseDB()).getUsernameFromUID(uid).thenAccept {
+                        username = it.value.toString()
+                    }
+                }
 
                 val coordinates = user.child("location").run {
-                    val lat = child("lat").value?.toString()?.toDouble() ?: 0.0
-                    val long = child("long").value?.toString()?.toDouble() ?: 0.0
+                    val latValue = child("lat").value
+                    val longValue = child("long").value
+                    val lat = latValue?.toString()?.toDouble() ?: 0.0
+                    val long = longValue?.toString()?.toDouble() ?: 0.0
                     Coordinates(lat, long)
                 }
 
@@ -297,7 +308,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                     CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenRun {
                         cards.addAll(ownedCardsFuture.get())
                         cards.addAll(wantedCardsFuture.get())
-                        users.add(User(uid, username, cards, coordinates))
+                        username?.let { User(uid, it, cards, coordinates) }?.let { users.add(it) }
                     }
                 userFutures.add(userFuture)
             }
@@ -318,8 +329,10 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                 if (user.child("username").value.toString() == username) {
                     val uid = user.key.toString()
                     val coordinates = user.child("location").run {
-                        val lat = child("lat").value?.toString()?.toDouble() ?: 0.0
-                        val long = child("long").value?.toString()?.toDouble() ?: 0.0
+                        val latValue = child("lat").value
+                        val longValue = child("long").value
+                        val lat = latValue?.toString()?.toDouble() ?: 0.0
+                        val long = longValue?.toString()?.toDouble() ?: 0.0
                         Coordinates(lat, long)
                     }
                     val ownedCardsFuture = cardsFromUser(uid, CardPossession.OWNED)
