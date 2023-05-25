@@ -1,12 +1,7 @@
 package com.github.sdp.tarjetakuna.database
 
-import android.util.Log
 import com.github.sdp.tarjetakuna.model.Coordinates
-import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.User
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
-import com.google.gson.Gson
 import com.google.firebase.database.*
 import com.google.gson.Gson
 import java.util.concurrent.CompletableFuture
@@ -298,11 +293,12 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                 val ownedCardsFuture = cardsFromUser(uid, CardPossession.OWNED)
                 val wantedCardsFuture = cardsFromUser(uid, CardPossession.WANTED)
 
-                val userFuture = CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenRun {
-                    cards.addAll(ownedCardsFuture.get())
-                    cards.addAll(wantedCardsFuture.get())
-                    users.add(User(uid, username, cards, coordinates))
-                }
+                val userFuture =
+                    CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenRun {
+                        cards.addAll(ownedCardsFuture.get())
+                        cards.addAll(wantedCardsFuture.get())
+                        users.add(User(uid, username, cards, coordinates))
+                    }
                 userFutures.add(userFuture)
             }
             CompletableFuture.allOf(*userFutures.toTypedArray()).thenRun {
@@ -347,7 +343,10 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         return future
     }
 
-    private fun cardsFromUser(userUID: String, possession: CardPossession): CompletableFuture<MutableList<DBMagicCard>> {
+    private fun cardsFromUser(
+        userUID: String,
+        possession: CardPossession
+    ): CompletableFuture<MutableList<DBMagicCard>> {
         val future = CompletableFuture<MutableList<DBMagicCard>>()
         val cards = mutableListOf<DBMagicCard>()
 
@@ -356,10 +355,11 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
             val cardFutures = mutableListOf<CompletableFuture<DBMagicCard>>()
 
             for (code in cardCodeMap.keys) {
-                val cardFuture = cardsRTDB.getCardFromGlobalCollection(code.toString()).thenApply { card ->
-                    val dbCard = Gson().fromJson(card.value.toString(), DBMagicCard::class.java)
-                    dbCard.copy(possession = possession)
-                }
+                val cardFuture =
+                    cardsRTDB.getCardFromGlobalCollection(code.toString()).thenApply { card ->
+                        val dbCard = Gson().fromJson(card.value.toString(), DBMagicCard::class.java)
+                        dbCard.copy(possession = possession)
+                    }
                 cardFutures.add(cardFuture)
             }
 
@@ -372,7 +372,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         }
         return future
     }
-    
+
     /*
      * Push the location of the user to the database.
      */
