@@ -37,11 +37,11 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
         val future = CompletableFuture<DBChat>()
         val tasks = chatsTable.child(chat.uid).setValue(chatToDBFormat(chat))
         tasks.addOnSuccessListener {
-            future.complete(chat)
             Log.d(TAG, "Chat ${chat.uid} added to chat table")
+            future.complete(chat)
         }.addOnFailureListener {
-            future.completeExceptionally(it)
             Log.w(TAG, "Chat ${chat.uid} failed to be added to chat table")
+            future.completeExceptionally(it)
         }
         return future
     }
@@ -89,29 +89,32 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
 
     /**
      * Add a chat to the database along with its messages.
-     * in chats and messages nodes.
+     * first in the messages table the in chats tables.
      */
     fun addChatToDatabase(chat: Chat): CompletableFuture<Chat> {
         val future = CompletableFuture<Chat>()
         val futureMessages: MutableList<CompletableFuture<Message>> = ArrayList()
-        val futureDBChat = addChat(DBChat.toDBChat(chat))
 
+        // Add all messages to messages table
         for (message in chat.messages) {
             val futureMessage = messagesRTDB.addMessageToDatabase(message)
             futureMessages.add(futureMessage)
         }
-        futureDBChat.thenCompose {
-            CompletableFuture.allOf(*futureMessages.toTypedArray()).thenAccept {
+        // wait for all messages to be added to messages table then add the chat to chats table
+        CompletableFuture.allOf(*futureMessages.toTypedArray()).thenAccept {
+            Log.d(TAG, "all messages for ${chat.uid} added to messages table")
+            val futureDBChat = addChat(DBChat.toDBChat(chat))
+            futureDBChat.thenAccept {
+                Log.d(TAG, "dbChat ${chat.uid} added to chats table")
                 future.complete(chat)
-                Log.d(TAG, "all messages for ${chat.uid} added to messages table")
             }.exceptionally {
+                Log.w(TAG, "dbChat ${chat.uid} failed to be added to chats table")
                 future.completeExceptionally(it)
-                Log.w(TAG, "some messages for ${chat.uid} failed to be added to messages table")
                 return@exceptionally null
             }
         }.exceptionally {
+            Log.w(TAG, "some messages for ${chat.uid} failed to be added to messages table")
             future.completeExceptionally(it)
-            Log.w(TAG, "dbChat ${chat.uid} failed to be added to chats table")
             return@exceptionally null
         }
 

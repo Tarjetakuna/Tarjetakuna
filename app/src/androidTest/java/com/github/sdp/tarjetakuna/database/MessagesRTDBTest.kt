@@ -45,6 +45,32 @@ class MessagesRTDBTest {
     }
 
     @Test
+    fun test_GetMessagesDB() {
+
+        val messagesDB = listOf(
+            ChatsData.fakeDBMessage1_1,
+            ChatsData.fakeDBMessage1_2,
+            ChatsData.fakeDBMessage1_3
+        )
+        // add messages in db
+        for (message in messagesDB) {
+            messagesRTDB.addMessage(message).get(1, TimeUnit.SECONDS)
+        }
+
+        // get messages from db
+        messagesRTDB.getMessages(messagesDB.map { it.uid }).thenAccept { messages ->
+            assertThat(
+                "messages are not the same",
+                messages.sortedBy { it.uid },
+                equalTo(messagesDB.sortedBy { it.uid })
+            )
+        }.exceptionally {
+            assertThat("error $it", false)
+            null
+        }.get()
+    }
+
+    @Test
     fun test_addGetMessageDB() {
 
         // add message in db

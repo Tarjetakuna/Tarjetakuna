@@ -84,11 +84,11 @@ class MessagesRTDB(database: Database = FirebaseDB()) {
         val future = CompletableFuture<Message>()
         val futureDBMessage = addMessage(DBMessage.toDBMessage(message))
         futureDBMessage.thenAccept {
-            future.complete(message)
             Log.d(TAG, "Message ${message.uid} added to messages table")
+            future.complete(message)
         }.exceptionally {
-            future.completeExceptionally(it)
             Log.d(TAG, "Message ${message.uid} failed to be added to messages table")
+            future.completeExceptionally(it)
             return@exceptionally null
         }
         return future

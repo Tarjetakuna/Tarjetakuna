@@ -29,7 +29,7 @@ data class DBMessage(
      * Message timestamp
      */
     val timestamp: Date,
-) {
+) : Cloneable {
     companion object {
         /**
          * Conversion from Message object.
@@ -64,5 +64,9 @@ data class DBMessage(
             val uid = dbMessage.hashCode().toUInt().toString()
             return dbMessage.copy(uid = uid)
         }
+    }
+
+    public override fun clone(): DBMessage {
+        return DBMessage(uid, sender, receiver, content, timestamp)
     }
 }

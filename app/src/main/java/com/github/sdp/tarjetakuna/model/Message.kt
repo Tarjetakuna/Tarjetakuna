@@ -33,6 +33,10 @@ data class Message(
      * Used to check if the data is complete before using it (coming from Database, it might not be complete)
      */
     var valid: Boolean = true
-) {
+) : Cloneable {
     constructor(uid: String) : this(uid, User(""), User(""), "", Date(0), false)
+
+    public override fun clone(): Message {
+        return Message(uid, sender.clone(), receiver.clone(), content, timestamp, valid)
+    }
 }

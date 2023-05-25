@@ -28,7 +28,7 @@ data class User(
     var messages: MutableList<DBMessage> = mutableListOf(),
     var valid: Boolean = true,
     val database: Database = FirebaseDB(),
-) {
+) : Cloneable {
     private val userRTDB: UserRTDB = UserRTDB(database)
     private val usernamesRTDB: UsernamesRTDB = UsernamesRTDB(database)
     private val chatsRTDB = ChatsRTDB(database)
@@ -40,6 +40,18 @@ data class User(
         Coordinates(),
         valid = false
     )
+
+    public override fun clone(): User {
+        return User(
+            uid,
+            username,
+            cards.toMutableList(),
+            location,
+            chats.toMutableList(),
+            messages.toMutableList(),
+            valid
+        )
+    }
 
     init {
         if (valid) {
@@ -119,9 +131,10 @@ data class User(
      */
     fun newChat(chat: Chat): CompletableFuture<Chat> {
         val dbChat = DBChat.toDBChat(chat)
-        if (chatAlreadyExist(dbChat)) {
+        val chatsFiltered = chatAlreadyExist(dbChat)
+        if (chatsFiltered.isNotEmpty()) {
             Log.w("User", "Chat $chat already exist")
-            return CompletableFuture.completedFuture(chat)
+            return CompletableFuture.completedFuture(DBChat.fromDBChat(chatsFiltered[0]))
         }
         chats.add(dbChat)
         return userRTDB.addChat(chat)
@@ -131,12 +144,13 @@ data class User(
      * Creates a new chat with the given user in the user table only and in chats table.
      */
     fun newChat(chat: DBChat): CompletableFuture<DBChat> {
-        if (chatAlreadyExist(chat)) {
+        val chatsFiltered = chatAlreadyExist(chat)
+        if (chatsFiltered.isNotEmpty()) {
             Log.w("User", "Chat $chat already exist")
-            return CompletableFuture.completedFuture(chat)
+            return CompletableFuture.completedFuture(chatsFiltered[0])
         }
         chats.add(chat)
-        return userRTDB.addChat(chat).thenCompose { chatsRTDB.addChat(chat) }
+        return chatsRTDB.addChat(chat).thenCompose { userRTDB.addChat(chat) }
     }
 
     /**
@@ -201,12 +215,13 @@ data class User(
         chatsRTDB.removeChatListener()
     }
 
-    private fun chatAlreadyExist(chat: DBChat): Boolean {
-        return (chats.any {
+    private fun chatAlreadyExist(chat: DBChat): List<DBChat> {
+        Log.d("User", "chatAlreadyExist chats $chats")
+        return chats.filter {
             (it.uid == chat.uid) || // same id
                     (it.user1 == chat.user1 && it.user2 == chat.user2) || // same users
                     (it.user1 == chat.user2 && it.user2 == chat.user1) // same users
-        })
+        }
     }
 
 
@@ -255,8 +270,8 @@ data class User(
                 chats.removeIf { it.uid == dbChat.uid }
                 chats.add(dbChat)
                 future.complete(Pair(dbChat, dbMessage))
-            }
-        }
+            }.exceptionally { future.completeExceptionally(it); null }
+        }.exceptionally { future.completeExceptionally(it); null }
     }
 
     /**

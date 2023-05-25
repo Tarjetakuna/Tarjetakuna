@@ -271,14 +271,18 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
     /**
 
      * Add a [Chat] to the user's chats collection,
-     * in user, chats and messages nodes.
+     * in (chats and messages) nodes then user node.
      */
     fun addChat(chat: Chat): CompletableFuture<Chat> {
         val future = CompletableFuture<Chat>()
         val dbChat = DBChat.toDBChat(chat)
-        addChat(dbChat).thenAccept {
-            chatsRTDB.addChatToDatabase(chat)
-            future.complete(chat)
+        chatsRTDB.addChatToDatabase(chat).thenAccept {
+            addChat(dbChat).thenAccept {
+                future.complete(chat)
+            }.exceptionally {
+                future.completeExceptionally(it)
+                null
+            }
         }.exceptionally {
             future.completeExceptionally(it)
             null
@@ -472,7 +476,10 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         chatsListener =
             db.child(userUID).child("chats").addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.w(TAG, "ValueEventListener:onDataChange snapshot: $snapshot")
+                    Log.w(
+                        TAG,
+                        "ValueEventListener:onDataChange userUID: $userUID snapshot: $snapshot"
+                    )
                     if (snapshot.value == null) {
                         listener.onChatsRemoved()
                     } else {

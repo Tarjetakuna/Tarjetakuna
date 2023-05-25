@@ -4,6 +4,7 @@ import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.ChatsRTDB
+import com.github.sdp.tarjetakuna.database.DBChat
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.DBMessage
 import com.github.sdp.tarjetakuna.database.FirebaseDB
@@ -188,8 +189,8 @@ class UserTest {
 
     @Test
     fun test_newChat() {
-        val user: User = ChatsData.fakeUser1
-        val mChat: Chat = ChatsData.fakeChat1
+        val user: User = ChatsData.fakeUser1.clone()
+        val mChat: Chat = ChatsData.fakeChat1.clone()
 
         // create new chat
         user.newChat(mChat).get(1, TimeUnit.SECONDS)
@@ -220,14 +221,11 @@ class UserTest {
         val chatsRTDB = ChatsRTDB()
         val messagesRTDB = MessagesRTDB()
 
-        val user1: User = ChatsData.fakeUser1
-        val user2: User = ChatsData.fakeUser2
+        val user1: User = ChatsData.fakeUser1.clone()
+        val user2: User = ChatsData.fakeUser2.clone()
 
         val message = "Hello"
-        val pair = user1.sendMessageToUser(message, user2.uid).get(1, TimeUnit.SECONDS)
-
-        println("dbChat ${pair.first}")
-        println("dbMessage ${pair.second}")
+        val pair = user1.sendMessageToUser(message, user2.uid).get(2, TimeUnit.SECONDS)
 
         val dbChats1 = userRTDB.getChatsFromUser(user1.uid).get(1, TimeUnit.SECONDS)
         val dbChats2 = userRTDB.getChatsFromUser(user2.uid).get(1, TimeUnit.SECONDS)
@@ -253,39 +251,93 @@ class UserTest {
         val chatsRTDB = ChatsRTDB()
         val messagesRTDB = MessagesRTDB()
 
-        val user1: User = ChatsData.fakeUser1
-        val user2: User = ChatsData.fakeUser2
+        val user1: User = ChatsData.fakeUser1.clone()
+        val user2: User = ChatsData.fakeUser2.clone()
 
         var chats1_updated = 0
         var chats2_updated = 0
 
-        user1.addChatsListener { chats1_updated++ }
-        user2.addChatsListener { chats2_updated++ }
+        user1.addChatsListener { chats1_updated++; println("chats1_updated $chats1_updated") }
+        user2.addChatsListener { chats2_updated++; println("chats2_updated $chats2_updated") }
 
         val message = "Hello"
         val pair1 = user1.sendMessageToUser(message, user2.uid).get(1, TimeUnit.SECONDS)
 
-        Utils.waitUntilTrue(50, 20) { chats1_updated >= 2 && chats2_updated >= 2 }
+        // wait for 3 updates : 1 for no data, 2 for creation of empty chat, 3 for adding the message
+        Utils.waitUntilTrue(100, 20) { chats1_updated >= 3 }
+        Utils.waitUntilTrue(100, 20) { chats2_updated >= 3 }
+
+        chats1_updated = 0
+        chats2_updated = 0
         val pair2 = user2.sendMessageToUser("$message back", user1.uid).get(1, TimeUnit.SECONDS)
 
-        println("dbChat ${pair1.first}")
-        println("dbMessage ${pair1.second}")
+        // wait for 1 update : for adding the message
+        Utils.waitUntilTrue(100, 20) { chats1_updated >= 1 }
+        Utils.waitUntilTrue(100, 20) { chats2_updated >= 1 }
 
+        // tests parts
+
+        // get the chats for each user
         val dbChats1 = userRTDB.getChatsFromUser(user1.uid).get(1, TimeUnit.SECONDS)
         val dbChats2 = userRTDB.getChatsFromUser(user2.uid).get(1, TimeUnit.SECONDS)
 
         assertThat("chats user1 length not 1", dbChats1.size, equalTo(1))
+        assertThat("chats user2 length not 1", dbChats2.size, equalTo(1))
         assertThat("chats user1 and user2 are different", dbChats1, equalTo(dbChats2))
-        assertThat("chats are different", pair1.first.toString(), equalTo(dbChats1[0].toString()))
+        assertThat("chats are different", pair2.first.toString(), equalTo(dbChats1[0].toString()))
 
+        // get the chat and its messages
         val chat1 = chatsRTDB.getChatFromDatabase(dbChats1[0].uid).get(1, TimeUnit.SECONDS)
-        val dbMessage = messagesRTDB.getMessage(dbChats1[0].messages[0]).get(1, TimeUnit.SECONDS)
+        assertThat("chat messages length not 2", chat1.messages.size, equalTo(2))
+        val dbMessage1 = messagesRTDB.getMessage(dbChats1[0].messages[0]).get(1, TimeUnit.SECONDS)
+        val dbMessage2 = messagesRTDB.getMessage(dbChats1[0].messages[1]).get(1, TimeUnit.SECONDS)
 
-        assertThat("message is different", pair1.second.toString(), equalTo(dbMessage.toString()))
-        assertThat(
-            "message is different",
-            pair1.second.toString(),
-            equalTo(DBMessage.toDBMessage(chat1.messages[0]).toString())
-        )
+        assertThat("message1 is different", pair1.second.toString(), equalTo(dbMessage1.toString()))
+        assertThat("message2 is different", pair2.second.toString(), equalTo(dbMessage2.toString()))
+
+        user1.removeChatsListener()
+        user2.removeChatsListener()
+    }
+
+    @Test
+    fun test_addChatListener() {
+        val user: User = ChatsData.fakeUser1.clone()
+        val chat: Chat = ChatsData.fakeChat1.clone()
+
+        var chats1Updated = 0
+
+        // set the listener
+        user.addChatListener(chat.uid) { chats1Updated++; println("chats1Updated $chats1Updated") }
+
+        // wait for 1 update : no data
+        Utils.waitUntilTrue(100, 20) { chats1Updated >= 1 }
+        assertThat("messages not empty", user.messages.size, equalTo(0))
+
+        chats1Updated = 0
+        // add the chat on the database
+        ChatsRTDB().addChatToDatabase(chat).get(1, TimeUnit.SECONDS)
+
+        // wait for 1 update : data received, internal messages updated
+        Utils.waitUntilTrue(100, 20) { chats1Updated >= 1 }
+        assertThat("messages not empty", user.messages.size, equalTo(chat.messages.size))
+
+        // remove the listener
+        user.removeChatListener()
+    }
+
+    @Test
+    fun test_newDBChat_alreadyExist() {
+        val user: User = ChatsData.fakeUser1.clone()
+        println("user $user")
+        val mDBChat1: DBChat = ChatsData.fakeDBChat1.clone()
+        val mDBChat2: DBChat = ChatsData.fakeDBChat2.copy(uid = mDBChat1.uid).clone()
+
+        // create new chat
+        user.newChat(mDBChat1).get(1, TimeUnit.SECONDS)
+
+        // trying to create new chat with same uid returns existing chat
+        val newChat = user.newChat(mDBChat2).get(1, TimeUnit.SECONDS)
+
+        assertThat("chat is different", newChat.toString(), equalTo(mDBChat1.toString()))
     }
 }

@@ -45,6 +45,63 @@ class ChatsRTDBTest {
     }
 
     @Test
+    fun test_addChatListener() {
+
+        // set up chat listener, listening to new messages
+        var messagesListened = mutableListOf<DBMessage>()
+        var onChatRemovedCalled = false
+        var onChatChangedCalled = false
+        val mListener: UserChatListener = object : UserChatListener {
+            override fun onChatRemoved() {
+                messagesListened.clear()
+                onChatRemovedCalled = true
+                println("onChatRemoved called")
+            }
+
+            override fun onChatChanged(messagesChanged: List<DBMessage>) {
+                messagesListened = messagesChanged.toMutableList()
+                onChatChangedCalled = true
+                println("onChatChanged called with messagesChanged: $messagesChanged")
+            }
+        }
+
+        // setup the chat on which to listen
+        val chatUID = ChatsData.fakeChat1.uid
+        chatsRTDB.addChatListener(chatUID, mListener)
+
+        // should call onChatRemoved
+        Utils.waitUntilTrue(10, 100) { onChatRemovedCalled }
+
+        // add chat in db
+        chatsRTDB.addChatToDatabase(ChatsData.fakeChat1).get(1, TimeUnit.SECONDS)
+
+        // should call onChatChanged
+        Utils.waitUntilTrue(10, 100) { onChatChangedCalled }
+
+        // get chat from db
+        chatsRTDB.getChat(ChatsData.fakeChat1.uid).thenAccept { chat ->
+            assertThat("chat is not fakeDBChat1", chat, equalTo(ChatsData.fakeDBChat1))
+            assertThat(
+                "messagesListened is not fakeDBChat1.messages",
+                messagesListened.map { it.uid }.sortedBy { it },
+                equalTo(ChatsData.fakeDBChat1.messages.sortedBy { it })
+            )
+        }.exceptionally {
+            assertThat("error '$it' should not have happened", false)
+            null
+        }.get()
+
+        chatsRTDB.removeChatListener(chatUID)
+    }
+
+    @Test
+    fun test_removeChatListener_notAdded() {
+        val chatUID = ChatsData.fakeDBChat1.uid
+        chatsRTDB.removeChatListener(chatUID)
+        assertThat("removeChatListener should not have thrown an exception", true)
+    }
+
+    @Test
     fun test_AddAndGet_Chat() {
 
         // add chat in db
@@ -156,7 +213,7 @@ class ChatsRTDBTest {
         val mChat1 = ChatsData.fakeChat1
         val mChat2 = ChatsData.fakeChat2
         val future = chatsRTDB.addChatToDatabase(mChat1)
-            .thenApply { chatsRTDB.addChatToDatabase(mChat2) }
+            .thenCompose { chatsRTDB.addChatToDatabase(mChat2) }
         future.get(1, TimeUnit.SECONDS)
 
         val mChats = arrayListOf(mChat1, mChat2).sortedBy { it.uid }
