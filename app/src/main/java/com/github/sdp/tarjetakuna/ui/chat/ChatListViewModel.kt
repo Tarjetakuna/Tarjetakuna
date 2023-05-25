@@ -38,7 +38,7 @@ class ChatListViewModel : ViewModel() {
     }
 
     fun detachChatsListener() {
-        if (currentUser.isUserLoggedIn()) return
+        if (!currentUser.isUserLoggedIn()) return
         currentUser.detachChatsListener()
     }
 
