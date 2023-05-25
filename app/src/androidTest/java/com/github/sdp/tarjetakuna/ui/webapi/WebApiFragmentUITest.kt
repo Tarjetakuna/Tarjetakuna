@@ -95,7 +95,7 @@ class WebApiFragmentUITest {
                 // assertion passed, break the loop
                 result = true
                 break
-            } catch (e: AssertionError) {
+            } catch (e: Error) {
                 // Assertion failed, continue looping until timeout
                 Espresso.onIdle()
             }
@@ -134,7 +134,7 @@ class WebApiFragmentUITest {
                 // assertion passed, break the loop
                 result = true
                 break
-            } catch (e: AssertionError) {
+            } catch (e: Error) {
                 // Assertion failed, continue looping until timeout
                 Espresso.onIdle()
             }
@@ -173,7 +173,7 @@ class WebApiFragmentUITest {
                 // assertion passed, break the loop
                 result = true
                 break
-            } catch (e: AssertionError) {
+            } catch (e: Error) {
                 // Assertion failed, continue looping until timeout
                 Espresso.onIdle()
             }
