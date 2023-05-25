@@ -8,20 +8,26 @@ import androidx.lifecycle.viewModelScope
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.AppDatabase
+import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
 
-    private val _titleText = MutableLiveData<String>().apply {
-        value = "Welcome to Tarjetakuna!\n"
-    }
-    private val _descriptionText = MutableLiveData<String>().apply {
-        value =
-            "Start browsing right away, or sign in to view and manage your Magic: The Gathering collection\n"
-    }
+    private val _titleText = MutableLiveData<String>()
     val titleText: LiveData<String> = _titleText
+
+    private val _descriptionText = MutableLiveData<String>()
     val descriptionText: LiveData<String> = _descriptionText
+
+    //manage sign in state
+    private val _isConnected = MutableLiveData<Boolean>()
+    val isConnected: LiveData<Boolean> = _isConnected
+
+    fun checkUserConnected() {
+        _isConnected.value = SignIn.getSignIn().isUserLoggedIn()
+    }
+
 
     // TODO remove this when we can research the cards and open them in the single card fragment
     // TODO the things to remove are: localDatabase, cards, generateCards, getRandomCard, the button

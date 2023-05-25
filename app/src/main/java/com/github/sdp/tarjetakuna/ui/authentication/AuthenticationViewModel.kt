@@ -23,11 +23,11 @@ class AuthenticationViewModel : ViewModel() {
     private val _signInIntent = MutableLiveData<Intent>()
     val signInIntent: LiveData<Intent> = _signInIntent
 
-    private val _changeToSignOutFragment = MutableLiveData<Boolean>()
-    val changeToSignOutFragment: LiveData<Boolean> = _changeToSignOutFragment
+    private val _signInSuccess = MutableLiveData<Boolean>()
+    val signInSuccess: LiveData<Boolean> = _signInSuccess
 
-    private val _changeToAuthenButtonFragment = MutableLiveData<Boolean>()
-    val changeToAuthenticationButtonFragment: LiveData<Boolean> = _changeToAuthenButtonFragment
+    private val _signInResponseNull = MutableLiveData<Boolean>()
+    val signInResponseNull: LiveData<Boolean> = _signInResponseNull
 
     /**
      * Create an intent to sign in the user and wait for the result.
@@ -60,11 +60,11 @@ class AuthenticationViewModel : ViewModel() {
             // Successfully signed in
             //val user = FirebaseAuth.getInstance().currentUser
             // The observer will be notified and launch the SignOutFragment
-            _changeToSignOutFragment.value = true
+            _signInSuccess.value = true
         } else {
             if (response == null) {
                 // The observer will be notified and launch the authenticationButtonFragment
-                _changeToAuthenButtonFragment.value = true
+                _signInResponseNull.value = true
             } else {
                 // The observer will be notified and launch the error
                 _reportErrorString.value = "authenticationFailed"
