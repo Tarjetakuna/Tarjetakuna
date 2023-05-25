@@ -12,6 +12,8 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.DatabaseSync
+import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentAuthenticationBinding
 import com.github.sdp.tarjetakuna.extra.Location
 
@@ -61,6 +63,16 @@ class AuthenticationFragment : Fragment() {
 
         viewModel.changeToSignOutFragment.observe(viewLifecycleOwner) {
             if (it) {
+                // Sync the database when the user is connected
+                LocalDatabaseProvider.deleteDatabases(
+                    requireContext(),
+                    arrayListOf(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+                )
+                LocalDatabaseProvider.setDatabase(
+                    requireContext(),
+                    LocalDatabaseProvider.CARDS_DATABASE_NAME
+                )
+                DatabaseSync.sync()
                 val mainActivity = requireActivity() as MainActivity
                 mainActivity.changeFragment(R.id.nav_sign_out)
             }
