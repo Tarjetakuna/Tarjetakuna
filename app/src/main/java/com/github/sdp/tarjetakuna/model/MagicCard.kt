@@ -27,7 +27,7 @@ data class MagicCard(
      * The total card mana cost.
      * Example : 7
      */
-    val convertedManaCost: Int = 0,
+    val convertedManaCost: Double = 0.0,
 
     /**
      * The card mana cost.

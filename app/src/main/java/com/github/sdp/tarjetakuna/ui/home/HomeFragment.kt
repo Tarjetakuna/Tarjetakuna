@@ -34,10 +34,6 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val arrayCards = ArrayList<String>()
-        arrayCards.add("cards")
-        LocalDatabaseProvider.deleteDatabases(requireContext(), arrayCards)
-
         val textView: TextView = binding.homeWelcomeText
         homeViewModel.titleText.observe(viewLifecycleOwner) {
             textView.text = it
