@@ -47,7 +47,7 @@ class SingleCardViewModel : ViewModel() {
         if (!SignIn.getSignIn().isUserLoggedIn()) {
             return
         }
-        DatabaseSync.sync()
+        //DatabaseSync.sync()
         viewModelScope.launch {
             val lCard =
                 card?.set?.let {
@@ -67,7 +67,6 @@ class SingleCardViewModel : ViewModel() {
      * remove it only if it's not owned
      */
     fun manageWantedCollection() {
-
         viewModelScope.launch {
             val lCard =
                 card?.set?.let {

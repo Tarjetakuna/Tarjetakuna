@@ -13,6 +13,9 @@ import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
 
+/**
+ * Fragment for the home page.
+ */
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -30,6 +33,10 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val arrayCards = ArrayList<String>()
+        arrayCards.add("cards")
+        LocalDatabaseProvider.deleteDatabases(requireContext(), arrayCards)
 
         val textView: TextView = binding.homeWelcomeText
         homeViewModel.titleText.observe(viewLifecycleOwner) {
