@@ -127,7 +127,8 @@ class UserTest {
                     .child("users")
                     .child(validUID)
                     .child("owned")
-                    .child(fbcard.getFbKey()).get().addOnSuccessListener {
+                    .child(fbcard.getFbKey())
+                    .child("quantity").get().addOnSuccessListener {
                         count = it.value as Long
                     }
             }
@@ -149,12 +150,36 @@ class UserTest {
                     .child("users")
                     .child(validUID)
                     .child("owned")
-                    .child(fbcard.getFbKey()).get().addOnSuccessListener {
+                    .child(fbcard.getFbKey())
+                    .child("quantity").get().addOnSuccessListener {
                         count = it.value as Long
                     }
             }
             delay(1000)
             assertThat(count, CoreMatchers.`is`(2L))
+
+        }
+    }
+
+    @Test
+    fun removeMoreCardDoesNotGoBelowZero() {
+        runBlocking {
+            validUser.addCard(card, CardPossession.OWNED).get()
+            validUser.removeCard(card, CardPossession.OWNED).get()
+            validUser.removeCard(card, CardPossession.OWNED).get()
+            var count = 0L
+            withTimeout(1000) {
+                fbEmulator.fb.reference
+                    .child("users")
+                    .child(validUID)
+                    .child("owned")
+                    .child(fbcard.getFbKey())
+                    .child("quantity").get().addOnSuccessListener {
+                        count = it.value as Long
+                    }
+            }
+            delay(1000)
+            assertThat(count, CoreMatchers.`is`(0L))
 
         }
     }
@@ -169,6 +194,20 @@ class UserTest {
         val fbCard1 = Gson().fromJson(actualCard1.value as String, DBMagicCard::class.java)
         val magicCard1 = fbCard1.toMagicCard()
         assertThat(magicCard1, CoreMatchers.`is`(card))
+    }
+
+    @Test
+    fun getCardWhenQuantityZeroDoesNotWork() {
+        assert(validUser.addCard(card, CardPossession.WANTED).get())
+        assert(validUser.removeCard(card, CardPossession.WANTED).get())
+
+        val futureCard1 = validUser.getCard(card.set.code, card.number, CardPossession.WANTED)
+        futureCard1.thenAccept {
+            assertThat("Quantity should be zero, so not work", CoreMatchers.`is`(false))
+        }.exceptionally {
+            assertThat("Quantity is zero", CoreMatchers.`is`(true))
+            null
+        }
     }
 
     @Test
