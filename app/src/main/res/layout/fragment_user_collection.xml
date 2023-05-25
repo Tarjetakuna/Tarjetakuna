@@ -52,8 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:orientation="vertical"
-        android:visibility="gone"
-        android:background="#8321F3C2">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,6 +61,7 @@
 
             <TextView
                 android:id="@+id/user_collection_filter_by_set_textview"
+                style="@style/DescriptionStyleItalic"
                 android:textSize="16sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -71,6 +71,7 @@
 
             <EditText
                 android:id="@+id/user_collection_filter_by_set_edittext"
+                style="@style/EditTextStyle"
                 android:textSize="16sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -97,6 +98,7 @@
 
             <TextView
                 android:id="@+id/user_collection_filter_by_mana_textview"
+                style="@style/DescriptionStyleItalic"
                 android:textSize="16sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -106,6 +108,7 @@
 
             <EditText
                 android:id="@+id/user_collection_filter_by_mana_edittext"
+                style="@style/EditTextStyle"
                 android:textSize="16sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -135,8 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:visibility="gone"
-        android:orientation="horizontal"
-        android:background="#83F31B5F">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/user_collection_sort_by_name_button"

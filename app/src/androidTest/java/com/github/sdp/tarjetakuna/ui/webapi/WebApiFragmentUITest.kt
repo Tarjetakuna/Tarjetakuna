@@ -102,7 +102,7 @@ class WebApiFragmentUITest {
         }
 
         // check that the test passed
-        assert(result)
+        assertThat(result, `is`(true))
     }
 
     @Test
@@ -141,7 +141,7 @@ class WebApiFragmentUITest {
         }
 
         // check that the test passed
-        assert(result)
+        assertThat(result, `is`(true))
     }
 
     @Test
@@ -180,7 +180,7 @@ class WebApiFragmentUITest {
         }
 
         // check that the test passed
-        assert(result)
+        assertThat(result, `is`(true))
     }
 
 }
