@@ -2,14 +2,12 @@ package com.github.sdp.tarjetakuna.ui.webapi
 
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -92,7 +90,6 @@ class WebApiFragmentUITest {
         while (System.currentTimeMillis() - startTimeMillis < timeoutMillis) {
             try {
                 // check that the card displayed is the one from the response
-                recyclerView.perform(scrollToPosition<RecyclerView.ViewHolder>(0))
                 recyclerView.check(matches(hasDescendant(withText("Marsh Goblins"))))
 
                 // assertion passed, break the loop
@@ -131,9 +128,7 @@ class WebApiFragmentUITest {
         while (System.currentTimeMillis() - startTimeMillis < timeoutMillis) {
             try {
                 // check that the cards displayed are the one from the response
-                recyclerView.perform(scrollToPosition<RecyclerView.ViewHolder>(0))
                 recyclerView.check(matches(hasDescendant(withText("Ajani Steadfast"))))
-                recyclerView.perform(scrollToPosition<RecyclerView.ViewHolder>(3))
                 recyclerView.check(matches(hasDescendant(withText("Battle Mastery"))))
 
                 // assertion passed, break the loop
@@ -172,9 +167,7 @@ class WebApiFragmentUITest {
         while (System.currentTimeMillis() - startTimeMillis < timeoutMillis) {
             try {
                 // check that the cards displayed are the one from the response
-                recyclerView.perform(scrollToPosition<RecyclerView.ViewHolder>(0))
                 recyclerView.check(matches(hasDescendant(withText("Ajani's Aid"))))
-                recyclerView.perform(scrollToPosition<RecyclerView.ViewHolder>(1))
                 recyclerView.check(matches(hasDescendant(withText("Ajani's Comrade"))))
 
                 // assertion passed, break the loop

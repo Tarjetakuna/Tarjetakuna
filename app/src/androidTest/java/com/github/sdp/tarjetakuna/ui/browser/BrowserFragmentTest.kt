@@ -1,13 +1,11 @@
 package com.github.sdp.tarjetakuna.ui.browser;
 
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.action.ViewActions.swipeRight
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -111,23 +109,15 @@ class BrowserFragmentTest {
 
     @Test
     fun testScrollingBetweenTabsWorksCorrectly() {
-        onView(withId(R.id.user_collection_list_cards)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                0
-            )
-        ).check(matches(hasDescendant(withText(CommonMagicCard.venomousHierophantCard.name))))
+        onView(withId(R.id.viewPager)).check(matches(hasDescendant(withText(CommonMagicCard.venomousHierophantCard.name))))
+
         onView(withId(R.id.viewPager)).perform(swipeLeft())
-        onView(withId(R.id.user_collection_list_cards)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                0
-            )
-        ).check(matches(hasDescendant(withText(CommonMagicCard.aeronautTinkererCard.name))))
+
+        onView(withId(R.id.viewPager)).check(matches(hasDescendant(withText(CommonMagicCard.aeronautTinkererCard.name))))
+
         onView(withId(R.id.viewPager)).perform(swipeRight())
-        onView(withId(R.id.user_collection_list_cards)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                0
-            )
-        ).check(matches(hasDescendant(withText(CommonMagicCard.venomousHierophantCard.name))))
+
+        onView(withId(R.id.viewPager)).check(matches(hasDescendant(withText(CommonMagicCard.venomousHierophantCard.name))))
     }
 
 }
