@@ -34,7 +34,7 @@ data class Message(
      */
     var valid: Boolean = true
 ) : Cloneable {
-    constructor(uid: String) : this(uid, User(""), User(""), "", Date(0), false)
+    constructor(uid: String) : this(uid, User(""), User(""), "", Date(), false)
 
     public override fun clone(): Message {
         return Message(uid, sender.clone(), receiver.clone(), content, timestamp, valid)
