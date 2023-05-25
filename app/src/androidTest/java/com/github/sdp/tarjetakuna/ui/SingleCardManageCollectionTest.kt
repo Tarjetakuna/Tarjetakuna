@@ -18,12 +18,14 @@ import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
 import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -31,6 +33,7 @@ import org.hamcrest.CoreMatchers.not
 import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Mockito
+import java.util.concurrent.TimeUnit
 
 
 @RunWith(AndroidJUnit4::class)
@@ -92,6 +95,9 @@ class SingleCardManageCollectionTest {
             }
         }
 
+        val task = FirebaseDB().clearDatabase()
+        Tasks.await(task, 5, TimeUnit.SECONDS)
+
         val bundleArgs =
             Bundle().apply {
                 putString(
@@ -106,12 +112,16 @@ class SingleCardManageCollectionTest {
 
         Thread.sleep(1000)
         wantedButton.perform(scrollTo())
+
+
     }
 
     @After
     fun tearDown() {
         Intents.release()
         LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+        val task = FirebaseDB().clearDatabase()
+        Tasks.await(task, 5, TimeUnit.SECONDS)
     }
 
     @Test

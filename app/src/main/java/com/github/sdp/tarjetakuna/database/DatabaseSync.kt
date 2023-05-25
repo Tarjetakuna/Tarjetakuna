@@ -14,19 +14,33 @@ import java.util.concurrent.CompletableFuture
  */
 object DatabaseSync {
 
+
+    private var isDoingSync: CompletableFuture<Boolean>? = null
+
     /**
      * Sync the local database with the remote database.
      */
     @JvmStatic
     fun sync(): CompletableFuture<Boolean> {
-        Log.i("DatabaseSync", "sync: start")
         val isSyncCompleted = CompletableFuture<Boolean>()
         val userRTDB = UserRTDB(FirebaseDB())
-        if (!SignIn.getSignIn().isUserLoggedIn()) {
-            Log.i("DatabaseSync", "sync: Not connected to firebase")
-            isSyncCompleted.completeExceptionally(Exception("Not connected to firebase"))
+        if (!SignIn.getSignIn().isUserLoggedIn() || LocalDatabaseProvider.getDatabase(
+                LocalDatabaseProvider.CARDS_DATABASE_NAME
+            ) == null
+        ) {
+            Log.i("DatabaseSync", "sync: Not connected to database")
+            isSyncCompleted.completeExceptionally(Exception("Not connected to database"))
             return isSyncCompleted
         }
+
+        if (isDoingSync != null && !(isDoingSync!!.isDone)) {
+            Log.i("DatabaseSync", "sync: Already doing sync")
+            isSyncCompleted.completeExceptionally(Exception("Already doing sync"))
+            return isSyncCompleted
+        }
+        Log.i("DatabaseSync", "sync: start")
+
+        isDoingSync = isSyncCompleted
         val f1 = processCardsByPossession(CardPossession.OWNED, userRTDB)
         val f2 = processCardsByPossession(CardPossession.TRADE, userRTDB)
         val f3 = processCardsByPossession(CardPossession.WANTED, userRTDB)
@@ -88,8 +102,8 @@ object DatabaseSync {
     ): CompletableFuture<Boolean> {
 
         val isSyncDone = CompletableFuture<Boolean>()
-        LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
-            .magicCardDao().insertCard(newCard)
+        LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)?.magicCardDao()
+            ?.insertCard(newCard)
         val userRTDB = UserRTDB(FirebaseDB())
 
         // remove if there is a card in another folder (e.g new folder = owned -> old one = wanted)

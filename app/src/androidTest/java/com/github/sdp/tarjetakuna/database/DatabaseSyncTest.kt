@@ -7,7 +7,6 @@ import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.utils.FBEmulator
-import com.github.sdp.tarjetakuna.utils.Utils
 import com.google.android.gms.tasks.Tasks
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -146,9 +145,6 @@ class DatabaseSyncTest {
                         .magicCardDao()
                         .getAllCardsByPossession(CardPossession.OWNED.toString())
 
-                Utils.waitUntilTrue(100, 10) {
-                    databaseCards2.contains(card1)
-                }
                 assertThat(
                     "card has been added to local database",
                     databaseCards2.contains(card1)
@@ -157,35 +153,142 @@ class DatabaseSyncTest {
         }
     }
 
-//    @Test
-//    fun firebaseEmptyButNotLocalDatabase() {
-//        val card1 = DBMagicCard(CommonMagicCard.aeronautTinkererCard, CardPossession.OWNED, 1)
-//        card1.lastUpdate = 1
-//
-//        val card2 = DBMagicCard(CommonMagicCard.solemnOfferingCard, CardPossession.TRADE, 1)
-//        card2.lastUpdate = 2
-//
-////        database!!.magicCardDao().insert(card1)
-////        database!!.magicCardDao().insert(card2)
-//
-//        DatabaseSync.sync().get()
-//
-//        runBlocking {
-//            withTimeout(5000) {
-//                val databaseCards = database!!.magicCardDao()
-//                    .getAllCardsByPossession(CardPossession.TRADE.toString())
-//                assertThat(
-//                    "card has been added to local database",
-//                    databaseCards.contains(card2)
-//                )
-//                val databaseCards2 = database!!.magicCardDao()
-//                    .getAllCardsByPossession(CardPossession.OWNED.toString())
-//                assertThat(
-//                    "card has been added to local database",
-//                    databaseCards2.contains(card1)
-//                )
-//            }
-//        }
-//    }
+    @Test
+    fun firebaseEmptyButNotLocalDatabase() {
+        val card1 = DBMagicCard(CommonMagicCard.aeronautTinkererCard, CardPossession.OWNED, 1)
+            .copy(lastUpdate = 1)
 
+        val card2 = DBMagicCard(CommonMagicCard.solemnOfferingCard, CardPossession.OWNED, 1)
+            .copy(lastUpdate = 2)
+
+        runBlocking {
+            LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
+                .magicCardDao().insertCards(listOf(card1, card2))
+        }
+
+        DatabaseSync.sync().get()
+
+        val userRTDB = UserRTDB(FirebaseDB())
+        val cards = userRTDB.getListOfFullCardsInfos(
+            SignIn.getSignIn().getUserUID()!!,
+            CardPossession.OWNED
+        ).get()
+        assertThat("cards contains card1", cards.contains(card1))
+        assertThat("cards contains card2", cards.contains(card2))
+    }
+
+    @Test
+    fun firebaseAndLocalDatabaseEmpty() {
+        DatabaseSync.sync().get()
+
+        userRTDB.getListOfFullCardsInfos(
+            SignIn.getSignIn().getUserUID()!!,
+            CardPossession.OWNED
+        ).thenAccept {
+            assertThat("cards is not empty", false)
+        }.exceptionally {
+            assertThat("cards is empty", true)
+            null
+        }.get()
+
+        userRTDB.getListOfFullCardsInfos(
+            SignIn.getSignIn().getUserUID()!!,
+            CardPossession.WANTED
+        ).thenAccept {
+            assertThat("cards is not empty", false)
+        }.exceptionally {
+            assertThat("cards is empty", true)
+            null
+        }.get()
+
+        userRTDB.getListOfFullCardsInfos(
+            SignIn.getSignIn().getUserUID()!!,
+            CardPossession.TRADE
+        ).thenAccept {
+            assertThat("cards is not empty", false)
+        }.exceptionally {
+            assertThat("cards is empty", true)
+            null
+        }.get()
+    }
+
+    @Test
+    fun userNotSignedIn() {
+        val mockedAuth = Mockito.mock(Authenticator::class.java)
+        Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockedAuth.getUserUID()).thenReturn("test")
+        SignIn.setSignIn(mockedAuth)
+
+        DatabaseSync.sync()
+            .thenAccept {
+                assertThat("exception is not null", false)
+            }
+            .exceptionally { exception ->
+                assertThat("exception is not null", exception != null)
+                null
+            }.get()
+
+    }
+
+    @Test
+    fun cannotSyncTwiceAtATime() {
+        userRTDB.addCard(
+            DBMagicCard(
+                CommonMagicCard.aeronautTinkererCard,
+                CardPossession.OWNED,
+                1
+            ).copy(lastUpdate = 1), SignIn.getSignIn().getUserUID()!!
+        ).get()
+
+        userRTDB.addCard(
+            DBMagicCard(
+                CommonMagicCard.solemnOfferingCard,
+                CardPossession.OWNED,
+                1
+            ).copy(lastUpdate = 2), SignIn.getSignIn().getUserUID()!!
+        ).get()
+
+        val sync = DatabaseSync.sync()
+        DatabaseSync.sync()
+            .thenAccept {
+                assertThat("sync started", false)
+            }
+            .exceptionally { exception ->
+                assertThat("sync not started", exception != null)
+                null
+            }.get()
+
+        sync.get()
+    }
+
+    @Test
+    fun databaseNotInitialized() {
+        LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+        DatabaseSync.sync()
+            .thenAccept {
+                assertThat("exception is not null", false)
+            }
+            .exceptionally {
+                assertThat("exception is not null", true)
+                null
+            }.get()
+    }
+
+    @Test
+    fun userNotConnectedAndDatabaseNotInitialized() {
+        val mockedAuth = Mockito.mock(Authenticator::class.java)
+        Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockedAuth.getUserUID()).thenReturn("test")
+        SignIn.setSignIn(mockedAuth)
+
+        LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+        DatabaseSync.sync()
+            .thenAccept {
+                assertThat("exception is not null", false)
+            }
+            .exceptionally {
+                assertThat("exception is not null", true)
+                null
+            }.get()
+    }
 }
