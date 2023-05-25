@@ -53,18 +53,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.637" />
 
-
-    <!--    <Button-->
-    <!--        android:id="@+id/add_random_card_button"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginBottom="30dp"-->
-    <!--        android:text="@string/home_add_a_random_card"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/home_authenticationButton"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent" />-->
-
-
     <LinearLayout
         android:id="@+id/home_userContent_layout"
         android:layout_width="match_parent"
@@ -82,16 +70,6 @@
             android:gravity="center|center_horizontal"
             android:text="@string/home_welcome_signed_in"
             android:layout_weight="1" />
-        <!--insert content here-->
-        <Button
-            android:id="@+id/add_random_card_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:text="@string/home_add_a_random_card"
-            app:layout_constraintBottom_toTopOf="@+id/home_signOut_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/home_signOut_button"

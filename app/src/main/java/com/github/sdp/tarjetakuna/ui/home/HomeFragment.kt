@@ -57,7 +57,7 @@ class HomeFragment : Fragment() {
         //check if sign in error has occurred
         setupErrorMsg()
 
-        // TODO remove when not owned card search is implemented
+//        // TODO remove when not owned card search is implemented
         homeViewModel.localDatabase = LocalDatabaseProvider.setDatabase(
             requireContext(),
             LocalDatabaseProvider.CARDS_DATABASE_NAME
@@ -80,11 +80,6 @@ class HomeFragment : Fragment() {
             val bundle = Bundle()
             bundle.putBoolean("signIn", true)
             mainActivity.changeFragment(R.id.nav_authentication, bundle)
-        }
-
-        val addRandomCardButton: Button = binding.addRandomCardButton
-        addRandomCardButton.setOnClickListener {
-            homeViewModel.addRandomCard()
         }
 
         val positiveButtonClick = { dialog: DialogInterface, which: Int ->

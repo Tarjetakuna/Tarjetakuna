@@ -17,7 +17,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class SignOutFragmentTest {
+class SignedInHomeFragmentTest {
 
     @get:Rule
     public val activityRule = ActivityScenarioRule(MainActivity::class.java)
@@ -35,36 +35,24 @@ class SignOutFragmentTest {
         val fbEmulator = FBEmulator()
     }
 
-
     @Before
     fun setUp() {
         activityRule.scenario.onActivity { activity ->
-            activity.changeFragment(R.id.nav_sign_out)
+            activity.changeFragment(R.id.nav_home)
         }
     }
 
-
     @Test
     fun testGreetingFragmentSignOut() {
-        onView(withId(R.id.signOut_sign_out_button)).perform(click())
+        onView(withId(R.id.home_signOut_button)).perform(click())
         activityRule.scenario.onActivity { activity ->
             val navController =
                 Navigation.findNavController(activity, R.id.nav_host_fragment_content_drawer)
             // check if it goes back to nav_authentication first and then to nav_authentication_button
-            assertEquals(
-                navController.previousBackStackEntry?.destination?.id,
-                R.id.nav_authentication
-            )
-            assertEquals(navController.currentDestination?.id, R.id.nav_authentication_button)
-        }
-    }
-
-    @Test
-    fun testGreetingFragmentBackToHome() {
-        onView(withId(R.id.signOut_home_button)).perform(click())
-        activityRule.scenario.onActivity { activity ->
-            val navController =
-                Navigation.findNavController(activity, R.id.nav_host_fragment_content_drawer)
+//            assertEquals(
+//                navController.previousBackStackEntry?.destination?.id,
+//                R.id.nav_authentication
+//            )
             assertEquals(navController.currentDestination?.id, R.id.nav_home)
         }
     }

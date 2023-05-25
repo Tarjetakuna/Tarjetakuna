@@ -13,13 +13,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.utils.FBEmulator
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeout
 import org.hamcrest.Matchers.equalTo
 import org.junit.*
 import org.junit.runner.RunWith
@@ -81,24 +78,9 @@ class HomeFragmentTest {
             val navController = findNavController(activity, R.id.nav_host_fragment_content_drawer)
             assertThat(
                 navController.currentDestination?.id,
-                equalTo(R.id.nav_authentication_button)
+                equalTo(R.id.nav_authentication)
             )
         }
 
     }
-
-    @Test
-    fun buttonAddRandomCardWorks() {
-        val databaseCards: List<DBMagicCard>
-        onView(withId(R.id.add_random_card_button)).perform(click())
-        runBlocking {
-            withTimeout(5000) {
-                databaseCards =
-                    LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)!!
-                        .magicCardDao().getAllCards()
-            }
-        }
-        assert(databaseCards.isNotEmpty())
-    }
-
 }
