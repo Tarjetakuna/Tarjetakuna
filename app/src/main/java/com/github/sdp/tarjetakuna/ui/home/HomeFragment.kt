@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
 
@@ -36,7 +37,6 @@ class HomeFragment : Fragment() {
 
         val arrayCards = ArrayList<String>()
         arrayCards.add("cards")
-        LocalDatabaseProvider.deleteDatabases(requireContext(), arrayCards)
 
         val textView: TextView = binding.homeWelcomeText
         homeViewModel.titleText.observe(viewLifecycleOwner) {
@@ -48,6 +48,9 @@ class HomeFragment : Fragment() {
             requireContext(),
             LocalDatabaseProvider.CARDS_DATABASE_NAME
         )
+        // Sync the databases when the user opens the app
+        DatabaseSync.sync()
+
         val descTextView: TextView = binding.homeWelcomeDescription
         homeViewModel.descriptionText.observe(viewLifecycleOwner) {
             descTextView.text = it
