@@ -8,7 +8,9 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
+import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.utils.Utils
+
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -30,6 +32,7 @@ class SignOutFragmentTest {
     @Before
     fun setUp() {
         Utils.useFirebaseEmulator()
+        DatabaseSync.activateSync = false
 
         activityRule = ActivityScenario.launch(MainActivity::class.java)
 

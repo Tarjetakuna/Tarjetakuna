@@ -58,7 +58,6 @@ class SingleCardManageCollectionTest {
     fun setUp() {
         Utils.useFirebaseEmulator()
         Intents.init()
-
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)

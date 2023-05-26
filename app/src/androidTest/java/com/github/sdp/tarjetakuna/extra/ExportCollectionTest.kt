@@ -22,6 +22,7 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.Utils
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
@@ -53,6 +54,7 @@ class ExportCollectionTest {
         Utils.useFirebaseEmulator()
 
         Intents.init()
+        DatabaseSync.activateSync = false
 
         activityRule = ActivityScenario.launch(MainActivity::class.java)
         activityRule.onActivity {

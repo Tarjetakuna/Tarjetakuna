@@ -14,6 +14,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.Utils
 import junit.framework.TestCase.assertEquals
@@ -37,6 +38,7 @@ class ProfileFragmentInActivityTest {
     fun setUp() {
         Utils.useFirebaseEmulator()
         navController = TestNavHostController(ApplicationProvider.getApplicationContext())
+        DatabaseSync.activateSync = false
         activityRule = ActivityScenario.launch(MainActivity::class.java)
     }
 

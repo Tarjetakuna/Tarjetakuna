@@ -14,6 +14,7 @@ import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
@@ -40,7 +41,7 @@ class HomeFragmentTest {
     @Before
     fun setUp() {
         Utils.useFirebaseEmulator()
-
+        DatabaseSync.activateSync = false
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
