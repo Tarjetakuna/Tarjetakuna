@@ -1,7 +1,6 @@
 package com.github.sdp.tarjetakuna.ui.webapi
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -77,7 +76,6 @@ open class WebApiViewModel : ViewModel() {
             }
             .exceptionally { e ->
                 Toast.makeText(context, "No card found", Toast.LENGTH_SHORT).show()
-                Log.e("WebApiViewModel", "Error getting cards", e)
                 null
             }
     }
@@ -92,7 +90,6 @@ open class WebApiViewModel : ViewModel() {
             }
             .exceptionally { e ->
                 Toast.makeText(context, "No card found", Toast.LENGTH_SHORT).show()
-                Log.e("WebApiViewModel", "Error getting cards by name", e)
                 null
             }
     }
@@ -107,7 +104,6 @@ open class WebApiViewModel : ViewModel() {
             }
             .exceptionally { e ->
                 Toast.makeText(context, "No card found", Toast.LENGTH_SHORT).show()
-                Log.e("WebApiViewModel", "Error getting cards by set", e)
                 null
             }
     }

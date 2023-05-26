@@ -32,7 +32,6 @@ object Location {
     fun captureCurrentLocation(context: Activity) {
         // Check if the location permission is granted, and if not, request it
         if (checkPermission(context) && !hasAlreadyAsked) {
-            Log.i("Location", "Permission not granted")
             hasAlreadyAsked = true
             requestPermission(context)
             // Do nothing since the user rejected the permission

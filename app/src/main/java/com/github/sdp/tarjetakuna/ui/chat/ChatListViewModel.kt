@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sdp.tarjetakuna.database.ChatsRTDB
+import com.github.sdp.tarjetakuna.database.DBChat
 import com.github.sdp.tarjetakuna.model.Chat
 import com.github.sdp.tarjetakuna.model.CurrentUser
 import com.github.sdp.tarjetakuna.model.CurrentUserInterface
@@ -42,6 +43,17 @@ class ChatListViewModel : ViewModel() {
         currentUser.detachChatsListener()
     }
 
+    fun loadChatWithUser(userUID: String) {
+        if (!currentUser.isUserLoggedIn()) return
+        currentUser.getCurrentUser().chatWithUser(userUID)
+            .thenAccept { chat ->
+                _autoChat.postValue(chat)
+            }
+    }
+
     private val _chats = o_chats
     val chats: LiveData<MutableList<Chat>> = _chats
+
+    private val _autoChat = MutableLiveData<DBChat>()
+    val autoChat: LiveData<DBChat> = _autoChat
 }
