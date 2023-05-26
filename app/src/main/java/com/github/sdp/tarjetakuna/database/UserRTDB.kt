@@ -307,11 +307,11 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                 val ownedCardsFuture = getListOfFullCardsInfos(
                     uid,
                     CardPossession.OWNED
-                )//cardsFromUser(uid, CardPossession.OWNED)
+                )
                 val wantedCardsFuture = getListOfFullCardsInfos(
                     uid,
                     CardPossession.WANTED
-                )//cardsFromUser(uid, CardPossession.WANTED)
+                )
 
                 val userFuture =
                     CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenRun {
@@ -323,42 +323,6 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
             }
             CompletableFuture.allOf(*userFutures.toTypedArray()).thenRun {
                 future.complete(users)
-            }
-        }
-        return future
-    }
-
-    private fun cardsFromUser(
-        userUID: String,
-        possession: CardPossession
-    ): CompletableFuture<MutableList<DBMagicCard>> {
-        val future = CompletableFuture<MutableList<DBMagicCard>>()
-        val cards = mutableListOf<DBMagicCard>()
-
-        val cardCodeFuture = getAllCardCodesFromUserPossession(userUID, possession)
-        cardCodeFuture.whenComplete { cardCode, throwable ->
-            if (throwable != null) {
-                future.complete(cards)
-            } else {
-                val cardCodeMap = cardCode.value as HashMap<*, *>
-                val cardFutures = mutableListOf<CompletableFuture<DBMagicCard>>()
-
-                for (code in cardCodeMap.keys) {
-                    val cardFuture =
-                        cardsRTDB.getCardFromGlobalCollection(code.toString()).thenApply { card ->
-                            val dbCard =
-                                Gson().fromJson(card.value.toString(), DBMagicCard::class.java)
-                            dbCard.copy(possession = possession)
-                        }
-                    cardFutures.add(cardFuture)
-                }
-
-                CompletableFuture.allOf(*cardFutures.toTypedArray()).thenRun {
-                    for (cardFuture in cardFutures) {
-                        cards.add(cardFuture.get())
-                    }
-                    future.complete(cards)
-                }
             }
         }
         return future
@@ -478,7 +442,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         db.child(userUID).child(possession.toString().lowercase()).get()
             .addOnSuccessListener {
                 if (it.value == null) {
-                    future.completeExceptionally(NoSuchFieldException("There is no cards in $possession"))
+                    future.complete(listOf())
                 } else {
                     val listOfCardsUID = (it.value as HashMap<*, *>).keys
                     val listOfFutures = mutableListOf<CompletableFuture<DBMagicCard>>()
