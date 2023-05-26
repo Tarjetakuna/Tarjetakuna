@@ -63,7 +63,6 @@ class SingleCardManageCollectionTest {
     @Before
     fun setUp() {
         Intents.init()
-
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)

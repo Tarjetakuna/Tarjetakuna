@@ -13,6 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.mockdata.CommonFirebase
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
@@ -62,6 +63,7 @@ class SingleCardFragmentTest {
 
     @Before
     fun setup() {
+        DatabaseSync.activateSync = false
         FirebaseDB().returnDatabaseReference().updateChildren(CommonFirebase.goodFirebase)
         IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
     }
