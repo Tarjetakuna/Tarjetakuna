@@ -304,8 +304,14 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                 }
 
                 val cards = mutableListOf<DBMagicCard>()
-                val ownedCardsFuture = cardsFromUser(uid, CardPossession.OWNED)
-                val wantedCardsFuture = cardsFromUser(uid, CardPossession.WANTED)
+                val ownedCardsFuture = getListOfFullCardsInfos(
+                    uid,
+                    CardPossession.OWNED
+                )//cardsFromUser(uid, CardPossession.OWNED)
+                val wantedCardsFuture = getListOfFullCardsInfos(
+                    uid,
+                    CardPossession.WANTED
+                )//cardsFromUser(uid, CardPossession.WANTED)
 
                 val userFuture =
                     CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenRun {
@@ -497,7 +503,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                     }
                 }
             }.addOnFailureListener {
-                future.completeExceptionally(it)
+                future.complete(listOf())
             }
         return future
     }
