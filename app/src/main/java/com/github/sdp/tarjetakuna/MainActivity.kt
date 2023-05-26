@@ -171,15 +171,15 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<out String>,
+        permissions: Array<String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // Handle location permission result, if granted, get current location
         Location.captureCurrentLocation(this)
-		
-		// handle permission for scanner fragment
-		if (requestCode == ScannerFragment.REQUEST_CODE_PERMISSIONS) {
+
+        // handle permission for scanner fragment
+        if (requestCode == ScannerFragment.REQUEST_CODE_PERMISSIONS) {
             supportFragmentManager.fragments.forEach {
                 it.childFragmentManager.fragments.forEach { it2 ->
                     if (it2 is ScannerFragment) {
@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-	}
+    }
 
     /**
      * Companion for static variables
@@ -201,6 +201,6 @@ class MainActivity : AppCompatActivity() {
         /**
          * Tag for logging
          */
-        private const val TAG = "MainActivity"    
+        private const val TAG = "MainActivity"
     }
 }
