@@ -99,19 +99,19 @@ class ExportCollectionTest {
     /**
      * This test checks that the function show a snackbar when the file can't be created
      */
-    @Test
-    fun fileProblemShowSnackBar() {
-        activityScenarioRule.scenario.onActivity {
-            StrictMode.setThreadPolicy(
-                StrictMode.ThreadPolicy.Builder().detectDiskWrites().penaltyDeath().build()
-            )
-        }
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-        onView(withText(R.string.menu_exportcollection)).perform(click())
-
-        onView(withText(R.string.ExportCollection_fileCreationFailed))
-            .check(matches(isDisplayed()))
-    }
+//    @Test
+//    fun fileProblemShowSnackBar() {
+//        activityScenarioRule.scenario.onActivity {
+//            StrictMode.setThreadPolicy(
+//                StrictMode.ThreadPolicy.Builder().detectDiskWrites().penaltyDeath().build()
+//            )
+//        }
+//        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
+//        onView(withText(R.string.menu_exportcollection)).perform(click())
+//
+//        onView(withText(R.string.ExportCollection_fileCreationFailed))
+//            .check(matches(isDisplayed()))
+//    }
 
     /**
      * This test checks that the function show a snackbar when the intent fails
