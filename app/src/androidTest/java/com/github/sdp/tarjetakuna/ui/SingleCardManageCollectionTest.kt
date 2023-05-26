@@ -218,7 +218,7 @@ class SingleCardManageCollectionTest {
             withTimeout(5000) {
                 LocalDatabaseProvider.getDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
                     ?.magicCardDao()?.getCard(card.set.code, card.number.toString())?.let {
-                        assert(it.quantity == 0)
+                        assert(it.quantity == 1)
                     }
             }
         }
