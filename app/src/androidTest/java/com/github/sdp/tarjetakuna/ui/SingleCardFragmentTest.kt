@@ -15,18 +15,17 @@ import com.bumptech.glide.Glide
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.mockdata.CommonFirebase
+import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.model.*
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
-import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.CustomGlide
-import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.github.sdp.tarjetakuna.utils.Utils
 import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
 import com.github.sdp.tarjetakuna.utils.WithIndexSafeMatcher.withIndex
 import com.google.gson.Gson
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
-import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -55,14 +54,10 @@ class SingleCardFragmentTest {
     private val textCardArtist = onView(withId(R.id.singleCard_artist_text))
     private val textCardManaCost = onView(withId(R.id.singleCard_mana_cost_text))
 
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
-
     @Before
     fun setup() {
+        Utils.useFirebaseEmulator()
+
         FirebaseDB().returnDatabaseReference().updateChildren(CommonFirebase.goodFirebase)
         IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
     }
@@ -230,7 +225,8 @@ class SingleCardFragmentTest {
      */
     @Test
     fun testTypeTextWorkCorrectlyWithArtifactNoSubtype() {
-        val anotherValidMagicCard = validMagicCard.copy(type = MagicCardType.ARTIFACT, subtypes = listOf())
+        val anotherValidMagicCard =
+            validMagicCard.copy(type = MagicCardType.ARTIFACT, subtypes = listOf())
         val anotherValidJson = Gson().toJson(anotherValidMagicCard)
         val bundleArgs = Bundle().apply { putString("card", anotherValidJson) }
         scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
@@ -275,7 +271,11 @@ class SingleCardFragmentTest {
         onView(withText(R.string.single_card_users_have)).check(matches(isDisplayed()))
         onView(withText(R.string.single_card_users_want)).check(matches(isDisplayed()))
         onView(withText(R.string.single_card_users_have)).perform(click())
-        onView(withIndex(withText(CommonFirebase.GoodFirebaseAttributes.email1), 0)).check(matches(isDisplayed()))
+        onView(withIndex(withText(CommonFirebase.GoodFirebaseAttributes.email1), 0)).check(
+            matches(
+                isDisplayed()
+            )
+        )
         onView(withIndex(withId(R.id.user_adapter_km_text), 0)).check(matches(isDisplayed()))
         onView(withIndex(withId(R.id.user_adapter_message_button), 0)).check(matches(isDisplayed()))
         onView(withIndex(withId(R.id.user_adapter_profile_button), 0))

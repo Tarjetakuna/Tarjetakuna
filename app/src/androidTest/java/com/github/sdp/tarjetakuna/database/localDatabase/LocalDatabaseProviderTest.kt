@@ -5,6 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
+import com.github.sdp.tarjetakuna.utils.Utils
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -20,6 +21,8 @@ class LocalDatabaseProviderTest {
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+
         val mockedAuth = mock(Authenticator::class.java)
         `when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
         `when`(mockedAuth.getUserUID()).thenReturn("test")

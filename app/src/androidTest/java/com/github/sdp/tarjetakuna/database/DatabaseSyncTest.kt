@@ -6,7 +6,7 @@ import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
-import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.github.sdp.tarjetakuna.utils.Utils
 import com.google.android.gms.tasks.Tasks
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -14,23 +14,18 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Assert.fail
 import org.junit.Before
-import org.junit.ClassRule
 import org.junit.Test
 import org.mockito.Mockito
 import java.util.concurrent.TimeUnit
 
 class DatabaseSyncTest {
 
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
-
     private lateinit var userRTDB: UserRTDB
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+
         // close the database that could have been opened because of the previous tests
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)

@@ -17,7 +17,7 @@ import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
-import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.github.sdp.tarjetakuna.utils.Utils
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.hamcrest.Matchers.equalTo
@@ -28,7 +28,6 @@ import org.mockito.Mockito
 @RunWith(AndroidJUnit4::class)
 class HomeFragmentTest {
 
-
     @Rule
     @JvmField
     val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
@@ -36,16 +35,12 @@ class HomeFragmentTest {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
-
     private lateinit var activityRule: ActivityScenario<MainActivity>
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)

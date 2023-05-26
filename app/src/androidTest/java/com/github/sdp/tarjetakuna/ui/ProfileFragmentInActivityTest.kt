@@ -14,8 +14,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
+import com.github.sdp.tarjetakuna.utils.Utils
 import junit.framework.TestCase.assertEquals
 import org.junit.*
 import org.junit.runner.RunWith
@@ -24,7 +24,7 @@ import org.junit.runner.RunWith
 class ProfileFragmentInActivityTest {
 
     private lateinit var activityRule: ActivityScenario<MainActivity>
-    private val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
+    private lateinit var navController: TestNavHostController
 
     @Rule
     @JvmField
@@ -33,14 +33,10 @@ class ProfileFragmentInActivityTest {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
-
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+        navController = TestNavHostController(ApplicationProvider.getApplicationContext())
         activityRule = ActivityScenario.launch(MainActivity::class.java)
     }
 
