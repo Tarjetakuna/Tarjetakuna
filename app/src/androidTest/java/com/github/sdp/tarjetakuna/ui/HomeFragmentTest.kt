@@ -56,7 +56,7 @@ class HomeFragmentTest {
         LocalDatabaseProvider.closeDatabase("test")
         LocalDatabaseProvider.closeDatabase("test2")
         LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
-
+        DatabaseSync.activateSync = false
         LocalDatabaseProvider.setDatabase(
             ApplicationProvider.getApplicationContext(),
             LocalDatabaseProvider.CARDS_DATABASE_NAME,
@@ -91,7 +91,7 @@ class HomeFragmentTest {
     /**
      * Test that the authentication fragment is displayed when the corresponding button is clicked
      */
-    //todo no idea 
+    //todo no idea
 //    @Test
 //    fun testClickOnSignInGoogle() {
 //        onView(withId(R.id.home_authenticationButton)).perform(click())

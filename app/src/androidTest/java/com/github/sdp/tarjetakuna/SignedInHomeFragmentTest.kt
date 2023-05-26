@@ -9,6 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
+import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
@@ -51,6 +52,7 @@ class SignedInHomeFragmentTest {
         Mockito.`when`(mockedAuth.getUserDisplayName()).thenReturn("John Doe")
         SignIn.setSignIn(mockedAuth)
 
+        DatabaseSync.activateSync = false
         LocalDatabaseProvider.setDatabase(
             ApplicationProvider.getApplicationContext(),
             LocalDatabaseProvider.CARDS_DATABASE_NAME,
