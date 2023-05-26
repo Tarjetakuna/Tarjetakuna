@@ -47,7 +47,7 @@ class SignedInHomeFragmentTest {
     fun setUp() {
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
-        Mockito.`when`(mockedAuth.getUserUID()).thenReturn("homefrag_test")
+        Mockito.`when`(mockedAuth.getUserUID()).thenReturn("homefragtest")
         Mockito.`when`(mockedAuth.getUserDisplayName()).thenReturn("John Doe")
         SignIn.setSignIn(mockedAuth)
 
