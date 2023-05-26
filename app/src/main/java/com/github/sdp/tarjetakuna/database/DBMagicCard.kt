@@ -14,25 +14,54 @@ data class DBMagicCard(
     val lastUpdate: Long,
     val code: String,
     val number: Int,
+    val quantity: Int,
 ) {
-    constructor(card: MagicCard, possession: CardPossession) : this(
-        card = Gson().toJson(card),
-        possession = possession,
-        lastUpdate = System.currentTimeMillis(),
-        code = card.set.code,
-        number = card.number,
-    )
-
     constructor(card: MagicCard) : this(
         card = Gson().toJson(card),
         possession = CardPossession.NONE,
         lastUpdate = System.currentTimeMillis(),
         code = card.set.code,
         number = card.number,
+        quantity = 0,
     )
 
+    constructor(card: MagicCard, possession: CardPossession) : this(
+        card = Gson().toJson(card),
+        possession = possession,
+        lastUpdate = System.currentTimeMillis(),
+        code = card.set.code,
+        number = card.number,
+        quantity = 0,
+    )
+
+    constructor(card: MagicCard, possession: CardPossession, quantity: Int) : this(
+        card = Gson().toJson(card),
+        possession = possession,
+        lastUpdate = System.currentTimeMillis(),
+        code = card.set.code,
+        number = card.number,
+        quantity = quantity,
+    )
+
+    /**
+     * Converts a DBMagicCard to a MagicCard
+     */
     fun toMagicCard(): MagicCard {
         return Gson().fromJson(card, MagicCard::class.java)
+    }
+
+    /**
+     * Creates a DBMagicCard with no possession
+     */
+    fun clearPossession(): DBMagicCard {
+        return DBMagicCard(this.toMagicCard(), CardPossession.NONE)
+    }
+
+    /**
+     * Get the correct key for this DBMagicCard for the Firebase database
+     */
+    fun getFbKey(): String {
+        return code + "_" + number.toString()
     }
 
     companion object {

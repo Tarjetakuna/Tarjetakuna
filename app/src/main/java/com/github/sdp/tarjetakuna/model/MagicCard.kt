@@ -27,7 +27,7 @@ data class MagicCard(
      * The total card mana cost.
      * Example : 7
      */
-    val convertedManaCost: Int = 0,
+    val convertedManaCost: Double = 0.0,
 
     /**
      * The card mana cost.
@@ -106,9 +106,6 @@ data class MagicCard(
      * Converts a MagicCard to a MagicCardEntity.
      */
     fun toDBMagicCard(possession: CardPossession = CardPossession.NONE): DBMagicCard {
-        return DBMagicCard(
-            this,
-            possession
-        )
+        return DBMagicCard(this, possession)
     }
 }

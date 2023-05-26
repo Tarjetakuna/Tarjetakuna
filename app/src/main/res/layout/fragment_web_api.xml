@@ -1,144 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.singlecard.SingleCardFragment"
-    android:theme="@style/Theme.Tarjetakuna.NoActionBar">
+    tools:context=".ui.browser.BrowserApiFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.webapi.WebApiFragment"
-        android:theme="@style/Theme.Tarjetakuna.NoActionBar">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/api_random_card_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/api_cards"
+            tools:ignore="ButtonStyle" />
 
         <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:theme="@style/Theme.Tarjetakuna.NoActionBar">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <Button
+                android:id="@+id/api_cards_by_name_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/api_cardsByName"
+                tools:ignore="ButtonStyle" />
+
+            <EditText
+                android:id="@+id/api_card_name_edittext"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@drawable/empty_divider"
-                android:showDividers="middle"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/api_random_card_button"
-                    style="@style/ButtonStyle"
-                    android:layout_weight="1"
-                    android:text="@string/api_random_card" />
-
-                <Button
-                    android:id="@+id/api_sets_button"
-                    style="@style/ButtonStyle"
-                    android:layout_weight="1"
-                    android:text="@string/api_sets" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="@dimen/standard_margin"
-                android:layout_marginEnd="@dimen/standard_margin">
-
-                <EditText
-                    android:id="@+id/api_card_name_edittext"
-                    style="@style/EditTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:autofillHints=""
-                    android:hint="@string/api_cardName"
-                    android:inputType="textPersonName" />
-
-                <Button
-                    android:id="@+id/api_cards_by_name_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/api_cardsByName"
-                    android:textColor="@color/white_gold_light"
-                    tools:ignore="ButtonStyle" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="@dimen/standard_margin"
-                android:layout_marginEnd="@dimen/standard_margin">
-
-                <EditText
-                    android:id="@+id/api_set_id_edittext"
-                    style="@style/EditTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:autofillHints=""
-                    android:hint="@string/api_setId"
-                    android:inputType="textPersonName" />
-
-                <Button
-                    android:id="@+id/api_cards_by_set_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/api_cardsBySet"
-                    tools:ignore="ButtonStyle"
-                    android:textColor="@color/white_gold_light" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="@dimen/standard_margin"
-                android:layout_marginEnd="@dimen/standard_margin">
-
-                <EditText
-                    android:id="@+id/api_set_id_code_edittext"
-                    style="@style/EditTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:autofillHints=""
-                    android:hint="@string/api_setId"
-                    android:inputType="textPersonName" />
-
-                <Button
-                    android:id="@+id/api_set_by_code_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/api_setByCode"
-                    tools:ignore="ButtonStyle"
-                    android:textColor="@color/white_gold_light" />
-
-            </LinearLayout>
-
+                android:layout_height="wrap_content"
+                android:hint="@string/api_cardName"
+                android:inputType="textPersonName"
+                android:autofillHints="" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/api_results"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/standard_margin"
-            android:scrollbars="vertical"
-            style="@style/DescriptionStyleItalic"
-            android:text="@string/api_default_results"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+            <Button
+                android:id="@+id/api_cards_by_set_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/api_cardsBySet"
+                tools:ignore="ButtonStyle" />
+
+            <EditText
+                android:id="@+id/api_set_id_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/api_setId"
+                android:inputType="textPersonName"
+                android:autofillHints="" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/web_api_list_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        android:paddingBottom="30dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

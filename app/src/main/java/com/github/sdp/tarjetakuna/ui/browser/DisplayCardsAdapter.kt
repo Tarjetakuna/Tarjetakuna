@@ -5,14 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.model.MagicCard
+import com.github.sdp.tarjetakuna.utils.CustomGlide
 
 /**
  * Adapter for the recycler view that displays the cards.
  */
-class DisplayCardsAdapter(val cards: ArrayList<MagicCard>) :
+class DisplayCardsAdapter(
+    private val contextFragment: Fragment,
+    val cardsWithQuantities: ArrayList<Pair<MagicCard, Int>>
+) :
     RecyclerView.Adapter<DisplayCardsAdapter.ViewHolder>() {
 
     /**
@@ -31,6 +36,7 @@ class DisplayCardsAdapter(val cards: ArrayList<MagicCard>) :
         val cardName: TextView = itemView.findViewById(R.id.cardNameRecyclerViewTextView)
         val setInfo: TextView = itemView.findViewById(R.id.setRecyclerViewTextView)
         val cardImage: ImageView = itemView.findViewById(R.id.cardImageView)
+        val cardQuantity: TextView = itemView.findViewById(R.id.quantityRecyclerViewTextView)
     }
 
     /**
@@ -46,10 +52,22 @@ class DisplayCardsAdapter(val cards: ArrayList<MagicCard>) :
      * Set the items
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.cardName.text = cards[position].name
-        // TODO change the image directly from the url (when web API available)
-        holder.cardImage.setImageResource(R.drawable.card)
-        holder.setInfo.text = cards[position].set.name
+        holder.cardName.text = cardsWithQuantities[position].first.name
+        CustomGlide.loadDrawable(
+            contextFragment,
+            cardsWithQuantities[position].first.imageUrl
+        ) {
+            holder.cardImage.setImageDrawable(it)
+        }
+        holder.setInfo.text = cardsWithQuantities[position].first.set.name
+        if (cardsWithQuantities[position].second > 1) {
+            holder.cardQuantity.visibility = View.VISIBLE
+            val quantityText = cardsWithQuantities[position].second.toString() + "X"
+            holder.cardQuantity.text = quantityText
+        } else {
+            holder.cardQuantity.visibility = View.GONE
+        }
+
         holder.itemView.setOnClickListener {
             onCardClickListener?.onCardClick(position)
         }
@@ -59,6 +77,6 @@ class DisplayCardsAdapter(val cards: ArrayList<MagicCard>) :
      * The number of items in the recycler view
      */
     override fun getItemCount(): Int {
-        return cards.size
+        return cardsWithQuantities.size
     }
 }

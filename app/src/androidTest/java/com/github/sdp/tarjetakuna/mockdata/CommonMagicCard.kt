@@ -17,7 +17,7 @@ object CommonMagicCard {
         "Aeronaut Tinkerer",
         "Aeronaut Tinkerer has flying as long as you control an artifact. (It can’t be blocked except by creatures with flying or reach.)",
         MagicLayout.NORMAL,
-        3,
+        3.0,
         "{2}{U}",
         CommonMagicSet.magic2015Set,
         43,
@@ -33,11 +33,11 @@ object CommonMagicCard {
     /**
      * This is a valid [MagicCard] Venomous Hierophant
      */
-    private val venomousHierophantCard: MagicCard = MagicCard(
+    val venomousHierophantCard: MagicCard = MagicCard(
         "Venomous Hierophant",
         "Deathtouch\nWhen Venomous Hierophant enters the battlefield, mill three cards.",
         MagicLayout.NORMAL,
-        4,
+        4.0,
         "{3}{B}",
         CommonMagicSet.therosBeyondDeathSet,
         122,
@@ -53,11 +53,11 @@ object CommonMagicCard {
     /**
      * This is a valid [MagicCard] Solemn Offering
      */
-    private val solemnOfferingCard: MagicCard = MagicCard(
+    val solemnOfferingCard: MagicCard = MagicCard(
         "Solemn Offering",
         "Destroy target artifact or enchantment. You gain 4 life.",
         MagicLayout.NORMAL,
-        3,
+        3.0,
         "{2}{W}",
         CommonMagicSet.magic2015Set,
         33,

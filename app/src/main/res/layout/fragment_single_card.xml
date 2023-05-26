@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.singlecard.SingleCardFragment"
-    android:theme="@style/Theme.Tarjetakuna.NoActionBar">
+    android:theme="@style/Theme.Tarjetakuna.NoActionBar"
+    android:id="@+id/singleCard_scrollView" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -98,6 +99,7 @@
                 android:layout_marginTop="@dimen/small_margin"
                 android:text=""
                 android:textStyle="italic" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -122,6 +124,12 @@
             android:layout_marginBottom="@dimen/small_margin"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/singleCard_manage_collection_text"
+                style="@style/LargeTextStyle"
+                android:layout_width="match_parent"
+                android:text="@string/single_card_manage_collection" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -129,11 +137,28 @@
                 android:gravity="center">
 
                 <Button
-                    android:id="@+id/singleCard_add_owned_button"
+                    android:id="@+id/singleCard_remove_card_button"
                     style="@style/ButtonStyle"
-                    android:layout_width="@dimen/button_width"
-                    android:layout_height="@dimen/button_height"
-                    android:layout_weight="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/single_card_showing_remove_collection" />
+
+                <TextView
+                    android:id="@+id/singleCard_quantity_text"
+                    style="@style/LargeTextStyle"
+                    android:layout_width="@dimen/text_size_20"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/singleCard_quantity_count" />
+
+
+                <Button
+                    android:id="@+id/singleCard_add_card_button"
+                    style="@style/ButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/single_card_showing_add_to_collection" />
 
                 <Button
@@ -154,6 +179,28 @@
                 android:layout_marginEnd="@dimen/small_margin"
                 android:text="@string/single_card_ask_connection"
                 android:visibility="gone" />
+
         </LinearLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/singleCard_tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/single_card_users_have" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/single_card_users_want" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/singleCard_viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+</ScrollView>

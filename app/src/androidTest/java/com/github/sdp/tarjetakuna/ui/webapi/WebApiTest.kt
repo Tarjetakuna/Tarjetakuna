@@ -4,6 +4,7 @@ import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import com.github.sdp.tarjetakuna.utils.FileReader
 import com.github.sdp.tarjetakuna.utils.OkHttp3IdlingResource
 import com.github.sdp.tarjetakuna.utils.OkHttpProvider
@@ -12,7 +13,6 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.hamcrest.CoreMatchers.*
-import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.greaterThan
 import org.junit.After
 import org.junit.Before

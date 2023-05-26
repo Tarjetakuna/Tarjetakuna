@@ -1,199 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ui.browser.BrowserFragment"
     android:theme="@style/Theme.Tarjetakuna.NoActionBar">
 
-    <android.widget.SearchView
-        android:id="@+id/browser_searchbar"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/standard_margin"
-        android:layout_marginEnd="@dimen/standard_margin"
-        android:queryHint="Search" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#1db995"
+        android:theme="@style/Theme.Tarjetakuna.NoActionBar" />
 
-    <LinearLayout
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/browser_filter_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/standard_margin"
-            android:layout_weight="1"
-            android:text="@string/browser_filter" />
-
-        <Button
-            android:id="@+id/browser_sort_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/standard_margin"
-            android:layout_weight="1"
-            android:text="@string/browser_sort" />
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+        tools:layout_editor_absoluteX="8dp"
+        android:theme="@style/Theme.Tarjetakuna.NoActionBar" />
 
 
-        <ImageButton
-            android:id="@+id/browser_clear_filters"
-            android:layout_width="60dp"
-            android:layout_height="48dp"
-            android:layout_margin="@dimen/standard_margin"
-            android:layout_marginTop="0dp"
-            android:background="#00000000"
-            android:contentDescription="@string/browser_clear_filters"
-            android:src="@drawable/cancel_button" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/browser_filter_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/browser_filter_by_set_textview"
-                android:textSize="16sp"
-                style="@style/DescriptionStyleItalic"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:text="@string/browser_filter_by_set" />
-
-            <EditText
-                android:id="@+id/browser_filter_by_set_edittext"
-                android:textSize="16sp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="2"
-                style="@style/EditTextStyle"
-                android:hint="@string/browser_enter_set_code"
-                android:autofillHints="@string/browser_enter_set_code"
-                android:inputType="text" />
-
-            <Button
-                android:id="@+id/browser_filter_by_set_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="8dp"
-                android:text="@string/browser_apply" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/browser_filter_by_mana_textview"
-                android:textSize="16sp"
-                style="@style/DescriptionStyleItalic"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:text="@string/browser_filter_by_mana" />
-
-            <EditText
-                android:id="@+id/browser_filter_by_mana_edittext"
-                android:textSize="16sp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="2"
-                style="@style/EditTextStyle"
-                android:hint="@string/browser_enter_manacost"
-                android:autofillHints="@string/browser_enter_manacost"
-                android:inputType="text" />
-
-            <Button
-                android:id="@+id/browser_filter_by_mana_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="8dp"
-                android:text="@string/browser_apply" />
-
-        </LinearLayout>
-
-        <!-- Add your filter options here -->
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/browser_sort_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/small_margin"
-        android:visibility="gone"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/browser_sort_by_name_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="4dp"
-            android:text="@string/browser_sort_by_name"
-            style="?android:attr/buttonBarButtonStyle"
-            android:textColor="?android:textColorTertiary"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/browser_sort_by_mana_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="4dp"
-            android:text="@string/browser_sort_by_mana"
-            style="?android:attr/buttonBarButtonStyle"
-            android:textColor="?android:textColorTertiary"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/browser_sort_by_rarity_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="4dp"
-            android:text="@string/browser_sort_by_rarity"
-            style="?android:attr/buttonBarButtonStyle"
-            android:textColor="?android:textColorTertiary"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/browser_sort_by_set_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="4dp"
-            android:text="@string/browser_sort_by_set"
-            style="?android:attr/buttonBarButtonStyle"
-            android:textColor="?android:textColorTertiary"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/browser_list_cards"
-        android:theme="@style/Theme.Tarjetakuna.NoActionBar"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingBottom="30dp" />
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

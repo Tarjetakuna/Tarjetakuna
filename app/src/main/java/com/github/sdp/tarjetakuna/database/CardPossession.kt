@@ -7,5 +7,6 @@ package com.github.sdp.tarjetakuna.database
 enum class CardPossession {
     OWNED,
     WANTED,
+    TRADE,
     NONE
 }

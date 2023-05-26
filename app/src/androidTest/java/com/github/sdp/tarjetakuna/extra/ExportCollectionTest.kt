@@ -1,5 +1,6 @@
 package com.github.sdp.tarjetakuna.extra
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.os.Environment
@@ -18,15 +19,14 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
+import com.github.sdp.tarjetakuna.utils.FBEmulator
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import org.junit.After
+import org.junit.*
 import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.FileInputStream
 
@@ -35,6 +35,19 @@ import java.io.FileInputStream
  */
 @RunWith(AndroidJUnit4::class)
 class ExportCollectionTest {
+
+    @Rule
+    @JvmField
+    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    companion object {
+        @get:ClassRule
+        @JvmStatic
+        val fbEmulator = FBEmulator()
+    }
 
     @get:Rule
     val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)

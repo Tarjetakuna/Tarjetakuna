@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
@@ -15,6 +17,7 @@ import com.github.sdp.tarjetakuna.databinding.FragmentSingleCardBinding
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicCardType
 import com.github.sdp.tarjetakuna.utils.CustomGlide
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 
 /**
@@ -39,7 +42,8 @@ class SingleCardFragment : Fragment() {
 
 
         loadCardFromJson()
-        // Initialize the local database
+        setUsersTabs()
+        //Initialize the local database
         viewModel.localDatabase = LocalDatabaseProvider.setDatabase(
             requireContext(),
             LocalDatabaseProvider.CARDS_DATABASE_NAME
@@ -47,7 +51,7 @@ class SingleCardFragment : Fragment() {
 
         binding.singleCardSetText.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("set", Gson().toJson(viewModel.card.set))
+            bundle.putString("set", Gson().toJson(viewModel.card?.set))
             //TODO : Should be changed to remove the dependency on MainActivity
             (requireActivity() as MainActivity).changeFragment(R.id.nav_single_set, bundle)
         }
@@ -58,22 +62,20 @@ class SingleCardFragment : Fragment() {
             viewModel.checkCardInCollection()
         }
 
-        binding.singleCardAddOwnedButton.setOnClickListener {
-            viewModel.manageOwnedCollection()
+        binding.singleCardAddCardButton.setOnClickListener {
+            viewModel.addCardToOwnedCollection()
+        }
+
+        binding.singleCardRemoveCardButton.setOnClickListener {
+            viewModel.removeCardFromOwnedCollection()
         }
 
         binding.singleCardAddWantedButton.setOnClickListener {
             viewModel.manageWantedCollection()
         }
 
-        viewModel.buttonAddText.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.singleCardAddOwnedButton.text =
-                    getString(R.string.single_card_showing_add_to_collection)
-            } else {
-                binding.singleCardAddOwnedButton.text =
-                    getString(R.string.single_card_showing_remove_collection)
-            }
+        viewModel.currentQuantity.observe(viewLifecycleOwner) {
+            binding.singleCardQuantityText.text = it.toString()
         }
 
         viewModel.buttonWantedText.observe(viewLifecycleOwner) {
@@ -135,8 +137,6 @@ class SingleCardFragment : Fragment() {
             binding.singleCardArtistText.text =
                 getString(R.string.single_card_showing_artist, card.artist)
 
-            //The picture from the public API has a certificate problem,
-            // so we use a placeholder for now.
             CustomGlide.loadDrawable(
                 this,
                 card.imageUrl
@@ -149,17 +149,37 @@ class SingleCardFragment : Fragment() {
     }
 
     /**
+     * Sets the tabs to display the users that have the card in their collection or wanted cards.
+     */
+    private fun setUsersTabs() {
+        binding.singleCardViewPager.adapter = ItemFragmentAdapter(requireActivity())
+        TabLayoutMediator(
+            binding.singleCardTabLayout,
+            binding.singleCardViewPager
+        ) { tab, position ->
+            tab.text =
+                if (position == 0) getString(R.string.single_card_users_have) else getString(R.string.single_card_users_want)
+            tab.id = position
+        }.attach()
+
+    }
+
+    /**
      * Displays the buttons to add the card to the deck or to the wanted cards if the user is connected.
      * @param userIsConnected true if the user is connected, false otherwise.
      */
     private fun displayButton(userIsConnected: Boolean) {
         if (userIsConnected) {
-            binding.singleCardAddOwnedButton.visibility = View.VISIBLE
+            binding.singleCardAddCardButton.visibility = View.VISIBLE
+            binding.singleCardRemoveCardButton.visibility = View.VISIBLE
             binding.singleCardAddWantedButton.visibility = View.VISIBLE
+            binding.singleCardQuantityText.visibility = View.VISIBLE
             binding.singleCardAskConnectionText.visibility = View.GONE
         } else {
-            binding.singleCardAddOwnedButton.visibility = View.GONE
+            binding.singleCardAddCardButton.visibility = View.GONE
+            binding.singleCardRemoveCardButton.visibility = View.GONE
             binding.singleCardAddWantedButton.visibility = View.GONE
+            binding.singleCardQuantityText.visibility = View.GONE
             binding.singleCardAskConnectionText.visibility = View.VISIBLE
         }
     }
@@ -167,5 +187,16 @@ class SingleCardFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private inner class ItemFragmentAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+        override fun getItemCount(): Int = 2
+
+        override fun createFragment(position: Int): Fragment {
+            return UsersFragment.newInstance(
+                position == 0,
+                Gson().toJson(viewModel.card?.toDBMagicCard())
+            )
+        }
     }
 }

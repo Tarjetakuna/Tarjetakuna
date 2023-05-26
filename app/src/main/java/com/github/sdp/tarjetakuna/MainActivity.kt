@@ -17,6 +17,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.sdp.tarjetakuna.databinding.ActivityDrawerBinding
 import com.github.sdp.tarjetakuna.extra.ExportCollection
+import com.github.sdp.tarjetakuna.extra.Location
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.model.MagicLayout
 import com.github.sdp.tarjetakuna.model.MagicSet
@@ -42,9 +43,9 @@ class MainActivity : AppCompatActivity() {
             "MagicCard",
             "A beautiful card",
             MagicLayout.NORMAL,
-            7,
+            7.0,
             "{5}{W}{W}",
-            MagicSet("MT15", "Magic 2015"),
+            MagicSet("M15", "Magic 2015"),
             56,
             "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
         ),
@@ -52,9 +53,9 @@ class MainActivity : AppCompatActivity() {
             "BestMagicCard",
             "An even more beautiful card",
             MagicLayout.NORMAL,
-            7,
+            7.0,
             "{7}{W}{W}",
-            MagicSet("MT15", "Magic 2015"),
+            MagicSet("M15", "Magic 2015"),
             56,
             "https://img.scryfall.com/cards/large/front/1/2/12345678.jpg?1562567890"
         )
@@ -77,7 +78,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home,
                 R.id.nav_browser,
                 R.id.nav_scanner,
-                R.id.nav_webapi
+                R.id.nav_webapi,
+                R.id.nav_chats
             ),
             drawerLayout
         )
@@ -96,6 +98,8 @@ class MainActivity : AppCompatActivity() {
         sharedPref.registerOnSharedPreferenceChangeListener(sharedPrefListener)
 
         updateHeader()
+        // ask for location permission + get current location if already granted
+        Location.captureCurrentLocation(this)
     }
 
     /**
@@ -166,11 +170,16 @@ class MainActivity : AppCompatActivity() {
      * When the user grants or denies permissions, the result is passed to the fragment that might have requested them
      */
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == ScannerFragment.REQUEST_CODE_PERMISSIONS) {
+        // Handle location permission result, if granted, get current location
+        Location.captureCurrentLocation(this)
+		
+		// handle permission for scanner fragment
+		if (requestCode == ScannerFragment.REQUEST_CODE_PERMISSIONS) {
             supportFragmentManager.fragments.forEach {
                 it.childFragmentManager.fragments.forEach { it2 ->
                     if (it2 is ScannerFragment) {
@@ -183,7 +192,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
+	}
 
     /**
      * Companion for static variables
@@ -192,6 +201,6 @@ class MainActivity : AppCompatActivity() {
         /**
          * Tag for logging
          */
-        private const val TAG = "MainActivity"
+        private const val TAG = "MainActivity"    
     }
 }

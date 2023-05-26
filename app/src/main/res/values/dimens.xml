@@ -13,4 +13,5 @@
     <dimen name="text_size_32">32sp</dimen>
     <dimen name="button_width">180dp</dimen>
     <dimen name="button_height">60dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

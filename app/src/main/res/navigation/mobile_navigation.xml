@@ -54,12 +54,6 @@
         tools:layout="@layout/fragment_sign_out" />
 
     <fragment
-        android:id="@+id/nav_user_cards"
-        android:name="com.github.sdp.tarjetakuna.database.UserCardsFragment"
-        android:label="@string/menu_user_cards"
-        tools:layout="@layout/fragment_user_cards" />
-
-    <fragment
         android:id="@+id/nav_single_card"
         android:name="com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment"
         android:label="@string/menu_single_card"
@@ -70,4 +64,16 @@
         android:name="com.github.sdp.tarjetakuna.ui.singleset.SingleSetFragment"
         android:label="@string/menu_single_set"
         tools:layout="@layout/fragment_single_set" />
+
+    <fragment
+        android:id="@+id/nav_chats"
+        android:name="com.github.sdp.tarjetakuna.ui.chat.ChatListFragment"
+        android:label="@string/menu_chats"
+        tools:layout="@layout/fragment_chat_list" />
+
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.github.sdp.tarjetakuna.ui.chat.ChatFragment"
+        android:label="@string/menu_chat"
+        tools:layout="@layout/fragment_chat" />
 </navigation>

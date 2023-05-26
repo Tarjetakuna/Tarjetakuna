@@ -11,31 +11,34 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class BrowserViewModel : ViewModel() {
+class UserCollectionViewModel(possession: CardPossession) : ViewModel() {
 
+    private var browserPossession: CardPossession
     private val _searchState = MutableLiveData<String>()
     private val _filterState = MutableLiveData<FilterState>()
-    private val _sorterState = MutableLiveData<Comparator<MagicCard>>()
-    private val _initialCards = MutableLiveData<ArrayList<MagicCard>>()
+    private val _sorterState = MutableLiveData<Comparator<Pair<MagicCard, Int>>>()
+    private val _initialCards = MutableLiveData<ArrayList<Pair<MagicCard, Int>>>()
     val searchState: LiveData<String> = _searchState
     val filterState: LiveData<FilterState> = _filterState
-    val sorterState: LiveData<Comparator<MagicCard>> = _sorterState
-    val initialCards: LiveData<ArrayList<MagicCard>> = _initialCards
+    val sorterState: LiveData<Comparator<Pair<MagicCard, Int>>> = _sorterState
+    val initialCards: LiveData<ArrayList<Pair<MagicCard, Int>>> = _initialCards
 
 
     var localDatabase: AppDatabase? = null
 
     // The cards that are displayed in the recycler view
-    private val _cards: MutableLiveData<ArrayList<MagicCard>> =
-        MutableLiveData<ArrayList<MagicCard>>()
-    val cards: LiveData<ArrayList<MagicCard>> = _cards
+    private val _cards: MutableLiveData<ArrayList<Pair<MagicCard, Int>>> =
+        MutableLiveData<ArrayList<Pair<MagicCard, Int>>>()
+    val cards: LiveData<ArrayList<Pair<MagicCard, Int>>> = _cards
 
-    var cardsArray: ArrayList<MagicCard> = arrayListOf()
+    var cardsArray: ArrayList<Pair<MagicCard, Int>> = ArrayList()
 
     init {
+        browserPossession = possession
         _searchState.value = ""
         _filterState.value = FilterState()
-        _sorterState.value = Comparator { card1, card2 -> card1.name.compareTo(card2.name) }
+        _sorterState.value =
+            Comparator { card1, card2 -> card1.first.name.compareTo(card2.first.name) }
         _initialCards.value = applyFilters()
     }
 
@@ -70,7 +73,7 @@ class BrowserViewModel : ViewModel() {
     /**
      * Change the state of the sorter
      */
-    fun setSorterState(sorterState: Comparator<MagicCard>) {
+    fun setSorterState(sorterState: Comparator<Pair<MagicCard, Int>>) {
         _sorterState.value = sorterState
     }
 
@@ -85,38 +88,39 @@ class BrowserViewModel : ViewModel() {
      * Get the cards from the local database
      */
     fun getCardsFromDatabase() {
-        val cardsArray = ArrayList<MagicCard>()
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
                 val cards = localDatabase?.magicCardDao()?.getAllCards()
                 if (cards != null) {
+                    val cardsArray = ArrayList<Pair<MagicCard, Int>>()
                     for (card in cards) {
-                        if (card.possession == CardPossession.OWNED) {
-                            cardsArray.add(card.toMagicCard())
+                        if (browserPossession == CardPossession.OWNED && card.possession == browserPossession && card.quantity > 0) {
+                            cardsArray.add(Pair(card.toMagicCard(), card.quantity))
+                        } else if (browserPossession == CardPossession.WANTED && card.possession == browserPossession) {
+                            cardsArray.add(Pair(card.toMagicCard(), 1))
                         }
                     }
+                    cardsArray.sortWith { card1, card2 ->
+                        card1.first.name.compareTo(card2.first.name)
+                    }
+                    this@UserCollectionViewModel.cardsArray = cardsArray
+                    _cards.postValue(applyFilters())
                 }
             }
-        }.invokeOnCompletion {
-            cardsArray.sortedWith { o1: MagicCard, o2: MagicCard ->
-                o1.name.compareTo(o2.name)
-            }
-            this.cardsArray = cardsArray
-            _cards.value = cardsArray
         }
     }
 
     /**
      * Apply the filter and the sorter to the list of cards
      */
-    private fun applyFilters(): ArrayList<MagicCard> {
+    private fun applyFilters(): ArrayList<Pair<MagicCard, Int>> {
         val searchState = searchState.value!!
         val filterState = filterState.value!!
         val sorterState = sorterState.value!!
         val filteredArray = filterState.filter(cardsArray)
 
         val nameFilteredArray = filteredArray.filter {
-            it.name.contains(
+            it.first.name.contains(
                 searchState,
                 true
             )

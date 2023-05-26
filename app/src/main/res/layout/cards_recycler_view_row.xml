@@ -49,9 +49,22 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="2dp"
                 style="@style/BrowserCardDescriptionStyle"
-                android:text="@string/mt15"
+                android:text="@string/m15"
                 app:layout_constraintStart_toEndOf="@+id/cardImageView"
                 app:layout_constraintTop_toBottomOf="@+id/cardNameRecyclerViewTextView" />
+
+            <TextView
+                android:id="@+id/quantityRecyclerViewTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/small_margin"
+                style="@style/LargeTextStyle"
+                android:text="@string/cards_recycler_view_quantity"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

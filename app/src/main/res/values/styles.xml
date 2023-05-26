@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         Customize your theme here.
     </style>
@@ -9,7 +8,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    -->
+
     <style name="TitleStyle">
         <item name="android:textColor">@color/white_gold_light</item>
         <item name="android:textSize">@dimen/text_size_32</item>
