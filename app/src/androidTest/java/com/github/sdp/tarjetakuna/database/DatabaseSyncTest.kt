@@ -36,7 +36,7 @@ class DatabaseSyncTest {
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
         Mockito.`when`(mockedAuth.getUserUID()).thenReturn("test")
         SignIn.setSignIn(mockedAuth)
-
+        DatabaseSync.activateSync = true
         LocalDatabaseProvider.setDatabase(
             ApplicationProvider.getApplicationContext(),
             LocalDatabaseProvider.CARDS_DATABASE_NAME,
