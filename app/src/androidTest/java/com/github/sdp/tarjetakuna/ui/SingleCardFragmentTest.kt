@@ -269,7 +269,6 @@ class SingleCardFragmentTest {
         )
     }
 
-    //TODO : Fix this test
     @Test
     fun testUserCanSeeUsersThatHaveTheCard() {
         val bundleArgs = Bundle().apply { putString("card", validJson) }
@@ -279,7 +278,7 @@ class SingleCardFragmentTest {
         onView(withText(R.string.single_card_users_have)).check(matches(isDisplayed()))
         onView(withText(R.string.single_card_users_want)).check(matches(isDisplayed()))
         onView(withText(R.string.single_card_users_have)).perform(click())
-        
+
         onView(withIndex(withText(CommonFirebase.GoodFirebaseAttributes.email1), 0)).check(
             matches(
                 isDisplayed()
@@ -288,8 +287,7 @@ class SingleCardFragmentTest {
         onView(withIndex(withId(R.id.user_adapter_km_text), 0)).check(matches(isDisplayed()))
         onView(withIndex(withId(R.id.user_adapter_message_button), 0)).check(matches(isDisplayed()))
     }
-
-    //TODO : Fix this test
+    
     @Test
     fun testUserCanSeeUsersThatWantTheCard() {
         val bundleArgs = Bundle().apply { putString("card", validJson) }

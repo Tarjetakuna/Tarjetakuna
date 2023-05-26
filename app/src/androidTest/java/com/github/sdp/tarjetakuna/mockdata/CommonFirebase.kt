@@ -10,10 +10,18 @@ import com.google.gson.Gson
 object CommonFirebase {
     val goodFirebase = mapOf(
         "cards" to mapOf(
-            GoodFirebaseAttributes.card1 to Gson().toJson(GoodFirebaseAttributes.cardObject1)
+            GoodFirebaseAttributes.card1 to Gson().toJson(GoodFirebaseAttributes.cardObject1),
+            "M15_33" to Gson().toJson(
+                DBMagicCard(
+                    CommonMagicCard.solemnOfferingCard,
+                    CardPossession.NONE,
+                    0
+                )
+            ),
         ),
         "usernames" to mapOf(
-            GoodFirebaseAttributes.username1 to GoodFirebaseAttributes.email1
+            GoodFirebaseAttributes.username1 to GoodFirebaseAttributes.email1,
+            "baba" to "baba@gmail.com"
         ),
         "users" to mapOf(
             GoodFirebaseAttributes.username1 to mapOf(
@@ -33,6 +41,18 @@ object CommonFirebase {
                         "quantity" to 1,
                     )
                 )
+            ),
+            "baba" to mapOf(
+                "wanted" to mapOf(
+                    GoodFirebaseAttributes.card1 to mapOf(
+                        "lastUpdated" to GoodFirebaseAttributes.lastUpdate,
+                        "quantity" to 1,
+                    ),
+                    "M15_33" to mapOf(
+                        "lastUpdated" to GoodFirebaseAttributes.lastUpdate,
+                        "quantity" to 0,
+                    ),
+                ),
             )
         )
     )
