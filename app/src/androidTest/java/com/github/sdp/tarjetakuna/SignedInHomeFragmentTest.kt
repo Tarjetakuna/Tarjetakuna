@@ -14,7 +14,6 @@ import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
-import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.google.android.gms.tasks.Tasks
 import org.junit.*
 import org.junit.Assert.assertEquals
@@ -37,12 +36,6 @@ class SignedInHomeFragmentTest {
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
-
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
 
     @Before
     fun setUp() {
