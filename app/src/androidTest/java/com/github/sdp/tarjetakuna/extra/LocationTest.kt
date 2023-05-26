@@ -7,7 +7,6 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
-import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.model.Coordinates
@@ -43,7 +42,6 @@ class LocationTest {
 
     @Before
     fun setUp() {
-        DatabaseSync.activateSync = false
         locationManagerMock = mock(LocationManager::class.java)
         setLocationTo(1.0, 2.0)
         Location.setLastPushedToFirebase(0L)

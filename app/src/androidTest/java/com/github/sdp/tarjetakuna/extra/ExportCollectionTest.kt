@@ -22,7 +22,6 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.FBEmulator
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
@@ -60,7 +59,6 @@ class ExportCollectionTest {
     @Before
     fun setUp() {
         Intents.init()
-        DatabaseSync.activateSync = false
         activityScenarioRule.scenario.onActivity {
             view = it.findViewById(R.id.nav_home)
         }

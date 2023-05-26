@@ -8,7 +8,6 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
-import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.utils.FBEmulator
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -39,7 +38,6 @@ class SignOutFragmentTest {
 
     @Before
     fun setUp() {
-        DatabaseSync.activateSync = false
         activityRule.scenario.onActivity { activity ->
             activity.changeFragment(R.id.nav_sign_out)
         }

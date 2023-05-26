@@ -17,8 +17,6 @@ object DatabaseSync {
 
     private var isDoingSync: CompletableFuture<Boolean>? = null
 
-    var activateSync = true
-
     /**
      * Sync the local database with the remote database.
      */
@@ -26,12 +24,6 @@ object DatabaseSync {
     fun sync(): CompletableFuture<Boolean> {
         val isSyncCompleted = CompletableFuture<Boolean>()
         val userRTDB = UserRTDB(FirebaseDB())
-        if (!activateSync) {
-            Log.i("DatabaseSync", "sync: Sync is not activated")
-            isSyncCompleted.completeExceptionally(Exception("Sync is not activated"))
-            return isSyncCompleted
-        }
-
         if (!SignIn.getSignIn().isUserLoggedIn() || LocalDatabaseProvider.getDatabase(
                 LocalDatabaseProvider.CARDS_DATABASE_NAME
             ) == null

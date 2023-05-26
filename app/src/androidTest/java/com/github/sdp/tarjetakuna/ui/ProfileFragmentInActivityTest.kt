@@ -14,7 +14,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
-import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import junit.framework.TestCase.assertEquals
@@ -42,7 +41,6 @@ class ProfileFragmentInActivityTest {
 
     @Before
     fun setUp() {
-        DatabaseSync.activateSync = false
         activityRule = ActivityScenario.launch(MainActivity::class.java)
     }
 
