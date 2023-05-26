@@ -88,20 +88,21 @@ class UserRTDBTest {
 
     @Test
     fun validGetUsers() {
-        val users = userRTDB.getUsers().get()
-        Assert.assertEquals(CommonFirebase.GoodFirebaseAttributes.username1, users[0].uid)
-        Assert.assertEquals(CommonFirebase.GoodFirebaseAttributes.email1, users[0].username)
-        Assert.assertEquals(
-            CommonFirebase.GoodFirebaseAttributes.lat1,
-            users[0].location.latitude,
-            0.1
-        )
-        Assert.assertEquals(
-            CommonFirebase.GoodFirebaseAttributes.long1,
-            users[0].location.longitude,
-            0.1
-        )
-        Assert.assertNotEquals(0, users[0].cards.size)
+        userRTDB.getUsers().thenApply { users ->
+            Assert.assertEquals(CommonFirebase.GoodFirebaseAttributes.username1, users[0].uid)
+            Assert.assertEquals(CommonFirebase.GoodFirebaseAttributes.email1, users[0].username)
+            Assert.assertEquals(
+                CommonFirebase.GoodFirebaseAttributes.lat1,
+                users[0].location.latitude,
+                0.1
+            )
+            Assert.assertEquals(
+                CommonFirebase.GoodFirebaseAttributes.long1,
+                users[0].location.longitude,
+                0.1
+            )
+            Assert.assertNotEquals(0, users[0].cards.size)
+        }
     }
 
     @Test
