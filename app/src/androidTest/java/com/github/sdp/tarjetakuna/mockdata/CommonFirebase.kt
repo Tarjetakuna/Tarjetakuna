@@ -12,9 +12,11 @@ object CommonFirebase {
         "cards" to mapOf(
             GoodFirebaseAttributes.card1 to Gson().toJson(GoodFirebaseAttributes.cardObject1)
         ),
+        "usernames" to mapOf(
+            GoodFirebaseAttributes.username1 to GoodFirebaseAttributes.email1
+        ),
         "users" to mapOf(
             GoodFirebaseAttributes.username1 to mapOf(
-                "username" to GoodFirebaseAttributes.email1,
                 "location" to mapOf(
                     "lat" to GoodFirebaseAttributes.lat1,
                     "long" to GoodFirebaseAttributes.long1
