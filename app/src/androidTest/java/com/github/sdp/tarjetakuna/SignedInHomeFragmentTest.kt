@@ -21,6 +21,9 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito
 import java.util.concurrent.TimeUnit
 
+/**
+ * This class is used to test the home fragment when a user is signed in
+ */
 @RunWith(AndroidJUnit4::class)
 class SignedInHomeFragmentTest {
 

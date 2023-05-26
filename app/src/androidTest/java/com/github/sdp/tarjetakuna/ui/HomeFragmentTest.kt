@@ -22,6 +22,9 @@ import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 
+/**
+ * This class is used to test the home fragment when no user is signed in
+ */
 @RunWith(AndroidJUnit4::class)
 class HomeFragmentTest {
 
@@ -45,7 +48,7 @@ class HomeFragmentTest {
     fun setUp() {
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
-        Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
+        Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(false)
         Mockito.`when`(mockedAuth.getUserUID()).thenReturn("test")
         SignIn.setSignIn(mockedAuth)
 
