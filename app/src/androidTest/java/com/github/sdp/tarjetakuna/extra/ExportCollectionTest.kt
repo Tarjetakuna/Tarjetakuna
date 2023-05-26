@@ -1,9 +1,12 @@
 package com.github.sdp.tarjetakuna.extra
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.os.Environment
 import android.os.StrictMode
 import android.view.View
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import androidx.test.espresso.action.ViewActions.click
@@ -21,9 +24,11 @@ import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.FBEmulator
+import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.junit.*
 import org.junit.Assert.*
 import org.junit.runner.RunWith
+import java.io.FileInputStream
 
 /**
  * This class is used to test the export collection function
@@ -99,19 +104,19 @@ class ExportCollectionTest {
     /**
      * This test checks that the function show a snackbar when the file can't be created
      */
-//    @Test
-//    fun fileProblemShowSnackBar() {
-//        activityScenarioRule.scenario.onActivity {
-//            StrictMode.setThreadPolicy(
-//                StrictMode.ThreadPolicy.Builder().detectDiskWrites().penaltyDeath().build()
-//            )
-//        }
-//        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-//        onView(withText(R.string.menu_exportcollection)).perform(click())
-//
-//        onView(withText(R.string.ExportCollection_fileCreationFailed))
-//            .check(matches(isDisplayed()))
-//    }
+    @Test
+    fun fileProblemShowSnackBar() {
+        activityScenarioRule.scenario.onActivity {
+            StrictMode.setThreadPolicy(
+                StrictMode.ThreadPolicy.Builder().detectDiskWrites().penaltyDeath().build()
+            )
+        }
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
+        onView(withText(R.string.menu_exportcollection)).perform(click())
+
+        onView(withText(R.string.ExportCollection_fileCreationFailed))
+            .check(matches(isDisplayed()))
+    }
 
     /**
      * This test checks that the function show a snackbar when the intent fails
@@ -130,33 +135,33 @@ class ExportCollectionTest {
     /**
      * This test checks that the function write the right data into the excel file
      */
-//    @Test
-//    fun testRightDataAreWrittenIntoExcelFile() {
-//        ExportCollection.exportCollection(view, validCollection)
-//
-//        val excelFile = ApplicationProvider.getApplicationContext<Context>()
-//            .getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.resolve("MyMagicCollection.xls")
-//
-//        val workbook = HSSFWorkbook(FileInputStream(excelFile))
-//        val sheet = workbook.getSheetAt(0)
-//
-//        val headerRow = sheet.getRow(0)
-//        assertNotNull(headerRow)
-//        assertEquals("Name", headerRow.getCell(0).stringCellValue)
-//        assertEquals("Description", headerRow.getCell(1).stringCellValue)
-//        assertEquals("Mana Cost", headerRow.getCell(2).stringCellValue)
-//        assertEquals("Set", headerRow.getCell(3).stringCellValue)
-//        assertEquals("Image URL", headerRow.getCell(4).stringCellValue)
-//
-//        for (i in validCollection.indices) {
-//            val dataRow = sheet.getRow(i + 1)
-//            assertNotNull(dataRow)
-//            val card = validCollection[i]
-//            assertEquals(card.name, dataRow.getCell(0).stringCellValue)
-//            assertEquals(card.text, dataRow.getCell(1).stringCellValue)
-//            assertEquals(card.manaCost, dataRow.getCell(2).stringCellValue)
-//            assertEquals(card.set.name, dataRow.getCell(3).stringCellValue)
-//            assertEquals(card.imageUrl, dataRow.getCell(4).stringCellValue)
-//        }
-//    }
+    @Test
+    fun testRightDataAreWrittenIntoExcelFile() {
+        ExportCollection.exportCollection(view, validCollection)
+
+        val excelFile = ApplicationProvider.getApplicationContext<Context>()
+            .getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.resolve("MyMagicCollection.xls")
+
+        val workbook = HSSFWorkbook(FileInputStream(excelFile))
+        val sheet = workbook.getSheetAt(0)
+
+        val headerRow = sheet.getRow(0)
+        assertNotNull(headerRow)
+        assertEquals("Name", headerRow.getCell(0).stringCellValue)
+        assertEquals("Description", headerRow.getCell(1).stringCellValue)
+        assertEquals("Mana Cost", headerRow.getCell(2).stringCellValue)
+        assertEquals("Set", headerRow.getCell(3).stringCellValue)
+        assertEquals("Image URL", headerRow.getCell(4).stringCellValue)
+
+        for (i in validCollection.indices) {
+            val dataRow = sheet.getRow(i + 1)
+            assertNotNull(dataRow)
+            val card = validCollection[i]
+            assertEquals(card.name, dataRow.getCell(0).stringCellValue)
+            assertEquals(card.text, dataRow.getCell(1).stringCellValue)
+            assertEquals(card.manaCost, dataRow.getCell(2).stringCellValue)
+            assertEquals(card.set.name, dataRow.getCell(3).stringCellValue)
+            assertEquals(card.imageUrl, dataRow.getCell(4).stringCellValue)
+        }
+    }
 }
