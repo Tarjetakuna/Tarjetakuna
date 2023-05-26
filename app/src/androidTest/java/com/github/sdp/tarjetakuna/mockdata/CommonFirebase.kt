@@ -39,6 +39,6 @@ object CommonFirebase {
         const val lat1 = 11.0
         const val long1 = 14.0
         const val card1 = "M15_43"
-        val cardObject1 = DBMagicCard(CommonMagicCard.aeronautTinkererCard, CardPossession.OWNED)
+        val cardObject1 = DBMagicCard(CommonMagicCard.aeronautTinkererCard, CardPossession.OWNED, 1)
     }
 }
