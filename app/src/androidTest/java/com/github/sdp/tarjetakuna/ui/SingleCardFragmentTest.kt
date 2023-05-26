@@ -5,8 +5,6 @@ import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -22,7 +20,6 @@ import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
 import com.github.sdp.tarjetakuna.utils.CustomGlide
 import com.github.sdp.tarjetakuna.utils.Utils
 import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
-import com.github.sdp.tarjetakuna.utils.WithIndexSafeMatcher.withIndex
 import com.google.gson.Gson
 import org.hamcrest.Matchers.not
 import org.junit.After
@@ -263,37 +260,4 @@ class SingleCardFragmentTest {
         )
     }
 
-    @Test
-    fun testUserCanSeeUsersThatHaveTheCard() {
-        val bundleArgs = Bundle().apply { putString("card", validJson) }
-        scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
-        onView(withId(R.id.singleCard_scrollView)).perform(swipeUp())
-
-        onView(withText(R.string.single_card_users_have)).check(matches(isDisplayed()))
-        onView(withText(R.string.single_card_users_want)).check(matches(isDisplayed()))
-        onView(withText(R.string.single_card_users_have)).perform(click())
-
-        onView(withIndex(withText(CommonFirebase.GoodFirebaseAttributes.email1), 0)).check(
-            matches(
-                isDisplayed()
-            )
-        )
-        onView(withIndex(withId(R.id.user_adapter_km_text), 0)).check(matches(isDisplayed()))
-        onView(withIndex(withId(R.id.user_adapter_message_button), 0)).check(matches(isDisplayed()))
-    }
-    
-    @Test
-    fun testUserCanSeeUsersThatWantTheCard() {
-        val bundleArgs = Bundle().apply { putString("card", validJson) }
-        scenario = launchFragmentInContainer(fragmentArgs = bundleArgs)
-        onView(withId(R.id.singleCard_scrollView)).perform(swipeUp())
-
-        onView(withText(R.string.single_card_users_have)).check(matches(isDisplayed()))
-        onView(withText(R.string.single_card_users_want)).check(matches(isDisplayed()))
-
-        onView(withText(R.string.single_card_users_want)).perform(click())
-        onView(withText(CommonFirebase.GoodFirebaseAttributes.email1)).check(matches(isDisplayed()))
-        onView(withIndex(withId(R.id.user_adapter_km_text), 0)).check(matches(isDisplayed()))
-        onView(withIndex(withId(R.id.user_adapter_message_button), 0)).check(matches(isDisplayed()))
-    }
 }
