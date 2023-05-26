@@ -13,6 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.model.CurrentUserInterface
 import com.github.sdp.tarjetakuna.utils.ChatsData
 import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.RecyclerViewAssertions
@@ -23,6 +24,7 @@ import org.junit.ClassRule
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 
 @RunWith(AndroidJUnit4::class)
 class ChatListFragmentTest {
@@ -42,6 +44,7 @@ class ChatListFragmentTest {
 
     private lateinit var activityRule: ActivityScenario<MainActivity>
     private val viewModel = ChatListViewModel
+    private val chatViewModel = ChatViewModel
 
     @Before
     fun setUp() {
@@ -78,8 +81,11 @@ class ChatListFragmentTest {
     @Test
     fun test_user1_noChat() {
         // Set the viewmodel's data
-        viewModel.o_currentUser = ChatsData.fakeUser1
-        viewModel.o_chats = ChatsData.fakeChats_empty
+        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser1)
+        viewModel.setCurrentUserInterface(mockUser)
+        viewModel.o_chats.postValue(ChatsData.fakeChats_empty)
 
         changeToNavChats()
 
@@ -89,8 +95,11 @@ class ChatListFragmentTest {
     @Test
     fun test_user2_noChat() {
         // Set the viewmodel's data
-        viewModel.o_currentUser = ChatsData.fakeUser2
-        viewModel.o_chats = ChatsData.fakeChats_empty
+        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser2)
+        viewModel.setCurrentUserInterface(mockUser)
+        viewModel.o_chats.postValue(ChatsData.fakeChats_empty)
 
         changeToNavChats()
 
@@ -101,8 +110,11 @@ class ChatListFragmentTest {
     @Test
     fun test_user1_chat() {
         // Set the viewmodel's data
-        viewModel.o_currentUser = ChatsData.fakeUser1
-        viewModel.o_chats = ChatsData.fakeChats1
+        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser1)
+        viewModel.setCurrentUserInterface(mockUser)
+        viewModel.o_chats.postValue(ChatsData.fakeChats1)
 
         changeToNavChats()
 
@@ -113,8 +125,11 @@ class ChatListFragmentTest {
     @Test
     fun test_user2_chat() {
         // Set the viewmodel's data
-        viewModel.o_currentUser = ChatsData.fakeUser2
-        viewModel.o_chats = ChatsData.fakeChats1
+        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser2)
+        viewModel.setCurrentUserInterface(mockUser)
+        viewModel.o_chats.postValue(ChatsData.fakeChats1)
 
         changeToNavChats()
         onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItems())
@@ -124,8 +139,12 @@ class ChatListFragmentTest {
     @Test
     fun test_onChatClick() {
         // Set the viewmodel's data
-        viewModel.o_currentUser = ChatsData.fakeUser1
-        viewModel.o_chats = ChatsData.fakeChats1
+        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser1)
+        viewModel.setCurrentUserInterface(mockUser)
+        chatViewModel.setCurrentUserInterface(mockUser)
+        viewModel.o_chats.postValue(ChatsData.fakeChats1)
 
         changeToNavChats()
         onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItems())
@@ -146,8 +165,11 @@ class ChatListFragmentTest {
     @Test
     fun test_notifIconShown() {
         // Set the viewmodel's data
-        viewModel.o_currentUser = ChatsData.fakeUser1
-        viewModel.o_chats = ChatsData.fakeChats2
+        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser1)
+        viewModel.setCurrentUserInterface(mockUser)
+        viewModel.o_chats.postValue(ChatsData.fakeChats2)
 
         changeToNavChats()
         onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItems())
@@ -160,8 +182,11 @@ class ChatListFragmentTest {
     @Test
     fun test_notifIconHidden() {
         // Set the viewmodel's data
-        viewModel.o_currentUser = ChatsData.fakeUser3
-        viewModel.o_chats = ChatsData.fakeChats2
+        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser3)
+        viewModel.setCurrentUserInterface(mockUser)
+        viewModel.o_chats.postValue(ChatsData.fakeChats2)
 
         changeToNavChats()
         onView(withId(R.id.chats_recyclerView)).check(RecyclerViewAssertions.hasItems())
