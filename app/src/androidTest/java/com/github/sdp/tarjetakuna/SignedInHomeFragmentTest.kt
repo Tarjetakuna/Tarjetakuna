@@ -73,6 +73,7 @@ class SignedInHomeFragmentTest {
 
     @Test
     fun testWelcomeUserIsDisplayed() {
+
         onView(withId(R.id.home_userGreeting_text))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }

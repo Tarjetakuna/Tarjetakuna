@@ -46,6 +46,9 @@ class HomeFragment : Fragment() {
         homeViewModel.checkUserConnected()
         homeViewModel.isConnected.observe(viewLifecycleOwner) {
             displayUserHome(it)
+            if (it) {
+                DatabaseSync.sync()
+            }
         }
 
         //Welcome text on home page
@@ -62,7 +65,7 @@ class HomeFragment : Fragment() {
             LocalDatabaseProvider.CARDS_DATABASE_NAME
         )
         // Sync the databases when the user opens the app or navigates back home
-        DatabaseSync.sync()
+//        DatabaseSync.sync()
 
         val descTextView: TextView = binding.homeWelcomeDescription
         homeViewModel.descriptionText.observe(viewLifecycleOwner) {
