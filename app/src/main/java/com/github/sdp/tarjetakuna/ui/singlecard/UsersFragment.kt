@@ -50,7 +50,6 @@ class UsersFragment : Fragment() {
             } catch (e: NoSuchElementException) {
                 null
             }
-
             val users = it.filter { user ->
                 user.cards.any { card ->
                     (card.possession == if (ownedCards) CardPossession.OWNED else CardPossession.WANTED)
