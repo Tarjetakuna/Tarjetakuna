@@ -36,7 +36,17 @@ class ChatListFragment : Fragment() {
             initOnChatClickListener(binding.chatsRecyclerView.adapter as ChatListAdapter)
         }
 
+        viewModel.autoChat.observe(viewLifecycleOwner) {
+            if (it != null) {
+                ChatListViewModel.currentUser.setChatUID(it.uid)
+                (requireActivity() as MainActivity).changeFragment(R.id.nav_chat)
+            }
+        }
+
         viewModel.attachChatsListener()
+
+        // This is the userUID of the user we want to chat with, loaded from the arguments
+        arguments?.getString("userUID")?.let { it1 -> viewModel.loadChatWithUser(it1) }
 
         return root
     }

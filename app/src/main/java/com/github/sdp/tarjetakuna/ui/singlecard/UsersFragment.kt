@@ -8,21 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
 import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.database.UserRTDB
-import com.github.sdp.tarjetakuna.model.Coordinates
-import com.github.sdp.tarjetakuna.model.MagicCard
-import com.github.sdp.tarjetakuna.model.MagicCardType
-import com.github.sdp.tarjetakuna.model.MagicLayout
-import com.github.sdp.tarjetakuna.model.MagicRarity
-import com.github.sdp.tarjetakuna.model.MagicSet
 import com.github.sdp.tarjetakuna.model.User
 import com.github.sdp.tarjetakuna.ui.authentication.GoogleAuthAdapter
 import com.google.gson.Gson
-import java.time.LocalDate
 
 /**
  * A fragment representing a list of [User].
@@ -50,24 +44,43 @@ class UsersFragment : Fragment() {
         if (dbMagicCard == null) return view
 
         val userRTDB = UserRTDB(FirebaseDB())
-        var currentUser: User? = null
         val firebaseUser = GoogleAuthAdapter.auth.currentUser
-        userRTDB.getUserByUsername(firebaseUser?.email ?: "").thenAccept {
-            currentUser = it
-        }
 
         userRTDB.getUsers().thenApply {
+            val currentUser: User? = try {
+                it.first { user -> user.username == firebaseUser?.email }
+            } catch (e: NoSuchElementException) {
+                null
+            }
             val users = it.filter { user ->
                 user.cards.any { card ->
                     (card.possession == if (ownedCards) CardPossession.OWNED else CardPossession.WANTED)
                             && (card.code == dbMagicCard!!.code)
                             && (card.number == dbMagicCard!!.number)
+                            && (card.quantity > 0)
                 } && user.username != (currentUser?.username ?: "")
-            }.sortedBy { user -> if (currentUser == null) 0.0 else user.location.distanceKmTo(
-                currentUser!!.location) }
+            }.sortedBy { user ->
+                if (currentUser == null) 0.0 else user.location.distanceKmTo(
+                    currentUser.location
+                )
+            }
             with(view as RecyclerView) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = UserRecyclerViewAdapter(users, currentUser)
+                val mAdapter = UserRecyclerViewAdapter(users, currentUser)
+                mAdapter.onUserClickListener =
+                    object : UserRecyclerViewAdapter.OnUserClickListener {
+                        override fun onUserClick(user: User) {
+                            Log.w("", "User clicked: $user")
+                            val bundle = Bundle()
+                            bundle.putString("userUID", user.uid)
+                            (requireActivity() as MainActivity).changeFragment(
+                                R.id.nav_chats,
+                                bundle
+                            )
+                        }
+                    }
+
+                adapter = mAdapter
             }
         }
 

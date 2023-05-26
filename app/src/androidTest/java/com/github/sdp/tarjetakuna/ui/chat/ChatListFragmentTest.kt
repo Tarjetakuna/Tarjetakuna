@@ -1,6 +1,7 @@
 package com.github.sdp.tarjetakuna.ui.chat
 
 import android.Manifest
+import android.os.Bundle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -56,12 +57,15 @@ class ChatListFragmentTest {
         Intents.release()
     }
 
-    private fun changeToNavChats() {
+    private fun changeToNavChats(bundle: Bundle? = null) {
         activityRule.onActivity { activity ->
-            activity.changeFragment(R.id.nav_chats, null)
+            activity.changeFragment(R.id.nav_chats, bundle)
         }
 
-        onView(withId(R.id.chats_linearLayout)).check(matches(isDisplayed()))
+        if (bundle == null) {
+            // wait for the fragment to load
+            onView(withId(R.id.chats_linearLayout)).check(matches(isDisplayed()))
+        }
     }
 
     // TODO : wait for database refactoring to test this
@@ -191,5 +195,23 @@ class ChatListFragmentTest {
 
         onView(withId(R.id.chat_item_notif)).check(matches(not(isDisplayed())))
     }
+
+//    @Test
+//    fun test_user1_autoloaded() {
+//        // Set the viewmodel's data
+//        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+//        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false).thenReturn(true)
+//            .thenReturn(false)
+//        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser1)
+//        viewModel.setCurrentUserInterface(mockUser)
+//        viewModel.o_chats.postValue(ChatsData.fakeChats1)
+//
+//        val bundle = Bundle()
+//        bundle.putString("userUID", ChatsData.fakeUser2.uid)
+//        changeToNavChats(bundle)
+//
+//        // check if chat is open
+//        onView(withId(R.id.chat_constraintLayout)).check(matches(isDisplayed()))
+//    }
 
 }

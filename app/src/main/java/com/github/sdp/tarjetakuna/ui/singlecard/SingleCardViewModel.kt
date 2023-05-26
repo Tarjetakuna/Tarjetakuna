@@ -5,7 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sdp.tarjetakuna.database.*
+import com.github.sdp.tarjetakuna.database.CardPossession
+import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.DatabaseSync
+import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.model.MagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
@@ -76,16 +80,16 @@ class SingleCardViewModel : ViewModel() {
                 // card not wanted -> make it unwanted from the collection
                 if (lCard.possession == CardPossession.WANTED) {
                     card?.let { manageCardsInDatabase(it, CardPossession.NONE) }
-                    updateValues(CardPossession.NONE, 0)
+                    updateValues(CardPossession.WANTED, 0)
                 } else {
                     // card wanted -> make it wanted in the collection
                     card?.let { manageCardsInDatabase(it, CardPossession.WANTED) }
-                    updateValues(CardPossession.WANTED, 0)
+                    updateValues(CardPossession.WANTED, 1)
                 }
             } else {
                 // card not in the database -> add it as wanted in the local database
                 card?.let { manageCardsInDatabase(it, CardPossession.WANTED) }
-                updateValues(CardPossession.WANTED, 0)
+                updateValues(CardPossession.WANTED, 1)
             }
             // sync the local database with the firebase if possible
             DatabaseSync.sync()
@@ -136,7 +140,7 @@ class SingleCardViewModel : ViewModel() {
                     localDatabase?.magicCardDao()?.getCard(it.code, card!!.number.toString())
                 }
             if (lCard != null) {
-                if (lCard.possession == CardPossession.OWNED && lCard.quantity > 1) {
+                if (lCard.possession == CardPossession.OWNED && lCard.quantity > 0) {
                     card?.let {
                         manageCardsInDatabase(
                             it,
@@ -179,12 +183,14 @@ class SingleCardViewModel : ViewModel() {
         when (p) {
             CardPossession.WANTED -> {
                 _buttonWantedText.value = false
-                _currentQuantity.value = 0.toString()
+                _currentQuantity.value = quantity.toString()
             }
+
             CardPossession.OWNED -> {
                 _buttonWantedText.value = true
                 _currentQuantity.value = quantity.toString()
             }
+
             else -> {
                 _buttonWantedText.value = true
                 _currentQuantity.value = 0.toString()

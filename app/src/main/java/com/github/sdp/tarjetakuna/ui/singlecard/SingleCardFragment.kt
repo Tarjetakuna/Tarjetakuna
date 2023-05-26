@@ -40,7 +40,6 @@ class SingleCardFragment : Fragment() {
         _binding = FragmentSingleCardBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this)[SingleCardViewModel::class.java]
 
-
         loadCardFromJson()
         setUsersTabs()
         //Initialize the local database
