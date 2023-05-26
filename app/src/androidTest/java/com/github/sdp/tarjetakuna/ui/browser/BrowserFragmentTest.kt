@@ -15,6 +15,7 @@ import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
+import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
@@ -43,7 +44,7 @@ class BrowserFragmentTest {
     @Before
     fun setUp() {
         activityRule = ActivityScenario.launch(MainActivity::class.java)
-
+        DatabaseSync.activateSync = false
         Intents.init()
 
         // mock the authentication
