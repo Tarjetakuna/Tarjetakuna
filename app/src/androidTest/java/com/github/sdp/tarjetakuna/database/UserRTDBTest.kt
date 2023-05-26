@@ -9,8 +9,7 @@ import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.utils.ChatsData
-import com.github.sdp.tarjetakuna.utils.FBEmulator
-import com.google.android.gms.tasks.Tasks
+import com.github.sdp.tarjetakuna.utils.Utils
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.contains
 import org.hamcrest.Matchers.equalTo
@@ -21,24 +20,20 @@ import java.util.concurrent.TimeUnit
 
 @RunWith(AndroidJUnit4::class)
 class UserRTDBTest {
-
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
-
+    
     private lateinit var userRTDB: UserRTDB
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
         Mockito.`when`(mockedAuth.getUserUID()).thenReturn("test")
         SignIn.setSignIn(mockedAuth)
 
-        val task = FirebaseDB().clearDatabase()
-        Tasks.await(task, 5, TimeUnit.SECONDS)
+//        val task = FirebaseDB().clearDatabase()
+//        Tasks.await(task, 5, TimeUnit.SECONDS)
 
         FirebaseDB().returnDatabaseReference().updateChildren(CommonFirebase.goodFirebase)
         userRTDB = UserRTDB(FirebaseDB())
@@ -46,8 +41,8 @@ class UserRTDBTest {
 
     @After
     fun tearDown() {
-        val task = FirebaseDB().clearDatabase()
-        Tasks.await(task, 5, TimeUnit.SECONDS)
+//        val task = FirebaseDB().clearDatabase()
+//        Tasks.await(task, 5, TimeUnit.SECONDS)
     }
 
     @Test

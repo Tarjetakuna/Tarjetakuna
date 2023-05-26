@@ -18,6 +18,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.ui.scanner.ScannerFragment
+import com.github.sdp.tarjetakuna.utils.Utils
 import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
 import org.junit.After
 import org.junit.Before
@@ -31,6 +32,8 @@ class ScannerFragmentTest {
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+
         Intents.init()
         scenario = launchFragmentInContainer()
         Thread.sleep(100) // Wait for the fragment to be created (otherwise the test fails because there is no view)

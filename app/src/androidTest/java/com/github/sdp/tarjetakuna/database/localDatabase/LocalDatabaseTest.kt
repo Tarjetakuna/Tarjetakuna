@@ -11,8 +11,8 @@ import com.github.sdp.tarjetakuna.database.local.AppDatabase
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
-import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
+import com.github.sdp.tarjetakuna.utils.Utils
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.junit.*
@@ -27,7 +27,6 @@ class LocalDatabaseTest {
 
     private var cards = generateCards().map { DBMagicCard.fromMagicCard(it) }
 
-
     @Rule
     @JvmField
     val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
@@ -35,14 +34,10 @@ class LocalDatabaseTest {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
-
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
