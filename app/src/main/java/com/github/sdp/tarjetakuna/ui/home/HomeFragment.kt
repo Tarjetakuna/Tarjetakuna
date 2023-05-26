@@ -82,7 +82,7 @@ class HomeFragment : Fragment() {
             mainActivity.changeFragment(R.id.nav_authentication, bundle)
         }
 
-        val positiveButtonClick = { dialog: DialogInterface, which: Int ->
+        val positiveButtonClick = { _: DialogInterface, _: Int ->
             val bundle = Bundle()
             bundle.putBoolean("signIn", false)
             mainActivity.changeFragment(R.id.nav_authentication, bundle)
@@ -109,15 +109,15 @@ class HomeFragment : Fragment() {
      */
     private fun displayUserHome(userIsConnected: Boolean) {
         if (userIsConnected) {
-            binding.homeWelcomeText.visibility = View.GONE
-            binding.homeWelcomeDescription.visibility = View.GONE
-            binding.homeAuthenticationButton.visibility = View.GONE
+            binding.homeWelcomeText.visibility = View.INVISIBLE
+            binding.homeWelcomeDescription.visibility = View.INVISIBLE
+            binding.homeAuthenticationButton.visibility = View.INVISIBLE
             binding.homeUserContentLayout.visibility = View.VISIBLE
         } else {
             binding.homeWelcomeText.visibility = View.VISIBLE
             binding.homeWelcomeDescription.visibility = View.VISIBLE
             binding.homeAuthenticationButton.visibility = View.VISIBLE
-            binding.homeUserContentLayout.visibility = View.GONE
+            binding.homeUserContentLayout.visibility = View.INVISIBLE
         }
     }
 
