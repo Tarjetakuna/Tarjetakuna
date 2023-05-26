@@ -22,10 +22,5 @@ class HomeViewModel : ViewModel() {
         _isConnected.value = SignIn.getSignIn().isUserLoggedIn()
     }
 
-
-    // TODO remove this when we can research the cards and open them in the single card fragment
-    // TODO the things to remove are: localDatabase, cards, generateCards, getRandomCard, the button
     var localDatabase: AppDatabase? = null
-
-
 }
