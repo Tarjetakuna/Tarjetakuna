@@ -1,12 +1,12 @@
 package com.github.sdp.tarjetakuna
 
 import android.Manifest
+import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.database.DatabaseSync
@@ -14,6 +14,7 @@ import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
+import com.github.sdp.tarjetakuna.utils.Utils
 import com.google.android.gms.tasks.Tasks
 import org.junit.*
 import org.junit.Assert.assertEquals
@@ -27,8 +28,6 @@ import java.util.concurrent.TimeUnit
 @RunWith(AndroidJUnit4::class)
 class SignedInHomeFragmentTest {
 
-    @get:Rule
-    public val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Rule
     @JvmField
@@ -37,8 +36,12 @@ class SignedInHomeFragmentTest {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
+    private lateinit var activityRule: ActivityScenario<MainActivity>
+
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
         Mockito.`when`(mockedAuth.getUserUID()).thenReturn("homefragtest")
@@ -54,7 +57,8 @@ class SignedInHomeFragmentTest {
         val task = FirebaseDB().clearDatabase()
         Tasks.await(task, 5, TimeUnit.SECONDS)
 
-        activityRule.scenario.onActivity { activity ->
+        activityRule = ActivityScenario.launch(MainActivity::class.java)
+        activityRule.onActivity { activity ->
             activity.changeFragment(R.id.nav_home)
         }
     }
