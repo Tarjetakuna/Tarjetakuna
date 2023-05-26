@@ -3,10 +3,10 @@ package com.github.sdp.tarjetakuna.database
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.model.Chat
 import com.github.sdp.tarjetakuna.utils.ChatsData
-import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.github.sdp.tarjetakuna.utils.Utils
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
-import org.junit.ClassRule
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -16,10 +16,9 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class DBChatTest {
 
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
+    @Before
+    fun setUp() {
+        Utils.useFirebaseEmulator()
     }
 
     @Test

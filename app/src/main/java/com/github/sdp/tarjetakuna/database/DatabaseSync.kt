@@ -99,7 +99,6 @@ object DatabaseSync {
                 .thenAccept(isSyncDone::complete)
             null
         }
-
         return isSyncDone
     }
 

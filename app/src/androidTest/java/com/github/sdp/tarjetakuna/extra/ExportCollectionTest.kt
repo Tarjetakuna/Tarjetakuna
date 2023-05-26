@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Environment
 import android.os.StrictMode
 import android.view.View
+import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
@@ -16,7 +17,6 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.GrantPermissionRule
@@ -24,7 +24,7 @@ import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
-import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.github.sdp.tarjetakuna.utils.Utils
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.junit.*
 import org.junit.Assert.*
@@ -44,31 +44,27 @@ class ExportCollectionTest {
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
-
-    @get:Rule
-    val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
-
     private lateinit var view: View
+    private lateinit var activityRule: ActivityScenario<MainActivity>
 
     private val validCollection = CommonMagicCard.validListOfCards
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+
         Intents.init()
         DatabaseSync.activateSync = false
-        activityScenarioRule.scenario.onActivity {
+
+        activityRule = ActivityScenario.launch(MainActivity::class.java)
+        activityRule.onActivity {
             view = it.findViewById(R.id.nav_home)
         }
     }
 
     @After
     fun after() {
-        activityScenarioRule.scenario.onActivity {
+        activityRule.onActivity {
             StrictMode.setThreadPolicy(
                 StrictMode.ThreadPolicy.Builder().permitAll().build()
             )
@@ -81,7 +77,7 @@ class ExportCollectionTest {
      */
     @Test
     fun filePathProblemShouldShowSnackBar() {
-        activityScenarioRule.scenario.onActivity {
+        activityRule.onActivity {
             StrictMode.setThreadPolicy(
                 StrictMode.ThreadPolicy.Builder().detectDiskReads().penaltyDeath().build()
             )
@@ -108,7 +104,7 @@ class ExportCollectionTest {
      */
     @Test
     fun fileProblemShowSnackBar() {
-        activityScenarioRule.scenario.onActivity {
+        activityRule.onActivity {
             StrictMode.setThreadPolicy(
                 StrictMode.ThreadPolicy.Builder().detectDiskWrites().penaltyDeath().build()
             )

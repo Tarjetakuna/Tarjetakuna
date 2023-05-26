@@ -12,9 +12,10 @@ import com.github.sdp.tarjetakuna.database.MessagesRTDB
 import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.utils.ChatsData
-import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.Utils
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -56,14 +57,10 @@ class UserTest {
     private val fbcard = DBMagicCard(card, CardPossession.OWNED)
 
 
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
-
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+
         val task = FirebaseDB().clearDatabase()
         Tasks.await(task, 5, TimeUnit.SECONDS)
     }
@@ -123,7 +120,7 @@ class UserTest {
         runBlocking {
             var count = 0L
             withTimeout(1000) {
-                fbEmulator.fb.reference
+                Firebase.database.reference
                     .child("users")
                     .child(validUID)
                     .child("owned")
@@ -146,7 +143,7 @@ class UserTest {
             validUser.removeCard(card, CardPossession.OWNED)
             var count = 0L
             withTimeout(1000) {
-                fbEmulator.fb.reference
+                Firebase.database.reference
                     .child("users")
                     .child(validUID)
                     .child("owned")
@@ -169,7 +166,7 @@ class UserTest {
             validUser.removeCard(card, CardPossession.OWNED).get()
             var count = 0L
             withTimeout(1000) {
-                fbEmulator.fb.reference
+                Firebase.database.reference
                     .child("users")
                     .child(validUID)
                     .child("owned")
