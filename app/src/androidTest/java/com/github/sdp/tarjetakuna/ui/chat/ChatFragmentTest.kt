@@ -12,6 +12,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.model.CurrentUserInterface
 import com.github.sdp.tarjetakuna.utils.ChatsData
 import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.RecyclerViewAssertions
@@ -21,6 +22,7 @@ import org.junit.ClassRule
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 
 @RunWith(AndroidJUnit4::class)
 class ChatFragmentTest {
@@ -65,8 +67,11 @@ class ChatFragmentTest {
     @Test
     fun test_user1_chat1() {
         // Set the viewmodel's data
-        viewModel.o_currentUser = ChatsData.fakeUser1
-        viewModel.o_chat = ChatsData.fakeChat1
+        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser1)
+        viewModel.setCurrentUserInterface(mockUser)
+        viewModel.o_chat.postValue(ChatsData.fakeChat1)
 
         changeToNavChat()
 
@@ -81,8 +86,11 @@ class ChatFragmentTest {
     @Test
     fun test_user2_chat1() {
         // Set the viewmodel's data
-        viewModel.o_currentUser = ChatsData.fakeUser2
-        viewModel.o_chat = ChatsData.fakeChat1
+        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser2)
+        viewModel.setCurrentUserInterface(mockUser)
+        viewModel.o_chat.postValue(ChatsData.fakeChat1)
 
         changeToNavChat()
 
@@ -97,8 +105,11 @@ class ChatFragmentTest {
     @Test
     fun test_user1_chat2() {
         // Set the viewmodel's data
-        viewModel.o_currentUser = ChatsData.fakeUser1
-        viewModel.o_chat = ChatsData.fakeChat2
+        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser1)
+        viewModel.setCurrentUserInterface(mockUser)
+        viewModel.o_chat.postValue(ChatsData.fakeChat2)
 
         changeToNavChat()
 
@@ -114,8 +125,11 @@ class ChatFragmentTest {
     @Test
     fun test_user2_chat2() {
         // Set the viewmodel's data
-        viewModel.o_currentUser = ChatsData.fakeUser2
-        viewModel.o_chat = ChatsData.fakeChat2
+        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser2)
+        viewModel.setCurrentUserInterface(mockUser)
+        viewModel.o_chat.postValue(ChatsData.fakeChat2)
 
         changeToNavChat()
 
@@ -131,13 +145,15 @@ class ChatFragmentTest {
     @Test
     fun test_user1_emptyChat() {
         // Set the viewmodel's data
-        viewModel.o_currentUser = ChatsData.fakeUser1
-        viewModel.o_chat = ChatsData.fakeChat1_emptyMsgs // user1 has no chats with user2
+        val mockUser = Mockito.mock(CurrentUserInterface::class.java)
+        Mockito.`when`(mockUser.isUserLoggedIn()).thenReturn(false)
+        Mockito.`when`(mockUser.getCurrentUser()).thenReturn(ChatsData.fakeUser1)
+        viewModel.setCurrentUserInterface(mockUser)
+        viewModel.o_chat.postValue(ChatsData.fakeChat1_emptyMsgs)
 
         changeToNavChat()
 
         onView(withId(R.id.chat_username_text)).check(matches(withText(ChatsData.fakeUser2.username)))
-
         onView(withId(R.id.chat_messages_recyclerView)).check(RecyclerViewAssertions.isEmpty())
     }
 

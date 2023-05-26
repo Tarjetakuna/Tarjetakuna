@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.databinding.FragmentChatListBinding
-import com.github.sdp.tarjetakuna.model.User
 
 class ChatListFragment : Fragment() {
 
@@ -18,7 +17,6 @@ class ChatListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: ChatListViewModel
-    private lateinit var currentUser: User
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,18 +28,15 @@ class ChatListFragment : Fragment() {
         _binding = FragmentChatListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        viewModel.currentUser.observe(viewLifecycleOwner) {
-            currentUser = it
-        }
-
         viewModel.chats.observe(viewLifecycleOwner) {
             binding.chatsRecyclerView.layoutManager = LinearLayoutManager(context)
             val sortedChats = it.sortedByDescending { chat -> chat.timestamp }
-            binding.chatsRecyclerView.adapter = ChatListAdapter(sortedChats, currentUser)
+            binding.chatsRecyclerView.adapter =
+                ChatListAdapter(sortedChats, ChatListViewModel.currentUser.getCurrentUser())
             initOnChatClickListener(binding.chatsRecyclerView.adapter as ChatListAdapter)
         }
 
-        viewModel.updateData()
+        viewModel.attachChatsListener()
 
         return root
     }
@@ -49,11 +44,16 @@ class ChatListFragment : Fragment() {
     private fun initOnChatClickListener(adapter: ChatListAdapter) {
         adapter.onChatClickListener = object : ChatListAdapter.OnChatClickListener {
             override fun onClick(position: Int) {
-                val bundle = Bundle()
-                bundle.putString("chat", adapter.chats[position].uid)
-                (requireActivity() as MainActivity).changeFragment(R.id.nav_chat, bundle)
+                ChatListViewModel.currentUser.setChatUID(adapter.chats[position].uid)
+                (requireActivity() as MainActivity).changeFragment(R.id.nav_chat)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.detachChatsListener()
+        _binding = null
     }
 
 }
