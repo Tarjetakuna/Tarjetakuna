@@ -155,4 +155,5 @@ class MainActivity : AppCompatActivity() {
         // Handle location permission result, if granted, get current location
         Location.captureCurrentLocation(this)
     }
+    
 }

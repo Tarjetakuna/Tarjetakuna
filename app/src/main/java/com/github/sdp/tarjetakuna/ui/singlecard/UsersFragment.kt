@@ -1,12 +1,14 @@
 package com.github.sdp.tarjetakuna.ui.singlecard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.sdp.tarjetakuna.MainActivity
 import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.CardPossession
 import com.github.sdp.tarjetakuna.database.DBMagicCard
@@ -64,7 +66,21 @@ class UsersFragment : Fragment() {
             }
             with(view as RecyclerView) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = UserRecyclerViewAdapter(users, currentUser)
+                val mAdapter = UserRecyclerViewAdapter(users, currentUser)
+                mAdapter.onUserClickListener =
+                    object : UserRecyclerViewAdapter.OnUserClickListener {
+                        override fun onUserClick(user: User) {
+                            Log.w("", "User clicked: $user")
+                            val bundle = Bundle()
+                            bundle.putString("userUID", user.uid)
+                            (requireActivity() as MainActivity).changeFragment(
+                                R.id.nav_chats,
+                                bundle
+                            )
+                        }
+                    }
+
+                adapter = mAdapter
             }
         }
 

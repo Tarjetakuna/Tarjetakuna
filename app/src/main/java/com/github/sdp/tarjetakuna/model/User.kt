@@ -274,6 +274,20 @@ data class User(
         }.exceptionally { future.completeExceptionally(it); null }
     }
 
+    fun chatWithUser(toUserUID: String): CompletableFuture<DBChat> {
+        val future = CompletableFuture<DBChat>()
+        val dbChat = findChatWithUser(toUserUID)
+        if (dbChat != null) {
+            future.complete(dbChat)
+        } else {
+            val chat = DBChat.newChat(uid, toUserUID)
+            newChat(chat).thenAccept { mDBChat ->
+                future.complete(mDBChat)
+            }
+        }
+        return future
+    }
+
     /**
      * Finds a chat between this user and the other, if it exists.
      */
