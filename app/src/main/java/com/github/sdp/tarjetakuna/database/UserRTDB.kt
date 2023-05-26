@@ -1,10 +1,13 @@
 package com.github.sdp.tarjetakuna.database
 
-import android.util.Log
 import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.model.User
-import com.google.firebase.database.*
-import com.google.firebase.database.ktx.values
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.ServerValue
+import com.google.firebase.database.Transaction
 import com.google.gson.Gson
 import java.util.concurrent.CompletableFuture
 
@@ -315,43 +318,6 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
             CompletableFuture.allOf(*userFutures.toTypedArray()).thenRun {
                 future.complete(users)
             }
-        }
-        return future
-    }
-
-    /**
-     * Get a user from the database by their username
-     */
-    fun getUserByUsername(username: String): CompletableFuture<User?> {
-        val future = CompletableFuture<User?>()
-        db.get().addOnSuccessListener { snapshot ->
-            for (user in snapshot.children) {
-                if (user.child("username").value.toString() == username) {
-                    val uid = user.key.toString()
-                    val coordinates = user.child("location").run {
-                        val latValue = child("lat").value
-                        val longValue = child("long").value
-                        val lat = latValue?.toString()?.toDouble() ?: 0.0
-                        val long = longValue?.toString()?.toDouble() ?: 0.0
-                        Coordinates(lat, long)
-                    }
-                    val ownedCardsFuture = cardsFromUser(uid, CardPossession.OWNED)
-                    val wantedCardsFuture = cardsFromUser(uid, CardPossession.WANTED)
-
-                    CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenAccept {
-                        val ownedCards = ownedCardsFuture.join()
-                        val wantedCards = wantedCardsFuture.join()
-
-                        val cards = mutableListOf<DBMagicCard>()
-                        cards.addAll(ownedCards)
-                        cards.addAll(wantedCards)
-
-                        future.complete(User(uid, username, cards, coordinates))
-                    }
-                    return@addOnSuccessListener
-                }
-            }
-            future.complete(null)
         }
         return future
     }
