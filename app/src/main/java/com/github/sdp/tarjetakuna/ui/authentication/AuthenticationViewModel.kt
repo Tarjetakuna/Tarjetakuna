@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.github.sdp.tarjetakuna.database.FirebaseDB
 import com.github.sdp.tarjetakuna.utils.Utils
 
 
@@ -60,6 +61,11 @@ class AuthenticationViewModel : ViewModel() {
             // Successfully signed in
             //val user = FirebaseAuth.getInstance().currentUser
             // The observer will be notified and launch the SignOutFragment
+            FirebaseDB().usernamesTable().updateChildren(
+                mapOf(
+                    GoogleAuthAdapter.auth.currentUser?.uid to GoogleAuthAdapter.auth.currentUser?.email
+                )
+            )
             _changeToSignOutFragment.value = true
         } else {
             if (response == null) {
