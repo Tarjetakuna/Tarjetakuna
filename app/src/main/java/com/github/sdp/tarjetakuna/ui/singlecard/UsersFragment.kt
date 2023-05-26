@@ -56,6 +56,7 @@ class UsersFragment : Fragment() {
                     (card.possession == if (ownedCards) CardPossession.OWNED else CardPossession.WANTED)
                             && (card.code == dbMagicCard!!.code)
                             && (card.number == dbMagicCard!!.number)
+                            && (card.quantity > 0)
                 } && user.username != (currentUser?.username ?: "")
             }.sortedBy { user ->
                 if (currentUser == null) 0.0 else user.location.distanceKmTo(
