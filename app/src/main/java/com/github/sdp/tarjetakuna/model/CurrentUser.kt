@@ -13,11 +13,14 @@ object CurrentUser : CurrentUserInterface {
     }
 
     override fun setCurrentUser(user: User) {
+        if (currentUser != null) removeCurrentUser()
+
         currentUser = user
         currentUser!!.addChatsListener()
     }
 
     override fun removeCurrentUser() {
+        if (currentUser == null) return
         currentUser!!.removeChatsListener()
         currentUser!!.removeChatListener()
         currentUser = null
