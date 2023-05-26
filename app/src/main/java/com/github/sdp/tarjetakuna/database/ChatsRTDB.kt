@@ -108,12 +108,10 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
                 Log.d(TAG, "dbChat ${chat.uid} added to chats table")
                 future.complete(chat)
             }.exceptionally {
-                Log.w(TAG, "dbChat ${chat.uid} failed to be added to chats table")
                 future.completeExceptionally(it)
                 return@exceptionally null
             }
         }.exceptionally {
-            Log.w(TAG, "some messages for ${chat.uid} failed to be added to messages table")
             future.completeExceptionally(it)
             return@exceptionally null
         }
@@ -192,7 +190,6 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
                 future.completeExceptionally(
                     NoSuchFieldException("message $message is not add to chat $chatUID")
                 )
-                Log.w(TAG, "Message not added to chat")
                 return@thenCompose future
             }
         }
