@@ -2,17 +2,7 @@ package com.github.sdp.tarjetakuna.model
 
 
 import android.util.Log
-import com.github.sdp.tarjetakuna.database.CardPossession
-import com.github.sdp.tarjetakuna.database.ChatsRTDB
-import com.github.sdp.tarjetakuna.database.DBChat
-import com.github.sdp.tarjetakuna.database.DBMagicCard
-import com.github.sdp.tarjetakuna.database.DBMessage
-import com.github.sdp.tarjetakuna.database.Database
-import com.github.sdp.tarjetakuna.database.FirebaseDB
-import com.github.sdp.tarjetakuna.database.UserChatListener
-import com.github.sdp.tarjetakuna.database.UserChatsListener
-import com.github.sdp.tarjetakuna.database.UserRTDB
-import com.github.sdp.tarjetakuna.database.UsernamesRTDB
+import com.github.sdp.tarjetakuna.database.*
 import com.google.firebase.database.DataSnapshot
 import java.util.concurrent.CompletableFuture
 
@@ -99,23 +89,6 @@ data class User(
         val fbCard = card.toDBMagicCard(possession)
         cards.add(fbCard)
         return userRTDB.addCard(fbCard, uid)
-    }
-
-    /**
-     * Adds a list of cards to the user's collection with the given possessions.
-     */
-    fun addMultipleCards(
-        cards: List<MagicCard>,
-        possession: List<CardPossession>
-    ): CompletableFuture<Boolean> {
-        val cardsWithPossession = cards.zip(possession)
-        val completableFutures = cardsWithPossession.map { (card, pos) ->
-            CompletableFuture.supplyAsync { addCard(card, pos) }
-        }.toTypedArray()
-
-        return CompletableFuture.allOf(*completableFutures)
-            .thenApply { true }
-            .exceptionally { false }
     }
 
     /**

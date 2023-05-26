@@ -4,15 +4,9 @@ import android.util.Log
 import com.github.sdp.tarjetakuna.model.Chat
 import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.model.User
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.MutableData
-import com.google.firebase.database.ServerValue
-import com.google.firebase.database.Transaction
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.gson.Gson
-import java.util.Date
+import java.util.*
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -267,26 +261,9 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         }
         return cards
     }
-    
-    /**
-     * Get all cards from the user's collection asynchronously from the database
-     */
-    fun getAllCardsFromUser(userUID: String): CompletableFuture<DataSnapshot> {
-        val future = CompletableFuture<DataSnapshot>()
-        db.child(userUID).get().addOnSuccessListener {
-            if (it.value == null) {
-                future.completeExceptionally(NoSuchFieldException("no cards in user collection"))
-            } else {
-                future.complete(it)
-            }
-        }.addOnFailureListener {
-            future.completeExceptionally(it)
-        }
-        return future
-    }
+
 
     /**
-
      * Add a [Chat] to the user's chats collection,
      * in (chats and messages) nodes then user node.
      */
