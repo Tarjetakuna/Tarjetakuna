@@ -20,6 +20,7 @@ import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
+import com.github.sdp.tarjetakuna.utils.Utils
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.junit.After
@@ -43,6 +44,8 @@ class BrowserFragmentTest {
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+
         activityRule = ActivityScenario.launch(MainActivity::class.java)
         DatabaseSync.activateSync = false
         Intents.init()

@@ -19,37 +19,70 @@ class CardsRTDB(database: Database) {
     /**
      * Add a card to the global card collection.
      */
-    fun addCardToGlobalCollection(fbCard: DBMagicCard) {
+    fun addCardToGlobalCollection(fbCard: DBMagicCard): CompletableFuture<Boolean> {
+        val future = CompletableFuture<Boolean>()
         val cardUID = fbCard.getFbKey()
         val newCard =
             fbCard.clearPossession() //clear the possession when storing in global collection
         val data = Gson().toJson(newCard)
-        db.child(cardUID).setValue(data)
+        db.child(cardUID).setValue(data).addOnSuccessListener {
+            future.complete(true)
+        }.addOnFailureListener {
+            future.complete(false)
+        }
+        return future
     }
 
     /**
      * Add a list of cards to the global collection.
      */
-    fun addMultipleCardsToGlobalCollection(fbCards: List<DBMagicCard>) {
+    fun addMultipleCardsToGlobalCollection(fbCards: List<DBMagicCard>): CompletableFuture<Boolean> {
+        val future = CompletableFuture<Boolean>()
+        val listOfFutures = mutableListOf<CompletableFuture<Boolean>>()
         for (fbCard in fbCards) {
-            addCardToGlobalCollection(fbCard)
+            val isCardAdded = addCardToGlobalCollection(fbCard)
+            listOfFutures.add(isCardAdded)
         }
+        CompletableFuture.allOf(*listOfFutures.toTypedArray()).thenAccept {
+            future.complete(true)
+        }.exceptionally {
+            future.complete(false)
+            null
+        }
+        return future
     }
 
     /**
      * Remove a card from the global collection.
      */
-    fun removeCardFromGlobalCollection(cardUID: String) {
-        db.child(cardUID).removeValue()
+    fun removeCardFromGlobalCollection(cardUID: String): CompletableFuture<Boolean> {
+        val future = CompletableFuture<Boolean>()
+        db.child(cardUID).removeValue().addOnSuccessListener {
+            future.complete(true)
+        }.addOnFailureListener {
+            future.complete(false)
+        }
+        return future
     }
 
     /**
      * Remove a list of cards from the global collection.
      */
-    fun removeMultipleCardsFromGlobalCollection(cardUIDs: List<String>) {
+    fun removeMultipleCardsFromGlobalCollection(cardUIDs: List<String>): CompletableFuture<Boolean> {
+        val future = CompletableFuture<Boolean>()
+        val listOfFutures = mutableListOf<CompletableFuture<Boolean>>()
         for (cardUID in cardUIDs) {
-            removeCardFromGlobalCollection(cardUID)
+            val isRemoved = removeCardFromGlobalCollection(cardUID)
+            listOfFutures.add(isRemoved)
         }
+
+        CompletableFuture.allOf(*listOfFutures.toTypedArray()).thenAccept {
+            future.complete(true)
+        }.exceptionally {
+            future.complete(false)
+            null
+        }
+        return future
     }
 
     /**

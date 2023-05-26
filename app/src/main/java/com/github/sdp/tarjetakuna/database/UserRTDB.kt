@@ -4,15 +4,9 @@ import android.util.Log
 import com.github.sdp.tarjetakuna.model.Chat
 import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.model.User
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.MutableData
-import com.google.firebase.database.ServerValue
-import com.google.firebase.database.Transaction
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.gson.Gson
-import java.util.Date
+import java.util.*
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -267,26 +261,9 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         }
         return cards
     }
-    
-    /**
-     * Get all cards from the user's collection asynchronously from the database
-     */
-    fun getAllCardsFromUser(userUID: String): CompletableFuture<DataSnapshot> {
-        val future = CompletableFuture<DataSnapshot>()
-        db.child(userUID).get().addOnSuccessListener {
-            if (it.value == null) {
-                future.completeExceptionally(NoSuchFieldException("no cards in user collection"))
-            } else {
-                future.complete(it)
-            }
-        }.addOnFailureListener {
-            future.completeExceptionally(it)
-        }
-        return future
-    }
+
 
     /**
-
      * Add a [Chat] to the user's chats collection,
      * in (chats and messages) nodes then user node.
      */
@@ -317,23 +294,38 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         db.get().addOnSuccessListener { snapshot ->
             for (user in snapshot.children) {
                 val uid = user.key.toString()
-                val username = user.child("username").value.toString()
+                val usernameValue = user.child("username").value
+                var username = usernameValue?.toString()
+
+                if (username == null) {
+                    UsernamesRTDB(FirebaseDB()).getUsernameFromUID(uid).thenAccept {
+                        username = it.value.toString()
+                    }
+                }
 
                 val coordinates = user.child("location").run {
-                    val lat = child("lat").value?.toString()?.toDouble() ?: 0.0
-                    val long = child("long").value?.toString()?.toDouble() ?: 0.0
+                    val latValue = child("lat").value
+                    val longValue = child("long").value
+                    val lat = latValue?.toString()?.toDouble() ?: 0.0
+                    val long = longValue?.toString()?.toDouble() ?: 0.0
                     Coordinates(lat, long)
                 }
 
                 val cards = mutableListOf<DBMagicCard>()
-                val ownedCardsFuture = cardsFromUser(uid, CardPossession.OWNED)
-                val wantedCardsFuture = cardsFromUser(uid, CardPossession.WANTED)
+                val ownedCardsFuture = getListOfFullCardsInfos(
+                    uid,
+                    CardPossession.OWNED
+                )
+                val wantedCardsFuture = getListOfFullCardsInfos(
+                    uid,
+                    CardPossession.WANTED
+                )
 
                 val userFuture =
                     CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenRun {
                         cards.addAll(ownedCardsFuture.get())
                         cards.addAll(wantedCardsFuture.get())
-                        users.add(User(uid, username, cards, coordinates))
+                        username?.let { User(uid, it, cards, coordinates) }?.let { users.add(it) }
                     }
                 userFutures.add(userFuture)
             }
@@ -610,7 +602,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         db.child(userUID).child(possession.toString().lowercase()).get()
             .addOnSuccessListener {
                 if (it.value == null) {
-                    future.completeExceptionally(NoSuchFieldException("There is no cards in $possession"))
+                    future.complete(listOf())
                 } else {
                     val listOfCardsUID = (it.value as HashMap<*, *>).keys
                     val listOfFutures = mutableListOf<CompletableFuture<DBMagicCard>>()
@@ -635,7 +627,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                     }
                 }
             }.addOnFailureListener {
-                future.completeExceptionally(it)
+                future.complete(listOf())
             }
         return future
     }

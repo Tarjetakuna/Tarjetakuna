@@ -24,7 +24,7 @@ import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
-import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.github.sdp.tarjetakuna.utils.Utils
 import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
@@ -38,12 +38,6 @@ import java.util.concurrent.TimeUnit
 
 @RunWith(AndroidJUnit4::class)
 class SingleCardManageCollectionTest {
-
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
 
     @Rule
     @JvmField
@@ -62,6 +56,7 @@ class SingleCardManageCollectionTest {
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
         Intents.init()
         // mock the authentication
         val mockedAuth = Mockito.mock(Authenticator::class.java)
@@ -209,9 +204,9 @@ class SingleCardManageCollectionTest {
     }
 
     @Test
-    fun addToWantedPutQuantityToZero() {
+    fun addToWantedPutQuantityToOne() {
         wantedButton.perform(click())
-        cardQuantityText.check(matches(withText("0")))
+        cardQuantityText.check(matches(withText("1")))
 
         runBlocking {
             withTimeout(5000) {

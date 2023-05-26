@@ -20,14 +20,13 @@ import com.github.sdp.tarjetakuna.mockdata.CommonMagicCard
 import com.github.sdp.tarjetakuna.model.*
 import com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment
 import com.github.sdp.tarjetakuna.utils.CustomGlide
-import com.github.sdp.tarjetakuna.utils.FBEmulator
+import com.github.sdp.tarjetakuna.utils.Utils
 import com.github.sdp.tarjetakuna.utils.WithDrawableSafeMatcher
 import com.github.sdp.tarjetakuna.utils.WithIndexSafeMatcher.withIndex
 import com.google.gson.Gson
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
-import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -56,14 +55,9 @@ class SingleCardFragmentTest {
     private val textCardArtist = onView(withId(R.id.singleCard_artist_text))
     private val textCardManaCost = onView(withId(R.id.singleCard_mana_cost_text))
 
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
-
     @Before
     fun setup() {
+        Utils.useFirebaseEmulator()
         DatabaseSync.activateSync = false
         FirebaseDB().returnDatabaseReference().updateChildren(CommonFirebase.goodFirebase)
         IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
@@ -278,6 +272,7 @@ class SingleCardFragmentTest {
         onView(withText(R.string.single_card_users_have)).check(matches(isDisplayed()))
         onView(withText(R.string.single_card_users_want)).check(matches(isDisplayed()))
         onView(withText(R.string.single_card_users_have)).perform(click())
+
         onView(withIndex(withText(CommonFirebase.GoodFirebaseAttributes.email1), 0)).check(
             matches(
                 isDisplayed()
@@ -285,9 +280,8 @@ class SingleCardFragmentTest {
         )
         onView(withIndex(withId(R.id.user_adapter_km_text), 0)).check(matches(isDisplayed()))
         onView(withIndex(withId(R.id.user_adapter_message_button), 0)).check(matches(isDisplayed()))
-        onView(withIndex(withId(R.id.user_adapter_profile_button), 0))
     }
-
+    
     @Test
     fun testUserCanSeeUsersThatWantTheCard() {
         val bundleArgs = Bundle().apply { putString("card", validJson) }
@@ -301,6 +295,5 @@ class SingleCardFragmentTest {
         onView(withText(CommonFirebase.GoodFirebaseAttributes.email1)).check(matches(isDisplayed()))
         onView(withIndex(withId(R.id.user_adapter_km_text), 0)).check(matches(isDisplayed()))
         onView(withIndex(withId(R.id.user_adapter_message_button), 0)).check(matches(isDisplayed()))
-        onView(withIndex(withId(R.id.user_adapter_profile_button), 0))
     }
 }

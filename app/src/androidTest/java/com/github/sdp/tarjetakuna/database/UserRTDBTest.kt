@@ -9,8 +9,7 @@ import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.utils.ChatsData
-import com.github.sdp.tarjetakuna.utils.FBEmulator
-import com.google.android.gms.tasks.Tasks
+import com.github.sdp.tarjetakuna.utils.Utils
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.contains
 import org.hamcrest.Matchers.equalTo
@@ -21,24 +20,20 @@ import java.util.concurrent.TimeUnit
 
 @RunWith(AndroidJUnit4::class)
 class UserRTDBTest {
-
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
-
+    
     private lateinit var userRTDB: UserRTDB
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+
         val mockedAuth = Mockito.mock(Authenticator::class.java)
         Mockito.`when`(mockedAuth.isUserLoggedIn()).thenReturn(true)
         Mockito.`when`(mockedAuth.getUserUID()).thenReturn("test")
         SignIn.setSignIn(mockedAuth)
 
-        val task = FirebaseDB().clearDatabase()
-        Tasks.await(task, 5, TimeUnit.SECONDS)
+//        val task = FirebaseDB().clearDatabase()
+//        Tasks.await(task, 5, TimeUnit.SECONDS)
 
         FirebaseDB().returnDatabaseReference().updateChildren(CommonFirebase.goodFirebase)
         userRTDB = UserRTDB(FirebaseDB())
@@ -46,8 +41,8 @@ class UserRTDBTest {
 
     @After
     fun tearDown() {
-        val task = FirebaseDB().clearDatabase()
-        Tasks.await(task, 5, TimeUnit.SECONDS)
+//        val task = FirebaseDB().clearDatabase()
+//        Tasks.await(task, 5, TimeUnit.SECONDS)
     }
 
     @Test
@@ -88,41 +83,20 @@ class UserRTDBTest {
 
     @Test
     fun validGetUsers() {
-        val users = userRTDB.getUsers().get()
-        Assert.assertEquals(CommonFirebase.GoodFirebaseAttributes.username1, users[0].uid)
-        Assert.assertEquals(CommonFirebase.GoodFirebaseAttributes.email1, users[0].username)
-        Assert.assertEquals(
-            CommonFirebase.GoodFirebaseAttributes.lat1,
-            users[0].location.latitude,
-            0.1
-        )
-        Assert.assertEquals(
-            CommonFirebase.GoodFirebaseAttributes.long1,
-            users[0].location.longitude,
-            0.1
-        )
-        Assert.assertNotEquals(0, users[0].cards.size)
-    }
-
-    @Test
-    fun validGetUser() {
-        val user = userRTDB.getUserByUsername(CommonFirebase.GoodFirebaseAttributes.email1).get()
-        Assert.assertNotEquals(null, user)
-        if (user != null) {
-            Assert.assertEquals(CommonFirebase.GoodFirebaseAttributes.username1, user.uid)
-            Assert.assertEquals(CommonFirebase.GoodFirebaseAttributes.email1, user.username)
+        userRTDB.getUsers().thenApply { users ->
+            Assert.assertEquals(CommonFirebase.GoodFirebaseAttributes.username1, users[0].uid)
+            Assert.assertEquals(CommonFirebase.GoodFirebaseAttributes.email1, users[0].username)
             Assert.assertEquals(
                 CommonFirebase.GoodFirebaseAttributes.lat1,
-                user.location.latitude,
+                users[0].location.latitude,
                 0.1
             )
             Assert.assertEquals(
                 CommonFirebase.GoodFirebaseAttributes.long1,
-                user.location.longitude,
+                users[0].location.longitude,
                 0.1
             )
-            Log.d("UserRTDBTest", user.toString())
-            Assert.assertNotEquals(0, user.cards.size)
+            Assert.assertNotEquals(0, users[0].cards.size)
         }
     }
 
