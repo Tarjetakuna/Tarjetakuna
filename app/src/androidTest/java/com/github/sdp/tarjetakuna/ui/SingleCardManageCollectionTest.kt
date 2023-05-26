@@ -204,9 +204,9 @@ class SingleCardManageCollectionTest {
     }
 
     @Test
-    fun addToWantedPutQuantityToZero() {
+    fun addToWantedPutQuantityToOne() {
         wantedButton.perform(click())
-        cardQuantityText.check(matches(withText("0")))
+        cardQuantityText.check(matches(withText("1")))
 
         runBlocking {
             withTimeout(5000) {

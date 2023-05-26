@@ -25,26 +25,17 @@
         android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
+        android:layout_gravity="center_vertical"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <Button
         android:id="@+id/user_adapter_message_button"
-        android:layout_width="50dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:layout_weight="1"
         app:icon="@drawable/message"
-        app:iconGravity="textEnd" />
-
-    <Button
-        android:id="@+id/user_adapter_profile_button"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="5dp"
-        android:layout_weight="1"
-        app:icon="@drawable/account"
         app:iconGravity="textEnd" />
 </LinearLayout>

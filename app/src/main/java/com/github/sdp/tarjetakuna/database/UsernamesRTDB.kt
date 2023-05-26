@@ -39,6 +39,23 @@ class UsernamesRTDB(database: Database) {
     }
 
     /**
+     * Get a username from the database, given a UID
+     */
+    fun getUsernameFromUID(uid: String): CompletableFuture<DataSnapshot> {
+        val future = CompletableFuture<DataSnapshot>()
+        db.child(uid).get().addOnSuccessListener {
+            if (it.value == null) {
+                future.completeExceptionally(NoSuchFieldException("uid $uid is not in database"))
+            } else {
+                future.complete(it)
+            }
+        }.addOnFailureListener {
+            future.completeExceptionally(it)
+        }
+        return future
+    }
+
+    /**
      * Remove a username - uid pair from the database
      */
     fun removeUsernameUID(username: String) {

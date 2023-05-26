@@ -317,23 +317,38 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         db.get().addOnSuccessListener { snapshot ->
             for (user in snapshot.children) {
                 val uid = user.key.toString()
-                val username = user.child("username").value.toString()
+                val usernameValue = user.child("username").value
+                var username = usernameValue?.toString()
+
+                if (username == null) {
+                    UsernamesRTDB(FirebaseDB()).getUsernameFromUID(uid).thenAccept {
+                        username = it.value.toString()
+                    }
+                }
 
                 val coordinates = user.child("location").run {
-                    val lat = child("lat").value?.toString()?.toDouble() ?: 0.0
-                    val long = child("long").value?.toString()?.toDouble() ?: 0.0
+                    val latValue = child("lat").value
+                    val longValue = child("long").value
+                    val lat = latValue?.toString()?.toDouble() ?: 0.0
+                    val long = longValue?.toString()?.toDouble() ?: 0.0
                     Coordinates(lat, long)
                 }
 
                 val cards = mutableListOf<DBMagicCard>()
-                val ownedCardsFuture = cardsFromUser(uid, CardPossession.OWNED)
-                val wantedCardsFuture = cardsFromUser(uid, CardPossession.WANTED)
+                val ownedCardsFuture = getListOfFullCardsInfos(
+                    uid,
+                    CardPossession.OWNED
+                )
+                val wantedCardsFuture = getListOfFullCardsInfos(
+                    uid,
+                    CardPossession.WANTED
+                )
 
                 val userFuture =
                     CompletableFuture.allOf(ownedCardsFuture, wantedCardsFuture).thenRun {
                         cards.addAll(ownedCardsFuture.get())
                         cards.addAll(wantedCardsFuture.get())
-                        users.add(User(uid, username, cards, coordinates))
+                        username?.let { User(uid, it, cards, coordinates) }?.let { users.add(it) }
                     }
                 userFutures.add(userFuture)
             }
@@ -610,7 +625,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         db.child(userUID).child(possession.toString().lowercase()).get()
             .addOnSuccessListener {
                 if (it.value == null) {
-                    future.completeExceptionally(NoSuchFieldException("There is no cards in $possession"))
+                    future.complete(listOf())
                 } else {
                     val listOfCardsUID = (it.value as HashMap<*, *>).keys
                     val listOfFutures = mutableListOf<CompletableFuture<DBMagicCard>>()
@@ -635,7 +650,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                     }
                 }
             }.addOnFailureListener {
-                future.completeExceptionally(it)
+                future.complete(listOf())
             }
         return future
     }
