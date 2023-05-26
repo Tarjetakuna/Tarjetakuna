@@ -329,24 +329,30 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
         val future = CompletableFuture<MutableList<DBMagicCard>>()
         val cards = mutableListOf<DBMagicCard>()
 
-        getAllCardCodesFromUserPossession(userUID, possession).thenApply { cardCode ->
-            val cardCodeMap = cardCode.value as HashMap<*, *>
-            val cardFutures = mutableListOf<CompletableFuture<DBMagicCard>>()
-
-            for (code in cardCodeMap.keys) {
-                val cardFuture =
-                    cardsRTDB.getCardFromGlobalCollection(code.toString()).thenApply { card ->
-                        val dbCard = Gson().fromJson(card.value.toString(), DBMagicCard::class.java)
-                        dbCard.copy(possession = possession)
-                    }
-                cardFutures.add(cardFuture)
-            }
-
-            CompletableFuture.allOf(*cardFutures.toTypedArray()).thenRun {
-                for (cardFuture in cardFutures) {
-                    cards.add(cardFuture.get())
-                }
+        val cardCodeFuture = getAllCardCodesFromUserPossession(userUID, possession)
+        cardCodeFuture.whenComplete { cardCode, throwable ->
+            if (throwable != null) {
                 future.complete(cards)
+            } else {
+                val cardCodeMap = cardCode.value as HashMap<*, *>
+                val cardFutures = mutableListOf<CompletableFuture<DBMagicCard>>()
+
+                for (code in cardCodeMap.keys) {
+                    val cardFuture =
+                        cardsRTDB.getCardFromGlobalCollection(code.toString()).thenApply { card ->
+                            val dbCard =
+                                Gson().fromJson(card.value.toString(), DBMagicCard::class.java)
+                            dbCard.copy(possession = possession)
+                        }
+                    cardFutures.add(cardFuture)
+                }
+
+                CompletableFuture.allOf(*cardFutures.toTypedArray()).thenRun {
+                    for (cardFuture in cardFutures) {
+                        cards.add(cardFuture.get())
+                    }
+                    future.complete(cards)
+                }
             }
         }
         return future
