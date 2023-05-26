@@ -7,6 +7,8 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -70,6 +72,24 @@ class HomeFragmentTest {
     @After
     fun tearDown() {
         LocalDatabaseProvider.closeDatabase(LocalDatabaseProvider.CARDS_DATABASE_NAME)
+    }
+
+    @Test
+    fun testSignInButtonIsDisplayed() {
+        onView(withId(R.id.home_authenticationButton))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+    }
+
+    @Test
+    fun testWelcomeTextIsDisplayed() {
+        onView(withId(R.id.home_welcome_text))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+    }
+
+    @Test
+    fun testWelcomeDescriptionIsDisplayed() {
+        onView(withId(R.id.home_welcome_description))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     /**
