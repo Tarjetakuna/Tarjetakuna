@@ -1,7 +1,7 @@
 package com.github.sdp.tarjetakuna.database
 
+import android.util.Log
 import com.github.sdp.tarjetakuna.model.Message
-import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.gson.Gson
@@ -14,6 +14,10 @@ class MessagesRTDB(database: Database = FirebaseDB()) {
 
     private var messagesTable: DatabaseReference
 
+    companion object {
+        private const val TAG = "MessagesRTDB"
+    }
+
     init {
         messagesTable = database.messagesTable() //Firebase.database.reference.child("messages")
     }
@@ -21,8 +25,15 @@ class MessagesRTDB(database: Database = FirebaseDB()) {
     /**
      * Add a [DBMessage] to the messages table.
      */
-    fun addMessage(message: DBMessage): Task<Void> {
-        return messagesTable.child(message.uid).setValue(messageToDBFormat(message))
+    fun addMessage(message: DBMessage): CompletableFuture<DBMessage> {
+        val future = CompletableFuture<DBMessage>()
+        val task = messagesTable.child(message.uid).setValue(messageToDBFormat(message))
+        task.addOnSuccessListener {
+            future.complete(message)
+        }.addOnFailureListener {
+            future.completeExceptionally(it)
+        }
+        return future
     }
 
     /**
@@ -43,17 +54,44 @@ class MessagesRTDB(database: Database = FirebaseDB()) {
     }
 
     /**
+     * Get some [DBMessage]s from the messages table.
+     */
+    fun getMessages(messagesUID: List<String>): CompletableFuture<List<DBMessage>> {
+        val messagesFuture: List<CompletableFuture<DBMessage>> = messagesUID.map { getMessage(it) }
+
+        return CompletableFuture.allOf(*messagesFuture.toTypedArray())
+            .thenApply { messagesFuture.map { it.get() } }
+    }
+
+    /**
      * Remove a message from the messages table.
      */
-    fun removeMessage(messageUID: String): Task<Void> {
-        return messagesTable.child(messageUID).removeValue()
+    fun removeMessage(messageUID: String): CompletableFuture<String> {
+        val future = CompletableFuture<String>()
+        val task = messagesTable.child(messageUID).removeValue()
+        task.addOnSuccessListener {
+            future.complete(messageUID)
+        }.addOnFailureListener {
+            future.completeExceptionally(it)
+        }
+        return future
     }
 
     /**
      * Add a [Message] to the messages table.
      */
-    fun addMessageToDatabase(message: Message): Task<Void> {
-        return addMessage(DBMessage.toDBMessage(message))
+    fun addMessageToDatabase(message: Message): CompletableFuture<Message> {
+        val future = CompletableFuture<Message>()
+        val futureDBMessage = addMessage(DBMessage.toDBMessage(message))
+        futureDBMessage.thenAccept {
+            Log.d(TAG, "Message ${message.uid} added to messages table")
+            future.complete(message)
+        }.exceptionally {
+            Log.d(TAG, "Message ${message.uid} failed to be added to messages table")
+            future.completeExceptionally(it)
+            return@exceptionally null
+        }
+        return future
     }
 
     /**
@@ -98,7 +136,13 @@ class MessagesRTDB(database: Database = FirebaseDB()) {
     /**
      * Clear all messages from the messages table.
      */
-    fun clearMessages(): Task<Void> {
-        return messagesTable.removeValue()
+    fun clearMessages(): CompletableFuture<Void> {
+        val future = CompletableFuture<Void>()
+        messagesTable.removeValue().addOnSuccessListener {
+            future.complete(null)
+        }.addOnFailureListener {
+            future.completeExceptionally(it)
+        }
+        return future
     }
 }
