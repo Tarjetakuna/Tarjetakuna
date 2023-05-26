@@ -58,6 +58,8 @@ class SingleCardFragmentTest {
     @Before
     fun setup() {
         Utils.useFirebaseEmulator()
+        val task = FirebaseDB().clearDatabase()
+        Utils.waitUntilTrue(10, 100) { task.isComplete }
         DatabaseSync.activateSync = false
         FirebaseDB().returnDatabaseReference().updateChildren(CommonFirebase.goodFirebase)
         IdlingRegistry.getInstance().register(CustomGlide.countingIdlingResource)
@@ -66,6 +68,8 @@ class SingleCardFragmentTest {
     @After
     fun tearDown() {
         IdlingRegistry.getInstance().unregister(CustomGlide.countingIdlingResource)
+        val task = FirebaseDB().clearDatabase()
+        Utils.waitUntilTrue(10, 100) { task.isComplete }
         scenario.close()
     }
 
@@ -281,7 +285,7 @@ class SingleCardFragmentTest {
         onView(withIndex(withId(R.id.user_adapter_km_text), 0)).check(matches(isDisplayed()))
         onView(withIndex(withId(R.id.user_adapter_message_button), 0)).check(matches(isDisplayed()))
     }
-    
+
     @Test
     fun testUserCanSeeUsersThatWantTheCard() {
         val bundleArgs = Bundle().apply { putString("card", validJson) }
