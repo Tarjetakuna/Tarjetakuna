@@ -35,11 +35,6 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        //LocalDatabaseProvider.deleteDatabases(
-        //    requireContext(),
-        //    ArrayList(listOf(LocalDatabaseProvider.CARDS_DATABASE_NAME))
-        //)
-
         val textView: TextView = binding.homeWelcomeText
         homeViewModel.titleText.observe(viewLifecycleOwner) {
             textView.text = it
