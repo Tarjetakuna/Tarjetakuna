@@ -23,11 +23,13 @@ object CommonFirebase {
                 ),
                 "wanted" to mapOf(
                     GoodFirebaseAttributes.card1 to mapOf(
+                        "lastUpdated" to GoodFirebaseAttributes.lastUpdate,
                         "quantity" to 1,
                     )
                 ),
                 "owned" to mapOf(
                     GoodFirebaseAttributes.card1 to mapOf(
+                        "lastUpdated" to GoodFirebaseAttributes.lastUpdate,
                         "quantity" to 1,
                     )
                 )
@@ -41,6 +43,7 @@ object CommonFirebase {
         const val lat1 = 11.0
         const val long1 = 14.0
         const val card1 = "M15_43"
+        const val lastUpdate = 1685118635621L
         val cardObject1 = DBMagicCard(CommonMagicCard.aeronautTinkererCard, CardPossession.OWNED, 0)
     }
 }
