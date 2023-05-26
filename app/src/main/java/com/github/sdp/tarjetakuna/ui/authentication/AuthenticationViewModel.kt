@@ -9,7 +9,10 @@ import androidx.lifecycle.ViewModel
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.model.CurrentUser
+import com.github.sdp.tarjetakuna.model.User
 import com.github.sdp.tarjetakuna.utils.Utils
+import com.google.firebase.auth.FirebaseAuth
 
 
 /**
@@ -59,7 +62,9 @@ class AuthenticationViewModel : ViewModel() {
         val response = result.idpResponse
         if (result.resultCode == AppCompatActivity.RESULT_OK) {
             // Successfully signed in
-            //val user = FirebaseAuth.getInstance().currentUser
+            val fbUser = FirebaseAuth.getInstance().currentUser!!
+            val user = User(fbUser.uid, fbUser.email!!)
+            CurrentUser.setCurrentUser(user)
             // The observer will be notified and launch the SignOutFragment
             FirebaseDB().usernamesTable().updateChildren(
                 mapOf(
@@ -71,9 +76,11 @@ class AuthenticationViewModel : ViewModel() {
             if (response == null) {
                 // The observer will be notified and launch the authenticationButtonFragment
                 _changeToAuthenButtonFragment.value = true
+                CurrentUser.removeCurrentUser()
             } else {
                 // The observer will be notified and launch the error
                 _reportErrorString.value = "authenticationFailed"
+                CurrentUser.removeCurrentUser()
             }
         }
     }

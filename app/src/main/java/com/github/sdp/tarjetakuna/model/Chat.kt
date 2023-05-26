@@ -43,14 +43,27 @@ data class Chat(
     /**
      * Last message timestamp
      */
-    var timestamp: Date = Date(0)
-) {
+    var timestamp: Date = Date()
+) : Cloneable {
 
     constructor(uid: String) :
-            this(uid, User(""), User(""), ArrayList(), Date(0), Date(0), false)
+            this(uid, User(""), User(""), ArrayList(), Date(), Date(), false)
 
     init {
         messages.sortBy { it.timestamp }
-        timestamp = messages.lastOrNull()?.timestamp ?: Date(0)
+        timestamp = messages.lastOrNull()?.timestamp ?: Date()
+    }
+
+    public override fun clone(): Chat {
+        return Chat(
+            uid,
+            user1.clone(),
+            user2.clone(),
+            messages.clone() as ArrayList<Message>,
+            user1LastRead,
+            user2LastRead,
+            valid,
+            timestamp
+        )
     }
 }
