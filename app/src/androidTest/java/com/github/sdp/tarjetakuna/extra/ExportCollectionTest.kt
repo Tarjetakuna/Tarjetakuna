@@ -111,7 +111,6 @@ class ExportCollectionTest {
         }
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText(R.string.menu_exportcollection)).perform(click())
-
         onView(withText(R.string.ExportCollection_fileCreationFailed))
             .check(matches(isDisplayed()))
     }

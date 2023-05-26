@@ -56,6 +56,10 @@ object DatabaseSync {
         CompletableFuture.allOf(f1, f2, f3).thenAccept {
             Log.i("DatabaseSync", "sync: all cards processed")
             isSyncCompleted.complete(true)
+        }.exceptionally { e -> //todo NEWWW
+            Log.i("DatabaseSync", "sync: error while syncing")
+            isSyncCompleted.completeExceptionally(e)
+            null
         }
         return isSyncCompleted
     }

@@ -61,7 +61,7 @@ class AuthenticationFragment : Fragment() {
             }
         }
 
-        viewModel.changeToSignOutFragment.observe(viewLifecycleOwner) {
+        viewModel.signInSuccess.observe(viewLifecycleOwner) {
             if (it) {
                 // Sync the database when the user is connected
                 LocalDatabaseProvider.deleteDatabases(
@@ -74,14 +74,14 @@ class AuthenticationFragment : Fragment() {
                 )
                 DatabaseSync.sync()
                 val mainActivity = requireActivity() as MainActivity
-                mainActivity.changeFragment(R.id.nav_sign_out)
+                mainActivity.changeFragment(R.id.nav_home)
             }
         }
 
-        viewModel.changeToAuthenticationButtonFragment.observe(viewLifecycleOwner) {
+        viewModel.signInResponseNull.observe(viewLifecycleOwner) {
             if (it) {
                 val mainActivity = requireActivity() as MainActivity
-                mainActivity.changeFragment(R.id.nav_authentication_button)
+                mainActivity.changeFragment(R.id.nav_home)
             }
         }
 
@@ -101,18 +101,18 @@ class AuthenticationFragment : Fragment() {
         val mainActivity = requireActivity() as MainActivity
         val bundle = Bundle()
         bundle.putString("errorCode", errorCode)
-        mainActivity.changeFragment(R.id.nav_authentication_button, bundle)
+        mainActivity.changeFragment(R.id.nav_home, bundle)
     }
 
     /**
-     * Sign out the user and return to the AuthenticationButtonFragment.
+     * Sign out the user and return to the HomeFragment.
      */
     private fun signOut() {
         AuthUI.getInstance()
             .signOut(requireContext())
             .addOnCompleteListener {
                 val mainActivity = requireActivity() as MainActivity
-                mainActivity.changeFragment(R.id.nav_authentication_button)
+                mainActivity.changeFragment(R.id.nav_home)
             }
     }
 }

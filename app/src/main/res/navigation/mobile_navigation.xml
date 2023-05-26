@@ -42,18 +42,6 @@
         tools:layout="@layout/fragment_authentication" />
 
     <fragment
-        android:id="@+id/nav_authentication_button"
-        android:name="com.github.sdp.tarjetakuna.ui.authentication.AuthenticationButtonFragment"
-        android:label="@string/menu_authentication_button"
-        tools:layout="@layout/fragment_authentication_button" />
-
-    <fragment
-        android:id="@+id/nav_sign_out"
-        android:name="com.github.sdp.tarjetakuna.ui.authentication.SignOutFragment"
-        android:label="@string/menu_sign_out"
-        tools:layout="@layout/fragment_sign_out" />
-
-    <fragment
         android:id="@+id/nav_single_card"
         android:name="com.github.sdp.tarjetakuna.ui.singlecard.SingleCardFragment"
         android:label="@string/menu_single_card"

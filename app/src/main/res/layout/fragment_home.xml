@@ -21,7 +21,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.255" />
+        app:layout_constraintVertical_bias="0.255"
+        android:text="@string/home_welcome" />
 
     <TextView
         android:id="@+id/home_welcome_description"
@@ -37,18 +38,44 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.403" />
+        app:layout_constraintVertical_bias="0.403"
+        android:text="@string/home_welcome_description" />
 
-
-    <Button
-        android:id="@+id/add_random_card_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:text="@string/home_add_a_random_card"
-        app:layout_constraintBottom_toTopOf="@+id/home_authenticationButton"
+    <TextView
+        android:id="@+id/home_authentication_failed_text"
+        android:layout_width="251dp"
+        android:layout_height="35dp"
+        android:text=""
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.637" />
+
+    <LinearLayout
+        android:id="@+id/home_userContent_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/home_userGreeting_text"
+            style="@style/TitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/standard_margin"
+            android:gravity="center|center_horizontal"
+            android:text="@string/home_welcome_signed_in"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/home_signOut_button"
+            style="@style/HomeButtonStyle"
+            android:text="@string/sign_out" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/home_authenticationButton"

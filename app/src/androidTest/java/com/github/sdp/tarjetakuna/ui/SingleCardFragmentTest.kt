@@ -259,5 +259,4 @@ class SingleCardFragmentTest {
             )
         )
     }
-
 }
