@@ -3,16 +3,24 @@ package com.github.sdp.tarjetakuna.model
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.utils.ChatsData
+import com.github.sdp.tarjetakuna.utils.Utils
 import junit.framework.TestCase
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.greaterThanOrEqualTo
 import org.hamcrest.Matchers.lessThanOrEqualTo
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.Date
 
 @RunWith(AndroidJUnit4::class)
 class MessageTest {
+
+    @Before
+    fun setUp() {
+        Utils.useFirebaseEmulator()
+    }
+    
     @Test
     fun test_FromUIDOnly() {
         val timeBefore = Date()

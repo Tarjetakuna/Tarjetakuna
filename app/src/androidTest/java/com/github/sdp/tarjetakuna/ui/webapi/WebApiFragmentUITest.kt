@@ -31,14 +31,18 @@ import org.junit.runner.RunWith
 class WebApiFragmentUITest {
 
     private lateinit var scenario: FragmentScenario<WebApiFragment>
-    private val mockWebServer = MockWebServer()
+    private lateinit var mockWebServer: MockWebServer
     private lateinit var okHttp3IdlingResource: OkHttp3IdlingResource
 
     private val recyclerView = onView(withId(R.id.web_api_list_card))
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
         Intents.init()
+
+        mockWebServer = MockWebServer()
+
         scenario = launchFragmentInContainer()
 
         // setup mock webserver

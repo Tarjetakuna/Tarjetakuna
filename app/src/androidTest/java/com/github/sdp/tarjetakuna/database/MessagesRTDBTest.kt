@@ -3,14 +3,12 @@ package com.github.sdp.tarjetakuna.database
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.sdp.tarjetakuna.model.Message
 import com.github.sdp.tarjetakuna.utils.ChatsData
-import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.Utils
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.After
 import org.junit.Assert.assertThrows
 import org.junit.Before
-import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.ExecutionException
@@ -21,17 +19,13 @@ import java.util.concurrent.TimeUnit
  */
 @RunWith(AndroidJUnit4::class)
 class MessagesRTDBTest {
-
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
-
-    private val messagesRTDB = MessagesRTDB()
+    private lateinit var messagesRTDB: MessagesRTDB
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+        messagesRTDB = MessagesRTDB()
+
         // make sure db is empty of messages
         val task = FirebaseDB().clearDatabase()
         Utils.waitUntilTrue(10, 100) { task.isComplete }

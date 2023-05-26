@@ -19,6 +19,7 @@ import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
 import com.github.sdp.tarjetakuna.utils.TemporaryCards.generateCards
+import com.github.sdp.tarjetakuna.utils.Utils
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.hamcrest.CoreMatchers.not
@@ -39,6 +40,7 @@ class UserCollectionFragmentTest {
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
         Intents.init()
 
         // mock the authentication
