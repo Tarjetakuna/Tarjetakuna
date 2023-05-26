@@ -13,7 +13,6 @@ import com.github.sdp.tarjetakuna.database.UserRTDB
 import com.github.sdp.tarjetakuna.model.Coordinates
 import com.github.sdp.tarjetakuna.ui.authentication.Authenticator
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
-import com.github.sdp.tarjetakuna.utils.FBEmulator
 import com.github.sdp.tarjetakuna.utils.Utils
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.*
@@ -23,12 +22,6 @@ import org.mockito.Mockito.*
 
 @RunWith(AndroidJUnit4::class)
 class LocationTest {
-
-    companion object {
-        @get:ClassRule
-        @JvmStatic
-        val fbEmulator = FBEmulator()
-    }
 
     @Rule
     @JvmField
@@ -43,6 +36,8 @@ class LocationTest {
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
+
         DatabaseSync.activateSync = false
         locationManagerMock = mock(LocationManager::class.java)
         setLocationTo(1.0, 2.0)

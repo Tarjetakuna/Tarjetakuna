@@ -16,6 +16,7 @@ import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.ui.profile.ProfileFragment
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys
 import com.github.sdp.tarjetakuna.utils.SharedPreferencesKeys.shared_pref_name
+import com.github.sdp.tarjetakuna.utils.Utils
 import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.Before
@@ -29,6 +30,7 @@ class ProfileFragmentTest {
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
         scenario = launchFragmentInContainer()
         scenario.moveToState(Lifecycle.State.STARTED)
     }

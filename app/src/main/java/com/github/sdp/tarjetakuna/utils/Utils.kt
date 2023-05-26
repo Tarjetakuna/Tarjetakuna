@@ -7,6 +7,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class Utils {
     /**
@@ -108,6 +110,16 @@ class Utils {
          */
         fun hideKeyboard(fragment: Fragment) {
             hideKeyboard(fragment.requireContext(), fragment.requireView())
+        }
+
+        fun useFirebaseEmulator() {
+            Firebase.database.useEmulator("10.0.2.2", 9000)
+
+//            try {
+//                Firebase.database.useEmulator("10.0.2.2", 9000)
+//            } catch (e: Exception) {
+//                Log.w("Utils", "emulator already running : ${e.message}")
+//            }
         }
     }
 }

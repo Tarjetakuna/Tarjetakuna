@@ -8,11 +8,15 @@ import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import com.github.sdp.tarjetakuna.utils.FileReader
 import com.github.sdp.tarjetakuna.utils.OkHttp3IdlingResource
 import com.github.sdp.tarjetakuna.utils.OkHttpProvider
+import com.github.sdp.tarjetakuna.utils.Utils
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import org.hamcrest.CoreMatchers.*
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.not
+import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.Matchers.greaterThan
 import org.junit.After
 import org.junit.Before
@@ -24,12 +28,14 @@ import org.junit.Test
 class WebApiTest {
 
     private lateinit var scenario: FragmentScenario<WebApiFragment>
-    private val mockWebServer = MockWebServer()
+    private lateinit var mockWebServer: MockWebServer
     private lateinit var okHttp3IdlingResource: OkHttp3IdlingResource
 
     @Before
     fun setUp() {
+        Utils.useFirebaseEmulator()
         Intents.init()
+        mockWebServer = MockWebServer()
         scenario = launchFragmentInContainer()
 
         // setup mock webserver
