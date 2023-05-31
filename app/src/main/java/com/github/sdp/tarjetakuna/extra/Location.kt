@@ -41,7 +41,7 @@ object Location {
                     context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             }
             locationManager!!.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
+                LocationManager.NETWORK_PROVIDER,
                 0,
                 0f,
                 locationListener
