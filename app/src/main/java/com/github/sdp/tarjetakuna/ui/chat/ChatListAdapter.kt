@@ -106,7 +106,7 @@ class ChatListAdapter(val chats: List<Chat>, private val currentUser: User) :
         }
 
         if (lastMsg != null && lastMsg.timestamp > lastRead) {
-            holder.notifIcon.visibility = View.VISIBLE
+            holder.notifIcon.visibility = View.INVISIBLE
         } else {
             holder.notifIcon.visibility = View.INVISIBLE
         }
