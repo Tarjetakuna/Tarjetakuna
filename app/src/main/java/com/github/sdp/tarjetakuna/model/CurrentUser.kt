@@ -64,4 +64,8 @@ object CurrentUser : CurrentUserInterface {
     ): CompletableFuture<Pair<DBChat, DBMessage>> {
         return currentUser!!.sendMessageToUser(message, userUID)
     }
+
+    override fun updateLastRead(otherUserUID: String) {
+        currentUser!!.updateLastRead(otherUserUID)
+    }
 }
