@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.database.UsernamesRTDB
 import com.github.sdp.tarjetakuna.databinding.FragmentChatBinding
 
 class ChatFragment : Fragment() {
@@ -29,8 +32,10 @@ class ChatFragment : Fragment() {
             binding.chatMessagesRecyclerView.layoutManager = LinearLayoutManager(context)
             binding.chatMessagesRecyclerView.adapter =
                 MessageListAdapter(it, ChatViewModel.currentUser.getCurrentUser())
-            binding.chatUsernameText.text =
-                if (it.user1.username == ChatViewModel.currentUser.getCurrentUser().username) it.user2.username else it.user1.username
+
+            // This is the username of the user we are chatting with
+            val otherUserId = if (it.user1.uid == ChatViewModel.currentUser.getCurrentUser().uid) it.user2.uid else it.user1.uid
+            setUserName(binding.chatUsernameText, otherUserId)
         }
 
         binding.chatSendButton.setOnClickListener {
@@ -41,6 +46,19 @@ class ChatFragment : Fragment() {
         viewModel.attachChatListener()
 
         return root
+    }
+
+    private fun setUserName(textview: TextView, userID: String) {
+        UsernamesRTDB(FirebaseDB()).getUsernameFromUID(userID).thenAccept {
+            if(it == null) {
+                textview.text = "Unknown user"
+            }else{
+                textview.text = it.value.toString()
+            }
+        }.exceptionally {
+            textview.text = "Unknown user"
+            null
+        }
     }
 
     override fun onDestroyView() {

@@ -15,7 +15,10 @@ import com.github.sdp.tarjetakuna.R
 import com.github.sdp.tarjetakuna.database.DatabaseSync
 import com.github.sdp.tarjetakuna.database.local.LocalDatabaseProvider
 import com.github.sdp.tarjetakuna.databinding.FragmentHomeBinding
+import com.github.sdp.tarjetakuna.model.CurrentUser
+import com.github.sdp.tarjetakuna.model.User
 import com.github.sdp.tarjetakuna.ui.authentication.SignIn
+import com.google.firebase.auth.FirebaseAuth
 
 /**
  * Fragment for the home page.
@@ -40,7 +43,6 @@ class HomeFragment : Fragment() {
 
         val arrayCards = ArrayList<String>()
         arrayCards.add("cards")
-        LocalDatabaseProvider.deleteDatabases(requireContext(), arrayCards)
 
         //Check if user is signed in and display the correct home page
         homeViewModel.checkUserConnected()
@@ -48,6 +50,11 @@ class HomeFragment : Fragment() {
             displayUserHome(it)
             if (it) {
                 DatabaseSync.sync()
+                val fbUser = FirebaseAuth.getInstance().currentUser!!
+                val user = User(fbUser.uid, fbUser.email!!)
+                CurrentUser.setCurrentUser(user)
+            } else {
+                CurrentUser.removeCurrentUser()
             }
         }
 

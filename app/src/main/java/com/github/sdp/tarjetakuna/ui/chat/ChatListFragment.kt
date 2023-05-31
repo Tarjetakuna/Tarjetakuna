@@ -47,6 +47,7 @@ class ChatListFragment : Fragment() {
 
         // This is the userUID of the user we want to chat with, loaded from the arguments
         arguments?.getString("userUID")?.let { it1 -> viewModel.loadChatWithUser(it1) }
+        arguments?.clear()
 
         return root
     }

@@ -8,6 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.sdp.tarjetakuna.R
+import com.github.sdp.tarjetakuna.database.FirebaseDB
+import com.github.sdp.tarjetakuna.database.UsernamesRTDB
 import com.github.sdp.tarjetakuna.model.Chat
 import com.github.sdp.tarjetakuna.model.Message
 import com.github.sdp.tarjetakuna.model.User
@@ -67,10 +69,23 @@ class ChatListAdapter(val chats: List<Chat>, private val currentUser: User) :
     }
 
     private fun setUserName(holder: ViewHolder, position: Int) {
-        if (chats[position].user1.username == currentUser.username) {
-            holder.user.text = chats[position].user2.username
+        if (chats[position].user1.uid == currentUser.uid) {
+            setUserName(holder, chats[position].user2.uid)
         } else {
-            holder.user.text = chats[position].user1.username
+            setUserName(holder, chats[position].user1.uid)
+        }
+    }
+
+    private fun setUserName(holder: ViewHolder, userID: String) {
+        UsernamesRTDB(FirebaseDB()).getUsernameFromUID(userID).thenAccept {
+            if(it == null) {
+                holder.user.text = "Unknown user"
+            }else{
+                holder.user.text = it.value.toString()
+            }
+        }.exceptionally {
+            holder.user.text = "Unknown user"
+            null
         }
     }
 
