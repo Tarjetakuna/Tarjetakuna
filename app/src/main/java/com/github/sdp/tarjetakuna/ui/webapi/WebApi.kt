@@ -1,6 +1,10 @@
 package com.github.sdp.tarjetakuna.ui.webapi
 
-import com.github.sdp.tarjetakuna.ui.webapi.magicApi.*
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApi
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiCard
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiCards
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiSet
+import com.github.sdp.tarjetakuna.ui.webapi.magicApi.MagicApiSets
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -105,7 +109,7 @@ open class WebApi {
      */
     fun getCardsByName(name: String): CompletableFuture<MagicApiCards> {
         val promise = CompletableFuture<MagicApiCards>()
-        ApiCall(getMagicApi().getCardsBySearch("o:$name", "name"), promise).enqueue()
+        ApiCall(getMagicApi().getCardsBySearch(name, "name"), promise).enqueue()
         return promise
     }
 

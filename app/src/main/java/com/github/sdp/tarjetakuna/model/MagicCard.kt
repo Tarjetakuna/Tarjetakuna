@@ -92,7 +92,6 @@ data class MagicCard(
         require(convertedManaCost >= 0) { "CMC cannot be negative" }
         require(manaCost.isNotBlank()) { "Mana cost cannot be blank" } //TODO : parsing
         require(number > 0) { "Number cannot be negative or zero" }
-        require(imageUrl.isNotBlank()) { "Image url cannot be blank" }
         require(power.isNotBlank()) { "Power cannot be blank" }
         require(toughness.isNotBlank()) { "Toughness cannot be blank" }
         require(artist.isNotBlank()) { "Artist cannot be blank" }
