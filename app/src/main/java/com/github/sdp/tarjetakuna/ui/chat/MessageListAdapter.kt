@@ -37,7 +37,7 @@ class MessageListAdapter(val chat: Chat, private val currentUser: User) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (chat.messages[position].sender.username == currentUser.username) {
+        return if (chat.messages[position].sender.uid == currentUser.uid) {
             R.layout.message_sent
         } else {
             R.layout.message_received
