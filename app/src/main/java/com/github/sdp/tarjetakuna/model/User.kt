@@ -114,7 +114,7 @@ data class User(
     }
 
     /**
-     * Creates a new chat with the given user in the user table only and in chats table.
+     * Creates a new chat with the given user in chats node then in the user node.
      */
     fun newChat(chat: DBChat): CompletableFuture<DBChat> {
         val chatsFiltered = chatAlreadyExist(chat)
@@ -229,7 +229,8 @@ data class User(
     }
 
     /**
-     * Sends a message to the given chat, updating the messages node, the chats node and the user node.
+     * Sends a message to the given chat
+     * updating the messages node then the chats node and then the users node.
      */
     private fun sendMessageToUser(
         dbChat: DBChat,

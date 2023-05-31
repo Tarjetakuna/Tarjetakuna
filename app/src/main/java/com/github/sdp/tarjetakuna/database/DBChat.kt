@@ -29,12 +29,12 @@ data class DBChat(
     /**
      * Last read timestamp by user 1.
      */
-    var user1LastRead: Date,
+    var user1LastRead: Long,
 
     /**
      * Last read timestamp by user 2.
      */
-    var user2LastRead: Date,
+    var user2LastRead: Long,
 ) : Cloneable {
     companion object {
 
@@ -69,7 +69,7 @@ data class DBChat(
         }
 
         fun newChat(user1: String, user2: String): DBChat {
-            val dbChat = DBChat("", user1, user2, ArrayList(), Date(), Date())
+            val dbChat = DBChat("", user1, user2, ArrayList(), System.currentTimeMillis(), System.currentTimeMillis())
             val uid = dbChat.hashCode().toUInt().toString()
             return dbChat.copy(uid = uid)
         }

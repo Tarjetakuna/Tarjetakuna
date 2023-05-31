@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="#1db995"
+        app:tabTextColor="@color/white_gold_light"
+        android:background="@color/blue_med1_night"
         android:theme="@style/Theme.Tarjetakuna.NoActionBar" />
 
     <androidx.viewpager2.widget.ViewPager2

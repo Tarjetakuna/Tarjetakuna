@@ -1,6 +1,5 @@
 package com.github.sdp.tarjetakuna.ui.chat
 
-import android.app.Application
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -95,7 +94,7 @@ class ChatListAdapter(val chats: List<Chat>, private val currentUser: User) :
             holder.lastMsg.text = lastMsg.content
         } else {
             holder.lastMsgTime.text = ""
-            holder.lastMsg.text = Application().getString(R.string.chat_list_no_message)
+            holder.lastMsg.text = ""
         }
     }
 
@@ -106,7 +105,7 @@ class ChatListAdapter(val chats: List<Chat>, private val currentUser: User) :
             chats[position].user2LastRead;
         }
 
-        if (lastMsg != null && lastMsg.timestamp.after(lastRead)) {
+        if (lastMsg != null && lastMsg.timestamp > lastRead) {
             holder.notifIcon.visibility = View.VISIBLE
         } else {
             holder.notifIcon.visibility = View.INVISIBLE

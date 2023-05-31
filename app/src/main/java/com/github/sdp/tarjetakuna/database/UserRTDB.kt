@@ -457,7 +457,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                 future.complete(mutableListOf())
             } else {
                 Log.d(TAG, "chats received $it")
-                val chatIds = it.value as HashMap<String, Date>
+                val chatIds = it.value as HashMap<String, Long>
 
                 val futureDBChats = chatsRTDB.getChats(chatIds.keys.toList())
                 futureDBChats.thenAccept { dbChats ->
@@ -514,7 +514,7 @@ class UserRTDB(database: Database) { //Firebase.database.reference.child("users"
                     if (snapshot.value == null) {
                         listener.onChatsRemoved()
                     } else {
-                        val chatIds = snapshot.value as HashMap<String, Date>
+                        val chatIds = snapshot.value as HashMap<String, Long>
                         val futureDBChats = chatsRTDB.getChats(chatIds.keys.toList())
                         futureDBChats.thenAccept { dbChats ->
                             listener.onChatsChanged(dbChats)

@@ -27,12 +27,12 @@ data class Chat(
     /**
      * Last read timestamp by user 1
      */
-    var user1LastRead: Date,
+    var user1LastRead: Long,
 
     /**
      * Last read timestamp by user 2
      */
-    var user2LastRead: Date,
+    var user2LastRead: Long,
 
     /**
      * If the chat is valid (invalid if messages or one of the users is invalid)
@@ -43,15 +43,15 @@ data class Chat(
     /**
      * Last message timestamp
      */
-    var timestamp: Date = Date()
+    var timestamp: Long = System.currentTimeMillis()
 ) : Cloneable {
 
     constructor(uid: String) :
-            this(uid, User(""), User(""), ArrayList(), Date(), Date(), false)
+            this(uid, User(""), User(""), ArrayList(), System.currentTimeMillis(), System.currentTimeMillis(), false)
 
     init {
         messages.sortBy { it.timestamp }
-        timestamp = messages.lastOrNull()?.timestamp ?: Date()
+        timestamp = messages.lastOrNull()?.timestamp ?: System.currentTimeMillis()
     }
 
     public override fun clone(): Chat {

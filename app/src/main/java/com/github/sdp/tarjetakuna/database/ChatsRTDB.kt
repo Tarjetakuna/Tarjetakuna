@@ -153,7 +153,7 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
     }
 
     /**
-     * Add a message to a chat into chats and messages nodes.
+     * Add a message to a chat into messages then chats nodes.
      */
     fun addMessageToChat(
         chatUID: String,
@@ -175,9 +175,9 @@ class ChatsRTDB(database: Database = FirebaseDB()) {
                 }
 
                 val future = CompletableFuture<Pair<DBChat, DBMessage>>()
-                // add chat and message to database
-                addChat(it).thenAccept { _ ->
-                    messagesRTDB.addMessage(message).thenAccept { _ ->
+                // add message then chat to database
+                messagesRTDB.addMessage(message).thenAccept { _ ->
+                    addChat(it).thenAccept { _ ->
                         future.complete(Pair(it, message))
                     }.exceptionally { it3 ->
                         future.completeExceptionally(it3)

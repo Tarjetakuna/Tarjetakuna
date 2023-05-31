@@ -26,7 +26,7 @@ data class Message(
     /**
      * Message timestamp
      */
-    var timestamp: Date,
+    var timestamp: Long,
 
     /**
      * If the message is valid (invalid if one of the users is invalid)
@@ -34,7 +34,7 @@ data class Message(
      */
     var valid: Boolean = true
 ) : Cloneable {
-    constructor(uid: String) : this(uid, User(""), User(""), "", Date(), false)
+    constructor(uid: String) : this(uid, User(""), User(""), "", System.currentTimeMillis(), false)
 
     public override fun clone(): Message {
         return Message(uid, sender.clone(), receiver.clone(), content, timestamp, valid)

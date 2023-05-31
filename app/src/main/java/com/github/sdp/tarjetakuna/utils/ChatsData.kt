@@ -39,11 +39,11 @@ object ChatsData {
     val chat_uid3 = "chat_uid3"
     val chat_uid4 = "chat_uid4"
 
-    val date_1 = Date(1683828633000)
-    val date_2 = Date(1683828661000)
-    val date_3 = Date(1683828691000)
-    val date_4 = Date(1683828791000)
-    val date_5 = Date(1683928691000)
+    val date_1 = 1683828633000
+    val date_2 = 1683828661000
+    val date_3 = 1683828691000
+    val date_4 = 1683828791000
+    val date_5 = 1683928691000
 
     val msg1_1_content = "Hello"
     val msg1_2_content = "Hello you too"
