@@ -36,10 +36,13 @@ class ChatListFragment : Fragment() {
             initOnChatClickListener(binding.chatsRecyclerView.adapter as ChatListAdapter)
         }
 
-        viewModel.autoChat.observe(viewLifecycleOwner) {
+        viewModel.autoChatActive.observe(viewLifecycleOwner) {
             if (it != null) {
-                ChatListViewModel.currentUser.setChatUID(it.uid)
-                (requireActivity() as MainActivity).changeFragment(R.id.nav_chat)
+                if(it) {
+                    ChatListViewModel.currentUser.setChatUID(viewModel.autoChat!!.uid)
+                    viewModel.resetAutoChat()
+                    (requireActivity() as MainActivity).changeFragment(R.id.nav_chat)
+                }
             }
         }
 

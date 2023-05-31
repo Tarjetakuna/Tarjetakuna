@@ -47,13 +47,22 @@ class ChatListViewModel : ViewModel() {
         if (!currentUser.isUserLoggedIn()) return
         currentUser.getCurrentUser().chatWithUser(userUID)
             .thenAccept { chat ->
-                _autoChat.postValue(chat)
+                autoChat = chat
+                _autoChatActive.postValue(true)
             }
+    }
+
+    fun resetAutoChat() {
+        _autoChatActive.postValue(false)
+        autoChat = null
     }
 
     private val _chats = o_chats
     val chats: LiveData<MutableList<Chat>> = _chats
 
-    private val _autoChat = MutableLiveData<DBChat>()
-    val autoChat: LiveData<DBChat> = _autoChat
+    var autoChat: DBChat? = null
+
+    private val _autoChatActive = MutableLiveData<Boolean>()
+    val autoChatActive: LiveData<Boolean> = _autoChatActive
+
 }
