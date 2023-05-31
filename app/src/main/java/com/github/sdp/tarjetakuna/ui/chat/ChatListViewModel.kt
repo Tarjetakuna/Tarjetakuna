@@ -1,6 +1,5 @@
 package com.github.sdp.tarjetakuna.ui.chat
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,7 +33,6 @@ class ChatListViewModel : ViewModel() {
         currentUser.attachChatsListener(listener = {
             o_ChatRTDB.getChatsFromDatabase(currentUser.getCurrentUser().chats.map { it.uid })
                 .thenAccept { chats ->
-                    Log.w(TAG, "attachChatsListener: chats: $chats")
                     _chats.postValue(chats as MutableList<Chat>)
                 }
         })

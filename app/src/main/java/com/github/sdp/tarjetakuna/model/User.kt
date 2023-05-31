@@ -262,15 +262,6 @@ data class User(
         return future
     }
 
-    fun updateLastRead(otherUserUID: String) {
-        val dbChat = findChatWithUser(otherUserUID)
-        if (dbChat != null) {
-            if (dbChat.user1 == uid) dbChat.user1LastRead = System.currentTimeMillis()
-            else dbChat.user2LastRead = System.currentTimeMillis()
-            ChatsRTDB().addChat(dbChat).thenCompose { userRTDB.addChat(dbChat) }
-        }
-    }
-
     /**
      * Finds a chat between this user and the other, if it exists.
      */
@@ -280,6 +271,4 @@ data class User(
                     (it.user1 == otherUserUID && it.user2 == uid)
         }
     }
-
-
 }

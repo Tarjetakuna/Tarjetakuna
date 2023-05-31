@@ -1,6 +1,5 @@
 package com.github.sdp.tarjetakuna.ui.chat
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,10 +56,7 @@ class ChatListAdapter(val chats: List<Chat>, private val currentUser: User) :
         setLastMessage(holder, lastMsg)
 
         // update the notification icon
-        val lastMsgReceived = chats[position].messages
-            .filter { currentUser.uid == it.receiver.uid }
-            .maxByOrNull { it.timestamp }
-        setNotificationIcon(holder, position, lastMsgReceived)
+        setNotificationIcon(holder, position, lastMsg)
 
         // TODO set the user icon
 //        holder.userIcon.setImageResource(R.drawable.ic_baseline_person_24)
@@ -103,14 +99,14 @@ class ChatListAdapter(val chats: List<Chat>, private val currentUser: User) :
     }
 
     private fun setNotificationIcon(holder: ViewHolder, position: Int, lastMsg: Message?) {
-        val lastRead = if (chats[position].user1.uid == currentUser.uid) {
+        val lastRead = if (chats[position].user1.username == currentUser.username) {
             chats[position].user1LastRead;
         } else {
             chats[position].user2LastRead;
         }
 
-        if (lastMsg != null && lastMsg.timestamp < lastRead) {
-            holder.notifIcon.visibility = View.INVISIBLE
+        if (lastMsg != null && lastMsg.timestamp > lastRead) {
+            holder.notifIcon.visibility = View.VISIBLE
         } else {
             holder.notifIcon.visibility = View.INVISIBLE
         }

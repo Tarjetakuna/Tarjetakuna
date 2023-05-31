@@ -36,7 +36,6 @@ class ChatFragment : Fragment() {
             // This is the username of the user we are chatting with
             val otherUserId = if (it.user1.uid == ChatViewModel.currentUser.getCurrentUser().uid) it.user2.uid else it.user1.uid
             setUserName(binding.chatUsernameText, otherUserId)
-                viewModel.updateLastRead()
         }
 
         binding.chatSendButton.setOnClickListener {
@@ -46,7 +45,6 @@ class ChatFragment : Fragment() {
 
         viewModel.attachChatListener()
 
-        viewModel.updateLastRead()
         return root
     }
 
@@ -65,7 +63,6 @@ class ChatFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.updateLastRead()
         viewModel.detachChatListener()
         _binding = null
     }

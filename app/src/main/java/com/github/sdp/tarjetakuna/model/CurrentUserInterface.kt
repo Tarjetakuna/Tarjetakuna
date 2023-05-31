@@ -21,6 +21,4 @@ interface CurrentUserInterface {
         message: String,
         userUID: String
     ): CompletableFuture<Pair<DBChat, DBMessage>>
-
-    fun updateLastRead(otherUserUID: String)
 }

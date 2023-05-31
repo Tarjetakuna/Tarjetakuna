@@ -52,12 +52,6 @@ class ChatViewModel : ViewModel() {
         currentUser.sendMessageToUser(message, o_otherUserUID.value!!)
     }
 
-    fun updateLastRead() {
-        if (!currentUser.isUserLoggedIn()) return
-        if(o_otherUserUID.value == null) return
-        currentUser.updateLastRead(o_otherUserUID.value!!)
-    }
-
     private val _chat = o_chat
     val chat: LiveData<Chat> = _chat
 }
